@@ -1,0 +1,58 @@
+<div class="comments-dialog">
+  <div class="d-flex align-items-center justify-content-between mb-2">
+    <p mat-dialog-title class="m-0 section-title mb-2">{{data.wikiTitle}}</p>
+    <button mat-button (click)="commentsCancel()" class="font-bold">X</button>
+  </div>
+  <form [formGroup]="addWikiComment">
+    <mat-dialog-content class="mat-typography p-0">
+      <mat-tab-group animationDuration="0ms" #tabGroup (selectedTabChange)="selectedTabValue($event)">
+        <mat-tab label="{{commentsTab ? 'Comments' : 'Change Request'}}">
+          <div class="wiki-tiles" *ngIf="commentsTab">
+            <div class="py-3 px-4 comment-list" *ngFor="let comment of commentsList">
+              <div class="d-flex justify-content-between align-items-center">
+                <span>{{comment.createdBy}} - {{comment.createdDate | date: 'dd/mm/yy - hh:mm'}}</span>
+                <a (click)="tabGroup.selectedIndex=1;goToVersion(comment);"  class="getFontBlue cursor-pointer">Version - {{comment.wikiDocCrVersion | number: '1.0-1'}}</a>
+              </div>
+              <p class="m-0">{{comment.feedBack}}</p>
+            </div>
+          </div>
+          <div *ngIf="labelName=='Change Request' && !commentsTab" class="wiki-tiles p-3">
+            <app-wiki-richtext [richtextContent]="data.wikiData" #tinyEditorData></app-wiki-richtext>
+            <div class="p-2">
+              <label><strong>Add Comment</strong></label>
+              <input class="w-100 p-2" type="text" placeholder="" formControlName="addComment">
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab label="Version History">
+          <div class="wiki-tiles">
+            <div class="py-3 px-4 tile-border-bottom id-{{crDetails.wikiDocCRId}}" *ngFor="let crDetails of WikiCrDetailsList">
+              <div class="d-flex align-item-center justify-content-between">
+                <label class="version-label">Version {{crDetails.wikiCRVersion | number: '1.0-1' }} - {{crDetails.wikiCrDateTimeStamp | date: 'dd/mm/yy'}}</label>
+                <label class="version-label font-bold">Status: {{crDetails.status}}</label>
+              </div>
+              <div class="richText-border p-2" *ngIf="crDetails.wikiCrData" [innerHtml]="crDetails.wikiCrData"></div>
+              <div class="d-flex flex-wrap mt-2">
+                <label class="heading3-regular" *ngIf="data.display.location">{{data.display.location}} > </label><label class="heading3-regular pl-2" *ngIf="data.display.client"> {{data.display.client}} > </label><label class="heading3-regular pl-2" *ngIf="data.display.contract"> {{data.display.contract}} > </label><label class="heading3-regular pl-2" *ngIf="data.display.workCenter"> {{data.display.workCenter}} > </label><label class="heading3-regular pl-2" *ngIf="data.display.family"> {{data.display.family}} > </label><label class="heading3-regular pl-2" *ngIf="data.display.platform"> {{data.display.platform}} > </label><label class="heading3-regular pl-2" *ngIf="data.display.modelNo"> {{data.display.modelNo}} > </label><label class="heading3-regular pl-2" *ngIf="data.display.commodity"> {{data.display.commodity}} > </label><label class="heading3-regular pl-2" *ngIf="data.display.defect"> {{data.display.defect}} </label>
+              </div>
+              <label class="version-label mb-0">Created by: {{crDetails.crAuthor}}</label>
+            </div>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </mat-dialog-content>
+    <mat-dialog-actions class="d-flex align-items-center justify-content-between" *ngIf="!commentsTab && (tabGroup.selectedIndex == 0)">
+      <button class="btn btn-outline-dark" (click)="backToComments()">Back</button>
+      <button class="btn btn-primary cust-disabled-btn" [disabled]="addWikiComment.invalid" (click)="saveAddComment()">submit</button>
+    </mat-dialog-actions>
+    <mat-dialog-actions class="d-flex align-items-center justify-content-between" *ngIf="commentsTab && (tabGroup.selectedIndex == 0)">
+      <div>
+        <span>For Change Request Switch to </span><button type="button" class="btn btn-link" (click)="changeReq()">Text Editor</button>
+      </div>
+      <button class="btn btn-outline-dark" (click)="commentsCancel()">Close</button>
+    </mat-dialog-actions>
+    <mat-dialog-actions class="d-flex align-items-center justify-content-end" *ngIf="tabGroup.selectedIndex == 1">
+      <button class="btn btn-outline-dark" (click)="commentsCancel()">Close</button>
+    </mat-dialog-actions>
+  </form>
+</div>

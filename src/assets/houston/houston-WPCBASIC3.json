@@ -1,0 +1,54 @@
+{
+    "ctype": "subProcess",
+    "title": "WPCBASIC3",
+    "uuid": "houWPCBASIC3UUID",
+    "subMenuIndex": 0,
+    "clientName": "HOUSTON",
+    "openRightNav": false,
+    "hooks": [
+        {
+            "type": "microservice",
+            "hookType": "beforeInit",
+            "config": {
+                "microserviceId": "getSubProcessPageBody",
+                "requestMethod": "get",
+                "params": {
+                    "subProcessId": "#getReferenceDataKeys.subProcess.HOUSTON.WPCBASIC3",
+                    "userName": "#userAccountInfo.PersonalDetails.USERID"
+                },
+                "isLocal": false,
+                "LocalService": "assets/Responses/SubProcess/HOUSTON/hou_WPCBASIC3Subprocess.json"
+            },
+            "responseDependents": {
+                "onSuccess": {
+                    "actions": [
+                        {
+                            "type": "context",
+                            "config": {
+                                "requestMethod": "add",
+                                "key": "houstonWPCBASIC3Data",
+                                "data": "responseData"
+                            }
+                        },
+                        {
+                            "type": "renderTemplate",
+                            "config": {
+                                "mode": "remote",
+                                "targetId": "mainPageContentBodysp",
+                                "templateId": "houstonWPCBASIC3Data"
+                            }
+                        }
+                    ]
+                },
+                "onFailure": {
+                    "actions": [
+                        {
+                            "type": "toast",
+                            "message": "Failed to fetch Cisco WPCBASIC3 JSON"
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}

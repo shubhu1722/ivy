@@ -1,0 +1,54 @@
+{
+    "ctype": "subProcess",
+    "title": "CONFIG REWORK",
+    "uuid": "ConfigReworkUUID",
+    "subMenuIndex": 0,
+    "clientName": "CISCO",
+    "openRightNav": false,
+    "hooks": [
+      {
+        "type": "microservice",
+        "hookType": "beforeInit",
+        "config": {
+          "microserviceId": "getSubProcessPageBody",
+          "requestMethod": "get",
+          "params": {
+            "subProcessId": "#getReferenceDataKeys.subProcess.Cisco.ConfigRework",
+            "userName": "#userAccountInfo.PersonalDetails.USERID"
+          },
+          "isLocal": false,
+          "LocalService": "assets/Responses/SubProcess/CISCO/ConfigReworkSubProcess.json"
+        },
+        "responseDependents": {
+          "onSuccess": {
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "CiscoConfigReworkData",
+                  "data": "responseData"
+                }
+              },
+              {
+                "type": "renderTemplate",
+                "config": {
+                  "mode": "remote",
+                  "targetId": "mainPageContentBodysp",
+                  "templateId": "CiscoConfigReworkData"
+                }
+              }
+            ]
+          },
+          "onFailure": {
+            "actions": [
+              {
+                "type": "toast",
+                "message": "Failed to fetch Cisco Config Rework JSON"
+              }
+            ]
+          }
+        }
+      }
+    ]
+}

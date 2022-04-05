@@ -1,0 +1,14 @@
+<div  [formGroup]="group" [class]="formGroupClass" [style]="formGroupStyles" [hidden]="hidden">
+<label *ngIf="label !== ''" [for]="name" [class]="labelClass" style="width: 40%; margin-bottom: 20px;"> Defect </label>
+<mat-form-field appearance="outline">
+    <mat-select [formControl]="bankCtrl" placeholder="-Select-" #singleSelect>
+        <mat-option>
+            <ngx-mat-select-search [formControl]="bankFilterCtrl"  noEntriesFoundLabel="No entries found" placeholderLabel=""></ngx-mat-select-search>
+            <mat-icon>search</mat-icon>
+        </mat-option>
+        <mat-option *ngFor="let bank of filteredBanks | async" [value]="bank | translate">
+            {{bank.name | translate}}
+        </mat-option>
+    </mat-select>
+</mat-form-field>
+</div>

@@ -1,0 +1,913 @@
+{
+  "ResultData": {
+    "ctype": "page",
+    "uuid": "pageUUID",
+    "visibility": true,
+    "hooks": [],
+    "header": [
+      {
+        "ctype": "breadcrumb",
+        "breadcrumbs": [
+          {
+            "label": "#userSelectedLocationName"
+          },
+          {
+            "label": "#userSelectedClientName"
+          },
+          {
+            "label": "#userSelectedContractName"
+          }
+        ]
+      },
+      {
+        "ctype": "toolbar",
+        "toolbarClass": "pagecontent-header",
+        "items": [
+          {
+            "ctype": "title",
+            "uuid": "dellRepairEcnTitleUUID",
+            "titleValue": "Repair- ECN",
+            "titleClass": "section-title"
+          },
+          {
+            "ctype": "iconbutton",
+            "iconButtonClass": "headeropen-button",
+            "text": "",
+            "uuid": "pageopenUUID",
+            "visibility": true,
+            "disabled": false,
+            "hidden": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "icon": "menu_open",
+            "disableRipple": true,
+            "iconClass": "header-icon",
+            "actions": [
+              {
+                "type": "toggle",
+                "eventSource": "click",
+                "name": "subProcessRightNavref"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "openUUID",
+                  "properties": {
+                    "hidden": false
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "pageopenUUID",
+                  "properties": {
+                    "hidden": true
+                  }
+                },
+                "eventSource": "click"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "items": [
+      {
+        "ctype": "title",
+        "uuid": "successTitleUUID",
+        "titleClass": "success-title",
+        "isShown": false
+      },
+      {
+        "ctype": "title",
+        "uuid": "errorTitleUUID",
+        "containerId": "prebodysectionone",
+        "titleClass": "error-title",
+        "isShown": false
+      },
+      {
+        "ctype": "contentRenderer",
+        "uuid": "contentRenderer1",
+        "hooks": [
+          {
+            "type": "microservice",
+            "hookType": "afterInit",
+            "config": {
+              "microserviceId": "getDellEcoDetails",
+              "requestMethod": "get",
+              "LocalService": "assets/Responses/repairMockAlertResponse.json",
+              "isLocal": false,
+              "params": {
+                "customInstructionType": "ECN",
+                "sourceType": "MODEL_NUMBER",
+                "serialNumber": "",
+                "partNumber": "",
+                "productPlatform": "#discrepancyPartAndWarrantyDetails.MODEL_NUMBER",
+                "secondSource": "",
+                "username": "#userAccountInfo.PersonalDetails.USERID",
+                "locationId": "#userSelectedLocation",
+                "clientId": "#userSelectedClient",
+                "contractId": "#userSelectedContract",
+                "isLooperControl" : "No"
+              }
+            },
+            "responseDependents": {
+              "onSuccess": {
+                "actions": [
+                  {
+                    "type": "renderTemplate",
+                    "config": {
+                      "mode": "remote",
+                      "targetId": "compTemplate",
+                      "templateId": "getDellEcoDetails",
+                      "targetUUID": "contentRenderer1"
+                    }
+                  }
+                ]
+              },
+              "onFailure": {
+                "actions": [
+                  {
+                    "type": "updateComponent",
+                    "config": {
+                      "key": "errorTitleUUID",
+                      "properties": {
+                        "titleValue": "No ECO Found",
+                        "isShown": true
+                      }
+                    }
+                  },
+                  {
+                    "type": "updateComponent",
+                    "config": {
+                      "key": "dellRepairEcnNextUUID",
+                      "properties": {
+                        "disabled": false
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "footer": [
+      {
+        "ctype": "toolbar",
+        "toolbarClass": "pagecontent-footer",
+        "items": [
+          {
+            "ctype": "iconbutton",
+            "iconButtonClass": "footer-save body primary-btn-full-width",
+            "text": "Exit",
+            "uuid": "dellRepairEcnSaveUUID",
+            "visibility": true,
+            "disabled": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "icon": "save",
+            "actions": [
+              {
+                "type": "renderTemplate",
+                "config": {
+                  "templateId": "dashboard.json",
+                  "mode": "local"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "HoldNotes",
+                  "data": ""
+                },
+                "eventSource": "click"
+              }
+            ]
+          },
+          {
+            "ctype": "iconText",
+            "uuid": "dellRepairEcnIconUUID",
+            "icon": "add_comment",
+            "text": "Add Note",
+            "textCss": "",
+            "iconPosition": "Before",
+            "iconTextClass": "footer-addNote body",
+            "actions": [
+              {
+                "type": "dialog",
+                "uuid": "dellRepairEcnAddNoteDialogUUID",
+                "config": {
+                  "title": "Add Note",
+                  "items": [
+                    {
+                      "ctype": "textarea",
+                      "name": "addNote",
+                      "textareaClass": "note-class",
+                      "uuid": "dellRepairEcnAddNoteUUID",
+                      "required": true,
+                      "value": "#timeoutNotes.addNote",
+                      "actions": [
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "dellRepairEcnDoneAddNoteUUID",
+                            "properties": {
+                              "disabled": false
+                            }
+                          },
+                          "eventSource": "onLoad"
+                        }
+                      ]
+                    }
+                  ],
+                  "footer": [
+                    {
+                      "ctype": "button",
+                      "color": "primary",
+                      "text": "Cancel",
+                      "uuid": "dellRepairEcnCancelNoteUUID",
+                      "closeType": "close",
+                      "disableClose": true,
+                      "visibility": true,
+                      "dialogButton": true,
+                      "type": "",
+                      "hooks": [],
+                      "validations": [],
+                      "actions": []
+                    },
+                    {
+                      "ctype": "button",
+                      "color": "primary",
+                      "text": "Done",
+                      "uuid": "dellRepairEcnAddNoteUUID",
+                      "dialogButton": true,
+                      "visibility": true,
+                      "disabled": true,
+                      "type": "submit",
+                      "closeType": "success",
+                      "hooks": [],
+                      "validations": [],
+                      "actions": []
+                    }
+                  ]
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "key": "timeoutNotes",
+                          "data": "formData",
+                          "requestMethod": "add",
+                          "value": "addNote"
+                        },
+                        "eventSource": "click"
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": []
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "ctype": "iconbutton",
+            "uuid": "dellRepairEcnResumeUUID",
+            "visibility": true,
+            "disabled": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "icon": "play_arrow",
+            "iconClass": "",
+            "hidden": true,
+            "disableRipple": true
+          },
+          {
+            "ctype": "spacer",
+            "uuid": "dellRepairEcnEmptySpaceUUID",
+            "class": "empty-space"
+          },
+          {
+            "ctype": "iconbutton",
+            "uuid": "dellRepairEcnPauseUUID",
+            "visibility": true,
+            "disabled": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "icon": "pause",
+            "iconClass": "",
+            "disableRipple": true,
+            "actions": [
+              {
+                "type": "dialogwithmessage",
+                "uuid": "dellRepairEcnPauseDialogUUID",
+                "config": {
+                  "title": "Hold",
+                  "items": [
+                    {
+                      "ctype": "title",
+                      "uuid": "holdBinErrorUUID",
+                      "titleClass": "error-title-holdbin",
+                      "isShown": false
+                    },
+                    {
+                      "ctype": "nativeDropdown",
+                      "formGroupClass": "discrepancy-holddrpdwn",
+                      "uuid": "dellRepairEcnHoldTypeUUID",
+                      "label": "Hold Type",
+                      "name": "holdType",
+                      "required": true,
+                      "dataSource": "#filteredHoldTypes",
+                      "code": "storageHoldCode",
+                      "displayValue": "storageHoldCode",
+                      "actions": [
+                        {
+                          "type": "context",
+                          "config": {
+                            "requestMethod": "add",
+                            "key": "storageHoldCodeValue",
+                            "data": "elementControlValue"
+                          },
+                          "eventSource": "change"
+                        },
+                        {
+                            "type": "conditionalFilterData",
+                            "config": {
+                                "data": "#holdCodesForDiscrepancy",
+                                "targetContextKey" : "holdSubCodeData",
+                                "keyName" : "#storageHoldCodeValue",
+                                "filterRefValue" : "storageHoldCode",
+                                "targetUUID" : "ecnHoldCodeUUID",
+                                "name": "holdCodes"
+                            },
+                            "eventSource": "change"
+                        },
+                        {
+                            "type": "conditionalDestinationLocationData",
+                            "config": {
+                                "data": "#holdSubCodeData",
+                                "filterRefValue" : "destStkLocationName"
+                            },
+                            "eventSource": "change"
+                        },
+                        {
+                          "type": "condition",
+                          "eventSource": "change",
+                          "config": {
+                            "operation": "isEqualTo",
+                            "lhs": "#storageHoldCodeValue",
+                            "rhs": "Awaiting Part"
+                          },
+                          "responseDependents": {
+                            "onSuccess": {
+                              "actions": [
+                                {
+                                  "type": "updateComponent",
+                                  "config": {
+                                    "key": "dellEcnHoldPartUUID",
+                                    "properties": {
+                                      "hidden": false,
+                                      "required": true
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "updateComponent",
+                                  "config": {
+                                    "key": "ecnHoldCodeUUID",
+                                    "properties": {
+                                      "hidden": true,
+                                      "required": false
+                                    }
+                                  }
+                                }
+                              ]
+                            },
+                            "onFailure": {
+                              "actions": [
+                                {
+                                  "type": "updateComponent",
+                                  "config": {
+                                    "key": "dellEcnHoldPartUUID",
+                                    "properties": {
+                                      "hidden": true,
+                                      "required": false
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "updateComponent",
+                                  "config": {
+                                    "key": "ecnHoldCodeUUID",
+                                    "properties": {
+                                      "hidden": false,
+                                      "required": true
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "ctype": "nativeDropdown",
+                      "formGroupClass": "discrepancy-holddrpdwn",
+                      "uuid": "ecnHoldCodeUUID",
+                      "hidden": false,
+                      "label": "Hold Code",
+                      "name": "holdCodes",
+                      "dataSource": "#holdSubCodeData",
+                      "code": "storageHoldSubCode",
+                      "displayValue": "storageHoldSubCode",
+                      "required": true,
+                      "actions": [
+                        {
+                          "type": "context",
+                          "config": {
+                            "requestMethod": "add",
+                            "key": "storageHoldSubCodeValue",
+                            "data": "elementControlValue"
+                          },
+                          "eventSource": "change"
+                        }
+                      ]
+                    },
+                    {
+                      "ctype": "textField",
+                      "uuid": "dellEcnHoldPartUUID",
+                      "validateGroup": false,
+                      "submitable": true,
+                      "disabled": false,
+                      "hidden": true,
+                      "inLine": true,
+                      "formGroupClass": "flex-container",
+                      "textfieldClass": "hold-textfield-container",
+                      "labelClass": "hold-tf-label",
+                      "hooks": [],
+                      "validations": [],
+                      "name": "ECNHoldPartNo",
+                      "label": "Part Number(s)",
+                      "labelPosition": "left",
+                      "tooltip": "",
+                      "TooltipPosition": "",
+                      "defaultValue": "",
+                      "readonly": false,
+                      "type": "text",
+                      "required": true,
+                      "placeholder": "Enter Value",
+                      "value": "",
+                      "prefix": false,
+                      "prefixIcon": "",
+                      "suffix": false,
+                      "suffixIcon": "",
+                      "actions": [
+                        {
+                          "type": "context",
+                          "config": {
+                            "requestMethod": "add",
+                            "key": "storageHoldSubCodeValue",
+                            "data": "elementControlValue"
+                          },
+                          "eventSource": "input"
+                        }
+                      ]
+                    },
+                    {
+                      "ctype": "textField",
+                      "uuid": "dellAssessmentBinUUID",
+                      "submitable": false,
+                      "disabled": false,
+                      "validations": [],
+                      "hidden": false,
+                      "inLine": true,
+                      "formGroupClass": "flex-container required-note",
+                      "textfieldClass": "hold-textfield-container",
+                      "labelClass": "hold-tf-label",
+                      "hooks": [],
+                      "name": "storageBin",
+                      "label": "Hold Bin",
+                      "labelPosition": "left",
+                      "tooltip": "",
+                      "TooltipPosition": "",
+                      "defaultValue": "",
+                      "readonly": false,
+                      "type": "text",
+                      "required": true,
+                      "placeholder": "Enter Value",
+                      "value": "",
+                      "prefix": false,
+                      "prefixIcon": "",
+                      "suffix": false,
+                      "suffixIcon": "",
+                      "actions": []
+                    },
+                    {
+                      "ctype": "textarea",
+                      "label": "Add note",
+                      "name": "dellRepairEcnHoldAddNote",
+                      "textareaContainer": "timeout-class required-note",
+                      "uuid": "holdNodeUUID",
+                      "value": "",
+                      "required": true,
+                      "submitable": true,
+                      "actions": []
+                    }
+                  ],
+                  "footer": [
+                    {
+                      "ctype": "button",
+                      "color": "primary",
+                      "text": "Cancel",
+                      "uuid": "dellRepairEcnCancelHoldUUID",
+                      "closeType": "close",
+                      "disableClose": true,
+                      "visibility": true,
+                      "dialogButton": true,
+                      "type": "",
+                      "hooks": [],
+                      "validations": [],
+                      "actions": []
+                    },
+                    {
+                      "ctype": "button",
+                      "color": "primary",
+                      "text": "Done",
+                      "uuid": "dellRepairEcnDoneHoldUUID",
+                      "dialogButton": true,
+                      "dialogBoxHoldBinErrorMessage": true,
+                      "visibility": true,
+                      "disabled": true,
+                      "type": "submit",
+                      "closeType": "success",
+                      "hooks": [],
+                      "validations": [],
+                      "actions": [
+                        {
+                          "type": "context",
+                          "config": {
+                            "key": "HoldNotes",
+                            "data": "formData",
+                            "requestMethod": "add",
+                            "value": "dellRepairEcnHoldAddNote"
+                          },
+                          "eventSource": "click"
+                        },
+                        {
+                          "eventSource": "click",
+                          "responseDependents": {
+                            "onSuccess": {
+                              "actions": [
+                                {
+                                  "type": "context",
+                                  "config": {
+                                    "key": "HoldDialogData",
+                                    "data": "formData",
+                                    "requestMethod": "add"
+                                  },
+                                  "eventSource": "click"
+                                },
+                                {
+                                  "type": "condition",
+                                  "config": {
+                                    "operation": "isValid",
+                                    "lhs": "#storageHoldSubCodeValue"
+                                  },
+                                  "eventSource": "click",
+                                  "responseDependents": {
+                                    "onSuccess": {
+                                      "actions": [
+                                        {
+                                          "type": "context",
+                                          "config": {
+                                            "requestMethod": "add",
+                                            "key": "subHoldCode",
+                                            "data": "#storageHoldSubCodeValue"
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "onFailure": {
+                                      "actions": [
+                                        {
+                                          "type": "context",
+                                          "config": {
+                                            "requestMethod": "add",
+                                            "key": "subHoldCode",
+                                            "data": "#HoldDialogData.ECNHoldPartNo"
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  }
+                              },
+                                {
+                                  "type": "microservice",
+                                  "config": {
+                                    "microserviceId": "validateBin",
+                                    "requestMethod": "get",
+                                    "params": {
+                                      "locationId": "#repairUnitInfo.LOCATION_ID",
+                                      "wareHouseId": "#repairUnitInfo.WAREHOUSE_ID",
+                                      "binName": "#HoldDialogData.storageBin",
+                                      "userName": "#loginUUID.username"
+                                    },
+                                    "toBeStringified": true,
+                                    "isLocal": false,
+                                    "LocalService": "assets/Responses/mockHoldSubCode.json"
+                                  },
+                                  "responseDependents": {
+                                    "onSuccess": {
+                                      "actions": [
+                                        {
+                                          "type": "microservice",
+                                          "config": {
+                                            "microserviceId": "addInfoCodes",
+                                            "isLocal": false,
+                                            "LocalService": "assets/Responses/performFA.json",
+                                            "requestMethod": "post",
+                                            "body": {
+                                              "bcn": "#discrepancyUnitInfo.ITEM_BCN",
+                                              "notes": "#HoldDialogData.dellRepairEcnHoldAddNote",
+                                              "workCenter": "#discrepancyUnitInfo.WORKCENTER",
+                                              "geography": "#discrepancyUnitInfo.GEONAME",
+                                              "part": "#discrepancyUnitInfo.PART_NO",
+                                              "woTimeLoggedInHours": "1",
+                                              "userName": "#userAccountInfo.PersonalDetails.USERID",
+                                              "password": "#loginUUID.password",
+                                              "flexFields": [
+                                                {
+                                                  "name": "Beep Code",
+                                                  "value": "#submittablebeepCode"
+                                                },
+                                                {
+                                                  "name": "Test_Step",
+                                                  "value": "#submitabletestStep"
+                                                },
+                                                {
+                                                  "name": "EPSA Code",
+                                                  "value": "#submitableEspaCode"
+                                                },
+                                                {
+                                                  "name": "PCDR Code",
+                                                  "value": "#submitablepcDr"
+                                                },
+                                                {
+                                                  "name": "HDD1",
+                                                  "value": "#submitablehdd1ppid"
+                                                },
+                                                {
+                                                  "name": "HDD2",
+                                                  "value": "#submitablehdd2ppid"
+                                                },
+                                                {
+                                                  "name": "HDD3",
+                                                  "value": "#submitablehdd3ppid"
+                                                },
+                                                {
+                                                  "name": "HDD4",
+                                                  "value": "#submitablehdd4ppid"
+                                                },
+                                                {
+                                                  "name": "RAM",
+                                                  "value": "#recordRamSelectedDropDown"
+                                                },
+                                                {
+                                                  "name": "Fail Code",
+                                                  "value": "#TestFailCodeValue"
+                                                }
+                                              ]
+                                            },
+                                            "toBeStringified": true,
+                                            "spliceIfEmptyValueObject": [
+                                              {
+                                                "identifier": "flexFields",
+                                                "valueField": "value",
+                                                "keyToBeRemoved": "flexFields"
+                                              }
+                                            ]
+                                          },
+                                          "responseDependents": {
+                                            "onSuccess": {
+                                              "actions": [
+                                                {
+                                                  "type": "context",
+                                                  "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "addInfoRespData",
+                                                    "data": "responseData"
+                                                  }
+                                                },
+                                                {
+                                                  "type": "microservice",
+                                                  "config": {
+                                                    "microserviceId": "moveinventory",
+                                                    "requestMethod": "post",
+                                                    "body": {
+                                                      "apiUsageClientName": "#discrepancyUnitInfo.CLIENTNAME",
+                                                      "apiUsageLocationName": "#discrepancyUnitInfo.GEONAME",
+                                                      "callSource": "FrontEnd",
+                                                      "ip": "::1",
+                                                      "items": {
+                                                        "addtionalDetails": {
+                                                          "comments": "#HoldDialogData.dellRepairEcnHoldAddNote",
+                                                          "fixedAssetTag": "#discrepancyUnitInfo.FAT",
+                                                          "storageHoldCode": "#HoldDialogData.holdType",
+                                                          "storageHoldSubCode": "#subHoldCode"
+                                                        },
+                                                        "destinationLocation": {
+                                                          "bin": "#HoldDialogData.storageBin",
+                                                          "geography": "#discrepancyUnitInfo.GEONAME",
+                                                          "stockingLocation": "#destStkLocationName",
+                                                          "warehouse": "#discrepancyUnitInfo.WAREHOUSE_NAME"
+                                                        },
+                                                        "item": [
+                                                          {
+                                                            "bcn": "#discrepancyUnitInfo.ITEM_BCN",
+                                                            "owner": "#discrepancyUnitInfo.CLIENTNAME",
+                                                            "partNo": "#discrepancyUnitInfo.PART_NO",
+                                                            "serialNo": "#discrepancyUnitInfo.SERIAL_NO"
+                                                          }
+                                                        ],
+                                                        "notes": "#HoldDialogData.dellRepairEcnHoldAddNote"
+                                                      },
+                                                      "usrPwd": {
+                                                        "userName": "#loginUUID.username",
+                                                        "password": "#loginUUID.password"
+                                                      }
+                                                    },
+                                                    "toBeStringified": true
+                                                  },
+                                                  "responseDependents": {
+                                                    "onSuccess": {
+                                                      "actions": [
+                                                        {
+                                                          "type": "pauseScreenData"
+                                                        },
+                                                        {
+                                                          "type": "renderTemplate",
+                                                          "config": {
+                                                            "templateId": "dashboard.json",
+                                                            "mode": "local"
+                                                          }
+                                                        }
+                                                      ]
+                                                    },
+                                                    "onFailure": {
+                                                      "actions": [
+                                                        {
+                                                          "type": "context",
+                                                          "config": {
+                                                            "requestMethod": "add",
+                                                            "key": "moveinventoryForDiscrepancy",
+                                                            "data": "responseData"
+                                                          }
+                                                        },
+                                                        {
+                                                          "type": "updateComponent",
+                                                          "config": {
+                                                            "key": "errorTitleUUID",
+                                                            "properties": {
+                                                              "titleValue": "#moveinventoryForDiscrepancy",
+                                                              "isShown": true
+                                                            }
+                                                          }
+                                                        }
+                                                      ]
+                                                    }
+                                                  },
+                                                  "eventSource": "click"
+                                                }
+                                              ]
+                                            },
+                                            "onFailure": {
+                                              "actions": [
+                                                {
+                                                  "type": "context",
+                                                  "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "addInfoError",
+                                                    "data": "responseData"
+                                                  }
+                                                },
+                                                {
+                                                  "type": "updateComponent",
+                                                  "config": {
+                                                    "key": "errorTitleUUID",
+                                                    "properties": {
+                                                      "titleValue": "#addInfoError",
+                                                      "isShown": true
+                                                    }
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          "eventSource": "click"
+                                        },
+                                        {
+                                          "type":"closeAllDialogs"
+                                        }
+                                      ]
+                                    },
+                                    "onFailure": {
+                                      "actions": [
+                                        {
+                                          "type": "context",
+                                          "config": {
+                                            "requestMethod": "add",
+                                            "key": "moveinventoryForDiscrepancy",
+                                            "data": "responseData"
+                                          }
+                                        },
+                                        {
+                                          "type": "updateComponent",
+                                          "config": {
+                                            "key": "holdBinErrorUUID",
+                                            "properties": {
+                                              "titleValue": "#moveinventoryForDiscrepancy",
+                                              "isShown": true
+                                            }
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "eventSource": "click"
+                                }
+                              ]
+                            },
+                            "onFailure": {}
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "context",
+                "config": {
+                    "requestMethod": "add",
+                    "key": "holdSubCodeData",
+                    "data": ""
+                },
+                "eventSource":"click"
+              }
+            ]
+          },             
+          {
+            "ctype": "button",
+            "color": "primary",
+            "text": "Next",
+            "uuid": "dellRepairEcnNextUUID",
+            "visibility": true,
+            "disabled": true,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "buttonClass": "footer-button primary-btn",
+            "class": "primary-btn",
+            "actions": [
+              {
+                "type": "checkDebugScreenRender",
+                "config": {
+                  "processDataKey":"getProcessWCData"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateStage",
+                "eventSource": "click",
+                "config": {
+                  "currentStage": "ECN",
+                  "currentSubProcess": "REPAIR",
+                  "nextStage": "DEBUG",
+                  "targetId": "menuTreeUUID",
+                  "processId": "#SubprocessMenu"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "Result": "SUCCESS"
+}

@@ -1,0 +1,545 @@
+{
+    "ResultData": {
+        "ctype": "page",
+        "uuid": "pageUUID",
+        "visibility": true,
+        "hooks": [
+            {
+                "type": "filterAndGetIndex",
+                "config": {
+                    "data": "#HomeMenu",
+                    "objectKey": "name",
+                    "getValueBy": "MY_UNITS",
+                    "contextKey": "getMyUnitData",
+                    "operation": "getIndex"
+                },
+                "hookType": "afterInit"
+            },
+            {
+                "type": "microservice",
+                "hookType": "afterInit",
+                "config": {
+                    "microserviceId": "getHandsOffHoldCode",
+                    "isLocal": false,
+                    "requestMethod": "get",
+                    "params": {
+                        "locationId": "#userSelectedLocation",
+                        "clientId": "#userSelectedClient",
+                        "contractId": "#userSelectedContract",
+                        "processId": "#getMyUnitData.id",
+                        "workCenterId": 1,
+                        "appId": "#getMyUnitData.id",
+                        "userName": "#loginUUID.username"
+                    }
+                },
+                "responseDependents": {
+                    "onSuccess": {
+                        "actions": [
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "holdTypeUnitUUID",
+                                    "dropDownProperties": {
+                                        "options": "#getHandsOffHoldCode"
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    "onFailure": {
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "errorDisp",
+                                    "data": "responseData"
+                                }
+                            },
+                            {
+                                "type": "condition",
+                                "config": {
+                                    "operation": "isEqualTo",
+                                    "lhs": "#errorDisp",
+                                    "rhs": "No Record Found"
+                                },
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "errorTitleUUID",
+                                                    "properties": {
+                                                        "titleValue": "#errorDisp",
+                                                        "isShown": false
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": [
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "errorTitleUUID",
+                                                    "properties": {
+                                                        "titleValue": "#errorDisp",
+                                                        "isShown": true
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+        ],
+        "header": [
+            {
+                "ctype": "breadcrumb",
+                "breadcrumbs": [
+                    {
+                        "label": "#userSelectedLocationName"
+                    },
+                    {
+                        "label": "#userSelectedClientName"
+                    },
+                    {
+                        "label": "#userSelectedContractName"
+                    }
+                ]
+            },
+            {
+                "ctype": "toolbar",
+                "toolbarClass": "pagecontent-header header-toolbar-padding",
+                "items": [
+                    {
+                        "ctype": "title",
+                        "uuid": "myUnitHeadertitleuuid",
+                        "titleValue": "My Units",
+                        "titleClass": "section-title"
+                    }
+                ]
+            }
+        ],
+        "items": [
+            {
+                "ctype": "title",
+                "uuid": "errorTitleUUID",
+                "titleClass": "error-title",
+                "isShown": false
+            },
+            {
+                "ctype": "taskPanel",
+                "header": {
+                    "title": "Active Units",
+                    "svgIcon": "cube"
+                },
+                "expanded": true,
+                "isKeepExpanded": true,
+                "hideToggle": "true",
+                "uuid": "timedInMyUnitsUUID",
+                "name": "timedinunits",
+                "visibility": false,
+                "disabled": false,
+                "items": [
+                    {
+                        "ctype": "disabled",
+                        "uuid": "timedInUnitsDisabledUUID",
+                        "disabledClass": "disabledFalse"
+                    },
+                    {
+                        "ctype": "label",
+                        "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In pulvinar condimentum vehicula.",
+                        "labelClass": "pb-3 body-italic text-secondary"
+                    },
+                    {
+                        "ctype": "oleTable",
+                        "afterAction": [
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "timedInMyUnitsUUID",
+                                    "properties": {
+                                        "header": {
+                                            "title": "#activeUnitText",
+                                            "svgIcon": "cube"
+                                        }
+                                    }
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "nativeDropdown",
+                        "dropdownClass": "col-2 mb-3  reworkCommon",
+                        "uuid": "holdTypeUnitUUID",
+                        "name": "holdtypeunit",
+                        "label": "Hold Type",
+                        "labelClass": "pl-0 pt-5 align-left rework-lable-width disable-text",
+                        "dataSource": "",
+                        "code": "outComeCodeId",
+                        "displayValue": "outComeCodeId",
+                        "disabled": true,
+                        "required": true,
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "holdYypeUnitName",
+                                    "data": "elementControlName"
+                                },
+                                "eventSource": "change"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "holdCompleteUUID",
+                                    "properties": {
+                                        "disabled": false
+                                    }
+                                },
+                                "eventSource": "change"
+                            }
+                        ]
+                    }
+                ],
+                "footer": [
+                    {
+                        "ctype": "button",
+                        "color": "primary",
+                        "text": "Hold",
+                        "uuid": "holdCompleteUUID",
+                        "visibility": true,
+                        "checkGroupValidity": false,
+                        "disabled": true,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "timedinunitsData",
+                                    "data": "formData"
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "eventSource": "click",
+                                "config": {
+                                    "key": "errorTitleUUID",
+                                    "properties": {
+                                        "titleValue": "",
+                                        "isShown": false
+                                    }
+                                }
+                            },
+                            {
+                                "type": "oleFlexFields",
+                                "config": {
+                                    "key": "oleMyUnitFF",
+                                    "locationName": "#userSelectedLocationName",
+                                    "clientId": "#userSelectedClient",
+                                    "rowData":"#rowSelectedData",
+                                    "holdType": "#holdYypeUnitName"
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "microservice",
+                                "eventSource": "click",
+                                "config": {
+                                    "microserviceId": "holdSelectedAndCurrentUnit",
+                                    "requestMethod": "post",
+                                    "body": {
+                                        "currentUnitOnHoldList":"#oleMyUnitFF",
+                                        "userName": "#loginUUID.username",
+                                        "password": "#loginUUID.password"
+                                    },
+                                    "toBeStringified": true
+                                },
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "timedinunitsData",
+                                                    "data": "holdSelectedAndCurrentUnit"
+                                                },
+                                                "eventSource": "click"
+                                            },
+                                            {
+                                                "type": "microservice",
+                                                "eventSource": "click",
+                                                "config": {
+                                                    "microserviceId": "getMyUnits",
+                                                    "isLocal": false,
+                                                    "LocalService": "assets/Responses/mockBGA.json",
+                                                    "requestMethod": "get",
+                                                    "params": {
+                                                        "locationId": "#userSelectedLocation",
+                                                        "clientId": "#userSelectedClient",
+                                                        "logIn": "#userAccountInfo.PersonalDetails.USERID"
+                                                    }
+                                                },
+                                                "responseDependents": {
+                                                    "onSuccess": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "context",
+                                                                "config": {
+                                                                    "requestMethod": "add",
+                                                                    "key": "getMyUnitsData",
+                                                                    "data": "responseData"
+                                                                }
+                                                            },
+                                                            {
+                                                                "type": "updateMyUnitsData",
+                                                                "config": {
+                                                                    "key": "getMyUnitsData",
+                                                                    "data": "#getMyUnitsData"
+                                                                }
+                                                            },
+                                                            {
+                                                                "type": "updateComponent",
+                                                                "config": {
+                                                                    "key": "timedInMyUnitsUUID",
+                                                                    "properties": {
+                                                                        "header": {
+                                                                            "title": "#activeUnitText",
+                                                                            "svgIcon": "cube"
+                                                                        }
+                                                                    }
+                                                                }
+                                                            },
+                                                            {
+                                                                "type": "dialog",
+                                                                "uuid": "myUnitDialogUUID",
+                                                                "config": {
+                                                                    "minimumWidth": false,
+                                                                    "width": "300px",
+                                                                    "title": "",
+                                                                    "isheader": false,
+                                                                    "items": [
+                                                                        {
+                                                                            "ctype": "title",
+                                                                            "uuid": "errorTitleECOUUID",
+                                                                            "titleClass": "font-weight-bold",
+                                                                            "titleValue": "Transaction summary"
+                                                                        },
+                                                                        {
+                                                                            "ctype": "label",
+                                                                            "text": "#holdPopupText",
+                                                                            "labelClass": "font-weight-bold"
+                                                                        }
+                                                                    ]
+                                                                },
+                                                                "eventSource": "click",
+                                                                "responseDependents": {
+                                                                    "onSuccess": {
+                                                                        "actions": []
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    "onFailure": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "context",
+                                                                "config": {
+                                                                    "requestMethod": "add",
+                                                                    "key": "getMyUnitsData",
+                                                                    "data": []
+                                                                }
+                                                            },
+                                                            {
+                                                                "type": "updateMyUnitsData",
+                                                                "config": {
+                                                                    "key": "getMyUnitsData",
+                                                                    "data": "#getMyUnitsData"
+                                                                }
+                                                            },
+                                                            {
+                                                                "type": "updateComponent",
+                                                                "config": {
+                                                                    "key": "timedInMyUnitsUUID",
+                                                                    "properties": {
+                                                                        "header": {
+                                                                            "title": "#activeUnitText",
+                                                                            "svgIcon": "cube"
+                                                                        }
+                                                                    }
+                                                                }
+                                                            },
+                                                            {
+                                                                "type": "context",
+                                                                "config": {
+                                                                    "requestMethod": "add",
+                                                                    "key": "errorDisp",
+                                                                    "data": "responseData"
+                                                                }
+                                                            },
+                                                            {
+                                                                "type": "condition",
+                                                                "config": {
+                                                                    "operation": "isEqualTo",
+                                                                    "lhs": "#errorDisp",
+                                                                    "rhs": "No Record Found"
+                                                                },
+                                                                "responseDependents": {
+                                                                    "onSuccess": {
+                                                                        "actions": [
+                                                                            {
+                                                                                "type": "updateComponent",
+                                                                                "config": {
+                                                                                    "key": "errorTitleUUID",
+                                                                                    "properties": {
+                                                                                        "titleValue": "#errorDisp",
+                                                                                        "isShown": false
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "onFailure": {
+                                                                        "actions": [
+                                                                            {
+                                                                                "type": "updateComponent",
+                                                                                "config": {
+                                                                                    "key": "errorTitleUUID",
+                                                                                    "properties": {
+                                                                                        "titleValue": "#errorDisp",
+                                                                                        "isShown": true
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "errorDisp",
+                                                    "data": "responseData"
+                                                }
+                                            },
+                                            {
+                                                "type": "condition",
+                                                "config": {
+                                                    "operation": "isEqualTo",
+                                                    "lhs": "#errorDisp",
+                                                    "rhs": "No Record Found"
+                                                },
+                                                "responseDependents": {
+                                                    "onSuccess": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "updateComponent",
+                                                                "config": {
+                                                                    "key": "errorTitleUUID",
+                                                                    "properties": {
+                                                                        "titleValue": "#errorDisp",
+                                                                        "isShown": false
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    "onFailure": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "updateComponent",
+                                                                "config": {
+                                                                    "key": "errorTitleUUID",
+                                                                    "properties": {
+                                                                        "titleValue": "#errorDisp",
+                                                                        "isShown": true
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "footer": [
+            {
+                "ctype": "toolbar",
+                "toolbarClass": "pagecontent-footer",
+                "items": [
+                    {
+                        "ctype": "iconbutton",
+                        "iconButtonClass": "footer-save body primary-btn",
+                        "text": "Exit",
+                        "uuid": "saveUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "icon": "save",
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "myUnitNotes",
+                                    "data": ""
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "getMyUnitsData",
+                                    "data": []
+                                }
+                            },
+                            {
+                                "type": "renderTemplate",
+                                "config": {
+                                    "templateId": "dashboard.json",
+                                    "mode": "local"
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "Result": "SUCCESS"
+}

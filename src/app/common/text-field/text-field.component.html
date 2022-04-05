@@ -1,0 +1,19 @@
+<div [formGroup]="group" [class]="formGroupClass" [style]="formGroupStyles" [hidden]="hidden">
+  <span *ngIf="labelIcon" [innerHtml]="labelIcon"></span>
+  <label *ngIf="label !== ''" [style]="labelstyles" [class]="labelClass"> {{label}} </label>
+  <mat-form-field appearance="outline" [style]="css" [class] = "textfieldClass" *ngIf="visibility">
+    <input matInput [style]="inputStyles" [formControlName]="name" [autocomplete]="isAutoComplete" [placeholder]="placeholder | translate " [type]="type" [id]="name" [value]="value | translate"
+      [name]="name" [readonly]="readonly"  [disabled]="disabled" [required]="required" [matTooltip]="tooltip" [matTooltipPosition]="TooltipPosition"
+      (focus)="onlocalfocus($event)" (change)="onlocalChange($event)" (keyup)="clickevent($event)" (keyup.enter)="onCLickOfEnter($event)"
+      (blur)="onlocalBlur($event)" (input)="onInput($event)"
+      (onfocusout)="onlocalFocusOut($event)" (keydown)="onKeyDown($event)" #textFieldRef [ngClass]="isUpperCase ? 'uppercase' : ''"
+      [maxlength]="maxLength" [minlength]="minLength">
+    <span matPrefix *ngIf="prefix" style="top: 0em !important;">
+      <mat-icon style="color: #2b2b29">{{prefixIcon}}</mat-icon>
+    </span>
+    <button mat-icon-button matSuffix *ngIf="suffix" style="top: 0em !important;" (click)="clickevent($event)">
+      <mat-icon>{{suffixIcon}}</mat-icon>
+    </button>
+  </mat-form-field>
+  <label *ngIf="rightLabel" [for]="name" [style]="labelstyles" class="right-label body2" [class]="rightLabelClass">{{rightLabel | translate}} </label>
+</div>

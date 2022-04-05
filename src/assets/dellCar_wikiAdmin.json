@@ -1,0 +1,1761 @@
+{
+  "data": {
+    "ctype": "page",
+    "uuid": "pageUUID",
+    "css": "",
+    "visibility": true,
+    "hooks": [
+      {
+        "type": "microservice",
+        "hookType": "afterInit",
+        "config": {
+          "microserviceId": "getAllWikiItems",
+          "isLocal": false,
+          "LocalService": "assets/Responses/wikiMockupResponse.json",
+          "requestMethod": "get",
+          "params": {
+            "status": "PROCESS,PENDING FOR APPROVAL",
+            "loginUserName": "#userAccountInfo.PersonalDetails.USERID",
+            "loginUserRole": "#rolesConfiguredForUser"
+          }
+        },
+        "responseDependents": {
+          "onSuccess": {
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "dellCarWikiSearchAndSortData",
+                  "data": "responseData"
+                }
+              },
+              {
+                "type": "handleAllAdminWikiActions",
+                "methodType": "Update_QTY",
+                "hookType": "afterInit",
+                "taskPanelUUID": "dellCarWikiPendingApprovalUUID",
+                "dataArray": "#dellCarWikiSearchAndSortData",
+                "header": {
+                  "title": "Instructions Pending Approval",
+                  "icon": "description",
+                  "iconClass": "active-header",
+                  "status": "",
+                  "statusIcon": "hourglass_empty",
+                  "statusClass": "incomplete-status"
+                }
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "dellCarWikiTableUUID",
+                  "fieldProperties": {
+                    "dataSource": "#dellCarWikiSearchAndSortData"
+                  }
+                }
+              }
+            ]
+          },
+          "onFailure": {
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "dellCarWikiSearchAndSortData",
+                  "data": []
+                }
+              },
+              {
+                "type": "handleAllAdminWikiActions",
+                "methodType": "Update_QTY",
+                "hookType": "afterInit",
+                "taskPanelUUID": "dellCarWikiPendingApprovalUUID",
+                "dataArray": "#dellCarWikiSearchAndSortData",
+                "header": {
+                  "title": "Instructions Pending Approval",
+                  "icon": "description",
+                  "iconClass": "active-header",
+                  "status": "",
+                  "statusIcon": "hourglass_empty",
+                  "statusClass": "incomplete-status"
+                }
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "dellCarWikiTableUUID",
+                  "fieldProperties": {
+                    "dataSource": "#dellCarWikiSearchAndSortData"
+                  }
+                }
+              },
+              {
+                "type": "handleCommonServices",
+                "config": {
+                  "type": "errorRenderTemplate",
+                  "contextKey": "errorMsg",
+                  "updateKey": "errorTitleUUID"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "type": "microservice",
+        "hookType": "afterInit",
+        "config": {
+          "microserviceId": "getMyDraftJsonReponse",
+          "isLocal": false,
+          "LocalService": "assets/Responses/wikiMockupResponse.json",
+          "requestMethod": "get",
+          "params": {
+            "userName": "#userAccountInfo.PersonalDetails.USERID"
+          }
+        },
+        "responseDependents": {
+          "onSuccess": {
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "getMyDraftJsonReponse",
+                  "data": "responseData"
+                }
+              },
+              {
+                "type": "handleDataFormationForDraft",
+                "data": "getMyDraftJsonReponse",
+                "uuid": "dellCarDraftWikiTableUUID"
+              }
+            ]
+          },
+          "onFailure": {
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "getMyDraftJsonReponse",
+                  "data": []
+                }
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "dellCarDraftWikiTableUUID",
+                  "fieldProperties": {
+                    "dataSource": "#getMyDraftJsonReponse"
+                  }
+                }
+              },
+              {
+                "type": "handleCommonServices",
+                "config": {
+                  "type": "errorRenderTemplate",
+                  "contextKey": "errorMsg",
+                  "updateKey": "errorTitleUUID"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "type": "handleAllAdminWikiActions",
+        "hookType": "afterInit",
+        "methodType": "handleRoleBaseTaspanel",
+        "featuresToBeFilterd": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "taskPanelsNeedToBeToggled": [
+          "dellCarWikiPendingApprovalUUID",
+          "dellCarSubmittedWikiUUID",
+          "dellCarDraftWikiUUID",
+          "dellCarWikiInstructionUUID"
+        ]
+      }
+    ],
+    "validations": [],
+    "action": [],
+    "header": [
+      {
+        "ctype": "breadcrumb",
+        "style": "padding-left: 4px;",
+        "breadcrumbs": []
+      },
+      {
+        "ctype": "toolbar",
+        "toolbarClass": "pagecontent-header",
+        "items": [
+          {
+            "ctype": "title",
+            "uuid": "wikiSubProcessTitleUUID",
+            "titleValue": "Wiki Instructions ",
+            "titleClass": "section-title",
+            "isAdmin": true,
+            "actions": [
+              {
+                "type": "handleAllAdminWikiActions",
+                "eventSource": "click",
+                "methodType": "handleRoleBaseTaspanel",
+                "featuresToBeFilterd": [
+                  1,
+                  2,
+                  3,
+                  4
+                ],
+                "taskPanelsNeedToBeToggled": [
+                  "dellCarWikiPendingApprovalUUID",
+                  "dellCarSubmittedWikiUUID",
+                  "dellCarDraftWikiUUID",
+                  "dellCarWikiInstructionUUID"
+                ]
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "wikiSubProcessTitleUUID",
+                  "properties": {
+                    "titleValue": "Wiki Instruction",
+                    "titleClass": "section-title"
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "toggle",
+                "eventSource": "click",
+                "name": "subProcessRightNavref",
+                "actionType":"close"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "openWikiUUID",
+                  "properties": {
+                    "hidden": true
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "pageopenWikiUUID",
+                  "properties": {
+                    "hidden": false
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "adminWikiInstructionUUID",
+                  "properties": {
+                    "isWikiAdmin": false,
+                    "isWikiDraft": false
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "draftTaskPanelUUID",
+                  "properties": {
+                    "hidden": true
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "wikiStatusUUID",
+                  "properties": {
+                    "hidden": true
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "SubmittedWikiStatusUUID",
+                  "properties": {
+                    "hidden": true
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "SMEStatusUUID",
+                  "properties": {
+                    "hidden": true
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "newCommentUUID",
+                  "properties": {
+                    "hidden": true
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "wikiStatusNewUUID",
+                  "properties": {
+                    "hidden": true
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "similarInstructionUUID",
+                  "properties": {
+                    "hidden": true
+                  }
+                },
+                "eventSource": "click"
+              }
+            ]
+          },
+          {
+            "ctype": "iconbutton",
+            "iconButtonClass": "headeropen-button",
+            "text": "",
+            "uuid": "pageopenWikiUUID",
+            "visibility": true,
+            "disabled": false,
+            "hidden": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "icon": "menu_open",
+            "disableRipple": true,
+            "iconClass": "header-icon",
+            "actions": [
+              {
+                "type": "toggle",
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "openWikiUUID",
+                  "properties": {
+                    "hidden": false
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "pageopenWikiUUID",
+                  "properties": {
+                    "hidden": true
+                  }
+                },
+                "eventSource": "click"
+              }
+            ]
+          }
+        ],
+        "uuid": "receivingToolBarUUID",
+        "hookType": "afterInit"
+      }
+    ],
+    "items": [
+      {
+        "ctype": "title",
+        "uuid": "successTitleUUID",
+        "titleClass": "success-title",
+        "isShown": false
+      },
+      {
+        "ctype": "title",
+        "uuid": "errorTitleUUID",
+        "titleClass": "error-title",
+        "isShown": false
+      },
+      {
+        "ctype": "taskPanel",
+        "title": "",
+        "isblueBorder": false,
+        "header": {
+          "title": "Instructions Pending Approval",
+          "icon": "description",
+          "iconClass": "active-header",
+          "status": "",
+          "statusIcon": "hourglass_empty",
+          "statusClass": "incomplete-status"
+        },
+        "expanded": true,
+        "hidden": false,
+        "disabled": false,
+        "hideToggle": "true",
+        "taskPanelHeaderClass": "background-white",
+        "uuid": "dellCarWikiPendingApprovalUUID",
+        "visibility": true,
+        "isEditable": true,
+        "isMandatory": true,
+        "hooks": [],
+        "validations": [],
+        "actions": [],
+        "items": [
+          {
+            "ctype": "title",
+            "title": "Instructions Pending Approval and New Comments.",
+            "uuid": "dellCarWikiPendingApprovalTextUUID",
+            "titleValueClass": "rework-font",
+            "titleClass": "text-secondary rework-font"
+          },
+          {
+            "ctype": "wikiTableWithSearchAndSort",
+            "uuid": "dellCarWikiTableUUID",
+            "tableClass": "replaceTaskTableclass",
+            "tableDivCalss": "wiki-tableDivCalss",
+            "tableHeaderClass": "requisitionList-table-header subtitle1 wiki-custom-header",
+            "tableContainerClass": "requisitionList-table",
+            "tableDataClass": "wiki-tableData",
+            "tableSearchClass": "tableSearchClass",
+            "tableType": "Pending Approval Wiki",
+            "serachVariable": "#dellKDSearchID",
+            "searchBox": true,
+            "hooks": [],
+            "displayedColumns": [
+              "icon",
+              "Date",
+              "Title",
+              "Author",
+              "EXP",
+              "Family",
+              "Platform",
+              "Model Name/PN",
+              "Language",
+              "Work Center",
+              "Commodity",
+              "Assign To"
+            ],
+            "displayValues": {
+              "icon": "icon",
+              "createdDate": "Date",
+              "wikiTitle": "Title",
+              "author": "Author",
+              "experience": "EXP",
+              "family": "Family",
+              "platform": "Platform",
+              "modelPart": "Model Name/PN",
+              "workCenterId": "Work Center",
+              "instructionLanguage": "Language",
+              "instructionType": "instructionType",
+              "assignTo": "Assign To",
+              "status": "status",
+              "clientId": "clientId",
+              "wikiVersion": "wikiVersion",
+              "commodity": "Commodity",
+              "contractId": "contractId",
+              "defect": "defect",
+              "locationId": "locationId",
+              "wikiDocId": "wikiDocId",
+              "wikiData": "wikiData",
+              "wikiDocCRId": "wikiDocCRId",
+              "attachmentDisplayText": "attachmentDisplayText",
+              "attachmentOpen": "attachmentOpen",
+              "attachmentTitle": "attachmentTitle",
+              "attachmentUrl": "attachmentUrl",
+              "imageAlternateText": "imageAlternateText",
+              "imageHeight": "imageHeight",
+              "imageSource": "imageSource",
+              "imageWidth": "imageWidth"
+            },
+            "datasource": "#dellCarWikiSearchAndSortData",
+            "iconList": {
+              "icon": {
+                "iconBeforeText": false,
+                "iconAfterText": false,
+                "showText": true,
+                "enableSort": false
+              },
+              "Date": {
+                "iconBeforeText": false,
+                "iconAfterText": false,
+                "showText": true,
+                "enableSort": true
+              },
+              "Title": {
+                "iconBeforeText": false,
+                "iconAfterText": false,
+                "showText": true,
+                "enableSort": true
+              },
+              "Author": {
+                "iconBeforeText": false,
+                "iconAfterText": false,
+                "showText": true,
+                "enableSort": true
+              },
+              "EXP": {
+                "iconBeforeText": false,
+                "iconAfterText": false,
+                "showText": true,
+                "enableSort": true
+              },
+              "Family": {
+                "iconBeforeText": false,
+                "iconAfterText": false,
+                "showText": true,
+                "enableSort": true
+              },
+              "Platform": {
+                "iconBeforeText": false,
+                "iconAfterText": false,
+                "showText": true,
+                "enableSort": true
+              },
+              "Model Name/PN": {
+                "iconBeforeText": false,
+                "iconAfterText": false,
+                "showText": true,
+                "enableSort": true
+              },
+              "Work Center": {
+                "iconBeforeText": false,
+                "iconAfterText": false,
+                "showText": true,
+                "enableSort": true
+              },
+              "Language": {
+                "iconBeforeText": false,
+                "iconAfterText": false,
+                "showText": true,
+                "enableSort": true
+              },
+              "Commodity": {
+                "iconBeforeText": false,
+                "iconAfterText": false,
+                "showText": true,
+                "enableSort": true
+              },
+              "Assign To": {
+                "iconBeforeText": false,
+                "iconAfterText": false,
+                "showText": true,
+                "enableSort": true
+              }
+            },
+            "actions": [
+              {
+                "type": "addRowData",
+                "keyToSave": "dellWikiSearchedRecord",
+                "eventSource": "rowClick"
+              },
+              {
+                "type": "handleAllAdminWikiActions",
+                "methodType": "handleDellPendingWikiProcessActions",
+                "parent": "Instructions Pending Approval",
+                "eventSource": "rowClick",
+                "rowData": "dellWikiSearchedRecord"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "ctype": "taskPanel",
+        "title": "",
+        "isblueBorder": false,
+        "header": {
+          "title": "My Submitted Wiki Instructions / Comments",
+          "icon": "description",
+          "iconClass": "active-header",
+          "statusIcon": "hourglass_empty",
+          "statusClass": "incomplete-status"
+        },
+        "expanded": false,
+        "hideToggle": "true",
+        "hidden": true,
+        "disabled": false,
+        "taskPanelHeaderClass": "background-white",
+        "uuid": "dellCarSubmittedWikiUUID",
+        "visibility": true,
+        "isEditable": true,
+        "isMandatory": true,
+        "hooks": [
+          {
+            "type": "microservice",
+            "hookType": "afterInit",
+            "config": {
+              "microserviceId": "getAllWikiItems",
+              "isLocal": false,
+              "LocalService": "assets/Responses/wikiMockupResponse.json",
+              "requestMethod": "get",
+              "params": {
+                "status": "PROCESS,PENDING FOR APPROVAL,APPROVED,REJECT",
+                "userName":"#userAccountInfo.PersonalDetails.USERID"
+              }
+            },
+            "responseDependents": {
+              "onSuccess": {
+                "actions": [
+                  {
+                    "type": "context",
+                    "config": {
+                      "requestMethod": "add",
+                      "key": "dellCarWikiSearchAndSortSubmittedData",
+                      "data": "responseData"
+                    }
+                  },
+                  {
+                    "type": "updateComponent",
+                    "config": {
+                      "key": "dellCarSubmittedWikiTableUUID",
+                      "fieldProperties": {
+                        "dataSource": "#dellCarWikiSearchAndSortSubmittedData"
+                      }
+                    }
+                  }
+                ]
+              },
+              "onFailure": {
+                "actions": [
+                  {
+                    "type": "context",
+                    "config": {
+                      "requestMethod": "add",
+                      "key": "dellCarWikiSearchAndSortData",
+                      "data": []
+                    }
+                  },
+                  {
+                    "type": "handleAllAdminWikiActions",
+                    "methodType": "Update_QTY",
+                    "hookType": "afterInit",
+                    "taskPanelUUID": "dellCarWikiPendingApprovalUUID",
+                    "dataArray": "#dellCarWikiSearchAndSortData",
+                    "header": {
+                      "title": "Instructions Pending Approval",
+                      "icon": "description",
+                      "iconClass": "active-header",
+                      "status": "",
+                      "statusIcon": "hourglass_empty",
+                      "statusClass": "incomplete-status"
+                    }
+                  },
+                  {
+                    "type": "updateComponent",
+                    "config": {
+                      "key": "dellCarWikiTableUUID",
+                      "fieldProperties": {
+                        "dataSource": "#dellCarWikiSearchAndSortData"
+                      }
+                    }
+                  },
+                  {
+                    "type": "handleCommonServices",
+                    "config": {
+                      "type": "errorRenderTemplate",
+                      "contextKey": "errorMsg",
+                      "updateKey": "errorTitleUUID"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ],
+        "validations": [],
+        "actions": [],
+        "items": [
+          {
+            "ctype": "title",
+            "title": "My Submitted Wiki Instructions",
+            "uuid": "dellCarWikiPendingApprovalTextUUID",
+            "titleValueClass": "rework-font",
+            "titleClass": "text-secondary rework-font"
+          },
+          {
+            "ctype": "wikiTableWithSearchAndSort",
+            "uuid": "dellCarSubmittedWikiTableUUID",
+            "tableClass": "replaceTaskTableclass",
+            "tableDivCalss": "wiki-tableDivCalss",
+            "tableHeaderClass": "requisitionList-table-header subtitle1 wiki-custom-header",
+            "tableContainerClass": "requisitionList-table",
+            "tableDataClass": "wiki-tableData",
+            "tableSearchClass": "tableSearchClass",
+            "tableType": "Submitted Wiki",
+            "serachVariable": "#dellKDSearchID",
+            "searchBox": true,
+            "hooks": [],
+            "displayedColumns": [
+              "icon",
+              "Date",
+              "Title",
+              "Author",
+              "EXP",
+              "Family",
+              "Platform",
+              "ModelPart",
+              "Language",
+              "Commodity"
+            ],
+            "displayValues": {
+              "icon": "icon",
+              "createdDate": "Date",
+              "wikiTitle": "Title",
+              "author": "Author",
+              "experience": "EXP",
+              "family": "Family",
+              "platform": "Platform",
+              "modelPart": "ModelPart",
+              "workCenterId": "workCenterId",
+              "instructionLanguage": "Language",
+              "assignTo": "Assigned To",
+              "status": "status",
+              "clientId": "clientId",
+              "wikiVersion": "wikiVersion",
+              "commodity": "Commodity",
+              "contractId": "contractId",
+              "defect": "defect",
+              "locationId": "locationId",
+              "wikiDocId": "wikiDocId",
+              "wikiData": "wikiData",
+              "wikiDocCRId": "wikiDocCRId"
+            },
+            "datasource": "#dellCarWikiSearchAndSortSubmittedData",
+            "iconList": {
+              "icon": {
+                "iconBeforeText": false,
+                "iconAfterText": false,
+                "showText": true,
+                "enableSort": false
+              },
+              "Date": {
+                "iconBeforeText": false,
+                "iconAfterText": false,
+                "showText": true,
+                "enableSort": true
+              },
+              "Title": {
+                "iconBeforeText": false,
+                "iconAfterText": false,
+                "showText": true,
+                "enableSort": true
+              },
+              "Author": {
+                "iconBeforeText": false,
+                "iconAfterText": false,
+                "showText": true,
+                "enableSort": true
+              },
+              "EXP": {
+                "iconBeforeText": false,
+                "iconAfterText": false,
+                "showText": true,
+                "enableSort": true
+              },
+              "Family": {
+                "iconBeforeText": false,
+                "iconAfterText": false,
+                "showText": true,
+                "enableSort": true
+              },
+              "Platform": {
+                "iconBeforeText": false,
+                "iconAfterText": false,
+                "showText": true,
+                "enableSort": true
+              },
+              "ModelPart": {
+                "iconBeforeText": false,
+                "iconAfterText": false,
+                "showText": true,
+                "enableSort": true
+              },
+              "Work Center": {
+                "iconBeforeText": false,
+                "iconAfterText": false,
+                "showText": true,
+                "enableSort": true
+              },
+              "Language": {
+                "iconBeforeText": false,
+                "iconAfterText": false,
+                "showText": true,
+                "enableSort": true
+              },
+              "Commodity": {
+                "iconBeforeText": false,
+                "iconAfterText": false,
+                "showText": true,
+                "enableSort": true
+              }
+            },
+            "actions": [
+              {
+                "type": "addRowData",
+                "keyToSave": "dellWikiSubmittedSearchedRecord",
+                "eventSource": "rowClick"
+              },
+              {
+                "type": "handleAllAdminWikiActions",
+                "methodType": "handleDellSubmittedWikiProcessActions",
+                "parent": "My Submitted Wiki Instructions",
+                "eventSource": "rowClick",
+                "rowData": "dellWikiSubmittedSearchedRecord"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "ctype": "taskPanel",
+        "title": "",
+        "isblueBorder": false,
+        "header": {
+          "title": "My Draft Wiki Instructions",
+          "icon": "description",
+          "iconClass": "active-header",
+          "statusIcon": "hourglass_empty",
+          "statusClass": "incomplete-status"
+        },
+        "expanded": false,
+        "hidden": true,
+        "disabled": false,
+        "hideToggle": "true",
+        "taskPanelHeaderClass": "background-white",
+        "uuid": "dellCarDraftWikiUUID",
+        "visibility": true,
+        "isEditable": true,
+        "isMandatory": true,
+        "hooks": [],
+        "validations": [],
+        "actions": [],
+        "items": [
+          {
+            "ctype": "title",
+            "title": "My Draft Wiki Instructions",
+            "uuid": "dellCarWikiPendingApprovalTextUUID",
+            "titleValueClass": "rework-font",
+            "titleClass": "text-secondary rework-font"
+          },
+          {
+            "ctype": "wikiTableWithSearchAndSort",
+            "uuid": "dellCarDraftWikiTableUUID",
+            "tableClass": "replaceTaskTableclass",
+            "tableDivCalss": "wiki-tableDivCalss",
+            "tableHeaderClass": "requisitionList-table-header subtitle1 wiki-custom-header",
+            "tableContainerClass": "requisitionList-table",
+            "tableDataClass": "wiki-tableData",
+            "tableSearchClass": "tableSearchClass",
+            "tableType": "My Draft Wiki Instructions",
+            "serachVariable": "#dellKDSearchID",
+            "searchBox": true,
+            "hourGlassIcon": true,
+            "hooks": [],
+            "displayedColumns": [
+              "icon",
+              "Date",
+              "Title",
+              "Author",
+              "EXP",
+              "Family",
+              "Platform",
+              "ModelName/PN",
+              "Commodity",
+              "Work Center",
+              "Language"
+            ],
+            "displayValues": {
+              "icon": "icon",
+              "wikiDateTime": "Date",
+              "wikiTitle": "Title",
+              "UserName": "Author",
+              "levelOfExpData": "EXP",
+              "wikiFamily": "Family",
+              "wikiPlatform": "Platform",
+              "wikiModelNumber": "ModelName/PN",
+              "wikiCommodity": "Commodity",
+              "wikiWorkCenter": "Work Center",
+              "instrLangData": "Language",
+              "wikiLocation": "locationName",
+              "wikiClient": "clientName",
+              "wikiContract": "contractName"
+            },
+            "datasource": "#DraftData",
+            "iconList": {
+              "icon": {
+                "iconBeforeText": false,
+                "iconAfterText": false,
+                "showText": true,
+                "enableSort": false
+              },
+              "Commodity": {
+                "iconBeforeText": false,
+                "iconAfterText": false,
+                "showText": true,
+                "enableSort": true
+              },
+              "Date": {
+                "iconBeforeText": false,
+                "iconAfterText": false,
+                "showText": true,
+                "enableSort": true
+              },
+              "Title": {
+                "iconBeforeText": false,
+                "iconAfterText": false,
+                "showText": true,
+                "enableSort": true
+              },
+              "Author": {
+                "iconBeforeText": false,
+                "iconAfterText": false,
+                "showText": true,
+                "enableSort": true
+              },
+              "EXP": {
+                "iconBeforeText": false,
+                "iconAfterText": false,
+                "showText": true,
+                "enableSort": true
+              },
+              "Family": {
+                "iconBeforeText": false,
+                "iconAfterText": false,
+                "showText": true,
+                "enableSort": true
+              },
+              "Platform": {
+                "iconBeforeText": false,
+                "iconAfterText": false,
+                "showText": true,
+                "enableSort": true
+              },
+              "ModelName/PN": {
+                "iconBeforeText": false,
+                "iconAfterText": false,
+                "showText": true,
+                "enableSort": true
+              },
+              "Work Center": {
+                "iconBeforeText": false,
+                "iconAfterText": false,
+                "showText": true,
+                "enableSort": true
+              },
+              "Language": {
+                "iconBeforeText": false,
+                "iconAfterText": false,
+                "showText": true,
+                "enableSort": true
+              }
+            },
+            "actions": [
+              {
+                "type": "addRowData",
+                "keyToSave": "dellCarWikiDraftClickedRecord",
+                "eventSource": "rowClick"
+              },
+              {
+                "type": "handleAllAdminWikiActions",
+                "methodType": "renderDraftTemplate",
+                "parent": "My Draft Wiki Instructions",
+                "eventSource": "rowClick",
+                "rowData": "dellCarWikiDraftClickedRecord"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "ctype": "taskPanel",
+        "title": "",
+        "isblueBorder": false,
+        "header": {
+          "title": "Wiki Instructions",
+          "icon": "description",
+          "iconClass": "active-header",
+          "statusIcon": "hourglass_empty",
+          "statusClass": "incomplete-status",
+          "actions": []
+        },
+        "expanded": false,
+        "hidden": true,
+        "disabled": false,
+        "isDisableNotReq": true,
+        "hideToggle": "true",
+        "taskPanelHeaderClass": "background-white",
+        "uuid": "dellCarWikiInstructionUUID",
+        "visibility": true,
+        "isEditable": true,
+        "isMandatory": true,
+        "hooks": [
+          {
+            "type": "microservice",
+            "hookType": "afterInit",
+            "config": {
+              "microserviceId": "getAllWikiItems",
+              "isLocal": false,
+              "LocalService": "assets/Responses/wikiMockupResponse.json",
+              "requestMethod": "get",
+              "params": {
+                "status": "APPROVED"
+              }
+            },
+            "responseDependents": {
+              "onSuccess": {
+                "actions": [
+                  {
+                    "type": "context",
+                    "config": {
+                      "requestMethod": "add",
+                      "key": "getFilteredData",
+                      "data": "responseData"
+                    }
+                  },
+                  {
+                    "type": "updateComponent",
+                    "config": {
+                      "key": "dellCarWikiStatusTableUUID",
+                      "fieldProperties": {
+                        "dataSource": "#getFilteredData"
+                      }
+                    }
+                  }
+                ]
+              },
+              "onFailure": {
+                "actions": [
+                  {
+                    "type": "context",
+                    "config": {
+                      "requestMethod": "add",
+                      "key": "dellCarWikiSearchAndSortData",
+                      "data": []
+                    }
+                  },
+                  {
+                    "type": "updateComponent",
+                    "config": {
+                      "key": "dellCarWikiStatusTableUUID",
+                      "fieldProperties": {
+                        "dataSource": "#getFilteredData"
+                      }
+                    }
+                  },
+                  {
+                    "type": "handleCommonServices",
+                    "config": {
+                      "type": "errorRenderTemplate",
+                      "contextKey": "errorMsg",
+                      "updateKey": "errorTitleUUID"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "type": "handleAllAdminWikiActions",
+            "methodType": "handleDellInstructionWikiProcessActions",
+            "parent": "Wiki Instructions",
+            "hookType": "afterInit",
+            "rowData": "dellWikiSearchedRecord"
+          }
+        ],
+        "validations": [],
+        "actions": [],
+        "items": [
+          {
+            "ctype": "title",
+            "title": "Wiki Instructions table",
+            "uuid": "dellCarWikiPendingApprovalTextUUID",
+            "titleValueClass": "rework-font",
+            "titleClass": "text-secondary rework-font"
+          },
+          {
+            "ctype": "ExpansionPanel",
+            "title": "",
+            "header": {
+              "title": "Filters",
+              "css": "",
+              "titleClass":"font-bold mb-2 cust-arrow-icon",
+              "status": ""
+            },
+            "titleClass":"filter-task",
+            "expanded": "true",
+            "hideToggle": "true",
+            "uuid": "receivingUUID",
+            "css": "width:50%;margin:auto;height:10vh",
+            "visibility": true,
+            "hooks": [],
+            "validations": [],
+            "actions": [],
+            "Items": [
+              {
+                "ctype": "dropdownWithMultiSelect",
+                "uuid": "dellCarWikiWorkCenterUUID",
+                "hooks": [],
+                "submitable": true,
+                "visibility": true,
+                "required": true,
+                "disabled": false,
+                "label": "Work Center",
+                "name": "WORKCENTER_NAME",
+                "formGroupClass": "flex-container-half-width form-group-margin col-4",
+                "dropdownClass": "dropdown-container textfield-container",
+                "labelClass": "subtitle1-align-self unit-condition-label col-2",
+                "chipClasses": "bg-dark text-white rounded ",
+                "optGrpFormFieldClass": "dropdownwithsearchselect mt-2 w-100 ",
+                "chipCancelClasses": "text-white ",
+                "searchIconStyles": "font-size:18px",
+                "parentClass": "d-flex form-group-margin dropdown-textfield-height",
+                "inputClass": "dropdown-unit-width",
+                "code": "WORKCENTER_NAME",
+                "displayValue": "WORKCENTER_NAME",
+                "dataSource": "#workCenterData",
+                "actions": [
+                  {
+                    "type": "context",
+                    "config": {
+                      "requestMethod": "add",
+                      "key": "dellCarWikiWorkCenterMultiSelectDropdownVal",
+                      "data": "elementControlValue"
+                    },
+                    "eventSource": "change"
+                  },
+                  {
+                    "type": "context",
+                    "config": {
+                      "requestMethod": "add",
+                      "key": "dellCarWikiWorkCenterMultiSelectDropdownName",
+                      "data": "elementControlName"
+                    },
+                    "eventSource": "change"
+                  }
+                ]
+              },
+              {
+                "ctype": "divider",
+                "dividerClass": "spacer-borderFQACosmetic"
+              },
+              {
+                "ctype": "dropdownWithMultiSelect",
+                "uuid": "dellCarWikiFamilyUUID",
+                "hooks": [],
+                "submitable": true,
+                "visibility": true,
+                "required": true,
+                "disabled": false,
+                "label": "Family",
+                "name": "platformName",
+                "formGroupClass": "flex-container-half-width form-group-margin col-4",
+                "dropdownClass": "dropdown-container textfield-container",
+                "labelClass": "subtitle1-align-self unit-condition-label col-2",
+                "chipClasses": "bg-dark text-white rounded ",
+                "optGrpFormFieldClass": "dropdownwithsearchselect mt-2 w-100 ",
+                "chipCancelClasses": "text-white ",
+                "searchIconStyles": "font-size:18px",
+                "parentClass": "d-flex form-group-margin dropdown-textfield-height",
+                "inputClass": "dropdown-unit-width",
+                "code": "platformName",
+                "displayValue": "platformName",
+                "dataSource": "#familyContextData",
+                "actions": [
+                  {
+                    "type": "context",
+                    "config": {
+                      "requestMethod": "add",
+                      "key": "dellCarWikiFamilyMultiSelectDropdownVal",
+                      "data": "elementControlValue"
+                    },
+                    "eventSource": "change"
+                  },
+                  {
+                    "type": "context",
+                    "config": {
+                      "requestMethod": "add",
+                      "key": "dellCarWikiFamilyMultiSelectDropdownName",
+                      "data": "elementControlName"
+                    },
+                    "eventSource": "change"
+                  }
+                ]
+              },
+              {
+                "ctype": "dropdownWithMultiSelect",
+                "uuid": "dellCarWikiPlatformUUID",
+                "hooks": [],
+                "submitable": true,
+                "visibility": true,
+                "required": true,
+                "disabled": false,
+                "label": "Platform",
+                "name": "platformName",
+                "formGroupClass": "flex-container-half-width form-group-margin col-4",
+                "dropdownClass": "dropdown-container textfield-container",
+                "labelClass": "subtitle1-align-self unit-condition-label col-2",
+                "chipClasses": "bg-dark text-white rounded ",
+                "optGrpFormFieldClass": "dropdownwithsearchselect mt-2 w-100 ",
+                "chipCancelClasses": "text-white ",
+                "searchIconStyles": "font-size:18px",
+                "parentClass": "d-flex form-group-margin dropdown-textfield-height",
+                "inputClass": "dropdown-unit-width",
+                "code": "platformName",
+                "displayValue": "platformName",
+                "dataSource": "#platformContextData",
+                "actions": [
+                  {
+                    "type": "context",
+                    "config": {
+                      "requestMethod": "add",
+                      "key": "dellCarWikiPlatformMultiSelectDropdownVal",
+                      "data": "elementControlValue"
+                    },
+                    "eventSource": "change"
+                  },
+                  {
+                    "type": "context",
+                    "config": {
+                      "requestMethod": "add",
+                      "key": "dellCarWikiPlatformMultiSelectDropdownName",
+                      "data": "elementControlName"
+                    },
+                    "eventSource": "change"
+                  },
+                  {
+                    "type": "filterPartsBasedOnLocations",
+                    "eventSource": "change"
+                  }
+                ]
+              },
+              {
+                "ctype": "dropdownWithMultiSelect",
+                "uuid": "dellCarWikiCommodityUUID",
+                "hooks": [],
+                "submitable": true,
+                "visibility": true,
+                "required": true,
+                "disabled": false,
+                "label": "Commodity",
+                "name": "platformName",
+                "formGroupClass": "flex-container-half-width form-group-margin col-4",
+                "dropdownClass": "dropdown-container textfield-container",
+                "labelClass": "subtitle1-align-self unit-condition-label col-2",
+                "chipClasses": "bg-dark text-white rounded ",
+                "optGrpFormFieldClass": "dropdownwithsearchselect mt-2 w-100 ",
+                "chipCancelClasses": "text-white ",
+                "searchIconStyles": "font-size:18px",
+                "parentClass": "d-flex form-group-margin dropdown-textfield-height",
+                "inputClass": "dropdown-unit-width",
+                "code": "platformName",
+                "displayValue": "platformName",
+                "dataSource": "#commodityContextData",
+                "actions": [
+                  {
+                    "type": "context",
+                    "config": {
+                      "requestMethod": "add",
+                      "key": "dellCarWikiCommodityMultiSelectDropdownVal",
+                      "data": "elementControlValue"
+                    },
+                    "eventSource": "change"
+                  },
+                  {
+                    "type": "context",
+                    "config": {
+                      "requestMethod": "add",
+                      "key": "dellCarWikiCommodityMultiSelectDropdownName",
+                      "data": "elementControlName"
+                    },
+                    "eventSource": "change"
+                  }
+                ]
+              },
+              {
+                "ctype": "divider",
+                "dividerClass": "spacer-borderFQACosmetic"
+              },
+              {
+                "ctype": "dropdownWithMultiSelect",
+                "uuid": "dellCarWikiDefectLevel1UUID",
+                "hooks": [],
+                "submitable": true,
+                "visibility": true,
+                "required": true,
+                "disabled": false,
+                "label": "Defect Level 1",
+                "name": "name",
+                "formGroupClass": "flex-container-half-width form-group-margin col-4",
+                "dropdownClass": "dropdown-container textfield-container",
+                "labelClass": "subtitle1-align-self unit-condition-label col-2",
+                "chipClasses": "bg-dark text-white rounded ",
+                "optGrpFormFieldClass": "dropdownwithsearchselect mt-2 w-100 ",
+                "chipCancelClasses": "text-white ",
+                "searchIconStyles": "font-size:18px",
+                "parentClass": "d-flex form-group-margin dropdown-textfield-height",
+                "inputClass": "dropdown-unit-width",
+                "code": "name",
+                "displayValue": "name",
+                "dataSource": "#wikiDefectCodeData",
+                "actions": [
+                  {
+                    "type": "context",
+                    "config": {
+                      "requestMethod": "add",
+                      "key": "dellCarWikiDefect1MultiSelectDropdownVal",
+                      "data": "elementControlValue"
+                    },
+                    "eventSource": "change"
+                  },
+                  {
+                    "type": "context",
+                    "config": {
+                      "requestMethod": "add",
+                      "key": "dellCarWikiDefect1MultiSelectDropdownName",
+                      "data": "elementControlName"
+                    },
+                    "eventSource": "change"
+                  }
+                ]
+              },
+              {
+                "ctype": "dropdownWithMultiSelect",
+                "uuid": "dellCarWikiDefectLevel2UUID",
+                "hooks": [],
+                "submitable": true,
+                "visibility": true,
+                "required": true,
+                "disabled": false,
+                "label": "Defect Level 2",
+                "name": "name",
+                "formGroupClass": "flex-container-half-width form-group-margin col-4",
+                "dropdownClass": "dropdown-container textfield-container",
+                "labelClass": "subtitle1-align-self unit-condition-label col-2",
+                "chipClasses": "bg-dark text-white rounded ",
+                "optGrpFormFieldClass": "dropdownwithsearchselect mt-2 w-100 ",
+                "chipCancelClasses": "text-white ",
+                "searchIconStyles": "font-size:18px",
+                "parentClass": "d-flex form-group-margin dropdown-textfield-height",
+                "inputClass": "dropdown-unit-width",
+                "code": "name",
+                "displayValue": "name",
+                "dataSource": "#wikiDefectCodeData2",
+                "actions": [
+                  {
+                    "type": "context",
+                    "config": {
+                      "requestMethod": "add",
+                      "key": "dellCarWikiDefect2MultiSelectDropdownVal",
+                      "data": "elementControlValue"
+                    },
+                    "eventSource": "change"
+                  },
+                  {
+                    "type": "context",
+                    "config": {
+                      "requestMethod": "add",
+                      "key": "dellCarWikiDefect2MultiSelectDropdownName",
+                      "data": "elementControlName"
+                    },
+                    "eventSource": "change"
+                  }
+                ]
+              },
+              {
+                "ctype": "dropdownWithMultiSelect",
+                "uuid": "dellCarWikiDefectLevel3UUID",
+                "hooks": [],
+                "submitable": true,
+                "visibility": true,
+                "required": true,
+                "disabled": false,
+                "label": "Defect Level 3",
+                "name": "description",
+                "formGroupClass": "flex-container-half-width form-group-margin col-4",
+                "dropdownClass": "dropdown-container textfield-container",
+                "labelClass": "subtitle1-align-self unit-condition-label col-2",
+                "chipClasses": "bg-dark text-white rounded ",
+                "optGrpFormFieldClass": "dropdownwithsearchselect mt-2 w-100 ",
+                "chipCancelClasses": "text-white ",
+                "searchIconStyles": "font-size:18px",
+                "parentClass": "d-flex form-group-margin dropdown-textfield-height",
+                "inputClass": "dropdown-unit-width",
+                "code": "description",
+                "displayValue": "description",
+                "dataSource": "#wikiDefectCodeData3",
+                "actions": [
+                  {
+                    "type": "context",
+                    "config": {
+                      "requestMethod": "add",
+                      "key": "dellCarWikiDefect3MultiSelectDropdownVal",
+                      "data": "elementControlValue"
+                    },
+                    "eventSource": "change"
+                  },
+                  {
+                    "type": "context",
+                    "config": {
+                      "requestMethod": "add",
+                      "key": "dellCarWikiDefect3MultiSelectDropdownName",
+                      "data": "elementControlName"
+                    },
+                    "eventSource": "change"
+                  }
+                ]
+              },
+              {
+                "ctype": "divider",
+                "dividerClass": "spacer-borderFQACosmetic"
+              },
+              {
+                "ctype": "dropdownWithMultiSelect",
+                "uuid": "dellCarWikiInstructionLangUUID",
+                "hooks": [],
+                "submitable": true,
+                "visibility": true,
+                "required": true,
+                "disabled": false,
+                "label": "Instruction Language",
+                "name": "value",
+                "formGroupClass": "flex-container-half-width form-group-margin col-4",
+                "dropdownClass": "dropdown-container textfield-container",
+                "labelClass": "subtitle1-align-self unit-condition-label col-2",
+                "chipClasses": "bg-dark text-white rounded ",
+                "optGrpFormFieldClass": "dropdownwithsearchselect mt-2 w-100 ",
+                "chipCancelClasses": "text-white ",
+                "searchIconStyles": "font-size:18px",
+                "parentClass": "d-flex form-group-margin dropdown-textfield-height",
+                "inputClass": "dropdown-unit-width",
+                "code": "value",
+                "displayValue": "value",
+                "dataSource": "#instructionLangData",
+                "actions": [
+                  {
+                    "type": "context",
+                    "config": {
+                      "requestMethod": "add",
+                      "key": "dellCarWikiInstLangMultiSelectDropdownVal",
+                      "data": "elementControlValue"
+                    },
+                    "eventSource": "change"
+                  },
+                  {
+                    "type": "context",
+                    "config": {
+                      "requestMethod": "add",
+                      "key": "dellCarWikiInstLangMultiSelectDropdownName",
+                      "data": "elementControlName"
+                    },
+                    "eventSource": "change"
+                  }
+                ]
+              },
+              {
+                "ctype": "dropdownWithMultiSelect",
+                "uuid": "dellCarWikiStatusUUID",
+                "hooks": [],
+                "submitable": true,
+                "visibility": true,
+                "required": true,
+                "disabled": false,
+                "label": "Status",
+                "name": "value",
+                "formGroupClass": "flex-container-half-width form-group-margin col-4",
+                "dropdownClass": "dropdown-container textfield-container",
+                "labelClass": "subtitle1-align-self unit-condition-label col-2",
+                "chipClasses": "bg-dark text-white rounded ",
+                "optGrpFormFieldClass": "dropdownwithsearchselect mt-2 w-100 ",
+                "chipCancelClasses": "text-white ",
+                "searchIconStyles": "font-size:18px",
+                "parentClass": "d-flex form-group-margin dropdown-textfield-height",
+                "inputClass": "dropdown-unit-width",
+                "code": "value",
+                "displayValue": "value",
+                "dataSource": "#statusTableData",
+                "actions": [
+                  {
+                    "type": "updateComponent",
+                    "config": {
+                      "key": "dellCarWikiInstructionCompleteUUID",
+                      "properties": {
+                        "disabled": false
+                      }
+                    },
+                    "eventSource": "change"
+                  },
+                  {
+                    "type": "context",
+                    "config": {
+                      "requestMethod": "add",
+                      "key": "dellCarWikiStatusMultiSelectDropdownVal",
+                      "data": "elementControlValue"
+                    },
+                    "eventSource": "change"
+                  },
+                  {
+                    "type": "context",
+                    "config": {
+                      "requestMethod": "add",
+                      "key": "dellCarWikiStatusMultiSelectDropdownName",
+                      "data": "elementControlName"
+                    },
+                    "eventSource": "change"
+                  }
+                ]
+              }
+            ],
+            "footer": [
+              {
+                "ctype": "button",
+                "color": "primary",
+                "text": "Apply",
+                "class": "primary-btn",
+                "uuid": "dellCarWikiInstructionCompleteUUID",
+                "visibility": true,
+                "disabled": false,
+                "type": "submit",
+                "hooks": [],
+                "validations": [],
+                "actions": [
+                  {
+                    "type": "handleAllAdminWikiActions",
+                    "methodType": "handleDellInstructionWikiGetStatusActions",
+                    "parent": "Wiki Instructions",
+                    "eventSource": "click",
+                    "rowData": "dellCarWikiStatusMultiSelectDropdownVal"
+                  },
+                  {
+                    "type": "updateComponent",
+                    "config": {
+                      "key": "dellCarWikiStatusTableUUID",
+                      "fieldProperties": {
+                        "dataSource": "#getFilteredData"
+                      }
+                    },
+                    "eventSource": "click"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "ctype": "divider",
+            "dividerClass": "spacer-borderFQACosmetic"
+          },
+          {
+            "ctype": "wikiTableWithSearchAndSort",
+            "uuid": "dellCarWikiStatusTableUUID",
+            "tableClass": "replaceTaskTableclass",
+            "tableDivCalss": "wiki-tableDivCalss",
+            "tableHeaderClass": "requisitionList-table-header subtitle1 wiki-custom-header",
+            "tableContainerClass": "requisitionList-table",
+            "tableDataClass": "wiki-tableData",
+            "tableSearchClass": "tableSearchClass",
+            "tableType": "Wiki Instruction",
+            "serachVariable": "#dellKDSearchID",
+            "paging": true,
+            "searchBox": true,
+            "hooks": [],
+            "displayedColumns": [
+              "icon",
+              "Date",
+              "Title",
+              "Author",
+              "EXP",
+              "Family",
+              "Platform",
+              "ModelPart",
+              "Language"
+            ],
+            "displayValues": {
+              "icon": "icon",
+              "createdDate": "Date",
+              "wikiTitle": "Title",
+              "author": "Author",
+              "experience": "EXP",
+              "family": "Family",
+              "platform": "Platform",
+              "modelPart": "ModelPart",
+              "workCenterId": "workCenterId",
+              "instructionLanguage": "Language",
+              "assignTo": "Assigned To",
+              "status": "status",
+              "clientId": "clientId",
+              "wikiVersion": "wikiVersion",
+              "commodity": "commodity",
+              "contractId": "contractId",
+              "defect": "defect",
+              "locationId": "locationId",
+              "wikiDocId": "wikiDocId",
+              "wikiData": "wikiData",
+              "wikiDocCRId": "wikiDocCRId",
+              "attachmentDisplayText": "attachmentDisplayText",
+              "attachmentOpen": "attachmentOpen",
+              "attachmentTitle": "attachmentTitle",
+              "attachmentUrl": "attachmentUrl",
+              "imageAlternateText": "imageAlternateText",
+              "imageHeight": "imageHeight",
+              "imageSource": "imageSource",
+              "imageWidth": "imageWidth"
+            },
+            "datasource": "#getFilteredData",
+            "iconList": {
+              "icon": {
+                "iconBeforeText": false,
+                "iconAfterText": false,
+                "showText": true,
+                "enableSort": false
+              },
+              "Date": {
+                "iconBeforeText": false,
+                "iconAfterText": false,
+                "showText": true,
+                "enableSort": true
+              },
+              "Title": {
+                "iconBeforeText": false,
+                "iconAfterText": false,
+                "showText": true,
+                "enableSort": true
+              },
+              "Author": {
+                "iconBeforeText": false,
+                "iconAfterText": false,
+                "showText": true,
+                "enableSort": true
+              },
+              "EXP": {
+                "iconBeforeText": false,
+                "iconAfterText": false,
+                "showText": true,
+                "enableSort": true
+              },
+              "Family": {
+                "iconBeforeText": false,
+                "iconAfterText": false,
+                "showText": true,
+                "enableSort": true
+              },
+              "Platform": {
+                "iconBeforeText": false,
+                "iconAfterText": false,
+                "showText": true,
+                "enableSort": true
+              },
+              "ModelPart": {
+                "iconBeforeText": false,
+                "iconAfterText": false,
+                "showText": true,
+                "enableSort": true
+              },
+              "Work Center": {
+                "iconBeforeText": false,
+                "iconAfterText": false,
+                "showText": true,
+                "enableSort": true
+              },
+              "Language": {
+                "iconBeforeText": false,
+                "iconAfterText": false,
+                "showText": true,
+                "enableSort": true
+              }
+            },
+            "actions": [
+              {
+                "type": "addRowData",
+                "keyToSave": "dellWikiSearchedRecord",
+                "eventSource": "rowClick"
+              },
+              {
+                "type": "handleAllAdminWikiActions",
+                "methodType": "handleDellWikiInstructionFilter",
+                "parent": "Instructions Pending Approval",
+                "eventSource": "rowClick",
+                "rowData": "dellWikiSearchedRecord"
+              }
+            ]
+          },
+          {
+            "ctype": "title",
+            "title": "Apply Filters to Load instructions",
+            "uuid": "dellCarWikiPendingLoadApprovalTextUUID",
+            "titleValueClass": "rework-font",
+            "titleClass": "mt-3 text-secondary rework-font"
+          }
+        ],
+        "footer": []
+      }
+    ],
+    "footer": [
+      {
+        "ctype": "toolbar",
+        "toolbarClass": "pagecontent-footer",
+        "items": [
+          {
+            "ctype": "iconbutton",
+            "iconButtonClass": "footer-save body",
+            "text": "Exit ",
+            "uuid": "dellReceivingSaveUUID",
+            "visibility": true,
+            "disabled": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "icon": "close",
+            "actions": [
+              {
+                "type": "renderTemplate",
+                "config": {
+                  "templateId": "dashboard.json",
+                  "mode": "local"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "delete",
+                  "key": "WIKI"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "delete",
+                  "key": "dashboardWC"
+                },
+                "eventSource": "click"
+              }
+            ],
+            "iconClass": "active-header"
+          }
+        ]
+      }
+    ]
+  },
+  "status": true,
+  "message": null
+}

@@ -1,0 +1,1741 @@
+{
+  "ResultData": {
+    "ctype": "page",
+    "uuid": "pageUUID",
+    "css": "",
+    "visibility": true,
+    "hooks": [
+      {
+        "type": "microservice",
+        "hookType": "afterInit",
+        "config": {
+          "microserviceId": "getCurrPrevRODetailsBySN",
+          "requestMethod": "get",
+          "params": {
+            "serialNo": "#repairUnitInfo.SERIAL_NO",
+            "locationId": "#userSelectedLocation",
+            "clientId": "#userSelectedClient",
+            "contractId": "#userSelectedContract",
+            "userName": "#loginUUID.username"
+          }
+        },
+        "responseDependents": {
+          "onSuccess": {
+            "actions": [
+              {
+                "type": "condition",
+                "config": {
+                  "operation": "isValid",
+                  "lhs": "#getCurrPrevRODetailsBySN.lastNote"
+                },
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellPALastNoteTaskUUID",
+                          "properties": {
+                            "expanded": true,
+                            "hidden": false
+                          }
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellPALastNoteTextUUID",
+                          "properties": {
+                            "title": "#getCurrPrevRODetailsBySN.lastNote"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellPALastNoteTaskUUID",
+                          "properties": {
+                            "hidden": true
+                          }
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellPARepairInformationTaskUUID",
+                          "properties": {
+                            "expanded": true
+                          }
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellPALastNoteTextUUID",
+                          "properties": {
+                            "title": ""
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "dellPARepairInformationTextUUID",
+                  "properties": {
+                    "title": "#getCurrPrevRODetailsBySN.repairInformation"
+                  }
+                }
+              },
+              {
+                "type": "condition",
+                "config": {
+                  "operation": "isValid",
+                  "lhs": "#specialMessageData.moreInfo"
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellPARepairInformationSMUUID",
+                          "properties": {
+                            "title": "#specialMessageData.moreInfo",
+                            "isShown": true
+                          }
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellPARepairInformationSMSspacerUUID",
+                          "properties": {
+                            "isShown": true
+                          }
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellPARepairInformationSMHeading",
+                          "properties": {
+                            "isShown": true
+                          }
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellPAoutBoundOrderTaskUUID",
+                          "properties": {
+                            "disabled": true,
+                            "expanded": false
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                            "key": "dellPARepairInformationTaskUUID",
+                            "properties": {
+                                "expanded": false,
+                                "disabled": true,
+                                "taskPanelHeaderClass":"background-white",
+                                "header": {
+                                    "title": "Repair Information",
+                                    "svgIcon": "description_icon",
+                                    "statusIcon": "check_circle",
+                                    "statusClass": "complete-status",
+                                    "class": "complete-task ",
+                                    "iconClass": "complete-task"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "type": "updateComponent",
+                        "config": {
+                            "key": "dellPAReadMessageCheckboxUUID",
+                            "properties": {
+                                "checkVisibility": false
+                            }
+                        }
+                    },
+                    {
+                        "type": "updateComponent",
+                        "config": {
+                            "key": "dellPAMessageButtonSubmittedUUID",
+                            "properties": {
+                                "hidden": true
+                            }
+                        }
+                    },
+                    {
+                      "type": "enableComponent",
+                      "config": {
+                        "key": "dellPAResultCodesUUID",
+                        "property": "dellPAResultCodes"
+                      },
+                      "eventSource": "click"
+                    },
+                    {
+                      "type": "updateComponent",
+                      "config": {
+                        "key": "dellPAoutBoundOrderTaskUUID",
+                        "properties": {
+                          "disabled": false,
+                          "expanded": true
+                        }
+                      }
+                    }
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "onFailure": {
+            "actions": [
+              {
+                "type": "handleCommonServices",
+                "config": {
+                  "type": "errorRenderTemplate",
+                  "contextKey": "dellPAErrorMsg",
+                  "updateKey": "dellPAErrorTitleUUID"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "type": "arraySetMethod",
+        "config": {
+          "data": "#holdCodesForDiscrepancy",
+          "contextKey": "filteredHoldTypes"
+        },
+        "hookType": "afterInit"
+      },
+      {
+        "type": "condition",
+        "hookType": "afterInit",
+        "config": {
+          "operation": "isEqualTo",
+          "lhs": "#userSelectedLocation",
+          "rhs": "1244"
+        },
+        "responseDependents": {
+          "onSuccess": {
+            "actions": [
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "dellPAoutBoundOrderTaskUUID",
+                  "properties": {
+                    "hidden": false
+                  }
+                }
+              }
+            ]
+          },
+          "onFailure": {
+            "actions": [
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "dellPAoutBoundOrderTaskUUID",
+                  "properties": {
+                    "hidden": true
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "validations": [],
+    "action": [],
+    "header": [
+      {
+        "ctype": "breadcrumb",
+        "breadcrumbs": [
+          {
+            "label": "#userSelectedLocationName"
+          },
+          {
+            "label": "#userSelectedClientName"
+          },
+          {
+            "label": "#userSelectedContractName"
+          }
+        ]
+      },
+      {
+        "ctype": "toolbar",
+        "toolbarClass": "pagecontent-header",
+        "items": [
+          {
+            "ctype": "title",
+            "uuid": "subProcessTitleUUID",
+            "titleValue": "PA",
+            "titleClass": "section-title"
+          },
+          {
+            "ctype": "iconbutton",
+            "iconButtonClass": "headeropen-button",
+            "text": "",
+            "uuid": "pageopenUUID",
+            "visibility": true,
+            "disabled": false,
+            "hidden": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "icon": "menu_open",
+            "disableRipple": true,
+            "iconClass": "header-icon",
+            "actions": [
+              {
+                "type": "toggle",
+                "eventSource": "click",
+                "name": "subProcessRightNavref"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "openUUID",
+                  "properties": {
+                    "hidden": false
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "pageopenUUID",
+                  "properties": {
+                    "hidden": true
+                  }
+                },
+                "eventSource": "click"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "items": [
+      {
+        "ctype": "title",
+        "uuid": "successTitleUUID",
+        "titleClass": "success-title",
+        "isShown": false
+      },
+      {
+        "ctype": "title",
+        "uuid": "dellPAErrorTitleUUID",
+        "containerId": "prebodysectionone",
+        "titleClass": "error-title",
+        "isShown": false
+      },
+      {
+        "ctype": "taskPanel",
+        "isblueBorder": true,
+        "taskPanelHeaderClass": "background-white",
+        "uuid": "dellPALastNoteTaskUUID",
+        "title": "",
+        "header": {
+          "title": "Last note",
+          "svgIcon": "description_icon",
+          "iconClass": "active-header",
+          "class": "greyish-black"
+        },
+        "expanded": true,
+        "disabled": false,
+        "hideToggle": true,
+        "isMandatory": false,
+        "panelClass": "margin-top-10",
+        "hidden": true,
+        "hooks": [],
+        "validations": [],
+        "actions": [],
+        "items": [
+          {
+            "ctype": "title",
+            "uuid": "dellPALastNoteTextUUID",
+            "titleClass": "greyish-black body-italic assessment-alert",
+            "title": ""
+          }
+        ],
+        "footer": []
+      },
+      {
+        "ctype": "taskPanel",
+        "isblueBorder": true,
+        "uuid": "dellPARepairInformationTaskUUID",
+        "title": "",
+        "header": {
+          "title": "Repair Information",
+          "svgIcon": "description_icon",
+          "iconClass": "active-header",
+          "class": "greyish-black",
+          "statusIcon": "hourglass_empty",
+          "statusClass": "incomplete-status"
+        },
+        "expanded": false,
+        "disabled": false,
+        "hideToggle": true,
+        "isEditable": true,
+        "isMandatory": true,
+        "panelClass": "margin-top-10",
+        "hidden": false,
+        "hooks": [],
+        "validations": [],
+        "actions": [],
+        "items": [
+          {
+            "ctype": "title",
+            "uuid": "dellPARepairInformationTextUUID",
+            "titleClass": "greyish-black body-italic assessment-alert",
+            "title": ""
+          },
+          {
+            "ctype": "title",
+            "uuid": "dellPARepairInformationSMSspacerUUID",
+            "titleClass": "greyish-black body-italic assessment-alert",
+            "isShown": false,
+            "title": ""
+          },
+          {
+            "ctype": "title",
+            "uuid": "dellPARepairInformationSMHeading",
+            "titleClass": "greyish-black heading2",
+            "isShown": false,
+            "title": "Special Message"
+          },
+          {
+            "ctype": "title",
+            "uuid": "dellPARepairInformationSMUUID",
+            "titleClass": "greyish-black body-italic",
+            "isShown": false,
+            "title": ""
+          },
+          {
+            "ctype": "checkbox",
+            "name": "dellPAReadMessageCheckbox",
+            "uuid": "dellPAReadMessageCheckboxUUID",
+            "hooks": [],
+            "required": true,
+            "disabled": false,
+            "isDisableNotReq": true,
+            "submitable": true,
+            "label": "I have read this message",
+            "labelPosition": "after",
+            "checkboxContainer": "label-init",
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "dellPARepairInformation",
+                  "data": "elementControlValue"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "condition",
+                "config": {
+                  "operation": "isEqualTo",
+                  "lhs": "#dellPARepairInformation",
+                  "rhs": true
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellPAMessageButtonSubmittedUUID",
+                          "properties": {
+                            "disabled": false
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellPAMessageButtonSubmittedUUID",
+                          "properties": {
+                            "disabled": true
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "footer": [
+          {
+            "ctype": "button",
+            "color": "primary",
+            "text": "Complete",
+            "class": "primary-btn",
+            "uuid": "dellPAMessageButtonSubmittedUUID",
+            "visibility": true,
+            "disabled": true,
+            "name":"dellPARepairInformationCompleteName",
+            "isDisableNotReq": true,
+            "type": "submit",
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "repairInfoDataPA",
+                  "data": "rawFormData"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "dellPAoutBoundOrderTaskUUID",
+                  "properties": {
+                    "disabled": false,
+                    "expanded": true
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "condition",
+                "config": {
+                  "operation": "isEqualTo",
+                  "lhs": "#repairInfoDataPA.dellPAReadMessageCheckbox",
+                  "rhs": true
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "submitablemsgRead",
+                          "data": "Yes"
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "submitablemsgRead",
+                          "data": "No"
+                        }
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "type": "enableComponent",
+                "config": {
+                  "key": "dellPAResultCodesUUID",
+                  "property": "dellPAResultCodes"
+                },
+                "eventSource": "click"
+              },
+              {
+                "eventSource": "click",
+                "type": "updateComponent",
+                "config": {
+                  "key": "dellPARepairInformationTaskUUID",
+                  "taskPanelHeaderClass":"background-white",
+                  "properties": {
+                    "expanded": false,
+                    "header": {
+                      "title": "Repair Information",
+                      "svgIcon": "description_icon",
+                      "statusIcon": "check_circle",
+                      "statusClass": "complete-status",
+                      "class": "complete-task ",
+                      "iconClass": "complete-task"
+                    },
+                    "disabled": false
+                  }
+                }
+              },
+              {
+                "type": "microservice",
+                "config": {
+                  "microserviceId": "stopProcessClientReceiving",
+                  "requestMethod": "post",
+                  "eventSource": "click",
+                  "body": {
+                    "actionType": "PwcPerformTimeOut",
+                    "subActionTypeName": "addBcnLabel",
+                    "geoId": "#discrepancyUnitInfo.LOCATION_ID",
+                    "partNumber": "#discrepancyUnitInfo.PART_NO",
+                    "userLoginId": "#userAccountInfo.PersonalDetails.USERID",
+                    "locationId": "#discrepancyUnitInfo.LOCATION_ID",
+                    "clientId": "#userSelectedClient",
+                    "contractId": "#userSelectedContract",
+                    "orderProcessType": "#repairUnitInfo.ROUTE",
+                    "clientName": "#repairUnitInfo.CLIENTNAME",
+                    "serialNo": "#repairUnitInfo.SERIAL_NO",
+                    "contractName": "#repairUnitInfo.CONTRACTNAME",
+                    "revisionLevel": "",
+                    "selectedResultCode": "[ALL]",
+                    "workCenter": "#discrepancyUnitInfo.WORKCENTER",
+                    "timeOutTab": "",
+                    "geographyNumber": "#userSelectedLocationName",
+                    "loaderName": "#locationDependentFFIDDetails.loaderName",
+                    "pwcXml": {
+                      "timeOutTab": {
+                        "selectedResultCode": "[ALL]"
+                      },
+                      "flexFieldDefinitionList": [
+                        {
+                          "ffName": "msgRead",
+                          "ffId": "#locationDependentFFIDDetails.msgRead",
+                          "ffValue": "#submitablemsgRead"
+                        }
+                      ],
+                      "ffvalueList": [
+                        {
+                          "ffId": "#locationDependentFFIDDetails.msgRead",
+                          "ffValue": "#submitablemsgRead"
+                        }
+                      ]
+                    },
+                    "referenceOrderNumber": "#refId",
+                    "outboundOrderId": "",
+                    "bcn": "#discrepancyUnitInfo.ITEM_BCN",
+                    "workOrderId": "#repairUnitInfo.WORKORDER_ID",
+                    "itemId": "#repairUnitInfo.ITEM_ID",
+                    "flexFieldList": [
+                      {
+                        "ffId": "#locationDependentFFIDDetails.msgRead",
+                        "ffName": "msgRead",
+                        "ffValue": "#submitablemsgRead"
+                      }
+                    ],
+                    "wcOperation": "WC Operation"
+                  },
+                  "toBeStringified": true
+                },
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellPAMessageButtonSubmittedUUID",
+                          "properties": {
+                            "disabled": true
+                          }
+                        },
+                        "eventSource": "click"
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "handleCommonServices",
+                        "config": {
+                          "type": "errorRenderTemplate",
+                          "contextKey": "dellPAErrorMsg",
+                          "updateKey": "dellPAErrorTitleUUID"
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellPAResultCodesUUID",
+                          "properties": {
+                            "disabled": true
+                          }
+                        },
+                        "eventSource": "click"
+                      },
+                      {
+                        "eventSource": "click",
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellPARepairInformationTaskUUID",
+                          "taskPanelHeaderClass":"background-white",
+                          "properties": {
+                            "expanded": true,
+                            "header": {
+          "title": "Repair Information",
+          "svgIcon": "description_icon",
+          "iconClass": "active-header",
+          "class": "greyish-black",
+          "statusIcon": "hourglass_empty",
+          "statusClass": "incomplete-status"
+        },
+                            "disabled": false
+                          }
+                        }
+                      }
+                    ]
+                  }
+                },
+                "eventSource": "click"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "ctype": "taskPanel",
+        "isblueBorder": false,
+        "uuid": "dellPAoutBoundOrderTaskUUID",
+        "title": "",
+        "header": {
+          "title": "Outbound Orders",
+          "svgIcon": "description_icon",
+          "iconClass": "active-header",
+          "class": "greyish-black"
+        },
+        "disabled": false,
+        "expanded": false,
+        "hideToggle": true,
+        "isEditable": false,
+        "isMandatory": true,
+        "panelClass": "margin-top-10",
+        "hidden": false,
+        "hooks": [
+          {
+            "type": "microservice",
+            "hookType": "afterInit",
+            "config": {
+              "microserviceId": "getOOStatus",
+              "requestMethod": "get",
+              "params": {
+                "serialNo": "#discrepancyUnitInfo.SERIAL_NO",
+                "userName": "#loginUUID.username"
+              }
+            },
+            "responseDependents": {
+              "onSuccess": {
+                "actions": [
+                  {
+                    "type": "context",
+                    "config": {
+                      "requestMethod": "add",
+                      "key": "OOStatus",
+                      "data": "responseData"
+                    }
+                  },
+                  {
+                    "type": "updateComponent",
+                    "config": {
+                      "key": "dellKDSearchAndSortTableUUID",
+                      "fieldProperties": {
+                        "dataSource": "#OOStatus"
+                      }
+                    }
+                  }
+                ]
+              },
+              "onFailure": {
+                "actions": [
+                  {
+                    "type": "handleCommonServices",
+                    "config": {
+                      "type": "errorRenderTemplate",
+                      "contextKey": "dellPAErrorMsg",
+                      "updateKey": "dellPAErrorTitleUUID"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ],
+        "validations": [],
+        "actions": [],
+        "items": [
+          {
+            "ctype": "tableWithSearchAndSort",
+            "uuid": "dellKDSearchAndSortTableUUID",
+            "tableClass": "replaceTaskTableclass",
+            "tableDivCalss": "tableDivCalss",
+            "tableHeaderClass": "requisitionList-table-header subtitle1",
+            "tableContainerClass": "requisitionList-table",
+            "serachVariable": "#dellKDSearchID",
+            "hooks": [],
+            "displayedColumns": [
+              "Outbound OrderId",
+              "Outbound Order Status",
+              "Created Timestamp"
+            ],
+            "displayValues": {
+              "outBoundOrderId": "Outbound OrderId",
+              "ooStatus": "Outbound Order Status",
+              "createdTimeStamp": "Created Timestamp"
+            },
+            "datasource": "#OOStatus"           
+          }
+        ],
+        "footer": []
+      }
+    ],
+    "footer": [
+      {
+        "ctype": "toolbar",
+        "toolbarClass": "pagecontent-footer",
+        "items": [
+          {
+            "ctype": "iconbutton",
+            "iconButtonClass": "footer-save body",
+            "text": "Exit",
+            "uuid": "dellPAExitButton",
+            "visibility": true,
+            "disabled": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "icon": "close",
+            "actions": [
+              {
+                "type": "renderTemplate",
+                "config": {
+                  "templateId": "dashboard.json",
+                  "mode": "local"
+                },
+                "eventSource": "click"
+              }
+            ]
+          },
+          {
+            "ctype": "iconText",
+            "uuid": "dellPAAddNoteUUID",
+            "icon": "add_comment",
+            "disabled": false,
+            "text": "Add Note",
+            "textCss": "",
+            "iconPosition": "Before",
+            "iconTextClass": "footer-addNote body",
+            "actions": [
+              {
+                "type": "dialog",
+                "uuid": "dellPAAddNoteDialogUUID",
+                "config": {
+                  "title": "Add Note",
+                  "items": [
+                    {
+                      "ctype": "textarea",
+                      "name": "addNote",
+                      "textareaClass": "note-class",
+                      "uuid": "dellPAAddNoteUUID",
+                      "required": true,
+                      "disabled": false,
+                      "value": "#dellPANotes.addNote",
+                      "actions": []
+                    }
+                  ],
+                  "footer": [
+                    {
+                      "ctype": "button",
+                      "color": "primary",
+                      "text": "Cancel",
+                      "uuid": "dellPACancelAddNoteUUID",
+                      "closeType": "close",
+                      "disableClose": true,
+                      "visibility": true,
+                      "disabled": false,
+                      "dialogButton": true,
+                      "type": "",
+                      "hooks": [],
+                      "validations": [],
+                      "actions": []
+                    },
+                    {
+                      "ctype": "button",
+                      "color": "primary",
+                      "text": "Done",
+                      "uuid": "dellPADoneAddNoteUUID",
+                      "dialogButton": true,
+                      "visibility": true,
+                      "disabled": true,
+                      "type": "submit",
+                      "closeType": "success",
+                      "hooks": [],
+                      "validations": [],
+                      "actions": []
+                    }
+                  ]
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "key": "dellPANotes",
+                          "data": "formData",
+                          "requestMethod": "add",
+                          "value": "addNote"
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": []
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "ctype": "spacer",
+            "uuid": "dellPASpaceUUID",
+            "class": "empty-space"
+          },
+          {
+            "ctype": "iconbutton",
+            "uuid": "dellPAPauseUUID",
+            "visibility": true,
+            "disabled": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "icon": "pause",
+            "iconClass": "footer-btnas",
+            "disableRipple": true,
+            "actions": [
+              {
+                "type": "dialogwithmessage",
+                "uuid": "dellPAPauseDialogUUID",
+                "config": {
+                  "title": "Hold",
+                  "disableClose": true,
+                  "items": [
+                    {
+                      "ctype": "title",
+                      "uuid": "holdBinErrorUUID",
+                      "titleClass": "error-title-holdbin",
+                      "isShown": false
+                    },
+                    {
+                      "ctype": "nativeDropdown",
+                      "formGroupClass": "discrepancy-holddrpdwn",
+                      "uuid": "dellPAHoldTypeUUID",
+                      "label": "Hold Type",
+                      "name": "dellPAHoldType",
+                      "dataSource": "#filteredHoldTypes",
+                      "code": "storageHoldCode",
+                      "displayValue": "storageHoldCode",
+                      "actions": [
+                        {
+                          "type": "context",
+                          "config": {
+                            "requestMethod": "add",
+                            "key": "storageHoldCode",
+                            "data": "elementControlValue"
+                          },
+                          "eventSource": "change"
+                        },
+                        {
+                          "type": "condition",
+                          "eventSource": "change",
+                          "config": {
+                            "operation": "isEqualTo",
+                            "lhs": "#storageHoldCode",
+                            "rhs": "AWAITING PART"
+                          },
+                          "responseDependents": {
+                            "onSuccess": {
+                              "actions": [
+                                {
+                                  "type": "updateComponent",
+                                  "config": {
+                                    "key": "dellPAHoldPartUUID",
+                                    "properties": {
+                                      "hidden": false,
+                                      "required": true
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "updateComponent",
+                                  "config": {
+                                    "key": "dellPAHoldCodeUUID",
+                                    "properties": {
+                                      "hidden": true,
+                                      "required": false
+                                    }
+                                  }
+                                }                               
+                              ]
+                            },
+                            "onFailure": {
+                              "actions": [
+                                {
+                                  "type": "updateComponent",
+                                  "config": {
+                                    "key": "dellPAHoldPartUUID",
+                                    "properties": {
+                                      "hidden": true,
+                                      "required": false
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "updateComponent",
+                                  "config": {
+                                    "key": "dellPAHoldCodeUUID",
+                                    "properties": {
+                                      "hidden": false,
+                                      "required": true
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        },
+                        {
+                          "type": "conditionalFilterData",
+                          "config": {
+                            "data": "#holdCodesForDiscrepancy",
+                            "targetContextKey": "holdSubCodeData",
+                            "keyName": "#storageHoldCode",
+                            "filterRefValue": "storageHoldCode",
+                            "targetUUID": "dellPAHoldCodeUUID",
+                            "name": "holdCodes"
+                          },
+                          "eventSource": "change"
+                        }
+                      ]
+                    },
+                    {
+                      "ctype": "nativeDropdown",
+                      "formGroupClass": "discrepancy-holddrpdwn",
+                      "uuid": "dellPAHoldCodeUUID",
+                      "label": "Hold Code",
+                      "name": "holdCodes",
+                      "dataSource": "#holdSubCodeData",
+                      "code": "storageHoldSubCode",
+                      "displayValue": "storageHoldSubCode",
+                      "actions": [
+                        {
+                          "type": "context",
+                          "config": {
+                            "requestMethod": "add",
+                            "key": "storageHoldCode",
+                            "data": "elementControlValue"
+                          },
+                          "eventSource": "change"
+                        }
+                      ]
+                    },
+                    {
+                      "ctype": "textField",
+                      "uuid": "dellPAHoldPartUUID",
+                      "submitable": false,
+                      "disabled": false,
+                      "validations": [],
+                      "hidden": true,
+                      "inLine": true,
+                      "formGroupClass": "flex-container",
+                      "textfieldClass": "hold-textfield-container",
+                      "labelClass": "hold-tf-label",
+                      "hooks": [],
+                      "name": "holdCode",
+                      "label": "Part Number(s)",
+                      "labelPosition": "left",
+                      "tooltip": "",
+                      "TooltipPosition": "",
+                      "defaultValue": "",
+                      "readonly": false,
+                      "type": "text",
+                      "required": false,
+                      "placeholder": "Enter Value",
+                      "value": "",
+                      "prefix": false,
+                      "prefixIcon": "",
+                      "suffix": false,
+                      "suffixIcon": "",
+                      "actions": []
+                    },
+                    {
+                      "ctype": "textField",
+                      "uuid": "dellPABinUUID",
+                      "submitable": false,
+                      "disabled": false,
+                      "validations": [],
+                      "hidden": false,
+                      "inLine": true,
+                      "formGroupClass": "flex-container required-note",
+                      "textfieldClass": "hold-textfield-container",
+                      "textareaContainer": "timeout-class required-note",
+                      "labelClass": "hold-tf-label",
+                      "hooks": [],
+                      "name": "storageBin",
+                      "label": "Hold Bin",
+                      "labelPosition": "left",
+                      "tooltip": "",
+                      "TooltipPosition": "",
+                      "defaultValue": "",
+                      "readonly": false,
+                      "type": "text",
+                      "required": true,
+                      "placeholder": "Enter Value",
+                      "value": "",
+                      "prefix": false,
+                      "prefixIcon": "",
+                      "suffix": false,
+                      "suffixIcon": "",
+                      "actions": []
+                    },
+                    {
+                      "ctype": "textarea",
+                      "label": "Add note",
+                      "name": "dellPAHoldAddNote",
+                      "value": "",
+                      "textareaContainer": "timeout-class required-note",
+                      "uuid": "dellPAHoldNoteUUID",
+                      "required": true,
+                      "submitable": true,
+                      "actions": []
+                    }
+                  ],
+                  "footer": [
+                    {
+                      "ctype": "button",
+                      "color": "primary",
+                      "text": "Cancel",
+                      "uuid": "dellPACancelHoldUUID",
+                      "closeType": "close",
+                      "disableClose": true,
+                      "visibility": true,
+                      "dialogButton": true,
+                      "type": "",
+                      "hooks": [],
+                      "validations": [],
+                      "actions": []
+                    },
+                    {
+                      "ctype": "button",
+                      "color": "primary",
+                      "text": "Done",
+                      "uuid": "dellPADoneUUID",
+                      "dialogButton": true,
+                      "dialogBoxHoldBinErrorMessage": true,
+                      "visibility": true,
+                      "disabled": true,
+                      "type": "submit",
+                      "closeType": "success",
+                      "hooks": [],
+                      "validations": [],
+                      "actions": [
+                        {
+                          "type": "context",
+                          "config": {
+                            "key": "dellPATimeOutNotes",
+                            "data": "formData",
+                            "requestMethod": "add",
+                            "value": "dellPAHoldAddNote"
+                          },
+                          "eventSource": "click"
+                        },
+                        {
+                          "eventSource": "click",
+                          "responseDependents": {
+                            "onSuccess": {
+                              "actions": [
+                                {
+                                  "type": "context",
+                                  "config": {
+                                    "key": "holdDialogData",
+                                    "data": "formData",
+                                    "requestMethod": "add"
+                                  },
+                                  "eventSource": "click"
+                                },
+                                {
+                                  "type": "condition",
+                                  "config": {
+                                    "operation": "isValid",
+                                    "lhs": "#holdDialogData.holdCodes"
+                                  },
+                                  "eventSource": "click",
+                                  "responseDependents": {
+                                    "onSuccess": {
+                                      "actions": [
+                                        {
+                                          "type": "context",
+                                          "config": {
+                                            "requestMethod": "add",
+                                            "key": "subHoldCode",
+                                            "data": "#holdDialogData.holdCodes"
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "onFailure": {
+                                      "actions": [
+                                        {
+                                          "type": "context",
+                                          "config": {
+                                            "requestMethod": "add",
+                                            "key": "subHoldCode",
+                                            "data": "#holdDialogData.holdCode"
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "microservice",
+                                  "config": {
+                                    "microserviceId": "validateBin",
+                                    "requestMethod": "get",
+                                    "params": {
+                                      "locationId": "#repairUnitInfo.LOCATION_ID",
+                                      "wareHouseId": "#repairUnitInfo.WAREHOUSE_ID",
+                                      "binName": "#holdDialogData.storageBin",
+                                      "userName": "#loginUUID.username"
+                                    },
+                                    "toBeStringified": true,
+                                    "isLocal": false,
+                                    "LocalService": "assets/Responses/mockHoldSubCode.json"
+                                  },
+                                  "responseDependents": {
+                                    "onSuccess": {
+                                      "actions": [
+                                        {
+                                          "type": "microservice",
+                                          "config": {
+                                            "microserviceId": "moveinventory",
+                                            "requestMethod": "post",
+                                            "body": {
+                                              "apiUsageClientName": "#discrepancyUnitInfo.CLIENTNAME",
+                                              "apiUsageLocationName": "#discrepancyUnitInfo.GEONAME",
+                                              "callSource": "FrontEnd",
+                                              "ip": "::1",
+                                              "items": {
+                                                "addtionalDetails": {
+                                                  "comments": "#holdDialogData.dellPAHoldAddNote",
+                                                  "fixedAssetTag": "#discrepancyUnitInfo.FAT",
+                                                  "storageHoldCode": "#holdDialogData.dellPAHoldType",
+                                                  "storageHoldSubCode": "#subHoldCode"
+                                                },
+                                                "destinationLocation": {
+                                                  "bin": "#holdDialogData.storageBin",
+                                                  "geography": "#discrepancyUnitInfo.GEONAME",
+                                                  "stockingLocation": "DELL_AIO_DMR",
+                                                  "warehouse": "#discrepancyUnitInfo.WAREHOUSE_NAME"
+                                                },
+                                                "item": [
+                                                  {
+                                                    "bcn": "#discrepancyUnitInfo.ITEM_BCN",
+                                                    "owner": "#discrepancyUnitInfo.CLIENTNAME",
+                                                    "partNo": "#discrepancyUnitInfo.PART_NO",
+                                                    "quantity": "1",
+                                                    "serialNo": "#discrepancyUnitInfo.SERIAL_NO",
+                                                    "condition": "Defective"
+                                                  }
+                                                ],
+                                                "notes": "#holdDialogData.dellPAHoldAddNote",
+                                                "sourceLocation": {
+                                                  "bin": "#holdDialogData.storageBin",
+                                                  "geography": "#discrepancyUnitInfo.GEONAME",
+                                                  "stockingLocation": "DELL_AIO_WIP",
+                                                  "warehouse": "#discrepancyUnitInfo.WAREHOUSE_NAME"
+                                                }
+                                              },
+                                              "usrPwd": {
+                                                "userName": "#loginUUID.username",
+                                                "password": "#loginUUID.password"
+                                              }
+                                            },
+                                            "toBeStringified": true
+                                          },
+                                          "responseDependents": {
+                                            "onSuccess": {
+                                              "actions": [
+                                                {
+                                                  "type": "pauseScreenData"
+                                                },
+                                                {
+                                                  "type": "renderTemplate",
+                                                  "config": {
+                                                    "templateId": "dashboard.json",
+                                                    "mode": "local"
+                                                  }
+                                                }
+                                              ]
+                                            },
+                                            "onFailure": {
+                                              "actions": [
+                                                {
+                                                  "type": "context",
+                                                  "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "moveinventoryForDiscrepancy",
+                                                    "data": "responseData"
+                                                  }
+                                                },
+                                                {
+                                                  "type": "updateComponent",
+                                                  "config": {
+                                                    "key": "dellPAErrorTitleUUID",
+                                                    "properties": {
+                                                      "titleValue": "#moveinventoryForDiscrepancy",
+                                                      "isShown": true
+                                                    }
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          "eventSource": "click"
+                                        },
+                                        {
+                                          "type":"closeAllDialogs"
+                                        }
+                                      ]
+                                    },
+                                    "onFailure": {
+                                      "actions": [
+                                        {
+                                          "type": "context",
+                                          "config": {
+                                            "requestMethod": "add",
+                                            "key": "moveinventoryForDiscrepancy",
+                                            "data": "responseData"
+                                          }
+                                        },
+                                        {
+                                          "type": "updateComponent",
+                                          "config": {
+                                            "key": "holdBinErrorUUID",
+                                            "properties": {
+                                              "titleValue": "#moveinventoryForDiscrepancy",
+                                              "isShown": true
+                                            }
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "eventSource": "click"
+                                }
+                              ]
+                            },
+                            "onFailure": {}
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "context",
+                "config": {
+                    "requestMethod": "add",
+                    "key": "holdSubCodeData",
+                    "data": ""
+                },
+                "eventSource":"click"
+              }
+            ]
+          },
+          {
+            "ctype": "nativeDropdown",
+            "dropdownClass": "footer-dropdown dropdown-container body2",
+            "uuid": "dellPAResultCodesUUID",
+            "name": "dellPAResultCodes",
+            "dataSource": "#getResultCodeForDiscrepancy",
+            "code": "resultCode",
+            "displayValue": "resultCode",
+            "disabled": true,
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "dellPASelectedDropdownValue",
+                  "data": "elementControlValue"
+                },
+                "eventSource": "change"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "dellPATimeoutButton",
+                  "properties": {
+                    "disabled": false
+                  }
+                },
+                "eventSource": "change"
+              }
+            ]
+          },
+          {
+            "ctype": "button",
+            "color": "primary",
+            "text": "Time out",
+            "uuid": "dellPATimeoutButton",
+            "visibility": true,
+            "disabled": true,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "buttonClass": "footer-button primary-btn",
+            "class": "primary-btn",
+            "actions": [
+              {
+                "type": "condition",
+                "config": {
+                  "operation": "isContains",
+                  "lhs": "#dellPASelectedDropdownValue",
+                  "rhs": "fail"
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "dialog",
+                        "uuid": "dellPAPauseDialogUUID",
+                        "config": {
+                          "title": "Time Out",
+                          "items": [
+                            {
+                              "ctype": "textarea",
+                              "label": "Add note",
+                              "name": "addNote",
+                              "textareaClass": "note-class",
+                              "uuid": "dellPATimeoutAddNoteUUID",
+                              "required": true,
+                              "submitable": true,
+                              "value": "#dellPANotes.addNote",
+                              "actions": [
+                                {
+                                  "type": "updateComponent",
+                                  "config": {
+                                    "key": "dellPADoneTimeOutUUID",
+                                    "properties": {
+                                      "disabled": false
+                                    }
+                                  },
+                                  "eventSource": "onLoad"
+                                }
+                              ]
+                            }
+                          ],
+                          "footer": [
+                            {
+                              "ctype": "button",
+                              "color": "primary",
+                              "text": "Cancel",
+                              "uuid": "dellPABerCancelTimeOutUUID",
+                              "closeType": "close",
+                              "disableClose": true,
+                              "visibility": true,
+                              "dialogButton": true,
+                              "type": "",
+                              "hooks": [],
+                              "validations": [],
+                              "actions": []
+                            },
+                            {
+                              "ctype": "button",
+                              "color": "primary",
+                              "text": "Done",
+                              "uuid": "dellPADoneTimeOutUUID",
+                              "dialogButton": true,
+                              "visibility": true,
+                              "disabled": true,
+                              "type": "submit",
+                              "closeType": "success",
+                              "hooks": [],
+                              "validations": [],
+                              "actions": []
+                            }
+                          ]
+                        },
+                        "eventSource": "click",
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "context",
+                                "config": {
+                                  "key": "dellPATimeOutNotes",
+                                  "data": "formData",
+                                  "requestMethod": "add",
+                                  "value": "addNote"
+                                },
+                                "eventSource": "click"
+                              },
+                              {
+                                "type":"microservice",
+                                "config": {
+                                  "microserviceId":"dellAIOPATrigger",
+                                  "requestMethod": "post",
+                                  "body": {
+                                    "actionType": "PwcPerformTimeOut",
+                                    "subActionType":"PwcFACodes",
+                                    "userName":"#loginUUID.username",
+                                        "geography": "#userSelectedLocationName",
+                                        "client": "#repairUnitInfo.CLIENTNAME",
+                                        "contract": "#repairUnitInfo.CONTRACTNAME",
+                                        "workCenter": "#repairUnitInfo.WORKCENTER",
+                                        "pwcXmls": {
+                                            "timeOutTab": {
+                                                "selectedResultCode": "#dellPASelectedDropdownValue"
+                                            },
+                                            "bcnDetail": {
+                                                "bcn": "#repairUnitInfo.ITEM_BCN",
+                                                "partNumber": "#repairUnitInfo.PART_NO",
+                                                "workCenterId":"#repairUnitInfo.WORKCENTER_ID",
+                                                "workOrderID": "#repairUnitInfo.WORKORDER_ID",
+                                                "itemID": "#repairUnitInfo.ITEM_ID",
+                                                "serialNumber": "#repairUnitInfo.SERIAL_NO"
+                                            }
+                                        }
+                                    },
+                                  "toBeStringified": true
+                                },
+                                "responseDependents":{
+                                  "onSuccess": {
+                                    "actions":[
+                                      {
+                                        "type": "microservice",
+                                        "config": {
+                                          "microserviceId": "performTimeOut",
+                                          "requestMethod": "post",
+                                          "body": {
+                                            "timeOutRequest": {
+                                              "location": "#repairUnitInfo.GEONAME",
+                                              "bcn": "#repairUnitInfo.ITEM_BCN",
+                                              "workCenter": "#repairUnitInfo.WORKCENTER",
+                                              "password": "#loginUUID.password",
+                                              "warrantyInd": "false",
+                                              "notes": "#dellPATimeOutNotes.addNote",
+                                              "resultCode": "#dellPASelectedDropdownValue"
+                                            },
+                                            "modifyWarranty": 0,
+                                            "timeOutType": "ProcessImmediate",
+                                            "clientName": "#repairUnitInfo.CLIENTNAME",
+                                            "contractName": "#repairUnitInfo.CONTRACTNAME",
+                                            "userName": "#loginUUID.username",
+                                            "userPass": "#loginUUID.password",
+                                            "ip": "::1",
+                                            "callSource": "FrontEnd",
+                                            "apiUsage_LocationName": "#repairUnitInfo.GEONAME",
+                                            "apiUsage_ClientName": "#repairUnitInfo.CLIENTNAME"
+                                          },
+                                          "toBeStringified": true
+                                        },
+                                        "responseDependents": {
+                                          "onSuccess": {
+                                            "actions": [
+                                              {
+                                                "type": "clearScreenData"
+                                              },
+                                              {
+                                                "type": "renderTemplate",
+                                                "config": {
+                                                  "templateId": "dashboard.json",
+                                                  "mode": "local"
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          "onFailure": {
+                                            "actions": [
+                                              {
+                                                "type": "handleCommonServices",
+                                                "config": {
+                                                  "type": "errorRenderTemplate",
+                                                  "contextKey": "dellPAErrorMsg",
+                                                  "updateKey": "dellPAErrorTitleUUID"
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "onFailure": {
+                                    "actions":[
+                                      {
+                                        "type": "handleCommonServices",
+                                        "config": {
+                                          "type": "errorRenderTemplate",
+                                          "contextKey": "dellPAErrorMsg",
+                                          "updateKey": "dellPAErrorTitleUUID"
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                                
+                              }
+                            ]
+                          },
+                          "onFailure": {}
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type":"microservice",
+                        "config": {
+                          "microserviceId":"dellAIOPATrigger",
+                          "requestMethod": "post",
+                          "body": {
+                            "actionType": "PwcPerformTimeOut",
+                            "subActionType":"PwcFACodes",
+                            "userName":"#loginUUID.username",
+                                "geography": "#userSelectedLocationName",
+                                "client": "#repairUnitInfo.CLIENTNAME",
+                                "contract": "#repairUnitInfo.CONTRACTNAME",
+                                "workCenter": "#repairUnitInfo.WORKCENTER",
+                                "pwcXmls": {
+                                    "timeOutTab": {
+                                        "selectedResultCode": "#dellPASelectedDropdownValue"
+                                    },
+                                    "bcnDetail": {
+                                        "bcn": "#repairUnitInfo.ITEM_BCN",
+                                        "partNumber": "#repairUnitInfo.PART_NO",
+                                        "workCenterId":"#repairUnitInfo.WORKCENTER_ID",
+                                        "workOrderID": "#repairUnitInfo.WORKORDER_ID",
+                                        "itemID": "#repairUnitInfo.ITEM_ID",
+                                        "serialNumber": "#repairUnitInfo.SERIAL_NO"
+                                    }
+                                }
+                            },
+                          "toBeStringified": true
+                        },
+                        "responseDependents":{
+                          "onSuccess":{
+                            "actions":[                              
+                                {
+                                  "type": "microservice",
+                                  "config": {
+                                    "microserviceId": "performTimeOut",
+                                    "requestMethod": "post",
+                                    "body": {
+                                      "timeOutRequest": {
+                                        "location": "#repairUnitInfo.GEONAME",
+                                        "bcn": "#repairUnitInfo.ITEM_BCN",
+                                        "workCenter": "#repairUnitInfo.WORKCENTER",
+                                        "password": "#loginUUID.password",
+                                        "warrantyInd": "false",
+                                        "notes": "#dellPANotes.addNote",
+                                        "resultCode": "#dellPASelectedDropdownValue"
+                                      },
+                                      "modifyWarranty": 0,
+                                      "timeOutType": "ProcessImmediate",
+                                      "clientName": "#repairUnitInfo.CLIENTNAME",
+                                      "contractName": "#repairUnitInfo.CONTRACTNAME",
+                                      "userName": "#loginUUID.username",
+                                      "userPass": "#loginUUID.password",
+                                      "ip": "::1",
+                                      "callSource": "FrontEnd",
+                                      "apiUsage_LocationName": "#repairUnitInfo.GEONAME",
+                                      "apiUsage_ClientName": "#repairUnitInfo.CLIENTNAME"
+                                    },
+                                    "toBeStringified": true
+                                  },
+                                  "responseDependents": {
+                                    "onSuccess": {
+                                      "actions": [
+                                        {
+                                          "type": "clearScreenData"
+                                        },
+                                        {
+                                          "type": "renderTemplate",
+                                          "config": {
+                                            "templateId": "dashboard.json",
+                                            "mode": "local"
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "onFailure": {
+                                      "actions": [
+                                        {
+                                          "type": "handleCommonServices",
+                                          "config": {
+                                            "type": "errorRenderTemplate",
+                                            "contextKey": "dellPAErrorMsg",
+                                            "updateKey": "dellPAErrorTitleUUID"
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  }
+                                }
+                            ]
+                          },
+                          "onFailure":{
+                            "actions":[
+                              {
+                                "type": "handleCommonServices",
+                                "config": {
+                                  "type": "errorRenderTemplate",
+                                  "contextKey": "dellPAErrorMsg",
+                                  "updateKey": "dellPAErrorTitleUUID"
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "Result": "SUCCESS"
+}

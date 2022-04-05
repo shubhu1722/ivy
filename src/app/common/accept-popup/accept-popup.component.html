@@ -1,0 +1,76 @@
+<div class="table-background">
+
+  <mat-expansion-panel (opened)="true" (closed)="panelOpenState = false">
+    <mat-expansion-panel-header>
+      <div class="prediction-table-accordion-header">
+        <div>{{targetData.title}} </div>
+        <div>Probability : {{targetData.probability}} %</div>
+      </div>
+    </mat-expansion-panel-header>
+    <table *ngIf="datasource.length" mat-table [dataSource]="datasource" [class]="tableClass">
+      <ng-container matColumnDef="checkbox">
+        <th mat-header-cell *matHeaderCellDef class="prediction-table-header">
+          <mat-checkbox color="primary" [class]="checkBoxClass" (change)="$event ? masterToggle() : null"
+            [checked]="selection.hasValue() && isAllSelected()" [aria-label]="checkboxLabel()">
+          </mat-checkbox>
+        </th>
+        <td mat-cell *matCellDef="let row">
+          <mat-checkbox color="primary" [class]="checkBoxClass" (click)="$event.stopPropagation()"
+            (change)="$event ? selection.toggle(row) : null" [aria-label]="checkboxLabel(row)"
+            [checked]="selection.isSelected(row)">
+          </mat-checkbox>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="title">
+        <th mat-header-cell class="bold-font" *matHeaderCellDef>{{targetData.title}}</th>
+        <td mat-cell *matCellDef="let element" class="bold-font" (click)="selection.toggle(element)">
+          <mat-icon svgIcon="replace"></mat-icon>
+          RPL
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="PART_NUMBER">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element" (click)="selection.toggle(element)">
+          {{ element.PART_NUMBER}}</td>
+      </ng-container>
+      <ng-container matColumnDef="PART_DESCRIPTION">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element" (click)="selection.toggle(element)">
+          {{ element.PART_DESCRIPTION }}</td>
+      </ng-container>
+      <ng-container matColumnDef="main_Issue">
+        <th mat-header-cell *matHeaderCellDef>Primary Fault</th>
+        <td mat-cell *matCellDef="let element">
+          <div [formGroup]="group" [class]="formGroupClass">
+            <select *ngIf="isPrimaryFaultDisabled" [class]="dropdownClass" [style]="formGroupStyles"
+              [formControlName]="element.name" (change)="changeDropdown($event, element.name)"
+              (openedChange)="openedChangedHandler($event)" disabled>
+              <option value="Yes">Yes</option>
+              <option selected value="No">No</option>
+            </select>
+            <select *ngIf="!isPrimaryFaultDisabled" [class]="dropdownClass" [style]="formGroupStyles"
+              [formControlName]="element.name" (change)="changeDropdown($event, element)"
+              (openedChange)="openedChangedHandler($event)">
+              <option value="Yes">Yes</option>
+              <option selected value="No">No</option>
+            </select>
+          </div>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="qty">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element">
+          <select [class]="dropdownClass" disabled>
+            <option value="" selected="selected">1</option>
+          </select>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns; let i = index"
+        [ngClass]="{ highlight2: selection.isSelected(row) }">
+      </tr>
+    </table>
+    <div *ngIf="datasource.length == 0" class="predictive-repair-table-error"> Currently No Part Is Available</div>
+  </mat-expansion-panel>
+
+</div>

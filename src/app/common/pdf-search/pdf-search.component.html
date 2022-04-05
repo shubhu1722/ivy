@@ -1,0 +1,38 @@
+<div class= "searchContainer">
+  <div class="textClass">
+    <h1 [ngClass]="titleClass">{{title | translate}}</h1>
+    <input class="boxStyle" #queryInp id="pdfQueryInput" type="text" placeholder="Search..." [value]="pdfQuery"
+      (input)="searchQueryChanged($event.target.value)" (keyup.enter)="searchQueryChanged(queryInp.value)">
+    <button #iconbutton mat-flat-button (click)="onClick($event)">
+      <mat-icon class="iconStyle">menu_open</mat-icon>
+    </button>
+  </div>
+  <div *ngIf="errorMsg" [ngClass]="titleValueClass">{{titleValue | translate}}
+  </div>
+  <div *ngIf="urlData != ''" style="padding-left: 20px;">
+    <a href="{{urlData}}" target="_blank">Dell Educate</a>
+  </div>
+  <div *ngIf="urlData1 != ''" style="padding-left: 20px;">
+    <a href="{{urlData1}}" target="_blank">{{name}}</a>
+  </div>
+  <div *ngIf ="!errorMsg && !noDataFound" class="pdfContainer" [ngClass]="{'WIPdfstyle': isDellWIPdf}">
+    <pdf-viewer [src]="titleValue" [render-text]="true" [original-size]="originalSize" [zoom]="zoom"
+      [zoom-scale]="zoomScale" [fit-to-page]="fitToPage"></pdf-viewer>
+  </div>
+</div>
+
+<div class="overflow-auto p-2" *ngIf="!isAdmin && isApprovedWikiListDisplay">
+  <app-wiki [hidden]="isShowCreateWiki"></app-wiki>
+  <app-add-wiki *ngIf="isShowCreateWiki"></app-add-wiki>
+</div>
+
+<div class="wiki-admin overflow-auto p-2" *ngIf="isAdmin">
+  <div *ngIf="!isShowCreateWiki && isAdminAddWikiButtonDisplay && !isWikiAdmin">
+    <button class="custButStyle" (click)="showAdminAddWiki()">Add Wiki</button>
+  </div>
+  <div *ngIf="isWikiDraft">
+    <app-edit-pending-wiki [isWikiDraft]="isWikiDraft"></app-edit-pending-wiki>
+  </div>
+  <app-pending-wiki [isWikiAdmin]="isWikiAdmin"></app-pending-wiki>
+  <app-wiki-admin *ngIf="isShowCreateWiki"></app-wiki-admin>
+</div>

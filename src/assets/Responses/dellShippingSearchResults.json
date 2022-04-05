@@ -1,0 +1,1626 @@
+{
+    "ResultData": {
+        "ctype": "page",
+        "uuid": "pageUUID",
+        "css": "",
+        "visibility": true,
+        "hooks": [
+            {
+                "type": "context",
+                "hookType": "afterInit",
+                "config": {
+                    "key": "shippingFromDashboard",
+                    "data": "",
+                    "requestMethod": "add"
+                },
+                "eventSource": "click"
+            },
+            {
+                "type": "context",
+                "hookType": "afterInit",
+                "config": {
+                    "requestMethod": "add",
+                    "key": "boxShipping",
+                    "data": ""
+                }
+            },
+            {
+                "type": "context",
+                "hookType": "afterInit",
+                "config": {
+                    "requestMethod": "add",
+                    "key": "placeHolderData",
+                    "data": ""
+                }
+            },
+            {
+                "type": "context",
+                "hookType": "afterInit",
+                "config": {
+                    "requestMethod": "add",
+                    "key": "shippingScanTypeName",
+                    "data": ""
+                }
+            },
+            {
+                "type": "context",
+                "hookType": "afterInit",
+                "config": {
+                    "requestMethod": "add",
+                    "key": "shippingItemBcn",
+                    "data": ""
+                }
+            },
+            {
+                "type": "context",
+                "hookType": "afterInit",
+                "config": {
+                    "requestMethod": "add",
+                    "key": "shippingSerialNo", 
+                    "data": ""
+                }
+            },
+            {
+                "type": "context",
+                "hookType": "afterInit",
+                "config": {
+                    "requestMethod": "add",
+                    "key": "shippingCondition", 
+                    "data": ""
+                }
+            },
+            {
+                "type": "context",
+                "config": {
+                    "requestMethod": "add",
+                    "key": "shippingPartNo",
+                    "data": ""
+                }
+            },
+            {
+                "type": "context",
+                "config": {
+                    "requestMethod": "add",
+                    "key": "shippingShipManifestStatus",
+                    "data": ""
+                }
+            },
+            {
+                "type": "condition",
+                "hookType": "afterInit",
+                "config": {
+                    "operation": "isEqualTo",
+                    "lhs": "#shippingScanTypeName",
+                    "rhs": "Reference Order ID"
+                },
+                "responseDependents": {
+                    "onSuccess": {
+                        "actions": [
+                            {
+                                "type": "stringOperation",
+                                "config": {
+                                    "key": "placeHolderData",
+                                    "lstr": "Scan",
+                                    "rstr": "#shippingScanTypeName",
+                                    "operation": "concat",
+                                    "concatSymbol": " "
+                                }
+                            }
+                        ]
+                    },
+                    "onFailure": {
+                        "actions": [
+                            {
+                                "type": "condition",
+                                "hookType": "afterInit",
+                                "config": {
+                                    "operation": "isEqualTo",
+                                    "lhs": "#shippingScanTypeName",
+                                    "rhs": "Outbound Order ID"
+                                },
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "stringOperation",
+                                                "config": {
+                                                    "key": "placeHolderData",
+                                                    "lstr": "Scan",
+                                                    "rstr": "#shippingScanTypeName",
+                                                    "operation": "concat",
+                                                    "concatSymbol": " "
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": [
+                                            {
+                                                "type": "condition",
+                                                "hookType": "afterInit",
+                                                "config": {
+                                                    "operation": "isEqualTo",
+                                                    "lhs": "#shippingScanTypeName",
+                                                    "rhs": "Serial NO."
+                                                },
+                                                "responseDependents": {
+                                                    "onSuccess": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "stringOperation",
+                                                                "config": {
+                                                                    "key": "placeHolderData",
+                                                                    "lstr": "Scan",
+                                                                    "rstr": "#shippingScanTypeName",
+                                                                    "operation": "concat",
+                                                                    "concatSymbol": " "
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    "onFailure": {
+                                                        "actions": []
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "type": "sessionStorageOperation",
+                "mode": "read",
+                "hookType": "afterInit",
+                "config": {
+                    "localKey": "userSelectedShippingType",
+                    "contextKey": "userSelectedShippingType",
+                    "contextNameKey": "userSelectedShippingType"
+                }
+            },
+            {
+                "type": "condition",
+                "hookType": "afterInit",
+                "config": {
+                    "operation": "isValid",
+                    "lhs": "#userSelectedShippingType"
+                },
+                "responseDependents": {
+                    "onSuccess": {
+                        "actions": [
+                            {
+                                "type": "setDefaultValue",
+                                "hookType": "afterInit",
+                                "config": {
+                                  "key": "shippingTypeUUID",
+                                  "defaultValue": "#userSelectedShippingType"
+                                }
+                            }
+                        ]
+                    },
+                    "onFailure": {
+                        "actions": [
+                            {
+                                "type": "setDefaultValue",
+                                "hookType": "afterInit",
+                                "config": {
+                                  "key": "shippingTypeUUID",
+                                  "defaultValue": "SerialNumber"
+                                }
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "type": "context",
+                "hookType": "afterInit",
+                "config": {
+                    "requestMethod": "add",
+                    "key": "userOptionShippingOrderIdType",
+                    "data": "#userSelectedShippingType"
+                }
+            },
+            {
+                "type": "condition",
+                "config": {
+                    "operation": "isEqualTo",
+                    "lhs": "#userSelectedShippingType",
+                    "rhs": "SerialNumber"
+                },
+                "eventSource": "change",
+                "responseDependents": {
+                    "onSuccess": {
+                        "actions": [
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "shippingUUID",
+                                    "setRequiredValidators": {
+                                        "shippingOrderIdValue": ""
+                                    },
+                                    "setPatternValidators": {
+                                        "shippingOrderIdValue": "^[a-zA-Z0-9]{1,10}$"
+                                    }
+                                },
+                                "eventSource": "change"
+                            }
+                        ]
+                    },
+                    "onFailure": {
+                        "actions": [
+                            {
+                                "type": "multipleCondition",
+                                "hookType": "afterInit",
+                                "config": {
+                                    "multi": true,
+                                    "operator": "OR",
+                                    "conditions": [
+                                        {
+                                            "operation": "isEqualTo",
+                                            "lhs": "#userSelectedShippingType",
+                                            "rhs": "OutboundOrderID"
+                                        },
+                                        {
+                                            "operation": "isEqualTo",
+                                            "lhs": "#userSelectedShippingType",
+                                            "rhs": "ReferenceOrderID"
+                                        }
+                                    ]
+                                },
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "shippingUUID",
+                                                    "setRequiredValidators": {
+                                                        "shippingOrderIdValue": ""
+                                                    },
+                                                    "setPatternValidators": {
+                                                        "shippingOrderIdValue": "^[0-9]{1,10}$"
+                                                    }
+                                                },
+                                                "eventSource": "change"
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": [
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "shippingUUID",
+                                                    "setRequiredValidators": {
+                                                        "shippingOrderIdValue": ""
+                                                    }
+                                                },
+                                                "eventSource": "change"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "type": "context",
+                "config": {
+                    "requestMethod": "add",
+                    "key": "shippingScanTypeName",
+                    "data": "#userSelectedShippingType"
+                },
+                "hookType": "afterInit"
+            },
+            {
+                "type": "condition",
+                "hookType": "afterInit",
+                "config": {
+                    "operation": "isValid",
+                    "lhs": "#userOptionShippingOrderIdType"
+                },
+                "responseDependents": {
+                    "onSuccess": {
+                        "actions": [
+                            {
+                                "type": "updateComponent",
+                                "hookType": "afterInit",
+                                "config": {
+                                    "key": "shippingTypeUUID",
+                                    "fieldProperties": {
+                                        "identificatorTypeForShipping": "#userOptionShippingOrderIdType"
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    "onFailure": {
+                        "actions": []
+                    }
+                }
+            },
+            {
+                "type": "stringOperation",
+                "config": {
+                    "key": "placeHolderData",
+                    "lstr": "Scan",
+                    "rstr": "#userSelectedShippingType",
+                    "operation": "concat",
+                    "concatSymbol": " "
+                },
+                "hookType": "afterInit"
+            },
+            {
+                "type": "updateComponent",
+                "hookType": "afterInit",
+                "config": {
+                    "key": "shippingOrderIdUUID",
+                    "properties": {
+                        "placeholder":"#placeHolderData"
+                    }
+                }
+            },
+            {
+                "type": "microservice",
+                "hookType": "afterInit",
+                "config": {
+                    "microserviceId": "getHostName",
+                    "requestMethod": "get",
+                    "params": {}
+                },
+                "responseDependents": {
+                    "onSuccess": {
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "getHostNameResponse",
+                                    "data": "responseData"
+                                }
+                            }
+                        ]
+                    },
+                    "onFailure": {
+                        "actions": []
+                    }
+                }
+            }
+        ],
+        "validations": [],
+        "action": [],
+        "header": [
+            {
+                "ctype": "toolbar",
+                "toolbarClass": "searchCriteria-toolbar section-title",
+                "items": [
+                    {
+                        "ctype": "title",
+                        "title": "Shipping"
+                    }
+                ]
+            }
+        ],
+        "items": [
+            {
+                "ctype": "title",
+                "uuid": "shippingErrorTitleUUID",
+                "titleClass": "error-title",
+                "isShown": false
+            },
+            {
+                "ctype": "formPanel",
+                "title": "shipping",
+                "header": "",
+                "uuid": "shippingUUID",
+                "formPanelClass": "searchCriteria-panel",
+                "visibility": true,
+                "hooks": [],
+                "validations": [],
+                "actions": [],
+                "items": [
+                    {
+                        "ctype": "nativeDropdown",
+                        "uuid": "shippingTypeUUID",
+                        "hooks": [],
+                        "validations": [],
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "userOptionShippingOrderIdType",
+                                    "data": "elementControlValue"
+                                },
+                                "eventSource": "change"
+                            },
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "shippingScanTypeName",
+                                    "data": "elementControlName"
+                                },
+                                "eventSource": "change"
+                            },
+                            {
+                                "type": "stringOperation",
+                                "config": {
+                                    "key": "placeHolderData",
+                                    "lstr": "Scan",
+                                    "rstr": "#shippingScanTypeName",
+                                    "operation": "concat",
+                                    "concatSymbol": " "
+                                },
+                                "eventSource": "change"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "shippingOrderIdUUID",
+                                    "properties": {
+                                        "placeholder": "#placeHolderData"
+                                    }
+                                },
+                                "eventSource": "change"
+                            },
+                            {
+                                "type": "condition",
+                                "config": {
+                                    "operation": "isEqualTo",
+                                    "lhs": "#userOptionShippingOrderIdType",
+                                    "rhs": "SerialNumber"
+                                },
+                                "eventSource": "change",
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "shippingUUID",
+                                                    "setRequiredValidators": {
+                                                        "shippingOrderIdValue": ""
+                                                    },
+                                                    "setPatternValidators": {
+                                                        "shippingOrderIdValue": "^[a-zA-Z0-9]{1,10}$"
+                                                    }
+                                                },
+                                                "eventSource": "change"
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": [
+                                            {
+                                                "type": "multipleCondition",
+                                                "hookType": "afterInit",
+                                                "config": {
+                                                    "multi": true,
+                                                    "operator": "OR",
+                                                    "conditions": [
+                                                        {
+                                                            "operation": "isEqualTo",
+                                                            "lhs": "#userOptionShippingOrderIdType",
+                                                            "rhs": "OutboundOrderID"
+                                                        },
+                                                        {
+                                                            "operation": "isEqualTo",
+                                                            "lhs": "#userOptionShippingOrderIdType",
+                                                            "rhs": "ReferenceOrderID"
+                                                        }
+                                                    ]
+                                                },
+                                                "responseDependents": {
+                                                    "onSuccess": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "updateComponent",
+                                                                "config": {
+                                                                    "key": "shippingUUID",
+                                                                    "setRequiredValidators": {
+                                                                        "shippingOrderIdValue": ""
+                                                                    },
+                                                                    "setPatternValidators": {
+                                                                        "shippingOrderIdValue": "^[0-9]{1,10}$"
+                                                                    }
+                                                                },
+                                                                "eventSource": "change"
+                                                            }
+                                                        ]
+                                                    },
+                                                    "onFailure": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "updateComponent",
+                                                                "config": {
+                                                                    "key": "shippingUUID",
+                                                                    "setRequiredValidators": {
+                                                                        "shippingOrderIdValue": ""
+                                                                    }
+                                                                },
+                                                                "eventSource": "change"
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
+                        "type": "text",
+                        "required": true,
+                        "submitable": true,
+                        "label": "",
+                        "labelPosition": "",
+                        "name": "identificatorTypeForShipping",
+                        "defaultValue": "SerialNumber",
+                        "dropdownClass": "searchcriteris-drpdwn",
+                        "options": [
+                            {
+                                "code": "ReferenceOrderID",
+                                "displayValue": "Reference Order ID"
+                            },
+                            {
+                                "code": "OutboundOrderID",
+                                "displayValue": "Outbound Order ID"
+                            },
+                            {
+                                "code": "SerialNumber",
+                                "displayValue": "Serial No."
+                            },
+                            {
+                                "code": "BCN",
+                                "displayValue": "BCN"
+                            },
+                            {
+                                "code": "ClientReferenceNo1",
+                                "displayValue": "Client Ref 1"
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "textField",
+                        "uuid": "shippingOrderIdUUID",
+                        "isUpperCase": true,
+                        "hooks": [],
+                        "validations": [],
+                        "textfieldClass": "searchcriteris-text",
+                        "type": "text",
+                        "required": true,
+                        "placeholder": "",
+                        "submitable": true,
+                        "label": "",
+                        "labelPosition": "",
+                        "name": "shippingOrderIdValue",
+                        "prefix": "true",
+                        "prefixIcon": "qr_code_scanner",
+                        "suffix": true,
+                        "suffixIcon": "arrow_forward",
+                        "actions": [
+                            {
+                                "type": "updateComponent",
+                                "eventSource": "click",
+                                "config": {
+                                    "key": "errorTitleUUID",
+                                    "properties": {
+                                        "titleValue": "",
+                                        "isShown": false
+                                    }
+                                }
+                            },
+                            {
+                                "type": "context",
+                                "config": {
+                                    "key": "shippingUserSearchCriteria",
+                                    "data": "formData",
+                                    "requestMethod": "add"
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "context",
+                                "config": {
+                                    "key": "discrepancyUnitInfo",
+                                    "data": "",
+                                    "requestMethod": "add"
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "context",
+                                "config": {
+                                    "key": "repairUnitInfo",
+                                    "data": "",
+                                    "requestMethod": "add"
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "context",
+                                "config": {
+                                    "key": "SubprocessMenu",
+                                    "data": "",
+                                    "requestMethod": "add"
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "context",
+                                "config": {
+                                    "key": "shippingShipManifestStatus",
+                                    "data": "",
+                                    "requestMethod": "add"
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "context",
+                                "config": {
+                                    "key": "shippingFromDashboard",
+                                    "data": "",
+                                    "requestMethod": "add"
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "context",
+                                "eventSource": "click",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "boxShipping",
+                                    "data": ""
+                                }
+                            },
+                            {
+                                "type": "context",
+                                "config": {
+                                    "key": "receiptDateForDiscrepancy",
+                                    "data": "",
+                                    "requestMethod": "add"
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "shippingOutBoundOrderId",
+                                    "data": ""
+                                }
+                            },
+                            {
+                                "type": "microservice",
+                                "comment": "api call for getShipmentMAnifest API",
+                                "eventSource": "click",
+                                "config": {
+                                    "microserviceId": "getShipManifestStatus",
+                                    "requestMethod": "get",
+                                    "params": {
+                                        "OrderIdentificatorValue": "#shippingUserSearchCriteria.shippingOrderIdValue",
+                                        "identificatorType": "#userOptionShippingOrderIdType",
+                                        "userName": "#loginUUID.username"
+                                    }
+                                },
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "shippingShipManifestStatus",
+                                                    "data": "responseData"
+                                                }
+                                            },
+                                            {
+                                                "type": "condition",
+                                                "config": {
+                                                    "operation": "isValid",
+                                                    "lhs": "#shippingShipManifestStatus"
+                                                },
+                                                "eventSource": "change",
+                                                "responseDependents": {
+                                                    "onSuccess": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "context",
+                                                                "config": {
+                                                                    "requestMethod": "add",
+                                                                    "key": "shippingShipmentID",
+                                                                    "data": "#shippingShipManifestStatus.shipmentId"
+                                                                }
+                                                            },
+                                                            {
+                                                                "type": "multipleCondition",
+                                                                "config": {
+                                                                    "multi": true,
+                                                                    "operator": "AND",
+                                                                    "conditions": [
+                                                                        {
+                                                                            "operation": "isValid",
+                                                                            "lhs": "#shippingShipManifestStatus.shipmentId",
+                                                                            "rhs": true
+                                                                        },
+                                                                        {
+                                                                            "operation": "isValid",
+                                                                            "lhs": "#shippingShipManifestStatus.manifestDate",
+                                                                            "rhs": true
+                                                                        }
+                                                                    ]
+                                                                },
+                                                                "eventSource": "click",
+                                                                "responseDependents": {
+                                                                    "onSuccess": {
+                                                                        "actions": [
+                                                                            {
+                                                                                "type": "updateComponent",
+                                                                                "config": {
+                                                                                    "key": "shippingErrorTitleUUID",
+                                                                                    "properties": {
+                                                                                        "titleValue": "Ship/Manifest complete",
+                                                                                        "isShown": true
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "onFailure": {
+                                                                        "actions": [
+                                                                            {
+                                                                                "type": "microservice",
+                                                                                "comment": "api call for getROOO looper control final version",
+                                                                                "eventSource": "click",
+                                                                                "config": {
+                                                                                    "microserviceId": "getRoOoDetailsLc",
+                                                                                    "requestMethod": "get",
+                                                                                    "params": {
+                                                                                        "OrderIdentificatorValue": "#shippingUserSearchCriteria.shippingOrderIdValue",
+                                                                                        "IdentificatorType": "#userOptionShippingOrderIdType",
+                                                                                        "userName": "#loginUUID.username",
+                                                                                        "locationId": "#userSelectedLocation",
+                                                                                        "clientId": "#userSelectedClient",
+                                                                                        "contractId": "#userSelectedContract"
+                                                                                    }
+                                                                                },
+                                                                                "responseDependents": {
+                                                                                    "onSuccess": {
+                                                                                        "actions": [
+                                                                                            {
+                                                                                                "type": "context",
+                                                                                                "config": {
+                                                                                                    "requestMethod": "add",
+                                                                                                    "key": "shippingRoOoResponse",
+                                                                                                    "data": "responseData"
+                                                                                                }
+                                                                                            },
+                                                                                            {
+                                                                                                "type": "context",
+                                                                                                "config": {
+                                                                                                    "requestMethod": "add",
+                                                                                                    "key": "shippingItemBcn",
+                                                                                                    "data": "#shippingRoOoResponse.itemBcn"
+                                                                                                }
+                                                                                            },
+                                                                                            {
+                                                                                                "type": "context",
+                                                                                                "config": {
+                                                                                                    "requestMethod": "add",
+                                                                                                    "key": "shippingSerialNo",
+                                                                                                    "data": "#shippingRoOoResponse.serialNumber"
+                                                                                                }
+                                                                                            }, 
+                                                                                            {
+                                                                                                "type": "context",
+                                                                                                "config": {
+                                                                                                    "requestMethod": "add",
+                                                                                                    "key": "shippingCondition",
+                                                                                                    "data": "#shippingRoOoResponse.condition"
+                                                                                                }
+                                                                                            },
+                                                                                            {
+                                                                                                "type": "context",
+                                                                                                "config": {
+                                                                                                    "requestMethod": "add",
+                                                                                                    "key": "shippingPartDesc",
+                                                                                                    "data": "#shippingRoOoResponse.partDesc"
+                                                                                                }
+                                                                                            },
+                                                                                            {
+                                                                                                "type": "context",
+                                                                                                "config": {
+                                                                                                    "requestMethod": "add",
+                                                                                                    "key": "shippingReferenceOrderId",
+                                                                                                    "data": "#shippingRoOoResponse.referenceOrderId"
+                                                                                                }
+                                                                                            },
+                                                                                            {
+                                                                                                "type": "context",
+                                                                                                "config": {
+                                                                                                    "requestMethod": "add",
+                                                                                                    "key": "shippingTradingPartnerId",
+                                                                                                    "data": "#shippingRoOoResponse.tradingPartnerId"
+                                                                                                }
+                                                                                            },
+                                                                                            {
+                                                                                                "type": "context",
+                                                                                                "config": {
+                                                                                                    "requestMethod": "add",
+                                                                                                    "key": "shippingPartNo",
+                                                                                                    "data": "#shippingRoOoResponse.partNo"
+                                                                                                }
+                                                                                            },
+                                                                                            {
+                                                                                                "type": "context",
+                                                                                                "config": {
+                                                                                                    "requestMethod": "add",
+                                                                                                    "key": "shippingSerialNo",
+                                                                                                    "data": "#shippingRoOoResponse.serialNumber"
+                                                                                                }
+                                                                                            },
+                                                                                            {
+                                                                                                "type": "context",
+                                                                                                "config": {
+                                                                                                    "requestMethod": "add",
+                                                                                                    "key": "shippingOutBoundOrderId",
+                                                                                                    "data": "#shippingRoOoResponse.outboundOrderId"
+                                                                                                }
+                                                                                            },
+                                                                                            {
+                                                                                                "type": "condition",
+                                                                                                "config": {
+                                                                                                    "operation": "isEqualToIgnoreCase",
+                                                                                                    "lhs": "#shippingRoOoResponse.orderProcessTypeCode",
+                                                                                                    "rhs": "OSTK"
+                                                                                                },
+                                                                                                "eventSource": "input",
+                                                                                                "responseDependents": {
+                                                                                                    "onSuccess": {
+                                                                                                        "actions": [
+                                                                                                            {
+                                                                                                                "type": "context",
+                                                                                                                "config": {
+                                                                                                                    "requestMethod": "add",
+                                                                                                                    "key": "boxShipping",
+                                                                                                                    "data": true
+                                                                                                                }
+                                                                                                            }
+                                                                                                        ]
+                                                                                                    },
+                                                                                                    "onFailure": {
+                                                                                                        "actions": [
+                                                                                                            {
+                                                                                                                "type": "context",
+                                                                                                                "config": {
+                                                                                                                    "requestMethod": "add",
+                                                                                                                    "key": "boxShipping",
+                                                                                                                    "data": false
+                                                                                                                }
+                                                                                                            }
+                                                                                                        ]
+                                                                                                    }
+                                                                                                }
+                                                                                            },
+                                                                                            {
+                                                                                                "type": "multipleCondition",
+                                                                                                "config": {
+                                                                                                    "multi": true,
+                                                                                                    "operator": "AND",
+                                                                                                    "conditions": [
+                                                                                                        {
+                                                                                                            "operation": "isEqualTo",
+                                                                                                            "lhs": "#userOptionShippingOrderIdType",
+                                                                                                            "rhs": "SerialNumber"
+                                                                                                        },
+                                                                                                        {
+                                                                                                            "operation": "isEqualTo",
+                                                                                                            "lhs": "#shippingRoOoResponse.contractName",
+                                                                                                            "rhs": "Quarantine"
+                                                                                                        }
+                                                                                                    ]
+                                                                                                },
+                                                                                                "eventSource": "click",
+                                                                                                "responseDependents": {
+                                                                                                    "onSuccess": {
+                                                                                                        "actions": [
+                                                                                                            {
+                                                                                                                "type": "microservice",
+                                                                                                                "comment": "api call for getROOO because quarantine",
+                                                                                                                "eventSource": "click",
+                                                                                                                "config": {
+                                                                                                                    "microserviceId": "getRoOoDetails",
+                                                                                                                    "requestMethod": "get",
+                                                                                                                    "params": {
+                                                                                                                        "OrderIdentificatorValue": "#shippingUserSearchCriteria.shippingOrderIdValue",
+                                                                                                                        "IdentificatorType": "#userOptionShippingOrderIdType",
+                                                                                                                        "userName": "#loginUUID.username"
+                                                                                                                    }
+                                                                                                                },
+                                                                                                                "responseDependents": {
+                                                                                                                    "onSuccess": {
+                                                                                                                        "actions": [
+                                                                                                                            {
+                                                                                                                                "type": "context",
+                                                                                                                                "config": {
+                                                                                                                                    "requestMethod": "add",
+                                                                                                                                    "key": "shippingRoOoResponse",
+                                                                                                                                    "data": "responseData"
+                                                                                                                                }
+                                                                                                                            },
+                                                                                                                            {
+                                                                                                                                "type": "context",
+                                                                                                                                "config": {
+                                                                                                                                    "requestMethod": "add",
+                                                                                                                                    "key": "userSelectedContractName",
+                                                                                                                                    "data": "#shippingRoOoResponse.contractName"
+                                                                                                                                }
+                                                                                                                            },
+                                                                                                                            {
+                                                                                                                                "type": "context",
+                                                                                                                                "config": {
+                                                                                                                                    "requestMethod": "add",
+                                                                                                                                    "key": "shippingItemBcn",
+                                                                                                                                    "data": "#shippingRoOoResponse.itemBcn"
+                                                                                                                                }
+                                                                                                                            },
+                                                                                                                            {
+                                                                                                                                "type": "context",
+                                                                                                                                "config": {
+                                                                                                                                    "requestMethod": "add",
+                                                                                                                                    "key": "shippingSerialNo",
+                                                                                                                                    "data": "#shippingRoOoResponse.serialNumber"
+                                                                                                                                }
+                                                                                                                            },
+                                                                                                                            {
+                                                                                                                                "type": "context",
+                                                                                                                                "config": {
+                                                                                                                                    "requestMethod": "add",
+                                                                                                                                    "key": "shippingCondition",
+                                                                                                                                    "data": "#shippingRoOoResponse.condition"
+                                                                                                                                }
+                                                                                                                            },
+                                                                                                                            {
+                                                                                                                                "type": "context",
+                                                                                                                                "config": {
+                                                                                                                                    "requestMethod": "add",
+                                                                                                                                    "key": "shippingPartDesc",
+                                                                                                                                    "data": "#shippingRoOoResponse.partDesc"
+                                                                                                                                }
+                                                                                                                            },
+                                                                                                                            {
+                                                                                                                                "type": "context",
+                                                                                                                                "config": {
+                                                                                                                                    "requestMethod": "add",
+                                                                                                                                    "key": "shippingReferenceOrderId",
+                                                                                                                                    "data": "#shippingRoOoResponse.referenceOrderId"
+                                                                                                                                }
+                                                                                                                            },
+                                                                                                                            {
+                                                                                                                                "type": "context",
+                                                                                                                                "config": {
+                                                                                                                                    "requestMethod": "add",
+                                                                                                                                    "key": "shippingTradingPartnerId",
+                                                                                                                                    "data": "#shippingRoOoResponse.tradingPartnerId"
+                                                                                                                                }
+                                                                                                                            },
+                                                                                                                            {
+                                                                                                                                "type": "context",
+                                                                                                                                "config": {
+                                                                                                                                    "requestMethod": "add",
+                                                                                                                                    "key": "shippingOutBoundOrderId",
+                                                                                                                                    "data": "#shippingRoOoResponse.outboundOrderId"
+                                                                                                                                }
+                                                                                                                            },
+                                                                                                                            {
+                                                                                                                                "type": "context",
+                                                                                                                                "config": {
+                                                                                                                                    "requestMethod": "add",
+                                                                                                                                    "key": "shippingPartNo",
+                                                                                                                                    "data": "#shippingRoOoResponse.partNo"
+                                                                                                                                }
+                                                                                                                            },
+                                                                                                                            {
+                                                                                                                                "type": "context",
+                                                                                                                                "config": {
+                                                                                                                                    "requestMethod": "add",
+                                                                                                                                    "key": "shippingSerialNo",
+                                                                                                                                    "data": "#shippingRoOoResponse.serialNumber"
+                                                                                                                                }
+                                                                                                                            },
+                                                                                                                            {
+                                                                                                                                "type": "microservice",
+                                                                                                                                "comment": "second api call for getShipmentMAnifest API with Commercial BCN",
+                                                                                                                                "eventSource": "click",
+                                                                                                                                "config": {
+                                                                                                                                    "microserviceId": "getShipManifestStatus",
+                                                                                                                                    "requestMethod": "get",
+                                                                                                                                    "params": {
+                                                                                                                                        "OrderIdentificatorValue": "#shippingItemBcn",
+                                                                                                                                        "identificatorType": "BCN",
+                                                                                                                                        "userName": "#loginUUID.username"
+                                                                                                                                    }
+                                                                                                                                },
+                                                                                                                                "responseDependents": {
+                                                                                                                                    "onSuccess": {
+                                                                                                                                        "actions": [
+                                                                                                                                            {
+                                                                                                                                                "type": "context",
+                                                                                                                                                "config": {
+                                                                                                                                                    "requestMethod": "add",
+                                                                                                                                                    "key": "shippingShipManifestStatus",
+                                                                                                                                                    "data": "responseData"
+                                                                                                                                                }
+                                                                                                                                            },
+                                                                                                                                            {
+                                                                                                                                                "type": "condition",
+                                                                                                                                                "config": {
+                                                                                                                                                    "operation": "isValid",
+                                                                                                                                                    "lhs": "#shippingShipManifestStatus"
+                                                                                                                                                },
+                                                                                                                                                "responseDependents": {
+                                                                                                                                                    "onSuccess": {
+                                                                                                                                                        "actions": [
+                                                                                                                                                            {
+                                                                                                                                                                "type": "context",
+                                                                                                                                                                "config": {
+                                                                                                                                                                    "requestMethod": "add",
+                                                                                                                                                                    "key": "shippingShipmentID",
+                                                                                                                                                                    "data": "#shippingShipManifestStatus.shipmentId"
+                                                                                                                                                                }
+                                                                                                                                                            },
+                                                                                                                                                            {
+                                                                                                                                                                "type": "multipleCondition",
+                                                                                                                                                                "config": {
+                                                                                                                                                                    "multi": true,
+                                                                                                                                                                    "operator": "AND",
+                                                                                                                                                                    "conditions": [
+                                                                                                                                                                        {
+                                                                                                                                                                            "operation": "isValid",
+                                                                                                                                                                            "lhs": "#shippingShipManifestStatus.shipmentId",
+                                                                                                                                                                            "rhs": true
+                                                                                                                                                                        },
+                                                                                                                                                                        {
+                                                                                                                                                                            "operation": "isValid",
+                                                                                                                                                                            "lhs": "#shippingShipManifestStatus.manifestDate",
+                                                                                                                                                                            "rhs": true
+                                                                                                                                                                        }
+                                                                                                                                                                    ]
+                                                                                                                                                                },
+                                                                                                                                                                "eventSource": "click",
+                                                                                                                                                                "responseDependents": {
+                                                                                                                                                                    "onSuccess": {
+                                                                                                                                                                        "actions": [
+                                                                                                                                                                            {
+                                                                                                                                                                                "type": "updateComponent",
+                                                                                                                                                                                "config": {
+                                                                                                                                                                                    "key": "shippingErrorTitleUUID",
+                                                                                                                                                                                    "properties": {
+                                                                                                                                                                                        "titleValue": "Ship/Manifest complete",
+                                                                                                                                                                                        "isShown": true
+                                                                                                                                                                                    }
+                                                                                                                                                                                }
+                                                                                                                                                                            }
+                                                                                                                                                                        ]
+                                                                                                                                                                    },
+                                                                                                                                                                    "onFailure": {
+                                                                                                                                                                        "actions": [
+                                                                                                                                                                            {
+                                                                                                                                                                                "type": "routingToDellShippingPage"
+                                                                                                                                                                            }
+                                                                                                                                                                        ]
+                                                                                                                                                                    }
+                                                                                                                                                                }
+                                                                                                                                                            }
+                                                                                                                                                        ]
+                                                                                                                                                    },
+                                                                                                                                                    "onFailure": {
+                                                                                                                                                        "actions": [
+                                                                                                                                                            {
+                                                                                                                                                                "type": "routingToDellShippingPage"
+                                                                                                                                                            }
+                                                                                                                                                        ]
+                                                                                                                                                    }
+                                                                                                                                                }
+                                                                                                                                            }
+                                                                                                                                        ]
+                                                                                                                                    },
+                                                                                                                                    "onFailure": {
+                                                                                                                                        "actions": [
+                                                                                                                                            {
+                                                                                                                                                "type": "context",
+                                                                                                                                                "config": {
+                                                                                                                                                    "requestMethod": "add",
+                                                                                                                                                    "key": "errorMsg",
+                                                                                                                                                    "data": "responseData"
+                                                                                                                                                }
+                                                                                                                                            },
+                                                                                                                                            {
+                                                                                                                                                "type": "updateComponent",
+                                                                                                                                                "config": {
+                                                                                                                                                    "key": "shippingErrorTitleUUID",
+                                                                                                                                                    "properties": {
+                                                                                                                                                        "titleValue": "#errorMsg",
+                                                                                                                                                        "isShown": true
+                                                                                                                                                    }
+                                                                                                                                                }
+                                                                                                                                            }
+                                                                                                                                        ]
+                                                                                                                                    }
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                        ]
+                                                                                                                    },
+                                                                                                                    "onFailure": {
+                                                                                                                        "actions": [
+                                                                                                                            {
+                                                                                                                                "type": "context",
+                                                                                                                                "config": {
+                                                                                                                                    "requestMethod": "add",
+                                                                                                                                    "key": "errorMsg",
+                                                                                                                                    "data": "responseData"
+                                                                                                                                }
+                                                                                                                            },
+                                                                                                                            {
+                                                                                                                                "type": "updateComponent",
+                                                                                                                                "config": {
+                                                                                                                                    "key": "shippingErrorTitleUUID",
+                                                                                                                                    "properties": {
+                                                                                                                                        "titleValue": "#errorMsg",
+                                                                                                                                        "isShown": true
+                                                                                                                                    }
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                        ]
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            }
+                                                                                                        ]
+                                                                                                    },
+                                                                                                    "onFailure": {
+                                                                                                        "actions": [
+                                                                                                            {
+                                                                                                                "type": "routingToDellShippingPage"
+                                                                                                            }
+                                                                                                        ]
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        ]
+                                                                                    },
+                                                                                    "onFailure": {
+                                                                                        "actions": [
+                                                                                            {
+                                                                                                "type": "context",
+                                                                                                "config": {
+                                                                                                    "requestMethod": "add",
+                                                                                                    "key": "errorMsg",
+                                                                                                    "data": "responseData"
+                                                                                                }
+                                                                                            },
+                                                                                            {
+                                                                                                "type": "updateComponent",
+                                                                                                "config": {
+                                                                                                    "key": "shippingErrorTitleUUID",
+                                                                                                    "properties": {
+                                                                                                        "titleValue": "#errorMsg",
+                                                                                                        "isShown": true
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        ]
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    "onFailure": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "microservice",
+                                                                "comment": "api call for getROOO",
+                                                                "eventSource": "click",
+                                                                "config": {
+                                                                    "microserviceId": "getRoOoDetails",
+                                                                    "requestMethod": "get",
+                                                                    "params": {
+                                                                        "OrderIdentificatorValue": "#shippingUserSearchCriteria.shippingOrderIdValue",
+                                                                        "IdentificatorType": "#userOptionShippingOrderIdType",
+                                                                        "userName": "#loginUUID.username",
+                                                                        "locationId": "#userSelectedLocation",
+                                                                        "clientId": "#userSelectedClient",
+                                                                        "contractId": "#userSelectedContract"
+                                                                        
+                                                                    }
+                                                                },
+                                                                "responseDependents": {
+                                                                    "onSuccess": {
+                                                                        "actions": [
+                                                                            {
+                                                                                "type": "context",
+                                                                                "config": {
+                                                                                    "requestMethod": "add",
+                                                                                    "key": "shippingRoOoResponse",
+                                                                                    "data": "responseData"
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "type": "context",
+                                                                                "config": {
+                                                                                    "requestMethod": "add",
+                                                                                    "key": "shippingItemBcn",
+                                                                                    "data": "#shippingRoOoResponse.itemBcn"
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "type": "context",
+                                                                                "config": {
+                                                                                    "requestMethod": "add",
+                                                                                    "key": "shippingSerialNo",
+                                                                                    "data": "#shippingRoOoResponse.serialNumber"
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "type": "context",
+                                                                                "config": {
+                                                                                    "requestMethod": "add",
+                                                                                    "key": "shippingPartDesc",
+                                                                                    "data": "#shippingRoOoResponse.partDesc"
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "type": "context",
+                                                                                "config": {
+                                                                                    "requestMethod": "add",
+                                                                                    "key": "shippingReferenceOrderId",
+                                                                                    "data": "#shippingRoOoResponse.referenceOrderId"
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "type": "context",
+                                                                                "config": {
+                                                                                    "requestMethod": "add",
+                                                                                    "key": "shippingTradingPartnerId",
+                                                                                    "data": "#shippingRoOoResponse.tradingPartnerId"
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "type": "context",
+                                                                                "config": {
+                                                                                    "requestMethod": "add",
+                                                                                    "key": "shippingOutBoundOrderId",
+                                                                                    "data": "#shippingRoOoResponse.outboundOrderId"
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "type": "context",
+                                                                                "config": {
+                                                                                    "requestMethod": "add",
+                                                                                    "key": "shippingPartNo",
+                                                                                    "data": "#shippingRoOoResponse.partNo"
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "type": "context",
+                                                                                "config": {
+                                                                                    "requestMethod": "add",
+                                                                                    "key": "shippingSerialNo",
+                                                                                    "data": "#shippingRoOoResponse.serialNumber"
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "type": "context",
+                                                                                "config": {
+                                                                                    "requestMethod": "add",
+                                                                                    "key": "shippingCondition",
+                                                                                    "data": "#shippingRoOoResponse.condition"
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "type": "condition",
+                                                                                "config": {
+                                                                                    "operation": "isEqualToIgnoreCase",
+                                                                                    "lhs": "#shippingRoOoResponse.orderProcessTypeCode",
+                                                                                    "rhs": "OSTK"
+                                                                                },
+                                                                                "eventSource": "input",
+                                                                                "responseDependents": {
+                                                                                    "onSuccess": {
+                                                                                        "actions": [
+                                                                                            {
+                                                                                                "type": "context",
+                                                                                                "config": {
+                                                                                                    "requestMethod": "add",
+                                                                                                    "key": "boxShipping",
+                                                                                                    "data": true
+                                                                                                }
+                                                                                            },
+                                                                                            {
+                                                                                                "type": "context",
+                                                                                                "config": {
+                                                                                                    "requestMethod": "add",
+                                                                                                    "key": "shippingFromDashboard",
+                                                                                                    "data": true
+                                                                                                }
+                                                                                            },
+                                                                                            {
+                                                                                                "type": "renderTemplate",
+                                                                                                "config": {
+                                                                                                    "templateId": "dell_shipping.json",
+                                                                                                    "mode": "local"
+                                                                                                },
+                                                                                                "eventSource": "click"
+                                                                                            }
+                                                                                        ]
+                                                                                    },
+                                                                                    "onFailure": {
+                                                                                        "actions": [
+                                                                                            {
+                                                                                                "type": "context",
+                                                                                                "config": {
+                                                                                                    "requestMethod": "add",
+                                                                                                    "key": "boxShipping",
+                                                                                                    "data": false
+                                                                                                }
+                                                                                            },
+                                                                                            {
+                                                                                                "type": "microservice",
+                                                                                                "config": {
+                                                                                                    "microserviceId": "getROByBCN",
+                                                                                                    "requestMethod": "get",
+                                                                                                    "params": {
+                                                                                                        "userName": "#userAccountInfo.PersonalDetails.USERID",
+                                                                                                        "itemBCN": "#shippingItemBcn"
+                                                                                                    }
+                                                                                                },
+                                                                                                "responseDependents": {
+                                                                                                    "onSuccess": {
+                                                                                                        "actions": [
+                                                                                                            {
+                                                                                                                "type": "context",
+                                                                                                                "config": {
+                                                                                                                    "requestMethod": "add",
+                                                                                                                    "key": "ROByBCNForDiscrepancy",
+                                                                                                                    "data": "responseData"
+                                                                                                                }
+                                                                                                            },
+                                                                                                            {
+                                                                                                                "type": "microservice",
+                                                                                                                "config": {
+                                                                                                                    "microserviceId": "receiptDate",
+                                                                                                                    "requestMethod": "get",
+                                                                                                                    "params": {
+                                                                                                                        "locationId": "#userSelectedLocation",
+                                                                                                                        "itemId": "#shippingRoOoResponse.itemId",
+                                                                                                                        "userName": "#userAccountInfo.PersonalDetails.USERID",
+                                                                                                                        "bcn": "#shippingItemBcn",
+                                                                                                                        "orderId": "#ROByBCNForDiscrepancy"
+                                                                                                                    }
+                                                                                                                },
+                                                                                                                "responseDependents": {
+                                                                                                                    "onSuccess": {
+                                                                                                                        "actions": [
+                                                                                                                            {
+                                                                                                                                "type": "context",
+                                                                                                                                "config": {
+                                                                                                                                    "requestMethod": "add",
+                                                                                                                                    "key": "receiptDateForDiscrepancy",
+                                                                                                                                    "data": "responseData"
+                                                                                                                                }
+                                                                                                                            },
+                                                                                                                            {
+                                                                                                                                "type": "dateFormat",
+                                                                                                                                "config": {
+                                                                                                                                    "format": "dd MMM, yyy",
+                                                                                                                                    "dateKey": "localDateTime",
+                                                                                                                                    "targetKey": "tat",
+                                                                                                                                    "source": "#receiptDateForDiscrepancy"
+                                                                                                                                }
+                                                                                                                            },
+                                                                                                                            {
+                                                                                                                                "type": "microservice",
+                                                                                                                                "config": {
+                                                                                                                                    "microserviceId": "getPartModelAndWarrentyDetails",
+                                                                                                                                    "requestMethod": "get",
+                                                                                                                                    "params": {
+                                                                                                                                        "locationId": "#userSelectedLocation",
+                                                                                                                                        "clientId": "#userSelectedClient",
+                                                                                                                                        "contractId": "#userSelectedContract",
+                                                                                                                                        "reforderId": "#ROByBCNForDiscrepancy",
+                                                                                                                                        "partNumber": "#shippingPartNo",
+                                                                                                                                        "userName": "#userAccountInfo.PersonalDetails.USERID"
+                                                                                                                                    }
+                                                                                                                                },
+                                                                                                                                "responseDependents": {
+                                                                                                                                    "onSuccess": {
+                                                                                                                                        "actions": [
+                                                                                                                                            {
+                                                                                                                                                "type": "context",
+                                                                                                                                                "config": {
+                                                                                                                                                    "requestMethod": "add",
+                                                                                                                                                    "key": "discrepancyPartAndWarrantyDetails",
+                                                                                                                                                    "data": "responseData"
+                                                                                                                                                }
+                                                                                                                                            },
+                                                                                                                                            {
+                                                                                                                                                "type": "context",
+                                                                                                                                                "config": {
+                                                                                                                                                    "requestMethod": "add",
+                                                                                                                                                    "key": "shippingFromDashboard",
+                                                                                                                                                    "data": true
+                                                                                                                                                }
+                                                                                                                                            },
+                                                                                                                                            {
+                                                                                                                                                "type": "renderTemplate",
+                                                                                                                                                "config": {
+                                                                                                                                                    "templateId": "dell_shipping.json",
+                                                                                                                                                    "mode": "local"
+                                                                                                                                                }
+                                                                                                                                            }
+                                                                                                                                        ]
+                                                                                                                                    },
+                                                                                                                                    "onFailure": {
+                                                                                                                                        "actions": [
+                                                                                                                                            {
+                                                                                                                                                "type": "context",
+                                                                                                                                                "config": {
+                                                                                                                                                    "requestMethod": "add",
+                                                                                                                                                    "key": "errorDisp",
+                                                                                                                                                    "data": "responseData"
+                                                                                                                                                }
+                                                                                                                                            },
+                                                                                                                                            {
+                                                                                                                                                "type": "updateComponent",
+                                                                                                                                                "config": {
+                                                                                                                                                    "key": "shippingErrorTitleUUID",
+                                                                                                                                                    "properties": {
+                                                                                                                                                        "titleValue": "#errorDisp",
+                                                                                                                                                        "isShown": true
+                                                                                                                                                    }
+                                                                                                                                                }
+                                                                                                                                            }
+                                                                                                                                        ]
+                                                                                                                                    }
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                        ]
+                                                                                                                    },
+                                                                                                                    "onFailure": {
+                                                                                                                        "actions": [
+                                                                                                                            {
+                                                                                                                                "type": "context",
+                                                                                                                                "config": {
+                                                                                                                                    "requestMethod": "add",
+                                                                                                                                    "key": "errorDisp",
+                                                                                                                                    "data": "responseData"
+                                                                                                                                }
+                                                                                                                            },
+                                                                                                                            {
+                                                                                                                                "type": "updateComponent",
+                                                                                                                                "config": {
+                                                                                                                                    "key": "shippingErrorTitleUUID",
+                                                                                                                                    "properties": {
+                                                                                                                                        "titleValue": "#errorDisp",
+                                                                                                                                        "isShown": true
+                                                                                                                                    }
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                        ]
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            }
+                                                                                                        ]
+                                                                                                    },
+                                                                                                    "onFailure": {
+                                                                                                        "actions": [
+                                                                                                            {
+                                                                                                                "type": "context",
+                                                                                                                "config": {
+                                                                                                                    "requestMethod": "add",
+                                                                                                                    "key": "errorDisp",
+                                                                                                                    "data": "responseData"
+                                                                                                                }
+                                                                                                            },
+                                                                                                            {
+                                                                                                                "type": "updateComponent",
+                                                                                                                "config": {
+                                                                                                                    "key": "shippingErrorTitleUUID",
+                                                                                                                    "properties": {
+                                                                                                                        "titleValue": "#errorDisp",
+                                                                                                                        "isShown": true
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            }
+                                                                                                        ]
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        ]
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "onFailure": {
+                                                                        "actions": [
+                                                                            {
+                                                                                "type": "context",
+                                                                                "config": {
+                                                                                    "requestMethod": "add",
+                                                                                    "key": "errorMsg",
+                                                                                    "data": "responseData"
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "type": "updateComponent",
+                                                                                "config": {
+                                                                                    "key": "shippingErrorTitleUUID",
+                                                                                    "properties": {
+                                                                                        "titleValue": "#errorMsg",
+                                                                                        "isShown": true
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "errorMsg",
+                                                    "data": "responseData"
+                                                }
+                                            },
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "shippingErrorTitleUUID",
+                                                    "properties": {
+                                                        "titleValue": "#errorMsg",
+                                                        "isShown": true
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            },
+                            {
+                            "type": "sessionStorageOperation",
+                            "mode": "write",
+                            "eventSource": "click",
+                            "config": {
+                                "localKey": "userSelectedShippingType",
+                                "localData": "#userOptionShippingOrderIdType"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "footer": []
+    },
+    "Result": "SUCCESS"
+}

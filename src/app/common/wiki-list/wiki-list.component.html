@@ -1,0 +1,32 @@
+<mat-accordion class="example-headers-align wiki-panel">
+	<mat-expansion-panel class="grey-border" [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+		<mat-expansion-panel-header>
+			<mat-panel-title>
+				WIKI ( {{wikiTilesList?.length}} )
+			</mat-panel-title>
+		</mat-expansion-panel-header>
+
+		<mat-accordion class="wiki-tiles wiki-accord">
+			<mat-expansion-panel *ngFor="let wkData of wikiTilesList; let i = index" class="grey-border m-2">
+				<mat-expansion-panel-header (click)="wikiExpand(wkData)">
+					<mat-panel-title>
+						<span class="font-yellow">WIKI:</span> {{wkData.wikiTitle}}
+					</mat-panel-title>
+				</mat-expansion-panel-header>
+				<div [innerHtml]="wkData.wikiData" class="richText-border p-2"></div>
+				<label class="heading3-regular pt-3 pb-3"><span *ngIf="wkData.display.location">{{wkData.display.location}} > </span><span *ngIf="wkData.display.client">{{wkData.display.client}} > </span><span *ngIf="wkData.display.contract">{{wkData.display.contract}} > </span><span *ngIf="wkData.display.workCenter">{{wkData.display.workCenter}} > </span><span *ngIf="wkData.display.family">{{wkData.display.family}} > </span><span *ngIf="wkData.display.platform">{{wkData.display.platform}} > </span><span *ngIf="wkData.display.modelPart">{{wkData.display.modelPart}} > </span><span *ngIf="wkData.display.commodity">{{wkData.display.commodity}} > </span><span *ngIf="wkData.display.defect">{{wkData.display.defect}}</span></label>
+				<div>
+					<p class="font-italic">Created By: {{wkData?.author}}</p>
+					<p class="font-italic"><span>Version: {{wkData?.wikiVersion | number: '1.0-1'}}, </span><span>Last Updated: {{wkData?.timestamp}}</span></p>
+				</div>
+				<mat-action-row>
+					<button type="button" class="btn btn-link" (click)="openDialog(wkData, 'vHistory')">Version History</button>
+					<button type="button" class="btn btn-outline-dark mr-2" (click)="openDialog(wkData, 'comments')">
+						<mat-icon> chat_bubble</mat-icon> <span *ngIf="wkData?.commentsCount">({{wkData?.commentsCount}})</span> Comment(s)
+					</button>
+				</mat-action-row>
+			</mat-expansion-panel>
+		</mat-accordion>
+		<button class="custButStyle" *ngIf="!isHideAddWiki" (click)="showCreateWiki()">Add Wiki</button>
+	</mat-expansion-panel>
+</mat-accordion>

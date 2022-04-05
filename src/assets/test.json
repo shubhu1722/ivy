@@ -1,0 +1,395 @@
+{
+    "ResultData": {
+        "ctype": "page",
+        "uuid": "pageUUID",
+        "visibility": true,
+        "hooks": [],
+        "header": [
+            {
+                "ctype": "breadcrumb",
+                "style": "padding-left: 5px;font-size: 14px;",
+                "breadcrumbs": [
+                    {
+                        "label": "Facility"
+                    },
+                    {
+                        "label": "Contact"
+                    },
+                    {
+                        "label": "Line"
+                    }
+                ]
+            },
+            {
+                "ctype": "toolbar",
+                "css": "padding-top: 35px",
+                "toolbarClass": "pagecontent-header",
+                "items": [
+                    {
+                        "ctype": "title",
+                        "uuid": "VMIHeadertitleuuid",
+                        "titleValue": "VMI",
+                        "titleClass": "section-title",
+                        "css": "padding-bottom:35px;padding-left:4px;"
+                    },
+                    {
+                        "ctype": "spacer",
+                        "uuid": "emptySpaceUUID",
+                        "class": "empty-space"
+                    },
+                    {
+                        "ctype": "iconbutton",
+                        "iconButtonClass": "headeropen-button",
+                        "text": "Click",
+                        "uuid": "pageopenUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "hidden": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "icon": "menu_open",
+                        "disableRipple": true,
+                        "iconClass": "header-icon",
+                        "css": "padding-bottom: 35px",
+                        "actions": [
+                            {
+                                "type": "toggle",
+                                "eventSource": "click",
+                                "name": "subProcessRightNavref"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "pageopenUUID",
+                                    "properties": {
+                                        "hidden": true
+                                    }
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "items": [
+            {
+                "ctype": "title",
+                "uuid": "errorTitleUUID",
+                "titleClass": "error-title",
+                "isShown": false,
+                "containerId": "prebodysectionone"
+            },
+            {
+                "ctype": "taskPanel",
+                "isblueBorder": true,
+                "containerId": "prebodysectiontwo",
+                "header": {
+                    "title": "Last Note",
+                    "svgIcon": "description_icon",
+                    "iconClass": "active-header",
+                    "class": "po-specific",
+                    "statusIcon": "hourglass_empty",
+                    "statusClass": "incomplete-status"
+                },
+                "expanded": false,
+                "hideToggle": true,
+                "uuid": "RepairInformationUUID",
+                "visibility": false,
+                "disabled": false,
+                "hooks": [],
+                "validations": [],
+                "actions": [],
+                "items": [
+                    {
+                        "ctype": "disabled",
+                        "uuid": "RepairInformationDisabledUUID",
+                        "disabledClass": "disabledFalse"
+                    },
+                    {
+                        "ctype": "title",
+                        "uuid": "verifoneVMIRepairInformationSMUUID",
+                        "titleClass": "greyish-black body-italic",
+                        "title": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In pulvinar condimentum vehicula."
+                    }
+                ]
+            },
+        
+            {
+                "ctype": "taskPanel",
+                "isblueBorder": true,
+                "containerId": "prebodysectiontwo",
+                "header": {
+                    "title": "Repair Information",
+                    "svgIcon": "description_icon",
+                    "iconClass": "active-header",
+                    "class": "po-specific",
+                    "statusIcon": "hourglass_empty",
+                    "statusClass": "incomplete-status"
+                },
+                "expanded": false,
+                "hideToggle": true,
+                "uuid": "RepairInformationUUID",
+                "visibility": false,
+                "disabled": false,
+                "hooks": [],
+                "validations": [],
+                "actions": [],
+                "items": [
+                    {
+                        "ctype": "disabled",
+                        "uuid": "RepairInformationDisabledUUID",
+                        "disabledClass": "disabledFalse"
+                    },
+                    {
+                        "ctype": "title",
+                        "uuid": "verifoneVMIRepairInformationSMHeadingUUID",
+                        "titleClass": "greyish-black heading2",
+                        "title": "Customer Complaint 2020-07-22. 12.02"
+                    },
+                    {
+                        "ctype": "title",
+                        "uuid": "verifoneVMIRepairInformationSMUUID",
+                        "titleClass": "greyish-black body-italic",
+                        "title": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget odio. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes,"
+                    },
+                    {
+                        "ctype": "title",
+                        "uuid": "verifoneVMIRepairInformationSMHeadingUUID",
+                        "titleClass": "greyish-black heading2",
+                        "title": "Special Message"
+                    },
+                    {
+                        "ctype": "title",
+                        "uuid": "verifoneVMIRepairInformationSMUUID",
+                        "titleClass": "greyish-black body-italic",
+                        "title": "Special Message sample - Lorem ipsum dolor sit amet, consectetur adipiscing elit. In pulvinar condimentum vehicula. Sed eros erat, vehicula a convallis et, ullamcorper a nibh. Fusce vitae nibh sed arcu ultricies euismod ac at nibh. Integer non egestas diam. Aenean sit amet varius sem. Etiam at purus tellus. Nam in elit felis. Quisque mollis rhoncus dolor, eu aliquam elit ullamcorper eget. Curabitur aliquet lacus id libero tincidunt dapibus."
+                    },
+                    {
+                     "ctype": "checkbox",
+                     "uuid": "RepairInformationCheckboxUUID",
+                     "name": "RepairInformationCheckbox",
+                     "hooks":[],
+                     "validations":[],
+                    
+                     "label": "I Have Read This Message",
+                     "labelPosition": "after",
+                 
+                     "actions": [
+                         {
+                             "type": "context",
+                             "config":{
+                                 "requestMethod": "add",
+                                 "key": "RepairInformationcheck",
+                                 "data": "formData"
+                             },
+                             "eventSource": "click"
+                         },
+                         {
+                             "type": "condition",
+                             "config":{
+                                 "operation": "isEqualTo",
+                                 "lhs": "#RepairInformationcheck.RepairInformationCheckbox",
+                                 "rhs": true
+                             },
+                             "eventSource": "click",
+                             "responseDependents":{
+                                 "onSuccess":{
+                                     "actions":[
+                                         {
+                                             "type": "updateComponent",
+                                             "config":{
+                                                 "key": "RepairInformationSubmittedUUID",
+                                                 "properties":{
+                                                     "disabled": false
+                                                 }
+                                             }
+                                         }
+                                     ]
+                                 },
+                                 "onFailure":{
+                                     "actions":[
+                                         {
+                                             "type": "updateComponent",
+                                             "config":{
+                                                 "key": "RepairInformationSubmittedUUID",
+                                                 "properties":{
+                                                     "disabled": true
+                                                 }
+                                             }
+                                         }
+                                     ]
+                                 }
+                             }
+                         }
+                     ]
+                    
+
+                    }
+                ],
+                "footer":[
+                    {
+                        "ctype": "button",
+                        "color": "primary",
+                        "text": "Complete",
+                        "uuid": "RepairInformationSubmittedUUID",
+                        "name": "RepairInformationSubmitted",
+                        "visibility": true,
+                        "disabled": true,
+                        "checkGroupValidity": false,
+                        "type": "submit",
+                        "class": "primary-btn",
+                        "hooks": [],
+                        "validations": [],
+                        "actions":[
+                            {
+                                "type": "updateComponent",
+                                "config":{
+                                    "key": "RecordPTIDUUID",
+                                    "properties":{
+                                        "expanded": true
+                                    }
+
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "context",
+                                "config":{
+                                    "requestMethod": "add",
+                                    "key": "RepairInformationSubmittedData",
+                                    "data": "formData"
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config":{
+                                    "key": "RepairInformationUUID",
+                                    "properties": {
+                                        "expanded": false,
+                                        "disabled": false,
+                                        "header":{
+                                            "title": "Repair Information",
+                                            "svgIcon": "description_icon",
+                                            "statusIcon": "check_circle",
+                                            "statusClass": "complete-status",
+                                            "class": "complete-task",
+                                            "iconClass": "complete-task"
+                                        }
+                                    }
+        
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type":"condition",
+                                "config": {
+                                    "operation": "isValid",
+                                    "lhs": "#specialMessageData.rows.0.alert"
+                                },
+                                "eventSource": "click",
+                                "responseDependents": {
+                                    "onSucces":{
+                                        "action":[
+                                            {
+                                                "type": "updateComponent",
+                                                "config":{
+                                                    "key": "verifoneVMIRepairInformationSMUUID",
+                                                    "properties": {
+                                                        "title": "#specialMessageData.rows.0.alert",
+                                                        "isShown": true
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "RecordPTIDUUID",
+                                                    "properties":{
+                                                        "expanded": true,
+                                                        "disabled": false,
+                                                        "header": {
+                                                            "title": "Record PTID",
+                                                            "svgIcon": "description_icon",
+                                                            "iconClass": "active-header",
+                                                            "class": "po-specific",
+                                                            "statusIcon": "hourglass_empty",
+                                                            "statusClass": "incomplete-status"
+                                                        }
+                                                    }
+                                                },
+                                                "eventSource": "click"
+                                            }
+                                        ]
+                                    },
+                                    "onFailure":{
+                                        "actions":[
+        
+                                        ]
+                                    }
+                                }
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "RepairInformationSubmittedUUID",
+                                    "properties":{
+                                        "disabled": true
+                                    }
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "ctype": "taskPanel",
+                "header":{
+                    "title": "Record PTID",
+                    "svgIcon": "description_icon",
+                    "iconClass": "active-header",
+                    "class": "po-specific",
+                    "statusIcon": "hourglass_empty",
+                    "statusClass": "incomplete-status"
+                },
+                "expanded": false,
+                "hideToggle": true,
+                "uuid": "RecordPTIDUUID",
+                "visibility": true,
+                "disabled": false,
+                "hooks":[],
+                "validations": [],
+                "actions": [],
+                "items":[
+                    {
+                        "ctype": "disabled",
+                        "uuid": "RecordPTIDDisabledUUID",
+                        "disabledClass": "disabledFalse"
+                    },
+                    {
+                        "ctype": "title",
+                        "uuid": "RecordPTIDTextUUID",
+                        "titleValue": "Record the PTID",
+                        "titleValueClass": "body-italic text-secondary"
+                    },
+                    {
+                        "ctype": "textField",
+                        "dropdownClass": "mb-3 body2 reworkCommon",
+                        "uuid": "verifoneRecordPTIDDropdownUUID",
+                        "name": "verifoneRecordPTIDDropdown",
+                        "label": "PTID",
+                        "required": true,
+                        "visibility": true,
+                        "maxLength": "none",
+                        "textfieldClass": "col-5 p-0 ml-5 text-padding mat-focused",
+                        "dropdownWithText": true
+                    }
+                ]
+            }
+        ]
+    },
+    "Result": "SUCCESS"
+}

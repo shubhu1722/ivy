@@ -1,0 +1,23 @@
+<div *ngIf="visibility" [formGroup]="group" [class]="formGroupClass" [style]="formGroupStyles" [hidden]="hidden">
+    <label *ngIf="label !== ''" [for]="name" [class]="labelClass">{{label | translate}} </label>
+    <select placeholder='Select' [style]="inputStyles" class="body" [required]="required" [class] = "dropdownClass" [formControlName]="name" (change)="changeDropdown($event)" (openedChange)="openedChangedHandler($event)">
+        <option *ngIf="!flag" selected value="null" disabled>-Select-</option>
+        <option *ngFor="let option of options" [value]="option.code">{{option.displayValue | translate }}</option>
+    </select>
+</div>
+
+<div *ngIf="(dropdownWithText && visibilityMod)" class="d-flex pb-3" [formGroup]="group" [class]="formGroupClass"
+    [style]="formGroupStyles" [hidden]="hidden">
+    <label *ngIf="label !== ''" [for]="name" [class]="labelClass">{{label | translate}} </label>
+
+    <div class="select-editable">
+        <select onchange="this.nextElementSibling.value=this.value" placeholder='' [style]="inputStyles"
+            class="body" [required]="required" [formControlName]="name" (change)="changeDropdown($event)"
+            (openedChange)="openedChangedHandler($event)">
+            <option *ngIf="!removeSelect"  value="null" disabled></option>
+            <option *ngFor="let option of options" [value]="option.code">{{option.displayValue | translate }}</option>
+        </select>
+        <input type="text" name="format" value="" placeholder="----" (input)="changeText($event)"
+        [formControlName]="name" [maxlength]="maxLength" [minlength]="minLength"/>
+    </div>
+</div>

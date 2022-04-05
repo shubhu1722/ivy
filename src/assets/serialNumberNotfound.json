@@ -1,0 +1,142 @@
+{
+  "ctype": "taskPanel",
+  "title": "",
+  "header": {
+      "title": "Serial Number not found",
+      "icon": "description",
+      "css": "color:black",
+      "status": ""
+  },
+  "expanded": "true",
+  "hideToggle": "true",
+  "uuid": "receivingUUID",
+  "css": "width:50%;margin:auto;height:10vh",
+  "visibility": true,
+  "hooks": [],
+  "validations": [],
+  "actions": [],
+  "Items": [
+      {
+          "ctype": "divider",
+          "css": "width:100%;"
+      },
+      {
+          "ctype": "textField",
+          "uuid": "SearchCSONumberUUID",
+          "hooks": [],
+          "validations": [
+              {
+                  "type": "regex",
+                  "script": ""
+              }
+          ],
+          "actions": [],
+          "type": "text",
+          "css": "width:60%; margin-top:20px;",
+          "required": true,
+          "placeholder": "Enter CSO",
+          "submitable": true,
+          "label": "Search CSO Number",
+          "labelPosition": "left",
+          "name": "SearchCSONumber",
+          "inputStyles": "width: 50%",
+          "value": ""
+      }
+  ],
+  "footer": [
+      {
+          "ctype": "button",
+          "inputStyles": "float:right; background-color:rgb(245,245,245); color:rgb(152,152,152);",
+          "text": "Complete",
+          "uuid": "CompleteUUID",
+          "visibility": true,
+          "disabled": false,
+          "type": "submit",
+          "hooks": [],
+          "validations": [],
+          "actions": [
+              {
+                  "type": "context",
+                  "config": {
+                      "requestMethod": "add",
+                      "key": "receivingUUID",
+                      "data": "formData"
+                  },
+                  "eventSource": "click"
+              },
+              {
+                  "type": "microservice",
+                  "config": {
+                      "microserviceId": "serialNumberNotfound",
+                      "requestMethod": "get",
+                      "params": {
+                          "SearchCSONumber": "#receivingUUID.SearchCSONumber"
+                      }
+                  },
+                  "eventSource": "click",
+                  "responseDependents": {
+                      "onSuccess": {
+                          "actions": [
+                              {
+                                  "type": "context",
+                                  "config": {
+                                      "requestMethod": "add",
+                                      "key": "SerialNumberNotFoundInfo",
+                                      "data": "responseData"
+                                  }
+                              },
+                              {
+                                  "type": "microservice",
+                                  "config": {
+                                      "microserviceId": "getConfirmSerialNumber",
+                                      "requestMethod": "get",
+                                      "params": {
+                                          "SearchCSONumberId": "#receivingUUID.SearchCSONumber"
+                                      }
+                                  },
+                                  "responseDependents": {
+                                      "onSuccess": {
+                                          "actions": [
+                                              {
+                                                  "type": "context",
+                                                  "config": {
+                                                      "requestMethod": "add",
+                                                      "key": "ConfirmSerialNumber",
+                                                      "data": "responseData"
+                                                  }
+                                              },
+                                              {
+                                                  "type": "renderTemplate",
+                                                  "config": {
+                                                      "templateId": "confirmserialNumber.json",
+                                                      "mode": "local"
+                                                  }
+                                              }
+                                          ]
+                                      },
+                                      "onFailure": {
+                                          "actions": [
+                                              {
+                                                  "type": "",
+                                                  "message": ""
+                                              }
+                                          ]
+                                      }
+                                  }
+                              }
+                          ]
+                      },
+                      "onFailure": {
+                          "actions": [
+                              {
+                                  "type": "",
+                                  "message": ""
+                              }
+                          ]
+                      }
+                  }
+              }
+          ]
+      }
+  ]
+}

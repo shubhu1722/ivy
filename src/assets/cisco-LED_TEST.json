@@ -1,0 +1,54 @@
+{
+	"ctype": "subProcess",
+	"title": "LED_TEST",
+	"uuid": "assesmentUUID",
+	"subMenuIndex": 0,
+	"clientName": "CISCO",
+	"openRightNav": false,
+	"hooks": [
+	  {
+		"type": "microservice",
+		"hookType": "beforeInit",
+		"config": {
+		  "microserviceId": "getSubProcessPageBody",
+		  "requestMethod": "get",
+		  "params": {
+			"subProcessId": "#getReferenceDataKeys.subProcess.Cisco.LED_TEST",
+			"userName": "#userAccountInfo.PersonalDetails.USERID"
+		  },
+		  "isLocal": false,
+		  "LocalService": "assets/Responses/SubProcess/CISCO/LED_TESTSubProcess.json"
+		},
+		"responseDependents": {
+		  "onSuccess": {
+			"actions": [
+			  {
+				"type": "context",
+				"config": {
+				  "requestMethod": "add",
+				  "key": "LED_TESTData",
+				  "data": "responseData"
+				}
+			  },
+			  {
+				"type": "renderTemplate",
+				"config": {
+				  "mode": "remote",
+				  "targetId": "mainPageContentBodysp",
+				  "templateId": "LED_TESTData"
+				}
+			  }
+			]
+		  },
+		  "onFailure": {
+			"actions": [
+			  {
+				"type": "toast",
+				"message": "Failed to fetch Cisco LED_TEST JSON"
+			  }
+			]
+		  }
+		}
+	  }
+	]
+  }

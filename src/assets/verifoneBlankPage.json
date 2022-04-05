@@ -1,0 +1,339 @@
+{
+    "ResultData": {
+        "ctype": "page",
+        "uuid": "pageUUID",
+        "css": "",
+        "visibility": true,
+        "hooks": [
+            {
+                "type": "condition",
+                "hookType": "afterInit",
+                "config": {
+                    "operation": "isEqualTo",
+                    "lhs": "#isTimeOutFromCiscoWC",
+                    "rhs": true
+                },
+                "responseDependents": {
+                    "onSuccess": {
+                        "actions": [
+                            {
+                                "type": "microservice",
+                                "config": {
+                                    "microserviceId": "getUnitInfo",
+                                    "requestMethod": "get",
+                                    "params": {
+                                        "unitIdentificationValue": "#userSearchCriteriaCisco.unitIdentificationValue",
+                                        "identificatorType": "#userSearchCriteriaCisco.identificatorType",
+                                        "locationId": "#userSelectedLocation",
+                                        "clientId": "#userSelectedClient",
+                                        "contractId": "#userSelectedContract"
+                                    }
+                                },
+                                "eventSource": "click",
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "UnitInfo",
+                                                    "data": "responseData"
+                                                }
+                                            },
+                                            {
+                                                "type": "condition",
+                                                "config": {
+                                                    "operation": "isValid",
+                                                    "lhs": "#UnitInfo.DESTINATIONWC"
+                                                },
+                                                "responseDependents": {
+                                                    "onSuccess": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "concatContexts",
+                                                                "config": {
+                                                                    "contextKey": "nextWorkCenterMessage",
+                                                                    "contexts": [
+                                                                        "Unit has been Timed Out to",
+                                                                        "'",
+                                                                        "#UnitInfo.DESTINATIONWC",
+                                                                        "'"
+                                                                    ]
+                                                                }
+                                                            },
+                                                            {
+                                                                "type": "updateComponent",
+                                                                "config": {
+                                                                    "key": "searchCriteriaErrorTitleUUID",
+                                                                    "properties": {
+                                                                        "titleValue": "#nextWorkCenterMessage",
+                                                                        "titleClass": "success-title",
+                                                                        "isShown": true
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    "onFailure": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "concatContexts",
+                                                                "config": {
+                                                                    "contextKey": "nextWorkCenterMessage",
+                                                                    "contexts": [
+                                                                        "Unit has been Timed Out to",
+                                                                        "'",
+                                                                        "#UnitInfo.WORKCENTER",
+                                                                        "'"
+                                                                    ]
+                                                                }
+                                                            },
+                                                            {
+                                                                "type": "updateComponent",
+                                                                "config": {
+                                                                    "key": "searchCriteriaErrorTitleUUID",
+                                                                    "properties": {
+                                                                        "titleValue": "#nextWorkCenterMessage",
+                                                                        "titleClass": "success-title",
+                                                                        "isShown": true
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "errorMsg",
+                                                    "data": "responseData"
+                                                }
+                                            },
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "searchCriteriaErrorTitleUUID",
+                                                    "properties": {
+                                                        "titleValue": "#errorMsg",
+                                                        "isShown": true
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    "onFailure": {
+                        "actions": []
+                    }
+                }
+            }
+        ],
+        "validations": [],
+        "action": [],
+        "header": [
+            {
+                "ctype": "toolbar",
+                "toolbarClass": "searchCriteria-toolbar section-title",
+                "items": [
+                    {
+                        "ctype": "title",
+                        "title": "WC Operation"
+                    }
+                ]
+            }
+        ],
+        "items": [
+            {
+                "ctype": "title",
+                "uuid": "searchCriteriaErrorTitleUUID",
+                "titleClass": "error-title",
+                "isShown": false
+            },
+            {
+                "ctype": "formPanel",
+                "title": "Receiving",
+                "header": "",
+                "uuid": "receivingUUID",
+                "formPanelClass": "searchCriteria-panel",
+                "visibility": true,
+                "hooks": [],
+                "validations": [],
+                "actions": [],
+                "items": [
+                    {
+                        "ctype": "nativeDropdown",
+                        "uuid": "dropdownUUID",
+                        "hooks": [
+                            {
+                                "type": "context",
+                                "hookType": "afterInit",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "userOptionTrackingNo",
+                                    "data": "SerialNumber"
+                                }
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "dropdownUUID",
+                                    "fieldProperties": {
+                                        "homeSearchCriteria": "#userOptionTrackingNo"
+                                    }
+                                },
+                                "hookType": "afterInit"
+                            }
+                        ],
+                        "validations": [],
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "userOptionTrackingNo",
+                                    "data": "elementControlValue"
+                                },
+                                "eventSource": "change"
+                            }
+                        ],
+                        "type": "text",
+                        "required": true,
+                        "placeholder": "ReferenceOrderID",
+                        "submitable": true,
+                        "label": "",
+                        "labelPosition": "",
+                        "name": "identificatorType",
+                        "defaultValue": "SerialNumber",
+                        "dropdownClass": "searchcriteris-drpdwn",
+                        "options": [
+                            {
+                                "code": "BCN",
+                                "displayValue": "BCN"
+                            },
+                            {
+                                "code": "SerialNumber",
+                                "displayValue": "SN"
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "textField",
+                        "uuid": "scanUUID",
+                        "isUpperCase": true,
+                        "hooks": [],
+                        "validations": [],
+                        "textfieldClass": "searchcriteris-text",
+                        "type": "text",
+                        "required": true,
+                        "placeholder": "Scan Tracking Number",
+                        "submitable": true,
+                        "label": "",
+                        "labelPosition": "",
+                        "name": "unitIdentificationValue",
+                        "prefix": "true",
+                        "prefixIcon": "qr_code_scanner",
+                        "suffix": true,
+                        "suffixIcon": "arrow_forward",
+                        "actions": [
+                            {
+                                "type": "updateComponent",
+                                "eventSource": "click",
+                                "config": {
+                                    "key": "searchCriteriaErrorTitleUUID",
+                                    "properties": {
+                                        "titleValue": "",
+                                        "isShown": false
+                                    }
+                                }
+                            },
+                            {
+                                "type": "context",
+                                "config": {
+                                    "key": "userSearchCriteria",
+                                    "data": "formData",
+                                    "requestMethod": "add"
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "microservice",
+                                "config": {
+                                    "microserviceId": "getUnitInfo",
+                                    "requestMethod": "get",
+                                    "params": {
+                                        "unitIdentificationValue": "#userSearchCriteria.unitIdentificationValue",
+                                        "identificatorType": "#userSearchCriteria.identificatorType",
+                                        "locationId": "#userSelectedLocation",
+                                        "clientId": "#userSelectedClient",
+                                        "contractId": "#userSelectedContract"
+                                    }
+                                },
+                                "eventSource": "click",
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "UnitInfo",
+                                                    "data": "responseData"
+                                                }
+                                            },
+                                            {
+                                                "type": "verifoneOlehandsOnapiprocess",
+                                                "config": {
+                                                    "itemId": "#UnitInfo.ITEM_ID"
+                                                }
+                                            },
+                                            {
+                                                "type": "verifonRenderSubproc",
+                                                "config": {
+                                                    "itemId": "#UnitInfo.ITEM_ID"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "errorMsg",
+                                                    "data": "responseData"
+                                                }
+                                            },
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "searchCriteriaErrorTitleUUID",
+                                                    "properties": {
+                                                        "titleValue": "#errorMsg",
+                                                        "isShown": true
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "footer": []
+    },
+    "Result": "SUCCESS"
+  }

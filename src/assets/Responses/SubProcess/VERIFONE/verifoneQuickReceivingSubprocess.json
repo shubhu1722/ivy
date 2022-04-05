@@ -1,0 +1,345 @@
+{
+    "ResultData": {
+        "ctype": "page",
+        "uuid": "pageUUID",
+        "visibility": true,
+        "hooks": [
+            {
+                "type": "setDefaultValue",
+                "config": {
+                  "key": "serialNumberScanUUID",
+                  "defaultValue": "#receivingUserSearchCriteria.receivingOrderIdValue"
+                },
+                "hookType": "afterInit"
+            }
+        ],
+        "header": [
+            {
+                "ctype": "breadcrumb",
+                "style": "padding-left: 4px;",
+                "breadcrumbs": [
+                    {
+                        "label": "#userSelectedLocationName"
+                    },
+                    {
+                        "label": "#userSelectedClientName"
+                    },
+                    {
+                        "label": "#userSelectedContractName"
+                    }
+                ]
+            },
+            {
+                "ctype": "toolbar",
+                "css": "padding-top: 35px;",
+                "toolbarClass": "pagecontent-header",
+                "items": [
+                    {
+                        "ctype": "title",
+                        "uuid": "QuickReceivingHHeadertitleuuid",
+                        "titleValue": "Quick Receiving",
+                        "titleClass": "section-title",
+                        "css": "padding-bottom: 35px;padding-left: 4px;"
+                    },
+                    {
+                        "ctype": "spacer",
+                        "uuid": "emptySpaceUUID",
+                        "class": "empty-space"
+                    },
+                    {
+                        "ctype": "iconbutton",
+                        "iconButtonClass": "headeropen-button",
+                        "text": "",
+                        "uuid": "pageopenUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "hidden": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "icon": "menu_open",
+                        "disableRipple": true,
+                        "iconClass": "header-icon",
+                        "css": "padding-bottom: 35px;",
+                        "actions": [
+                            {
+                                "type": "toggle",
+                                "eventSource": "click",
+                                "name": "subProcessRightNavref"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "openUUID",
+                                    "properties": {
+                                        "hidden": false
+                                    }
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "pageopenUUID",
+                                    "properties": {
+                                        "hidden": true
+                                    }
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "items": [            
+            {
+                "ctype": "taskPanel",
+                "containerId": "prebodysectionone",
+                "header": {
+                    "title": "Quick Receiving",
+                    "svgIcon": "description_icon",
+                    "iconClass": "active-header",
+                    "class": "po-specific"
+                },
+                "expanded": true,
+                "hideToggle": true,
+                "uuid": "ConfirmSerialNumberUUID",
+                "visibility": false,
+                "disabled": false,
+                "hooks": [],
+                "validations": [],
+                "actions": [],
+                "items": [
+                    {
+                        "ctype": "textField",
+                        "uuid": "packingListNumberScanUUID",
+                        "submitable": false,
+                        "disabled": false,
+                        "validations": [
+                        ],
+                        "inLine": true,
+                        "formGroupClass": "ppid-flexfield",
+                        "textfieldClass": "ppid-textfield",
+                        "hooks": [],
+                        "actions": [
+                        ],
+                        "name": "packingListNumberTextUUID",
+                        "label": "Packing List Number",
+                        "labelClass": "body2 dell-greyish-black ppid-label",
+                        "labelPosition": "",
+                        "tooltip": "",
+                        "TooltipPosition": "",
+                        "defaultValue": "",
+                        "readonly": false,
+                        "type": "text",
+                        "required": true,
+                        "placeholder": "Scan #",
+                        "value": "",
+                        "prefix": false,
+                        "prefixIcon": "",
+                        "suffix": false,
+                        "suffixIcon": ""
+                    },
+                    {
+                        "ctype": "checkbox",
+                        "name": "packingListNumberCheckbox",
+                        "uuid": "packingListNumberCheckboxUUID",
+                        "hooks": [],
+                        "required": false,
+                        "submittable": false,
+                        "checkVisibility": true,
+                        "isDisableNotReq": true,
+                        "label": "Packing List not available",
+                        "labelPosition": "after",
+                        "checkboxContainer": "noppid1st-checkbox",
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                  "requestMethod": "add",
+                                  "key": "packingListNumberSelection",
+                                  "data": "elementControlValue"
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "condition",
+                                "eventSource": "click",                               
+                                "config": {
+                                    "operation": "isEqualTo",
+                                    "lhs": "#packingListNumberSelection",
+                                    "rhs": true
+                                  },
+                                  "responseDependents": {
+                                    "onSuccess": {
+                                      "actions": [
+                                        {
+                                            "type": "getCurrentDateForVerifonePackingList",
+                                            "eventSource": "click"
+                                        },
+                                        {
+                                            "type": "setDefaultValue",
+                                            "config": {
+                                              "key": "packingListNumberScanUUID",
+                                              "defaultValue": "#currentPackingDate"
+                                            },
+                                            "eventSource": "click"
+                                        }
+                                      ]
+                                    },
+                                    "onFailure": {
+                                      "actions": [
+                                        {
+                                          "type": "updateComponent",
+                                          "config": {
+                                            "key": "packingListNumberScanUUID",
+                                            "properties": {
+                                              "value": ""
+                                            }
+                                          }
+                                        }
+                                      ]
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "textField",
+                        "uuid": "serialNumberScanUUID",
+                        "submitable": true,
+                        "disabled": false,
+                        "validations": [
+                        ],
+                        "inLine": true,
+                        "formGroupClass": "ppid-flexfield",
+                        "textfieldClass": "ppid-textfield",
+                        "hooks": [],
+                        "onlyEnterKeyPress":true,
+                        "actions": [
+                            {
+                                    "type": "context",
+                                    "config": {
+                                        "requestMethod": "add",
+                                        "key": "quickReceivingSerialFormData",
+                                        "data": "formData"
+                                    },
+                                    "eventSource": "keydown"
+                            },
+                            {
+                                "type": "multipleCondition",
+                                "eventSource": "keydown",
+                                "config": {
+                                  "multi": true,
+                                  "operator": "AND",
+                                  "conditions": [
+                                    {
+                                      "operation": "isValid",
+                                      "lhs": "#quickReceivingSerialFormData.quickReceivingserialNumberTextUUID"
+                                    },
+                                    {
+                                      "operation": "isValid",
+                                      "lhs": "#quickReceivingSerialFormData.packingListNumberTextUUID"
+                                    }
+                                  ]
+                                },
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions":[
+                                            {
+                                                "type": "renderQuickReceivingTableData"
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": [
+
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
+                        "name": "quickReceivingserialNumberTextUUID",
+                        "label": "Serial Number",
+                        "labelClass": "body2 dell-greyish-black ppid-label",
+                        "labelPosition": "",
+                        "tooltip": "",
+                        "TooltipPosition": "",
+                        "defaultValue": "",
+                        "readonly": false,
+                        "type": "text",
+                        "required": true,
+                        "placeholder": "Scan #",
+                        "value": "",
+                        "prefix": false,
+                        "prefixIcon": "",
+                        "suffix": false,
+                        "suffixIcon": ""
+                    },
+                    {
+                        "ctype": "verifoneQuickReceivingTable",
+                        "uuid": "verifoneQuickReceivingTableUUID",
+                        "formGroupClass": "batch-action-buttons body2 ",
+                        "labelPosition": "before",
+                        "name": "moroccanCEMark",
+                        "batchData": "",
+                        "names": [
+                          "text1",
+                          "text2",
+                          "text3"
+                        ],
+                        "options": [
+                        ],
+                        "validations": [],
+                        "label": "",
+                        "hooks": [],
+                        "actions": [
+                        ],
+                        "required": false,
+                        "submitable": false,
+                        "visibility": false
+                    }
+                ],
+                "footer": [
+                    
+                ]
+            }
+        ],
+        "footer": [
+            {
+                "ctype": "toolbar",
+                "toolbarClass": "pagecontent-footer",
+                "items": [
+                    {
+                        "ctype": "iconbutton",
+                        "iconButtonClass": "footer-save body primary-btn",
+                        "text": "Exit",
+                        "uuid": "saveUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "icon": "close",
+                        "actions": [
+                            {
+                                "type": "clearAllContext",
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "renderTemplate",
+                                "config": {
+                                    "templateId": "dashboard.json",
+                                    "mode": "local"
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "Result": "SUCCESS"
+}

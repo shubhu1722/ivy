@@ -1,0 +1,2126 @@
+{
+    "ResultData": {
+        "ctype": "page",
+        "uuid": "pageUUID",
+        "css": "",
+        "visibility": true,
+        "hooks": [
+            {
+                "type": "updateStage",
+                "hookType": "afterInit",
+                "config": {
+                    "currentStage": "Search",
+                    "currentSubProcess": "Receiving",
+                    "nextStage": "Confirm",
+                    "targetId": "menuTreeUUID",
+                    "processId": "#SubprocessMenu"
+                },
+                "eventSource": "click"
+            },
+            {
+                "type": "arraySetMethod",
+                "config": {
+                    "data": "#getProcessData.Box",
+                    "contextKey": "filteredBox",
+                    "referencevariable": "dellCarBoxCode"
+                },
+                "hookType": "afterInit"
+            },
+            {
+                "type": "updateComponent",
+                "hookType": "afterInit",
+                "config": {
+                    "key": "dellCarBoxUUID",
+                    "dropDownProperties": {
+                        "options": "#filteredBox"
+                    }
+                }
+            },
+            {
+                "type": "updateComponent",
+                "hookType": "afterInit",
+                "config": {
+                    "key": "dellCarUnitConditionUUID",
+                    "dropDownProperties": {
+                        "options": "#getProcessData.UnitCondition"
+                    }
+                }
+            },
+            {
+                "type": "microservice",
+                "hookType": "afterInit",
+                "config": {
+                    "microserviceId": "dellCarStopProcessReceiving",
+                    "isLocal": false,
+                    "LocalService": "assets/Responses/stopProcessReceivingMockData.json",
+                    "requestMethod": "post",
+                    "body": {
+                        "clientId": "#dcReceivingOrderDetails.CLIENT_ID",
+                        "contractId": "#dcReceivingOrderDetails.CONTRACT_ID",
+                        "locationId": "#dcReceivingOrderDetails.LOCATION_ID",
+                        "actionType": "proDetail",
+                        "subActionTypeName": "validatePartDataBySerial",
+                        "geoId": "#dcReceivingOrderDetails.LOCATION_ID",
+                        "partNumber": "#getSNPNByRefOrder.PartNumber",
+                        "userLoginId": "#userAccountInfo.PersonalDetails.USERID",
+                        "orderProcessType": "[ALL]",
+                        "clientName": "#dcReceivingOrderDetails.CLIENT_NAME",
+                        "contractName": "#dcReceivingOrderDetails.CONTRACT_NAME",
+                        "serialNo": "#getSNPNByRefOrder.SerialNumber",
+                        "revisionLevel": "",
+                        "selectedResultCode": "Good Receipt",
+                        "workCenter": "DELL_CAR_PACKOUT",
+                        "geographyNumber": "#dcReceivingOrderDetails.LOCATION_NAME",
+                        "loaderName": "BYD_DELL_CAR_STOP_PROCESS_NEW",
+                        "referenceOrderNumber": "#dcReceivingOrderDetails.REFERENCE_ORDER_ID"
+                      },
+                    "toBeStringified": true
+                },
+                "responseDependents": {
+                    "onSuccess": {
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "getStopProcessReceivingResp",
+                                    "data": "responseData"
+                                }
+                            },
+                            {
+                                "type": "condition",
+                                "config": {
+                                    "operation": "isValid",
+                                    "lhs": "#getStopProcessReceivingResp"
+                                },
+                                "eventSource": "click",
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "stopProcessReceivingTextUUID",
+                                                    "properties": {
+                                                        "title": "#getStopProcessReceivingResp"
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": [
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "dellCarStopProcessNotificationUUID",
+                                                    "properties": {
+                                                        "hidden": true
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "confirmAccessoriesTaskPanelUUID",
+                                                    "properties": {
+                                                        "expanded": true,
+                                                        "disabled": false
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    "onFailure": {
+                        "actions": [
+                            {
+                                "type": "handleCommonServices",
+                                "config": {
+                                    "type": "errorRenderTemplate",
+                                    "contextKey": "errorMsg",
+                                    "updateKey": "errorTitleUUID"
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+        ],
+        "validations": [],
+        "action": [],
+        "header": [
+            {
+                "ctype": "breadcrumb",
+                "breadcrumbs": [
+                    {
+                        "label": "#userSelectedLocationName"
+                    },
+                    {
+                        "label": "#userSelectedClientName"
+                    },
+                    {
+                        "label": "#userSelectedContractName"
+                    }
+                ]
+            },
+            {
+                "ctype": "toolbar",
+                "toolbarClass": "pagecontent-header",
+                "items": [
+                    {
+                        "ctype": "title",
+                        "uuid": "subProcessTitleUUID",
+                        "titleValue": "Receiving: Confirm",
+                        "titleClass": "section-title"
+                    },
+                    {
+                        "ctype": "iconbutton",
+                        "iconButtonClass": "headeropen-button",
+                        "text": "",
+                        "uuid": "pageopenUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "hidden": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "icon": "menu_open",
+                        "disableRipple": true,
+                        "iconClass": "header-icon",
+                        "actions": [
+                            {
+                                "type": "toggle",
+                                "eventSource": "click",
+                                "name": "subProcessRightNavref"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "openUUID",
+                                    "properties": {
+                                        "hidden": false
+                                    }
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "pageopenUUID",
+                                    "properties": {
+                                        "hidden": true
+                                    }
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    }
+                ],
+                "uuid": "receivingToolBarUUID",
+                "hookType": "afterInit"
+            }
+        ],
+        "items": [
+            {
+                "ctype": "title",
+                "uuid": "successTitleUUID",
+                "titleClass": "success-title",
+                "isShown": false
+            },
+            {
+                "ctype": "title",
+                "uuid": "errorTitleUUID",
+                "titleClass": "error-title",
+                "isShown": false
+            },
+            {
+                "ctype": "taskPanel",
+                "isblueBorder": true,
+                "title": "",
+                "header": {
+                    "title": "STOP PROCESS NOTIFICATION",
+                    "icon": "description",
+                    "iconClass": "active-header"
+                },
+                "expanded": "true",
+                "hideToggle": "true",
+                "uuid": "dellCarStopProcessNotificationUUID",
+                "visibility": true,
+                "disabled": false,
+                "isEditable": true,
+                "isMandatory": true,
+                "hooks": [],
+                "validations": [],
+                "actions": [],
+                "items": [
+                    {
+                        "ctype": "title",
+                        "uuid": "stopProcessReceivingTextUUID",
+                        "titleClass": "greyish-black body-italic assessment-alert",
+                        "title": ""
+                    },
+                    {
+                        "ctype": "iconText",
+                        "text": "STOP PROCESS NOTIFICATION",
+                        "iconTextClass": "pt-2 pb-1 error-block",
+                        "textClass": "text-bold pl-3",
+                        "uuid": "dellCarStopProcessUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "icon": "info",
+                        "iconClass": "error-status ml-3",
+                        "actions": []
+                    }
+                ],
+                "footer": [
+                    {
+                        "ctype": "button",
+                        "color": "primary",
+                        "text": "Complete",
+                        "class": "primary-btn",
+                        "uuid": "dellCarStopProcessNotificationCompleteUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "type": "submit",
+                        "tooltip": "",
+                        "hooks": [],
+                        "validations": [],
+                        "actions": [
+                            {
+                                "type": "updateComponent",
+                                "eventSource": "click",
+                                "config": {
+                                    "key": "dellCarStopProcessNotificationCompleteUUID",
+                                    "properties": {
+                                        "disabled": true
+                                    }
+                                }
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "dellCarStopProcessNotificationUUID",
+                                    "properties": {
+                                        "expanded": false,
+                                        "disabled": true,
+                                        "taskPanelHeaderClass": "background-white",
+                                        "header": {
+                                            "title": "STOP PROCESS NOTIFICATION",
+                                            "icon": "description",
+                                            "statusIcon": "check_circle",
+                                            "statusClass": "complete-status",
+                                            "class": "complete-task ",
+                                            "iconClass": "complete-task"
+                                        }
+                                    }
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "confirmAccessoriesTaskPanelUUID",
+                                    "properties": {
+                                        "expanded": true,
+                                        "disabled": false,
+                                        "header": {
+                                            "title": "Add Accessories",
+                                            "icon": "description",
+                                            "iconClass": "active-header"
+                                        }
+                                    }
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "ctype": "taskPanel",
+                "title": "",
+                "disabled": true,
+                "isblueBorder": true,
+                "header": {
+                    "title": "Add Accessories",
+                    "icon": "description",
+                    "iconClass": "active-header",
+                    "statusIcon": "hourglass_empty",
+                    "statusClass": "incomplete-status"
+                },
+                "expanded": false,
+                "hideToggle": "true",
+                "isEditable": true,
+                "isMandatory": true,
+                "uuid": "confirmAccessoriesTaskPanelUUID",
+                "visibility": true,
+                "hidden": false,
+                "hooks": [],
+                "validations": [],
+                "actions": [],
+                "items": [
+                    {
+                        "ctype": "disabled",
+                        "uuid": "dellReceivingconfirmAccessoriesDisabledUUID",
+                        "disabledClass": "disabledFalse"
+                    },
+                    {
+                        "ctype": "grid",
+                        "cols": 8,
+                        "className": "dell-receiving-tile",
+                        "rowHeight": "170px",
+                        "uuid": "confirmAccessoriesUUID",
+                        "source": "Accessories",
+                        "FlexFieldName": "Accessories",
+                        "hooks": [],
+                        "validations": [],
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "addToExistingContext",
+                                    "target": "Accessories",
+                                    "sourceData": [
+                                        {
+                                            "Name": "AC Adapter",
+                                            "Value": "NO"
+                                        },
+                                        {
+                                            "Name": "Battery",
+                                            "Value": "No"
+                                        },
+                                        {
+                                            "Name": "POWER CORD",
+                                            "Value": "No"
+                                        },
+                                        {
+                                            "Name": "Number of accessories",
+                                            "Value": 0
+                                        }
+                                    ]
+                                },
+                                "eventSource": "onLoad"
+                            }
+                        ],
+                        "tiles": [
+                            {
+                                "cols": 1,
+                                "rows": 1,
+                                "dellCarReceiving": true,
+                                "imageSrc": "../../../assets/Images/Dell_Adapter.png",
+                                "class": "dell-receiving-title",
+                                "hoverClass": "blue-icon",
+                                "gridContainer": "dell-tile-container",
+                                "text": "AC Adapter",
+                                "uuid": "acAdapterTileUUID",
+                                "accessoryName": "AC Adapter",
+                                "tileValue": "YES",
+                                "isDefault": "false",
+                                "targetuuid": "dellCarReceivingAccessUUIDACADAPTERTarget",
+                                "precondition": {
+                                    "type": "CustomeActionAccessories",
+                                    "config": {
+                                        "source": "#Accessories"
+                                    }
+                                },
+                                "template": [
+                                    {
+                                        "type": "createComponent",
+                                        "config": {
+                                            "targetId": "confirmAccessoriesTaskPanelUUID",
+                                            "containerId": "expansionpanelcontent",
+                                            "data": {
+                                                "ctype": "formPanel",
+                                                "uniqueUUID": false,
+                                                "header": "",
+                                                "uuid": "dellCarReceivingAccessUUIDACADAPTERTarget",
+                                                "parentuuid": "dellCarReceivingAccessUUIDACADAPTERTarget",
+                                                "targetuuid": "dellCarReceivingAccessUUIDACADAPTERTarget",
+                                                "formPanelClass": "dell-tilepanel-cls",
+                                                "accessoryName": "AC Adapter",
+                                                "visibility": true,
+                                                "source": "#Accessories",
+                                                "dellCarReceiving": true,
+                                                "hooks": [],
+                                                "validations": [],
+                                                "actions": [],
+                                                "items": [
+                                                    {
+                                                        "ctype": "label",
+                                                        "uuid": "dellReceivingACADAPTERvalueUUID",
+                                                        "parentuuid": "dellCarReceivingAccessUUIDACADAPTERTarget",
+                                                        "targetuuid": "dellCarReceivingAccessUUIDACADAPTERTarget",
+                                                        "hooks": [],
+                                                        "validations": [
+                                                            {
+                                                                "type": "regex",
+                                                                "script": ""
+                                                            }
+                                                        ],
+                                                        "actions": [],
+                                                        "text": "AC Adapter",
+                                                        "indicator": "",
+                                                        "labelClass": "dell-tile-label"
+                                                    },
+                                                    {
+                                                        "ctype": "iconbutton",
+                                                        "text": "",
+                                                        "indicator": "AC Adapter",
+                                                        "defaultValue": "NO",
+                                                        "dellCarReceiving": true,
+                                                        "AccessoryValue": "dellReceivingAcAdapterValue",
+                                                        "uuid": "dellReceivingcloseAdapterUUID",
+                                                        "parentuuid": "dellCarReceivingAccessUUIDACADAPTERTarget",
+                                                        "targetuuid": "dellCarReceivingAccessUUIDACADAPTERTarget",
+                                                        "visibility": true,
+                                                        "disabled": false,
+                                                        "type": "submit",
+                                                        "hooks": [],
+                                                        "validations": [],
+                                                        "actions": [
+                                                            {
+                                                                "type": "deleteComponent",
+                                                                "config": {
+                                                                    "targetId": "",
+                                                                    "source": "#Accessories"
+                                                                },
+                                                                "eventSource": "click"
+                                                            },
+                                                            {
+                                                                "type": "handleDellCarReceivingActions",
+                                                                "methodType": "deleteDellCarAccessory",
+                                                                "config": {
+                                                                    "source": "#Accessories"
+                                                                },
+                                                                "eventSource": "click"
+                                                            }
+                                                        ],
+                                                        "icon": "close",
+                                                        "iconClass": "tile-close",
+                                                        "disableRipple": true,
+                                                        "iconButtonClass": "tile-delete"
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "cols": 1,
+                                "rows": 1,
+                                "dellCarReceiving": true,
+                                "class": "dell-receiving-title",
+                                "imageSrc": "../../../assets/Images/Dell_powerCable.png",
+                                "gridContainer": "dell-tile-container",
+                                "text": "Power Cable",
+                                "tileValue": "Yes",
+                                "uuid": "powerCableTileUUID",
+                                "accessoryName": "POWER CORD",
+                                "isDefault": "false",
+                                "targetuuid": "dellReceivingPowerCable",
+                                "precondition": {
+                                    "type": "CustomeActionAccessories",
+                                    "config": {
+                                        "source": "#Accessories"
+                                    }
+                                },
+                                "template": [
+                                    {
+                                        "type": "createComponent",
+                                        "config": {
+                                            "targetId": "confirmAccessoriesTaskPanelUUID",
+                                            "containerId": "expansionpanelcontent",
+                                            "data": {
+                                                "ctype": "formPanel",
+                                                "uniqueUUID": false,
+                                                "accessoryIndex": "0",
+                                                "header": "",
+                                                "uuid": "dellReceivingPowerCable",
+                                                "parentuuid": "dellReceivingPowerCable",
+                                                "targetuuid": "dellReceivingPowerCable",
+                                                "formPanelClass": "dell-tilepanel-cls",
+                                                "dellCarReceiving": true,
+                                                "accessoryName": "POWER CORD",
+                                                "source": "#Accessories",
+                                                "visibility": true,
+                                                "hooks": [],
+                                                "validations": [],
+                                                "actions": [],
+                                                "items": [
+                                                    {
+                                                        "ctype": "label",
+                                                        "uuid": "dellReceivingPowerCablevalueUUID",
+                                                        "parentuuid": "dellReceivingPowerCable",
+                                                        "targetuuid": "dellReceivingPowerCable",
+                                                        "hooks": [],
+                                                        "validations": [
+                                                            {
+                                                                "type": "regex",
+                                                                "script": ""
+                                                            }
+                                                        ],
+                                                        "actions": [],
+                                                        "text": "Power Cable",
+                                                        "indicator": "",
+                                                        "labelClass": "dell-tile-label"
+                                                    },
+                                                    {
+                                                        "ctype": "iconbutton",
+                                                        "text": "",
+                                                        "indicator": "POWER CORD",
+                                                        "defaultValue": "No",
+                                                        "uuid": "dellReceivingPowerCableUUID",
+                                                        "parentuuid": "dellReceivingPowerCable",
+                                                        "targetuuid": "dellReceivingPowerCable",
+                                                        "dellCarReceiving": true,
+                                                        "visibility": true,
+                                                        "disabled": false,
+                                                        "type": "submit",
+                                                        "hooks": [],
+                                                        "validations": [],
+                                                        "actions": [
+                                                            {
+                                                                "type": "deleteComponent",
+                                                                "config": {
+                                                                    "targetId": "",
+                                                                    "source": "#Accessories"
+                                                                },
+                                                                "eventSource": "click"
+                                                            },
+                                                            {
+                                                                "type": "handleDellCarReceivingActions",
+                                                                "methodType": "deleteDellCarAccessory",
+                                                                "config": {
+                                                                    "source": "#Accessories"
+                                                                },
+                                                                "eventSource": "click"
+                                                            }
+                                                        ],
+                                                        "icon": "close",
+                                                        "iconClass": "tile-close",
+                                                        "disableRipple": true,
+                                                        "iconButtonClass": "tile-delete"
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        "eventSource": "click"
+                                    }
+                                ]
+                            },
+                            {
+                                "cols": 1,
+                                "rows": 1,
+                                "imageSrc": "../../../assets/Images/Dell_InternalBattery.png",
+                                "class": "dell-receiving-title",
+                                "gridContainer": "dell-tile-container",
+                                "dellCarReceiving": true,
+                                "text": "Internal Battery",
+                                "tileValue": "INTEGRATED",
+                                "accessoryName": "Battery",
+                                "uuid": "internalBatteryTileUUID",
+                                "name": "Internal Battery",
+                                "isDefault": "false",
+                                "targetuuid": "dellCarReceivingAccessUUIDInternalBattery",
+                                "precondition": {
+                                    "type": "CustomeActionAccessories",
+                                    "config": {
+                                        "source": "#Accessories"
+                                    }
+                                },
+                                "prechecks": [
+                                    {
+                                        "type": "deleteComponent",
+                                        "eventSource": "click",
+                                        "config": {
+                                            "key": "dellReceivingExternalBatteryValueUUID"
+                                        }
+                                    },
+                                    {
+                                        "type": "handleDellCarReceivingActions",
+                                        "methodType": "deleteParticularAccessory",
+                                        "config": {
+                                            "source": "#Accessories",
+                                            "accessoryName": "Battery"
+                                        },
+                                        "eventSource": "click"
+                                    }
+                                ],
+                                "template": [
+                                    {
+                                        "type": "createComponent",
+                                        "config": {
+                                            "targetId": "confirmAccessoriesTaskPanelUUID",
+                                            "containerId": "expansionpanelcontent",
+                                            "data": {
+                                                "ctype": "formPanel",
+                                                "uniqueUUID": false,
+                                                "header": "",
+                                                "uuid": "dellCarReceivingAccessUUIDInternalBattery",
+                                                "parentuuid": "dellCarReceivingAccessUUIDInternalBattery",
+                                                "targetuuid": "dellCarReceivingAccessUUIDInternalBattery",
+                                                "formPanelClass": "dell-tilepanel-cls",
+                                                "visibility": true,
+                                                "dellCarReceiving": true,
+                                                "source": "#Accessories",
+                                                "hooks": [],
+                                                "validations": [],
+                                                "actions": [],
+                                                "items": [
+                                                    {
+                                                        "ctype": "label",
+                                                        "uuid": "dellReceivingInternalBatteryvalueUUID",
+                                                        "parentuuid": "dellCarReceivingAccessUUIDInternalBattery",
+                                                        "targetuuid": "dellCarReceivingAccessUUIDInternalBattery",
+                                                        "hooks": [],
+                                                        "validations": [
+                                                            {
+                                                                "type": "regex",
+                                                                "script": ""
+                                                            }
+                                                        ],
+                                                        "actions": [],
+                                                        "text": "Internal Battery",
+                                                        "indicator": "",
+                                                        "labelClass": "dell-tile-label"
+                                                    },
+                                                    {
+                                                        "ctype": "iconbutton",
+                                                        "text": "",
+                                                        "indicator": "Battery",
+                                                        "defaultValue": "No",
+                                                        "uuid": "dellReceivingInternalBatteryUUID",
+                                                        "parentuuid": "dellCarReceivingAccessUUIDInternalBattery",
+                                                        "targetuuid": "dellCarReceivingAccessUUIDInternalBattery",
+                                                        "dellCarReceiving": true,
+                                                        "visibility": true,
+                                                        "disabled": false,
+                                                        "type": "submit",
+                                                        "hooks": [],
+                                                        "validations": [],
+                                                        "actions": [
+                                                            {
+                                                                "type": "deleteComponent",
+                                                                "config": {
+                                                                    "targetId": "",
+                                                                    "source": "#Accessories"
+                                                                },
+                                                                "eventSource": "click"
+                                                            },
+                                                            {
+                                                                "type": "handleDellCarReceivingActions",
+                                                                "methodType": "deleteDellCarAccessory",
+                                                                "config": {
+                                                                    "source": "#Accessories"
+                                                                },
+                                                                "eventSource": "click"
+                                                            }
+                                                        ],
+                                                        "icon": "close",
+                                                        "iconClass": "tile-close",
+                                                        "disableRipple": true,
+                                                        "iconButtonClass": "tile-delete"
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        "eventSource": "click"
+                                    }
+                                ]
+                            },
+                            {
+                                "cols": 1,
+                                "rows": 1,
+                                "imageSrc": "../../../assets/Images/Dell_ExternalBattery.png",
+                                "class": "dell-receiving-title",
+                                "gridContainer": "dell-tile-container",
+                                "dellCarReceiving": true,
+                                "text": "External Battery",
+                                "accessoryName": "Battery",
+                                "tileValue": "Yes",
+                                "textfieldClass": "col-5 p-0",
+                                "uuid": "Accessories",
+                                "name": "External Battery",
+                                "isDefault": "false",
+                                "targetuuid": "dellReceivingExternalBatteryValueUUID",
+                                "precondition": {
+                                    "type": "CustomeActionAccessories",
+                                    "config": {
+                                        "source": "#Accessories"
+                                    }
+                                },
+                                "prechecks": [
+                                    {
+                                        "type": "deleteComponent",
+                                        "eventSource": "click",
+                                        "config": {
+                                            "key": "dellCarReceivingAccessUUIDInternalBattery"
+                                        }
+                                    },
+                                    {
+                                        "type": "handleDellCarReceivingActions",
+                                        "methodType": "deleteParticularAccessory",
+                                        "config": {
+                                            "source": "#Accessories",
+                                            "accessoryName": "Battery"
+                                        },
+                                        "eventSource": "click"
+                                    }
+                                ],
+                                "template": [
+                                    {
+                                        "type": "createComponent",
+                                        "config": {
+                                            "targetId": "confirmAccessoriesTaskPanelUUID",
+                                            "containerId": "expansionpanelcontent",
+                                            "data": {
+                                                "ctype": "formPanel",
+                                                "uniqueUUID": false,
+                                                "header": "",
+                                                "uuid": "dellReceivingExternalBatteryValueUUID",
+                                                "parentuuid": "dellReceivingExternalBatteryValueUUID",
+                                                "targetuuid": "dellReceivingExternalBatteryValueUUID",
+                                                "formPanelClass": "dell-tilepanel-cls",
+                                                "dellCarReceiving": true,
+                                                "visibility": true,
+                                                "source": "#Accessories",
+                                                "hooks": [],
+                                                "validations": [],
+                                                "actions": [],
+                                                "items": [
+                                                    {
+                                                        "ctype": "label",
+                                                        "uuid": "dellReceivingExternalBatteryLabelUUID",
+                                                        "parentuuid": "dellReceivingExternalBatteryValueUUID",
+                                                        "targetuuid": "dellReceivingExternalBatteryValueUUID",
+                                                        "hooks": [],
+                                                        "validations": [
+                                                            {
+                                                                "type": "regex",
+                                                                "script": ""
+                                                            }
+                                                        ],
+                                                        "actions": [],
+                                                        "text": "External Battery",
+                                                        "indicator": "",
+                                                        "labelClass": "dell-tile-label"
+                                                    },
+                                                    {
+                                                        "ctype": "iconbutton",
+                                                        "text": "",
+                                                        "indicator": "Battery",
+                                                        "defaultValue": "No",
+                                                        "dellCarReceiving": true,
+                                                        "uuid": "dellReceivingExternalBatteryIconUUID",
+                                                        "parentuuid": "dellReceivingExternalBatteryValueUUID",
+                                                        "targetuuid": "dellReceivingExternalBatteryValueUUID",
+                                                        "visibility": true,
+                                                        "disabled": false,
+                                                        "type": "submit",
+                                                        "hooks": [],
+                                                        "validations": [],
+                                                        "actions": [
+                                                            {
+                                                                "type": "deleteComponent",
+                                                                "eventSource": "click"
+                                                            },
+                                                            {
+                                                                "type": "handleDellCarReceivingActions",
+                                                                "methodType": "deleteDellCarAccessory",
+                                                                "config": {
+                                                                    "source": "#Accessories"
+                                                                },
+                                                                "eventSource": "click"
+                                                            }
+                                                        ],
+                                                        "icon": "close",
+                                                        "iconClass": "tile-close",
+                                                        "disableRipple": true,
+                                                        "iconButtonClass": "tile-delete"
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        "eventSource": "click"
+                                    }
+                                ]
+                            },
+                            {
+                                "cols": 1,
+                                "rows": 1,
+                                "imageSrc": "../../../assets/Images/Dell_Other.png",
+                                "class": "dell-receiving-title",
+                                "gridContainer": "dell-tile-container",
+                                "dellCarReceiving": true,
+                                "text": "other",
+                                "accessoryName": "Number of accessories",
+                                "tileValue": "Other",
+                                "uuid": "Accessories",
+                                "name": "Accessory",
+                                "maxCount": 5,
+                                "isDefault": "false",
+                                "targetuuid": "accessUUIDCarryingCaseTarget",
+                                "precondition": {
+                                    "type": "CustomeActionAccessories",
+                                    "config": {
+                                        "source": "#Accessories"
+                                    }
+                                },
+                                "template": [
+                                    {
+                                        "type": "createComponent",
+                                        "config": {
+                                            "targetId": "confirmAccessoriesTaskPanelUUID",
+                                            "containerId": "expansionpanelcontent",
+                                            "data": {
+                                                "ctype": "formPanel",
+                                                "uniqueUUID": true,
+                                                "header": "",
+                                                "uuid": "dellReceivingUUIDOtherAccessories",
+                                                "parentuuid": "dellReceivingUUIDOtherAccessories",
+                                                "targetuuid": "dellReceivingUUIDOtherAccessories",
+                                                "formPanelClass": "dell-tilepanel-cls",
+                                                "visibility": true,
+                                                "dellCarReceiving": true,
+                                                "source": "#Accessories",
+                                                "hooks": [],
+                                                "validations": [],
+                                                "actions": [],
+                                                "items": [
+                                                    {
+                                                        "ctype": "label",
+                                                        "uuid": "dellReceivingOtherAccessoriesLabelUUID",
+                                                        "parentuuid": "dellReceivingUUIDOtherAccessories",
+                                                        "targetuuid": "dellReceivingUUIDOtherAccessories",
+                                                        "hooks": [],
+                                                        "validations": [
+                                                            {
+                                                                "type": "regex",
+                                                                "script": ""
+                                                            }
+                                                        ],
+                                                        "actions": [],
+                                                        "text": "Other",
+                                                        "indicator": "",
+                                                        "labelClass": "dell-tile-label"
+                                                    },
+                                                    {
+                                                        "ctype": "iconbutton",
+                                                        "text": "",
+                                                        "indicator": "Other",
+                                                        "dellCarReceiving": true,
+                                                        "uuid": "dellReceivingOtherAccessoriesIconUUID",
+                                                        "parentuuid": "dellReceivingUUIDOtherAccessories",
+                                                        "targetuuid": "dellReceivingUUIDOtherAccessories",
+                                                        "visibility": true,
+                                                        "disabled": false,
+                                                        "type": "submit",
+                                                        "hooks": [],
+                                                        "validations": [],
+                                                        "actions": [
+                                                            {
+                                                                "type": "deleteComponent",
+                                                                "config": {
+                                                                    "targetId": "",
+                                                                    "source": "#Accessories"
+                                                                },
+                                                                "eventSource": "click"
+                                                            },
+                                                            {
+                                                                "type": "handleDellCarReceivingActions",
+                                                                "methodType": "deleteDellCarAccessory",
+                                                                "config": {
+                                                                    "source": "#Accessories"
+                                                                },
+                                                                "eventSource": "click"
+                                                            }
+                                                        ],
+                                                        "icon": "close",
+                                                        "iconClass": "tile-close",
+                                                        "disableRipple": true,
+                                                        "iconButtonClass": "tile-delete"
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        "eventSource": "click"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "footer": [
+                    {
+                        "ctype": "button",
+                        "color": "primary",
+                        "text": "Complete",
+                        "uuid": "dellConfirmRecordConditionCompleteUUID",
+                        "class": "primary-btn",
+                        "visibility": true,
+                        "hidden": false,
+                        "disabled": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "actions": [
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "confirmAccessoriesTaskPanelUUID",
+                                    "properties": {
+                                        "expanded": false,
+                                        "disabled": true,
+                                        "taskPanelHeaderClass": "background-white",
+                                        "header": {
+                                            "title": "Add Accessories",
+                                            "icon": "description",
+                                            "statusIcon": "check_circle",
+                                            "statusClass": "complete-status",
+                                            "class": "complete-task ",
+                                            "iconClass": "complete-task"
+                                        }
+                                    }
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "dellCarRecordconditionUUID",
+                                    "properties": {
+                                        "expanded": true,
+                                        "disabled": false,
+                                        "header": {
+                                            "title": "Record Condition",
+                                            "icon": "description",
+                                            "iconClass": "active-header"
+                                        }
+                                    }
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "ctype": "taskPanel",
+                "title": "",
+                "disabled": true,
+                "isblueBorder": true,
+                "header": {
+                    "title": "Record Condition",
+                    "icon": "description",
+                    "iconClass": "active-header",
+                    "statusIcon": "hourglass_empty",
+                    "statusClass": "incomplete-status"
+                },
+                "expanded": false,
+                "isEditable": true,
+                "isMandatory": true,
+                "hideToggle": "true",
+                "uuid": "dellCarRecordconditionUUID",
+                "name": "recordcondition",
+                "visibility": true,
+                "hidden": false,
+                "items": [
+                    {
+                        "ctype": "disabled",
+                        "uuid": "recordConditionDisabledUUID",
+                        "disabledClass": "disabledFalse"
+                    },
+                    {
+                        "ctype": "label",
+                        "text": "Record Condition of the box, the Packaging and the Unit",
+                        "labelClass": "body text-secondary rework-font"
+                    },
+                    {
+                        "ctype": "nativeDropdown",
+                        "dropdownClass": "col-3 mb-3 body2 reworkCommon dropdown-container",
+                        "uuid": "dellCarBoxUUID",
+                        "name": "BOX",
+                        "label": "Box",
+                        "labelClass": "pl-0 align-left rework-lable-width subtitle1-align-self greyish-black",
+                        "dataSource": "",
+                        "code": "dellCarBoxCode",
+                        "displayValue": "dellCarBoxCode",
+                        "required": true,
+                        "isUpperCase": true,
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "dellCarBoxCode",
+                                    "data": "elementControlName"
+                                },
+                                "eventSource": "change"
+                            },
+                            {
+                                "type": "conditionalFilterData",
+                                "config": {
+                                    "data": "#getProcessData.Box",
+                                    "targetContextKey": "boxCodeData",
+                                    "keyName": "#dellCarBoxCode",
+                                    "filterRefValue": "dellCarBoxCode",
+                                    "targetUUID": "dellCarPackagingConditionUUID",
+                                    "name": "Packaging_Cosmetic_Condition"
+                                },
+                                "eventSource": "change"
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "nativeDropdown",
+                        "dropdownClass": "col-3 mb-3 body2 reworkCommon dropdown-container",
+                        "uuid": "dellCarPackagingConditionUUID",
+                        "name": "Packaging_Cosmetic_Condition",
+                        "label": "Packaging Condition",
+                        "labelClass": "pl-0 align-left rework-lable-width subtitle1-align-self greyish-black",
+                        "dataSource": "#boxCodeData",
+                        "code": "dellcarPkgConditionCode",
+                        "displayValue": "dellcarPkgConditionCode",
+                        "required": true,
+                        "isUpperCase": true,
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "userSelectedPackagingConditionValue",
+                                    "data": "elementControlName"
+                                },
+                                "eventSource": "change"
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "dropdownWithMultiSelect",
+                        "uuid": "dellCarUnitConditionUUID",
+                        "hooks": [],
+                        "submitable": true,
+                        "visibility": true,
+                        "required": true,
+                        "disabled": false,
+                        "label": "Unit Condition",
+                        "isUpperCase": true,
+                        "name": "Unit Cosmetic Condition",
+                        "formGroupClass": "flex-container-half-width form-group-margin",
+                        "dropdownClass": "dropdown-container textfield-container ",
+                        "labelClass": "unit-condition-label subtitle1-unitcondition pt-3",
+                        "chipClasses": "bg-dark text-white rounded ",
+                        "optGrpFormFieldClass": "dropdownwithsearchselect mt-2 w-100 ",
+                        "chipCancelClasses": "text-white ",
+                        "searchIconStyles": "font-size:18px",
+                        "parentClass": "d-flex form-group-margin dropdown-textfield-height",
+                        "inputClass": "dropdown-unit-width",
+                        "code": "dellCarUnitConditionValue",
+                        "displayValue": "dellCarUnitConditionValue",
+                        "dataSource": "#getProcessData.UnitCondition",
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "dellUnitConditionMultiSelectDropdownVal",
+                                    "data": "elementControlValue"
+                                },
+                                "eventSource": "change"
+                            },
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "dellUnitConditionMultiSelectDropdownName",
+                                    "data": "elementControlName"
+                                },
+                                "eventSource": "change"
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "checkbox",
+                        "name": "swollenBatteryCheckbox",
+                        "uuid": "dellCarSwollenBatteryUUUID",
+                        "hooks": [],
+                        "validations": [],
+                        "required": false,
+                        "submitable": true,
+                        "disabled": false,
+                        "label": "Swollen Battery",
+                        "labelPosition": "before",
+                        "labelClass": "pl-0 align-left rework-lable-width subtitle1-align-self greyish-black",
+                        "checkboxContainer": "label-confrm mat-checkbox-label-before",
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "swollenBatterySelection",
+                                    "data": "elementControlValue"
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    }
+                ],
+                "footer": [
+                    {
+                        "ctype": "button",
+                        "color": "primary",
+                        "text": "Complete",
+                        "uuid": "dellCarRecordconditionCompleteUUID",
+                        "visibility": true,
+                        "checkGroupValidity": true,
+                        "disabled": true,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "dellCarRecordconditionFormData",
+                                    "data": "formData"
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "condition",
+                                "config": {
+                                    "operation": "isValid",
+                                    "lhs": "#swollenBatterySelection"
+                                },
+                                "eventSource": "click",
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "swollenBatterySelectionValue",
+                                                    "data": "YES"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "swollenBatterySelectionValue",
+                                                    "data": "NO"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "dellCarRecordconditionUUID",
+                                    "properties": {
+                                        "expanded": false,
+                                        "disabled": true,
+                                        "taskPanelHeaderClass": "background-white",
+                                        "header": {
+                                            "title": "Record Condition",
+                                            "icon": "description",
+                                            "statusIcon": "check_circle",
+                                            "statusClass": "complete-status",
+                                            "class": "complete-task",
+                                            "iconClass": "complete-task"
+                                        }
+                                    }
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "dellCarScanTrayIdUUID",
+                                    "properties": {
+                                        "expanded": true,
+                                        "disabled": false,
+                                        "header": {
+                                            "title": "Scan Tray",
+                                            "icon": "description",
+                                            "iconClass": "active-header"
+                                        }
+                                    }
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "dellCarRecordconditionCompleteUUID",
+                                    "properties": {
+                                        "disabled": true
+                                    }
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "addingResultCodeDataToAccessories",
+                                "config": {
+                                    "ResultCodeData": "#dellCarRecordconditionFormData",
+                                    "source": "#Accessories"
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "combineStringsInArray",
+                                "config": {
+                                    "data": "#Accessories",
+                                    "targetKey": "Unit Cosmetic Condition"
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "ctype": "taskPanel",
+                "title": "",
+                "disabled": true,
+                "isblueBorder": true,
+                "header": {
+                    "title": "Scan Tray",
+                    "icon": "description",
+                    "iconClass": "active-header",
+                    "statusIcon": "hourglass_empty",
+                    "statusClass": "incomplete-status"
+                },
+                "expanded": false,
+                "hideToggle": "true",
+                "isEditable": true,
+                "isMandatory": true,
+                "uuid": "dellCarScanTrayIdUUID",
+                "visibility": true,
+                "hidden": false,
+                "hooks": [],
+                "validations": [],
+                "actions": [],
+                "items": [
+                    {
+                        "ctype": "label",
+                        "text": "Scan the tray ID number",
+                        "labelClass": "body-italic"
+                    },
+                    {
+                        "ctype": "textField",
+                        "uuid": "dellCarScanTrayTextFieldUUID",
+                        "hooks": [],
+                        "actions": [],
+                        "type": "text",
+                        "placeholder": "Scan #",
+                        "submitable": true,
+                        "visibility": true,
+                        "dellReceiving": true,
+                        "required": "#isReceivingTrayIdNumberVisible",
+                        "label": "Tray ID",
+                        "labelPosition": "left",
+                        "textfieldClass": "col-6 p-0",
+                        "name": "nr kuwety",
+                        "isUpperCase": true,
+                        "labelClass": "body2",
+                        "formGroupClass": "flex-container-one-fourth-width body",
+                        "validations": [
+                            {
+                                "type": "regex",
+                                "script": "^[a-zA-Z0-9]{0,10}$"
+                            }
+                        ]
+                    }
+                ],
+                "footer": [
+                    {
+                        "ctype": "button",
+                        "color": "primary",
+                        "text": "Complete",
+                        "uuid": "dellCarScanTrayCompleteButtonUUID",
+                        "class": "primary-btn",
+                        "visibility": true,
+                        "hidden": false,
+                        "disabled": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "key": "dellCarReceivingTrayidFormData",
+                                    "data": "formData",
+                                    "requestMethod": "add"
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "context",
+                                "config": {
+                                    "key": "dellCarReceivingTrayid",
+                                    "data": "#dellCarReceivingTrayidFormData.dellCarTrayIdText",
+                                    "requestMethod": "add"
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "eventSource": "click",
+                                "config": {
+                                    "key": "dellCarScanTrayCompleteButtonUUID",
+                                    "properties": {
+                                        "disabled": true
+                                    }
+                                }
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "dellCarScanTrayIdUUID",
+                                    "properties": {
+                                        "expanded": false,
+                                        "disabled": true,
+                                        "taskPanelHeaderClass": "background-white",
+                                        "header": {
+                                            "title": "Scan Tray",
+                                            "icon": "description",
+                                            "statusIcon": "check_circle",
+                                            "statusClass": "complete-status",
+                                            "class": "complete-task ",
+                                            "iconClass": "complete-task"
+                                        }
+                                    }
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "addingResultCodeDataToAccessories",
+                                "config": {
+                                    "ResultCodeData": "#dellCarReceivingTrayidFormData",
+                                    "source": "#Accessories"
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "dellReceivingreceiptButtonUUID",
+                                    "properties": {
+                                        "disabled": false
+                                    }
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "footer": [
+            {
+                "ctype": "toolbar",
+                "toolbarClass": "pagecontent-footer",
+                "items": [
+                    {
+                        "ctype": "iconbutton",
+                        "iconButtonClass": "footer-save body",
+                        "text": "Exit ",
+                        "uuid": "dellReceivingSaveUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "icon": "close",
+                        "actions": [
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "errorTitleUUID",
+                                    "properties": {
+                                        "titleValue": "",
+                                        "isShown": false
+                                    }
+                                }
+                            },
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "DellCarAccessories",
+                                    "data": []
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "dellCarReceivingAcAdapterValue",
+                                    "data": ""
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "dellCarReceivingPowerCableValue",
+                                    "data": ""
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "dellCarReceivingInternalBatteryValue",
+                                    "data": ""
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "dellCarReceivingExternalBatteryValue",
+                                    "data": ""
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "dellCarReceivingotherAccessoriesValue",
+                                    "data": ""
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "dellCarRecordConditionResultCodeDataData",
+                                    "data": ""
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "dellReceivingreceiptId",
+                                    "data": ""
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "renderTemplate",
+                                "config": {
+                                    "templateId": "dashboard.json",
+                                    "mode": "local"
+                                },
+                                "eventSource": "click"
+                            }
+                        ],
+                        "iconClass": "active-header"
+                    },
+                    {
+                        "ctype": "iconText",
+                        "uuid": "receivingConfirmAddNoteUUID",
+                        "icon": "add_comment",
+                        "text": "Add Note",
+                        "disabled": false,
+                        "textCss": "",
+                        "iconPosition": "Before",
+                        "iconTextClass": "footer-addNote body",
+                        "actions": [
+                            {
+                                "type": "dialog",
+                                "uuid": "addNoteDialogUUID",
+                                "config": {
+                                    "title": "Add Note",
+                                    "items": [
+                                        {
+                                            "ctype": "textarea",
+                                            "name": "addNote",
+                                            "textareaClass": "note-class",
+                                            "uuid": "addNoteUUID",
+                                            "required": true,
+                                            "value": "#nextAddNotes.addNote",
+                                            "actions": [
+                                                {
+                                                    "type": "updateComponent",
+                                                    "config": {
+                                                        "key": "searachDoneButtonUUID",
+                                                        "properties": {
+                                                        "disabled": false
+                                                        }
+                                                    },
+                                                    "eventSource": "onLoad"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "footer": [
+                                        {
+                                            "ctype": "button",
+                                            "color": "primary",
+                                            "text": "Cancel",
+                                            "uuid": "confirmCancelButtonUUID",
+                                            "closeType": "close",
+                                            "disableClose": true,
+                                            "visibility": true,
+                                            "dialogButton": true,
+                                            "type": "",
+                                            "hooks": [],
+                                            "validations": [],
+                                            "actions": []
+                                        },
+                                        {
+                                            "ctype": "button",
+                                            "color": "primary",
+                                            "text": "Done",
+                                            "uuid": "confirmDoneButtonUUID",
+                                            "dialogButton": true,
+                                            "visibility": true,
+                                            "disabled": true,
+                                            "type": "submit",
+                                            "closeType": "success",
+                                            "hooks": [],
+                                            "validations": [],
+                                            "actions": []
+                                        }
+                                    ]
+                                },
+                                "eventSource": "click",
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "key": "nextAddNotes",
+                                                    "data": "formData",
+                                                    "requestMethod": "add",
+                                                    "value": "addNote"
+                                                },
+                                                "eventSource": "click"
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": []
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "button",
+                        "color": "primary",
+                        "text": "Receive",
+                        "class": "primary-btn subprocess-save",
+                        "uuid": "dellReceivingreceiptButtonUUID",
+                        "visibility": true,
+                        "disabled": true,
+                        "hidden": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "actions": [
+                            {
+                                "type": "condition",
+                                "config": {
+                                    "operation": "isEqualTo",
+                                    "lhs": "#dellCarTopLeftHeaderData.0.ffValue",
+                                    "rhs": "IW"
+                                },
+                                "eventSource": "click",
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "warrentFlag",
+                                                    "data": true
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "warrentFlag",
+                                                    "data": false
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            },
+                            {
+                                "type": "microservice",
+                                "config": {
+                                    "microserviceId": "getNextItemBCN",
+                                    "isLocal": false,
+                                    "LocalService": "assets/Responses/dellCarNextBCN.json",
+                                    "requestMethod": "get"
+                                },
+                                "eventSource": "click",
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "microservice",
+                                                "hookType": "afterInit",
+                                                "config": {
+                                                    "microserviceId": "getWorkInstDellEducateURLLink",
+                                                    "requestMethod": "post",
+                                                    "body": {
+                                                        "clientId": "#dcReceivingOrderDetails.CLIENT_ID",
+                                                        "contractId": "#dcReceivingOrderDetails.CONTRACT_ID",
+                                                        "loaderName": "DELL_CAR_DIFFICULTY",
+                                                        "modelNumber": "#getSNPNByRefOrder.PartNumber",
+                                                        "userName": "#userAccountInfo.PersonalDetails.USERID"
+                                                    },
+                                                    "toBeStringified": true
+                                                },
+                                                "responseDependents": {
+                                                    "onSuccess": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "context",
+                                                                "config": {
+                                                                    "requestMethod": "add",
+                                                                    "key": "getWorkInstDellEducateURLLink",
+                                                                    "data": "responseData"
+                                                                }
+                                                            },
+                                                            {
+                                                                "type": "handleDellCarReceivingActions",
+                                                                "methodType": "flexFieldDataFormation",
+                                                                "config": {
+                                                                    "source": "#Accessories",
+                                                                    "arr" : ["userSearchCriteria","getWorkInstDellEducateURLLink"]
+                                                                },
+                                                                "eventSource": "click"
+                                                            },
+                                                            {
+                                                                "type": "microservice",
+                                                                "config": {
+                                                                    "microserviceId": "dellCarFlaggedUnitReceiving",
+                                                                    "requestMethod": "post",
+                                                                    "body": {
+                                                                        "clientId": "#dcReceivingOrderDetails.CLIENT_ID",
+                                                                        "contractId": "#dcReceivingOrderDetails.CONTRACT_ID",
+                                                                        "locationId": "#dcReceivingOrderDetails.LOCATION_ID",
+                                                                        "actionType": "proDetail",
+                                                                        "subActionTypeName": "addBcnLabel",
+                                                                        "orderProcessType": "#dcReceivingOrderDetails.ORDER_PROCESS_TYPE_CODE",
+                                                                        "geographyNumber": "#dcReceivingOrderDetails.LOCATION_NAME",
+                                                                        "clientName": "#dcReceivingOrderDetails.CLIENT_NAME",
+                                                                        "contractName": "#dcReceivingOrderDetails.CONTRACT_NAME",
+                                                                        "userLoginId": "#userAccountInfo.PersonalDetails.USERID",
+                                                                        "orderNumber": "#getSNPNByRefOrder.PartNumber",
+                                                                        "serialNo": "#getSNPNByRefOrder.SerialNumber",
+                                                                        "bcn": "#getNextItemBCN",
+                                                                        "loaderName": "BRA_DELLAIO_STOP_PROCESS"
+                                                                    },
+                                                                    "toBeStringified": true
+                                                                },
+                                                                "responseDependents": {
+                                                                    "onSuccess": {
+                                                                        "actions": [
+                                                                            {
+                                                                                "type": "microservice",
+                                                                                "config": {
+                                                                                    "microserviceId": "dellReceivingreceipt",
+                                                                                    "isLocal": false,
+                                                                                    "LocalService": "assets/Responses/receivingReceiptResponse.json",
+                                                                                    "requestMethod": "post",
+                                                                                    "body": {
+                                                                                        "Receipt": {
+                                                                                            "ReceiptInfo": {
+                                                                                                "User": "#userAccountInfo.PersonalDetails.USERID",
+                                                                                                "Pwd": "#loginUUID.password",
+                                                                                                "CarrierName": "",
+                                                                                                "PackingListNo": "",
+                                                                                                "PackingListNoPackingListNo": "",
+                                                                                                "TrackingNo": "#userSearchCriteria.unitIdentificationValue",
+                                                                                                "locationId": "#dcReceivingOrderDetails.LOCATION_ID",
+                                                                                                "clientId": "#dcReceivingOrderDetails.CLIENT_ID",
+                                                                                                "contractId": "#dcReceivingOrderDetails.CONTRACT_ID",
+                                                                                                "swollenBattery": "#swollenBatterySelectionValue",
+                                                                                                "Notes": "#nextAddNotes.addNote",
+                                                                                                "Lines": {
+                                                                                                    "Line": {
+                                                                                                        "LineNo": "1",
+                                                                                                        "Items": {
+                                                                                                            "Item": {
+                                                                                                                "PartNum": "#getSNPNByRefOrder.PartNumber",
+                                                                                                                "Quantity": "1",
+                                                                                                                "OriginalSerialNumber": "",
+                                                                                                                "OriginalBCN": "",
+                                                                                                                "SerialNum": "#getSNPNByRefOrder.SerialNumber",
+                                                                                                                "BCN": {
+                                                                                                                    "_Number": "#getNextItemBCN"
+                                                                                                                },
+                                                                                                                "Bcn": "#getNextItemBCN",
+                                                                                                                "ReasonCode": "",
+                                                                                                                "ReasonNotes": "",
+                                                                                                                "ResultCode": "Good Receipt",
+                                                                                                                "Warranty": "#warrentFlag",
+                                                                                                                "RevisionLevel": "",
+                                                                                                                "FlexFields": {
+                                                                                                                    "FlexField": "#accessoriesCopy"
+                                                                                                                }
+                                                                                                            }
+                                                                                                        }
+                                                                                                    }
+                                                                                                },
+                                                                                                "ExternalReceiptData": {
+                                                                                                    "ReceiptNumber": "",
+                                                                                                    "Application": "",
+                                                                                                    "Warehouse": ""
+                                                                                                },
+                                                                                                "IP": ":1",
+                                                                                                "CallSource": "FrontEnd",
+                                                                                                "APIUsage_LocationName": "#dcReceivingOrderDetails.LOCATION_NAME",
+                                                                                                "APIUsage_ClientName": "#dcReceivingOrderDetails.CLIENT_NAME"
+                                                                                            },
+                                                                                            "RefOrder": "#dcReceivingOrderDetails.REFERENCE_ORDER_ID",
+                                                                                            "InboundOrderID": "#dcReceivingOrderDetails.INBOUND_ORDER_ID"
+                                                                                        }
+                                                                                    },
+                                                                                    "toBeStringified": true
+                                                                                },
+                                                                                "responseDependents": {
+                                                                                    "onSuccess": {
+                                                                                        "actions": [
+                                                                                            {
+                                                                                                "type": "context",
+                                                                                                "config": {
+                                                                                                    "requestMethod": "add",
+                                                                                                    "key": "dellReceivingreceiptId",
+                                                                                                    "data": "responseData"
+                                                                                                }
+                                                                                            },
+                                                                                            {
+                                                                                                "type": "updateComponent",
+                                                                                                "config": {
+                                                                                                    "key": "errorTitleUUID",
+                                                                                                    "properties": {
+                                                                                                        "titleValue": "",
+                                                                                                        "isShown": false
+                                                                                                    }
+                                                                                                }
+                                                                                            },
+                                                                                            {
+                                                                                                "type": "microservice",
+                                                                                                "config": {
+                                                                                                    "microserviceId": "onePrint",
+                                                                                                    "requestMethod": "post",
+                                                                                                    "body": {
+                                                                                                        "locationId": "#dcReceivingOrderDetails.LOCATION_ID",
+                                                                                                        "clientId": "#dcReceivingOrderDetails.CLIENT_ID",
+                                                                                                        "contractId": "#dcReceivingOrderDetails.CONTRACT_ID",
+                                                                                                        "warehouseId": "0",
+                                                                                                        "routeCode": "#dcReceivingOrderDetails.ORDER_PROCESS_TYPE_CODE",
+                                                                                                        "workCenterId": "0",
+                                                                                                        "eventName": "BYD_DELL_CAR_REC_BOX_TW",
+                                                                                                        "hostName": "#getHostNameResponse.hostName",
+                                                                                                        "ip": "#getHostNameResponse.ip",
+                                                                                                        "userName": "#userAccountInfo.PersonalDetails.USERID",
+                                                                                                        "params": {
+                                                                                                            "receiptId": "#dellReceivingreceiptId.ReceiptID"
+                                                                                                        }
+                                                                                                    },
+                                                                                                    "toBeStringified": true
+                                                                                                },
+                                                                                                "responseDependents": {
+                                                                                                    "onSuccess": {
+                                                                                                        "actions": []
+                                                                                                    },
+                                                                                                    "onFailure": {
+                                                                                                        "actions": [
+                                                                                                            {
+                                                                                                                "type": "handleCommonServices",
+                                                                                                                "config": {
+                                                                                                                    "type": "errorRenderTemplate",
+                                                                                                                    "contextKey": "onePrintErrorMsg",
+                                                                                                                    "updateKey": "errorTitleUUID"
+                                                                                                                }
+                                                                                                            }
+                                                                                                        ]
+                                                                                                    }
+                                                                                                }
+                                                                                            },
+                                                                                            {
+                                                                                                "type": "microservice",
+                                                                                                "config": {
+                                                                                                    "microserviceId": "onePrint",
+                                                                                                    "requestMethod": "post",
+                                                                                                    "body": {
+                                                                                                        "locationId": "#dcReceivingOrderDetails.LOCATION_ID",
+                                                                                                        "clientId": "#dcReceivingOrderDetails.CLIENT_ID",
+                                                                                                        "contractId": "#dcReceivingOrderDetails.CONTRACT_ID",
+                                                                                                        "warehouseId": "0",
+                                                                                                        "routeCode": "#dcReceivingOrderDetails.ORDER_PROCESS_TYPE_CODE",
+                                                                                                        "workCenterId": "0",
+                                                                                                        "eventName": "BYD_DELL_CAR_REC_FLEX_TW",
+                                                                                                        "hostName": "#getHostNameResponse.hostName",
+                                                                                                        "ip": "#getHostNameResponse.ip",
+                                                                                                        "userName": "#userAccountInfo.PersonalDetails.USERID",
+                                                                                                        "params": {
+                                                                                                            "receiptId": "#dellReceivingreceiptId.ReceiptID"
+                                                                                                        }
+                                                                                                    },
+                                                                                                    "toBeStringified": true
+                                                                                                },
+                                                                                                "responseDependents": {
+                                                                                                    "onSuccess": {
+                                                                                                        "actions": []
+                                                                                                    },
+                                                                                                    "onFailure": {
+                                                                                                        "actions": [
+                                                                                                            {
+                                                                                                                "type": "handleCommonServices",
+                                                                                                                "config": {
+                                                                                                                    "type": "errorRenderTemplate",
+                                                                                                                    "contextKey": "onePrintErrorMsg",
+                                                                                                                    "updateKey": "errorTitleUUID"
+                                                                                                                }
+                                                                                                            }
+                                                                                                        ]
+                                                                                                    }
+                                                                                                }
+                                                                                            },
+                                                                                            {
+                                                                                                "type": "microservice",
+                                                                                                "config": {
+                                                                                                    "microserviceId": "onePrint",
+                                                                                                    "requestMethod": "post",
+                                                                                                    "body": {
+                                                                                                        "locationId": "#dcReceivingOrderDetails.LOCATION_ID",
+                                                                                                        "clientId": "#dcReceivingOrderDetails.CLIENT_ID",
+                                                                                                        "contractId": "#dcReceivingOrderDetails.CONTRACT_ID",
+                                                                                                        "warehouseId": "0",
+                                                                                                        "routeCode": "#dcReceivingOrderDetails.ORDER_PROCESS_TYPE_CODE",
+                                                                                                        "workCenterId": "0",
+                                                                                                        "eventName": "BYD_DELL_CAR_REC_REC_TW",
+                                                                                                        "hostName": "#getHostNameResponse.hostName",
+                                                                                                        "ip": "#getHostNameResponse.ip",
+                                                                                                        "userName": "#userAccountInfo.PersonalDetails.USERID",
+                                                                                                        "params": {
+                                                                                                            "receiptId": "#dellReceivingreceiptId.ReceiptID"
+                                                                                                        }
+                                                                                                    },
+                                                                                                    "toBeStringified": true
+                                                                                                },
+                                                                                                "responseDependents": {
+                                                                                                    "onSuccess": {
+                                                                                                        "actions": []
+                                                                                                    },
+                                                                                                    "onFailure": {
+                                                                                                        "actions": [
+                                                                                                            {
+                                                                                                                "type": "handleCommonServices",
+                                                                                                                "config": {
+                                                                                                                    "type": "errorRenderTemplate",
+                                                                                                                    "contextKey": "onePrintErrorMsg",
+                                                                                                                    "updateKey": "errorTitleUUID"
+                                                                                                                }
+                                                                                                            }
+                                                                                                        ]
+                                                                                                    }
+                                                                                                }
+                                                                                            },
+                                                                                            {
+                                                                                                "type": "microservice",
+                                                                                                "config": {
+                                                                                                    "microserviceId": "getUnitInfo",
+                                                                                                    "isLocal": false,
+                                                                                                    "LocalService": "assets/Responses/getUnitInfoResponse.json",
+                                                                                                    "requestMethod": "get",
+                                                                                                    "params": {
+                                                                                                        "unitIdentificationValue": "#getSNPNByRefOrder.SerialNumber",
+                                                                                                        "identificatorType": "SerialNumber",
+                                                                                                        "locationId": "#userSelectedLocation",
+                                                                                                        "clientId": "#userSelectedClient",
+                                                                                                        "contractId": "#userSelectedContract"
+                                                                                                    }
+                                                                                                },
+                                                                                                "responseDependents": {
+                                                                                                    "onSuccess": {
+                                                                                                        "actions": [
+                                                                                                            {
+                                                                                                                "type": "microservice",
+                                                                                                                "config": {
+                                                                                                                    "microserviceId": "onePrint",
+                                                                                                                    "requestMethod": "post",
+                                                                                                                    "body": {
+                                                                                                                        "locationId": "#dcReceivingOrderDetails.LOCATION_ID",
+                                                                                                                        "clientId": "#dcReceivingOrderDetails.CLIENT_ID",
+                                                                                                                        "contractId": "#dcReceivingOrderDetails.CONTRACT_ID",
+                                                                                                                        "warehouseId": "0",
+                                                                                                                        "routeCode": "#dcReceivingOrderDetails.ORDER_PROCESS_TYPE_CODE",
+                                                                                                                        "workCenterId": "0",
+                                                                                                                        "eventName": "BYD_DELL_CAR_ST",
+                                                                                                                        "hostName": "#getHostNameResponse.hostName",
+                                                                                                                        "ip": "#getHostNameResponse.ip",
+                                                                                                                        "userName": "#userAccountInfo.PersonalDetails.USERID",
+                                                                                                                        "Serial Number": "#getUnitInfo.SERIAL_NO"
+                                                                                                                    },
+                                                                                                                    "toBeStringified": true
+                                                                                                                },
+                                                                                                                "responseDependents": {
+                                                                                                                    "onSuccess": {
+                                                                                                                        "actions": [
+                                                                                                                            {
+                                                                                                                                "type": "clearScreenData",
+                                                                                                                                "eventSource": "click"
+                                                                                                                            },
+                                                                                                                            {
+                                                                                                                                "type": "context",
+                                                                                                                                "config": {
+                                                                                                                                    "requestMethod": "add",
+                                                                                                                                    "key": "dellReceivingreceiptId",
+                                                                                                                                    "data": "#dellReceivingreceiptId.ReceiptID"
+                                                                                                                                }
+                                                                                                                            },
+                                                                                                                            {
+                                                                                                                                "type": "renderTemplate",
+                                                                                                                                "config": {
+                                                                                                                                    "templateId": "dashboard.json",
+                                                                                                                                    "mode": "local"
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                        ]
+                                                                                                                    },
+                                                                                                                    "onFailure": {
+                                                                                                                        "actions": [
+                                                                                                                            {
+                                                                                                                                "type": "handleCommonServices",
+                                                                                                                                "config": {
+                                                                                                                                    "type": "errorRenderTemplate",
+                                                                                                                                    "contextKey": "onePrintErrorMsg",
+                                                                                                                                    "updateKey": "errorTitleUUID"
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                        ]
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            }
+                                                                                                        ]
+                                                                                                    },
+                                                                                                    "onFailure": {
+                                                                                                        "actions": [
+                                                                                                            {
+                                                                                                                "type": "handleCommonServices",
+                                                                                                                "config": {
+                                                                                                                    "type": "errorRenderTemplate",
+                                                                                                                    "contextKey": "unitInfoErrorMsg",
+                                                                                                                    "updateKey": "errorTitleUUID"
+                                                                                                                }
+                                                                                                            }
+                                                                                                        ]
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        ]
+                                                                                    },
+                                                                                    "onFailure": {
+                                                                                        "actions": [
+                                                                                            {
+                                                                                                "type": "handleCommonServices",
+                                                                                                "config": {
+                                                                                                    "type": "errorRenderTemplate",
+                                                                                                    "contextKey": "receiptErrorMsg",
+                                                                                                    "updateKey": "errorTitleUUID"
+                                                                                                }
+                                                                                            }
+                                                                                        ]
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "onFailure": {
+                                                                        "actions": [
+                                                                            {
+                                                                                "type": "handleCommonServices",
+                                                                                "config": {
+                                                                                    "type": "errorRenderTemplate",
+                                                                                    "contextKey": "errorMsg",
+                                                                                    "updateKey": "errorTitleUUID"
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    "onFailure": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "handleCommonServices",
+                                                                "config": {
+                                                                    "type": "errorRenderTemplate",
+                                                                    "contextKey": "onePrintErrorMsg",
+                                                                    "updateKey": "errorTitleUUID"
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": [
+                                            {
+                                                "type": "handleCommonServices",
+                                                "config": {
+                                                    "type": "errorRenderTemplate",
+                                                    "contextKey": "nextBCNErrorMsg",
+                                                    "updateKey": "errorTitleUUID"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "Result": "SUCCESS"
+}

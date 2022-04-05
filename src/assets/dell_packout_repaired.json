@@ -1,0 +1,46 @@
+{
+    "ctype": "subProcess",
+    "title": "PACKOUT",
+    "uuid": "dellPackoutRepairedUUID",
+    "clientName": "DELL",
+    "subMenuIndex": 0,
+    "openRightNav": false,
+    "hooks": [
+        {
+            "type": "microservice",
+            "hookType": "beforeInit",
+            "config": {
+                "microserviceId": "getSubProcessPageBody",
+                "requestMethod": "get",
+                "params": {
+                    "subProcessId": "#wcSubprocess.PACKOUT.subProcessID",
+                    "userName": "#userAccountInfo.PersonalDetails.USERID"
+                },
+                "isLocal": false,
+                "LocalService": "assets/Responses/SubProcess/DELL/dellPackoutRepairedSubProcess.json"
+            },
+            "responseDependents": {
+                "onSuccess": {
+                    "actions": [
+                        {
+                            "type": "renderTemplate",
+                            "config": {
+                                "mode": "remote",
+                                "targetId": "mainPageContentBodysp",
+                                "templateId": "getSubProcessPageBody"
+                            }
+                        }
+                    ]
+                },
+                "onFailure": {
+                    "actions": [
+                        {
+                            "type": "toast",
+                            "message": "Failed to fetch Dell PACK OUT JSON"
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}

@@ -1,0 +1,1795 @@
+{
+    "ResultData": {
+        "ctype": "page",
+        "uuid": "pageUUID",
+        "contentClass": "",
+        "css": "",
+        "visibility": true,
+        "hooks": [
+            {
+                "type": "condition",
+                "hookType": "afterInit",
+                "config": {
+                    "operation": "isValid",
+                    "lhs": "#shippingFromDashboard"
+                },
+                "responseDependents": {
+                    "onSuccess": {
+                        "actions": [
+                            {
+                                "type": "condition",
+                                "hookType": "afterInit",
+                                "config": {
+                                    "operation": "isValid",
+                                    "lhs": "#boxShipping"
+                                },
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "orderProcessTypeCode",
+                                                    "data": "OSTK"
+                                                }
+                                            },
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "BCNTitle",
+                                                    "properties": {
+                                                        "title": "RO: ",
+                                                        "titleValue": "#shippingReferenceOrderId",
+                                                        "titleClass": "heading1 sidenav-header"
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "DueUUID",
+                                                    "properties": {
+                                                        "visibility": false,
+                                                        "titleValue": ""
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "SerialUUID",
+                                                    "properties": {
+                                                        "titleValue": "--"
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "partNumberUUID",
+                                                    "properties": {
+                                                        "titleValue": "#shippingPartNo"
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "dellCarDpsNumberUUID",
+                                                    "properties": {
+                                                        "titleValue": "--"
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "type": "context",
+                                                "hookType": "afterInit",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "shippingItemBcn",
+                                                    "data": ""
+                                                }
+                                            },
+                                            {
+                                                "type": "context",
+                                                "hookType": "afterInit",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "shippingSerialNo",
+                                                    "data": ""
+                                                }
+                                            },
+                                            {
+                                                "type": "updateComponent",
+                                                "eventSource": "click",
+                                                "config": {
+                                                    "key": "etravellerShippingUUID",
+                                                    "properties": {
+                                                        "disabled": true
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "orderProcessTypeCode",
+                                                    "data": "ORET"
+                                                }
+                                            },
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "shippingbussinessTrxTypeId",
+                                                    "data": "#getCurrPrevRODetailsBySNData.bussinessTrxTypeId"
+                                                }
+                                            },
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "BCNTitle",
+                                                    "properties": {
+                                                        "titleValue": "#shippingItemBcn"
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            },
+                            {
+                                "type": "handleDellCarShippingActions",
+                                "methodType": "destinationPalletLogic"
+                            }
+                        ]
+                    },
+                    "onFailure": {
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "orderProcessTypeCode",
+                                    "data": "ORET"
+                                }
+                            },
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "shippingbussinessTrxTypeId",
+                                    "data": "1"
+                                }
+                            },
+                            {
+                                "type": "context",
+                                "config": {
+                                  "requestMethod": "add",
+                                  "key": "shippingReferenceOrderId",
+                                  "data": "#ROByBCNForDiscrepancy"
+                                }
+                            },
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "shippingSerialNo",
+                                    "data": "#discrepancyUnitInfo.SERIAL_NO"
+                                }
+                            },
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "shippingItemBcn",
+                                    "data": "#discrepancyUnitInfo.ITEM_BCN"
+                                }
+                            },
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "shippingPartNo",
+                                    "data": "#discrepancyUnitInfo.PART_NO"
+                                }
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "SerialUUID",
+                                    "properties": {
+                                        "titleValue": "#shippingSerialNo"
+                                    }
+                                }
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "partNumberUUID",
+                                    "properties": {
+                                        "titleValue": "#shippingPartNo"
+                                    }
+                                }
+                            },
+                            {
+                                "type": "microservice",
+                                "hookType": "afterInit",
+                                "config": {
+                                    "microserviceId": "getShipmentDetails",
+                                    "requestMethod": "get",
+                                    "params": {
+                                        "locationId": "#userSelectedLocation",
+                                        "login": "#loginUUID.username",
+                                        "serialNo": "#shippingSerialNo",
+                                        "userName": "#loginUUID.username"
+                                    }
+                                },
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "shippingShipmentDetails",
+                                                    "data": "responseArray"
+                                                }
+                                            },
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "shippingOutBoundOrderId",
+                                                    "data": "#shippingShipmentDetails.outBoundOrderId"
+                                                }
+                                            },
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "shippmentSourceBinName",
+                                                    "data": "#shippingShipmentDetails.sourceBinName"
+                                                }
+                                            },
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "shippingTradingPartnerId",
+                                                    "data": "#shippingShipmentDetails.tradingPartnerId"
+                                                }
+                                            },
+                                            {
+                                                "type": "handleDellCarShippingActions",
+                                                "methodType": "destinationPalletLogic"
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": [
+                                            {
+                                                "type": "handleCommonServices",
+                                                "config": {
+                                                    "type": "errorRenderTemplate"
+                                                }
+                                            },
+                                            {
+                                                "type": "handleDellCarShippingActions",
+                                                "methodType": "enableExit"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "type": "context",
+                "hookType": "afterInit",
+                "config": {
+                    "requestMethod": "add",
+                    "key": "palletBgColor",
+                    "data": "black"
+                }
+            },
+            {
+                "type": "context",
+                "hookType": "afterInit",
+                "config": {
+                    "requestMethod": "addToGlobalContext",
+                    "key": "isTimeOutFromDellCarWC",
+                    "data": false
+                }
+            },
+            {
+                "type": "context",
+                "hookType": "afterInit",
+                "config": {
+                    "requestMethod": "add",
+                    "key": "palletText",
+                    "data": "EU"
+                }
+            },
+            {
+                "type": "microservice",
+                "hookType": "afterInit",
+                "config": {
+                    "microserviceId": "getPrinterNameByHostName",
+                    "requestMethod": "get",
+                    "params": {
+                        "hostName": "#getHostNameResponse.hostName",
+                        "userName": "#userAccountInfo.PersonalDetails.USERID",
+                        "contractId": "#userSelectedContract"
+                    }
+                },
+                "responseDependents": {
+                    "onSuccess": {
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "shippingPrinterNameByHostName",
+                                    "data": "responseData"
+                                }
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "dellCarManifestPrinterUUID",
+                                    "dropDownProperties": {
+                                        "options": "#shippingPrinterNameByHostName"
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                },
+                "onFailure": {
+                    "actions": [
+                        {
+                            "type": "handleCommonServices",
+                            "config": {
+                                "type": "errorRenderTemplate"
+                            }
+                        },
+                        {
+                            "type": "handleDellCarShippingActions",
+                            "methodType": "enableExit"
+                        }
+                    ]
+                }
+            }
+        ],
+        "validations": [],
+        "action": [],
+        "header": [
+            {
+                "ctype": "breadcrumb",
+                "breadcrumbs": [
+                    {
+                        "label": "#userSelectedLocationName"
+                    },
+                    {
+                        "label": "#userSelectedClientName"
+                    },
+                    {
+                        "label": "#userSelectedContractName"
+                    }
+                ]
+            },
+            {
+                "ctype": "toolbar",
+                "uuid": "shippingToolBarUUID",
+                "toolbarClass": "pagecontent-header",
+                "items": [
+                    {
+                        "ctype": "title",
+                        "uuid": "subProcessTitleUUID",
+                        "titleValue": "Shipping",
+                        "titleClass": "section-title"
+                    },
+                    {
+                        "ctype": "iconbutton",
+                        "iconButtonClass": "headeropen-button",
+                        "text": "",
+                        "uuid": "pageopenUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "hidden": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "icon": "menu_open",
+                        "disableRipple": true,
+                        "iconClass": "header-icon",
+                        "actions": [
+                            {
+                                "type": "toggle",
+                                "eventSource": "click",
+                                "name": "subProcessRightNavref"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "openUUID",
+                                    "properties": {
+                                        "hidden": false
+                                    }
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "pageopenUUID",
+                                    "properties": {
+                                        "hidden": true
+                                    }
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "items": [
+            {
+                "ctype": "title",
+                "uuid": "successTitleUUID",
+                "titleClass": "success-title",
+                "isShown": false
+            },
+            {
+                "ctype": "title",
+                "uuid": "errorTitleUUID",
+                "containerId": "prebodysectionone",
+                "titleClass": "error-title",
+                "isShown": false
+            },
+            {
+                "ctype": "taskPanel",
+                "isblueBorder": true,
+                "title": "",
+                "header": {
+                    "title": "Ship",
+                    "svgIcon": "description_icon",
+                    "iconClass": "active-header",
+                    "class": "greyish-black subtitle1 font-weight-700"
+                },
+                "expanded": true,
+                "disabled": false,
+                "hideToggle": true,
+                "isMandatory": true,
+                "panelClass": "margin-top-10",
+                "hidden": false,
+                "uuid": "dellCarShippingPanelUUID",
+                "hooks": [],
+                "validations": [],
+                "actions": [],
+                "items": [],
+                "footer": [
+                    {
+                        "ctype": "label",
+                        "text": "Complete task to ship",
+                        "labelClass": "shippingContent",
+                        "value": ""
+                    },
+                    {
+                        "ctype": "button",
+                        "color": "primary",
+                        "text": "Complete",
+                        "uuid": "dellCarshipCompleteUUID",
+                        "class": "primary-btn",
+                        "visibility": true,
+                        "disabled": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "actions": [
+                            {
+                                "type": "handleDellCarShippingActions",
+                                "methodType": "clearErrorAndDisableExit",
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "condition",
+                                "eventSource": "click",
+                                "config": {
+                                    "operation": "isValid",
+                                    "lhs": "#boxShipping"
+                                },
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions":[
+                                            {
+                                                "type": "microservice",
+                                                "config": {
+                                                    "microserviceId": "performShipment",
+                                                    "isLocal": false,
+                                                    "LocalService": "assets/Responses/ShipMockData.json",
+                                                    "requestMethod": "post",
+                                                    "body": {
+                                                        "apiUsageLocationName": "#userSelectedLocationName",
+                                                        "callSource": "FrontEnd",
+                                                        "ip": "::1",
+                                                        "shipments": {
+                                                            "outboundOrderId": "#shippingOutBoundOrderId",
+                                                            "shipmentBoxes": [
+                                                                {
+                                                                    "boxNo": "001",
+                                                                    "shipmentItems": [
+                                                                        {
+                                                                            "lineNo": "1",
+                                                                            "partNo": "#shippingPartNo",
+                                                                            "quantity": "1",
+                                                                            "shipmentBoxNo": "001"
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            ]
+                                                        },
+                                                        "userPass": {
+                                                            "userName": "#loginUUID.username",
+                                                            "password": "#loginUUID.password"
+                                                        }
+                                                    },
+                                                    "toBeStringified": true,
+                                                    "removeUndefinedFields": [
+                                                        {
+                                                            "KeyName": "bcn",
+                                                            "KeyValue": "#shippingItemBcn"
+                                                        },
+                                                        {
+                                                            "KeyName": "serialNo",
+                                                            "KeyValue": "#shippingSerialNo"
+                                                        },
+                                                        {
+                                                            "KeyName": "partNo",
+                                                            "KeyValue": "#shippingPartNo"
+                                                        }
+                                                    ]
+                                                },
+                                                "eventSource": "click",
+                                                "responseDependents": {
+                                                    "onSuccess": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "context",
+                                                                "config": {
+                                                                    "requestMethod": "add",
+                                                                    "key": "shippingPerformShipment",
+                                                                    "data": "responseData"
+                                                                }
+                                                            },
+                                                            {
+                                                                "type": "context",
+                                                                "config": {
+                                                                    "requestMethod": "add",
+                                                                    "key": "shippingShipmentID",
+                                                                    "data": "#shippingPerformShipment.shipmentId"
+                                                                }
+                                                            },
+                                                            {
+                                                                "type": "updateComponent",
+                                                                "config": {
+                                                                    "key": "dellCarShippingPanelUUID",
+                                                                    "properties": {
+                                                                        "expanded": false,
+                                                                        "disabled": false,
+                                                                        "header": {
+                                                                            "title": "Ship",
+                                                                            "svgIcon": "description_icon",
+                                                                            "statusIcon": "check_circle",
+                                                                            "statusClass": "complete-status",
+                                                                            "class": "greyish-black subtitle1 font-weight-700",
+                                                                            "iconClass": "complete-task"
+                                                                        }
+                                                                    }
+                                                                },
+                                                                "eventSource": "click"
+                                                            },
+                                                            {
+                                                                "type": "updateComponent",
+                                                                "config": {
+                                                                    "key": "dellCarshipCompleteUUID",
+                                                                    "properties": {
+                                                                        "disabled": true
+                                                                    }
+                                                                },
+                                                                "eventSource": "click"
+                                                            },
+                                                            {
+                                                                "type": "updateComponent",
+                                                                "config": {
+                                                                    "key": "dellCarManifestTaskUUID",
+                                                                    "properties": {
+                                                                        "expanded": true,
+                                                                        "disabled": false,
+                                                                        "header": {
+                                                                            "title": "Manifest",
+                                                                            "svgIcon": "description_icon",
+                                                                            "iconClass": "active-header",
+                                                                            "class": "greyish-black subtitle1 font-weight-700"
+                                                                        }
+                                                                    }
+                                                                },
+                                                                "eventSource": "click"
+                                                            }
+                                                        ]
+                                                    },
+                                                    "onFailure": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "handleCommonServices",
+                                                                "config": {
+                                                                    "type": "errorRenderTemplate"
+                                                                }
+                                                            },
+                                                            {
+                                                                "type": "handleDellCarShippingActions",
+                                                                "methodType": "enableExit"
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": [
+                                            {
+                                                "type": "multipleCondition",
+                                                "config": {
+                                                    "multi": true,
+                                                    "operator": "OR",
+                                                    "conditions": [
+                                                        {
+                                                            "operation": "isEqualToIgnoreCase",
+                                                            "lhs": "#shippingDestinationPalletData.palletDisposition",
+                                                            "rhs": "X-KOM"
+                                                        },
+                                                        {
+                                                            "operation": "isEqualToIgnoreCase",
+                                                            "lhs": "#shippingDestinationPalletData.palletDisposition",
+                                                            "rhs": "Switzerland"
+                                                        }
+                                                    ]
+                                                },
+                                                "eventSource": "click",
+                                                "responseDependents": {
+                                                    "onSuccess": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "microservice",
+                                                                "config": {
+                                                                    "microserviceId": "performShipment",
+                                                                    "isLocal": false,
+                                                                    "LocalService": "assets/Responses/ShipMockData.json",
+                                                                    "requestMethod": "post",
+                                                                    "body": {
+                                                                        "apiUsageLocationName": "#userSelectedLocationName",
+                                                                        "callSource": "FrontEnd",
+                                                                        "ip": "::1",
+                                                                        "shipments": {
+                                                                            "outboundOrderId": "#shippingOutBoundOrderId",
+                                                                            "shipmentBoxes": [
+                                                                                {
+                                                                                    "boxNo": "001",
+                                                                                    "shipmentItems": [
+                                                                                        {
+                                                                                            "bcn": "#shippingItemBcn",
+                                                                                            "lineNo": "1",
+                                                                                            "partNo": "#shippingPartNo",
+                                                                                            "quantity": "1",
+                                                                                            "serialNo": "#shippingSerialNo",
+                                                                                            "shipmentBoxNo": "001"
+                                                                                        }
+                                                                                    ],
+                                                                                    "flexFields": [
+                                                                                        {
+                                                                                            "name": "Box Used",
+                                                                                            "value": "New"
+                                                                                        },
+                                                                                        {
+                                                                                            "name": "Campus ship",
+                                                                                            "value": "YES"
+                                                                                        },
+                                                                                        {
+                                                                                            "name": "X-KOM_FLAG",
+                                                                                            "value": "#XKOMFLAGFlexField"
+                                                                                        }
+                                                                                    ]
+                                                                                }
+                                                                            ]
+                                                                        },
+                                                                        "userPass": {
+                                                                            "userName": "#loginUUID.username",
+                                                                            "password": "#loginUUID.password"
+                                                                        }
+                                                                    },
+                                                                    "toBeStringified": true,
+                                                                    "spliceIfEmptyValueObject": [
+                                                                        {
+                                                                            "identifier": "flexFields",
+                                                                            "valueField": "value",
+                                                                            "keyToBeRemoved": "flexFields"
+                                                                        }
+                                                                    ],
+                                                                    "removeUndefinedFields": [
+                                                                        {
+                                                                            "KeyName": "bcn",
+                                                                            "KeyValue": "#shippingItemBcn"
+                                                                        },
+                                                                        {
+                                                                            "KeyName": "serialNo",
+                                                                            "KeyValue": "#shippingSerialNo"
+                                                                        },
+                                                                        {
+                                                                            "KeyName": "partNo",
+                                                                            "KeyValue": "#shippingPartNo"
+                                                                        }
+                                                                    ]
+                                                                },
+                                                                "eventSource": "click",
+                                                                "responseDependents": {
+                                                                    "onSuccess": {
+                                                                        "actions": [
+                                                                            {
+                                                                                "type": "context",
+                                                                                "config": {
+                                                                                    "requestMethod": "add",
+                                                                                    "key": "shippingPerformShipment",
+                                                                                    "data": "responseData"
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "type": "context",
+                                                                                "config": {
+                                                                                    "requestMethod": "add",
+                                                                                    "key": "shippingShipmentID",
+                                                                                    "data": "#shippingPerformShipment.shipmentId"
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "type": "updateComponent",
+                                                                                "config": {
+                                                                                    "key": "dellCarShippingPanelUUID",
+                                                                                    "properties": {
+                                                                                        "expanded": false,
+                                                                                        "disabled": false,
+                                                                                        "header": {
+                                                                                            "title": "Ship",
+                                                                                            "svgIcon": "description_icon",
+                                                                                            "statusIcon": "check_circle",
+                                                                                            "statusClass": "complete-status",
+                                                                                            "class": "greyish-black subtitle1 font-weight-700",
+                                                                                            "iconClass": "complete-task"
+                                                                                        }
+                                                                                    }
+                                                                                },
+                                                                                "eventSource": "click"
+                                                                            },
+                                                                            {
+                                                                                "type": "updateComponent",
+                                                                                "config": {
+                                                                                    "key": "dellCarshipCompleteUUID",
+                                                                                    "properties": {
+                                                                                        "disabled": true
+                                                                                    }
+                                                                                },
+                                                                                "eventSource": "click"
+                                                                            },
+                                                                            {
+                                                                                "type": "handleDellCarShippingActions",
+                                                                                "methodType": "displayDestinationPalletDialog"
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "onFailure": {
+                                                                        "actions": [
+                                                                            {
+                                                                                "type": "handleCommonServices",
+                                                                                "config": {
+                                                                                    "type": "errorRenderTemplate"
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "type": "handleDellCarShippingActions",
+                                                                                "methodType": "enableExit"
+                                                                            }
+                                                                        ]
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    "onFailure": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "microservice",
+                                                                "config": {
+                                                                    "microserviceId": "performShipment",
+                                                                    "isLocal": false,
+                                                                    "LocalService": "assets/Responses/ShipMockData.json",
+                                                                    "requestMethod": "post",
+                                                                    "body": {
+                                                                        "apiUsageLocationName": "#userSelectedLocationName",
+                                                                        "callSource": "FrontEnd",
+                                                                        "ip": "::1",
+                                                                        "shipments": {
+                                                                            "outboundOrderId": "#shippingOutBoundOrderId",
+                                                                            "shipmentBoxes": [
+                                                                                {
+                                                                                    "boxNo": "001",
+                                                                                    "shipmentItems": [
+                                                                                        {
+                                                                                            "bcn": "#shippingItemBcn",
+                                                                                            "lineNo": "1",
+                                                                                            "partNo": "#shippingPartNo",
+                                                                                            "quantity": "1",
+                                                                                            "serialNo": "#shippingSerialNo",
+                                                                                            "shipmentBoxNo": "001"
+                                                                                        }
+                                                                                    ],
+                                                                                    "flexFields": [
+                                                                                        {
+                                                                                            "name": "Box Used",
+                                                                                            "value": "New"
+                                                                                        },
+                                                                                        {
+                                                                                            "name": "Campus ship",
+                                                                                            "value": "YES"
+                                                                                        }
+                                                                                    ]
+                                                                                }
+                                                                            ]
+                                                                        },
+                                                                        "userPass": {
+                                                                            "userName": "#loginUUID.username",
+                                                                            "password": "#loginUUID.password"
+                                                                        }
+                                                                    },
+                                                                    "toBeStringified": true,
+                                                                    "removeUndefinedFields": [
+                                                                        {
+                                                                            "KeyName": "bcn",
+                                                                            "KeyValue": "#shippingItemBcn"
+                                                                        },
+                                                                        {
+                                                                            "KeyName": "serialNo",
+                                                                            "KeyValue": "#shippingSerialNo"
+                                                                        },
+                                                                        {
+                                                                            "KeyName": "partNo",
+                                                                            "KeyValue": "#shippingPartNo"
+                                                                        }
+                                                                    ]
+                                                                },
+                                                                "eventSource": "click",
+                                                                "responseDependents": {
+                                                                    "onSuccess": {
+                                                                        "actions": [
+                                                                            {
+                                                                                "type": "context",
+                                                                                "config": {
+                                                                                    "requestMethod": "add",
+                                                                                    "key": "shippingPerformShipment",
+                                                                                    "data": "responseData"
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "type": "context",
+                                                                                "config": {
+                                                                                    "requestMethod": "add",
+                                                                                    "key": "shippingShipmentID",
+                                                                                    "data": "#shippingPerformShipment.shipmentId"
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "type": "updateComponent",
+                                                                                "config": {
+                                                                                    "key": "dellCarShippingPanelUUID",
+                                                                                    "properties": {
+                                                                                        "expanded": false,
+                                                                                        "disabled": false,
+                                                                                        "header": {
+                                                                                            "title": "Ship",
+                                                                                            "svgIcon": "description_icon",
+                                                                                            "statusIcon": "check_circle",
+                                                                                            "statusClass": "complete-status",
+                                                                                            "class": "greyish-black subtitle1 font-weight-700",
+                                                                                            "iconClass": "complete-task"
+                                                                                        }
+                                                                                    }
+                                                                                },
+                                                                                "eventSource": "click"
+                                                                            },
+                                                                            {
+                                                                                "type": "updateComponent",
+                                                                                "config": {
+                                                                                    "key": "dellCarshipCompleteUUID",
+                                                                                    "properties": {
+                                                                                        "disabled": true
+                                                                                    }
+                                                                                },
+                                                                                "eventSource": "click"
+                                                                            },
+                                                                            {
+                                                                                "type": "updateComponent",
+                                                                                "config": {
+                                                                                    "key": "dellCarManifestTaskUUID",
+                                                                                    "properties": {
+                                                                                        "expanded": true,
+                                                                                        "disabled": false,
+                                                                                        "header": {
+                                                                                            "title": "Manifest",
+                                                                                            "svgIcon": "description_icon",
+                                                                                            "iconClass": "active-header",
+                                                                                            "class": "greyish-black subtitle1 font-weight-700"
+                                                                                        }
+                                                                                    }
+                                                                                },
+                                                                                "eventSource": "click"
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "onFailure": {
+                                                                        "actions": [
+                                                                            {
+                                                                                "type": "handleCommonServices",
+                                                                                "config": {
+                                                                                    "type": "errorRenderTemplate"
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "type": "handleDellCarShippingActions",
+                                                                                "methodType": "enableExit"
+                                                                            }
+                                                                        ]
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "ctype": "taskPanel",
+                "uuid": "dellCarManifestTaskUUID",
+                "title": "",
+                "isblueBorder": true,
+                "header": {
+                    "title": "Manifest",
+                    "svgIcon": "description_icon",
+                    "class": "greyish-black subtitle1 font-weight-700",
+                    "iconClass": "active-header",
+                    "statusIcon": "hourglass_empty",
+                    "statusClass": "incomplete-status"
+                },
+                "expanded": false,
+                "disabled": true,
+                "hideToggle": "true",
+                "isEditable": true,
+                "isMandatory": true,
+                "panelClass": "margin-top-10",
+                "visibility": true,
+                "hidden": false,
+                "hooks": [],
+                "validations": [],
+                "actions": [],
+                "items": [
+                    {
+                        "ctype": "title",
+                        "uuid": "dellcarManifestTextUUID",
+                        "titleClass": "greyish-black body-italic",
+                        "title": "Pack and seal the Box"
+                    },
+                    {
+                        "ctype": "textField",
+                        "readonly": false,
+                        "uuid": "dellCarManifestTrackingNumberUUID",
+                        "hooks": [],
+                        "type": "text",
+                        "placeholder": "Scan #",
+                        "isUpperCase": true,
+                        "hidden": true,
+                        "focus": false,
+                        "formGroupClass": "content-container display-inline",
+                        "textfieldClass": "col-3 p-0 text-padding",
+                        "name": "manifestTrackingNumber",
+                        "label": "Tracking Number",
+                        "labelClass": "rework-lable-width pl-0 align-left greyish-black subtitle1",
+                        "rightLabel": "",
+                        "rightLabelClass": "",
+                        "required": false,
+                        "bindLabel": true,
+                        "validations": [
+                            {
+                                "type": "regex",
+                                "script": "^[a-zA-Z0-9]{0,32}$"
+                            }
+                        ],
+                        "actions": []
+                    },
+                    {
+                        "ctype": "nativeDropdown",
+                        "dropdownClass": "col-3 mb-3 body2 reworkCommon dropdown-container",
+                        "uuid": "dellCarManifestPrinterUUID",
+                        "name": "Printer",
+                        "label": "Printer",
+                        "labelClass": "pl-0 align-left rework-lable-width subtitle1-align-self greyish-black",
+                        "dataSource": "#dellCarManifestPrinterUUID",
+                        "code": "printerName",
+                        "displayValue": "printerName",
+                        "required": true,
+                        "isUpperCase": true,
+                        "focus": true
+                    }
+                ],
+                "footer": [
+                    {
+                        "ctype": "button",
+                        "color": "primary",
+                        "text": "Complete",
+                        "uuid": "dellCarMainestCompleteButtonUUID",
+                        "class": "primary-btn",
+                        "visibility": true,
+                        "disabled": true,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "actions": [
+                            {
+                                "type": "handleDellCarShippingActions",
+                                "methodType": "clearErrorAndDisableExit",
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "dellCarManifestPrinterData",
+                                    "data": "formData"
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "context",
+                                "config": {
+                                    "key": "dellCarsManifestTrackingNumber",
+                                    "data": "#dellCarManifestPrinterData.manifestTrackingNumber",
+                                    "requestMethod": "add"
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "context",
+                                "config": {
+                                    "key": "dellCarShippingSelectedPrinter",
+                                    "data": "#dellCarManifestPrinterData.Printer",
+                                    "requestMethod": "add"
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "condition",
+                                "config": {
+                                    "operation": "isValid",
+                                    "lhs": "#dellCarsManifestTrackingNumber"
+                                },
+                                "eventSource": "click",
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "microservice",
+                                                "config": {
+                                                    "microserviceId": "dellCarManifest",
+                                                    "isLocal": false,
+                                                    "LocalService": "assets/Responses/dellCarManifestMockData.json",
+                                                    "requestMethod": "post",
+                                                    "body": {
+                                                        "actionType": "carrierShipment",
+                                                        "processType": "ship",
+                                                        "carrierShipmentXml": {
+                                                            "location": "#userSelectedLocationName",
+                                                            "client": "DELL",
+                                                            "contract": "#userSelectedContractName",
+                                                            "locationId": "#userSelectedLocation",
+                                                            "outboundOrderId": "#shippingOutBoundOrderId",
+                                                            "carrierId": "#shippingTermsDetails.carrierCodeId",
+                                                            "carrierName": "#shippingTermsDetails.carrierName",
+                                                            "carrierTypeId": "#shippingTermsDetails.carrierTypeId",
+                                                            "workOrderId": "#repairUnitInfo.WORKORDER_ID",
+                                                            "serviceTypeCode": "#shippingTermsDetails.serviceTypeCode",
+                                                            "serviceTypeId": "#shippingTermsDetails.serviceTypeId",
+                                                            "carrierTypeCode": "#shippingTermsDetails.carrierTypeCode"
+                                                        },
+                                                        "userLoginId": "#userAccountInfo.PersonalDetails.USERID"
+                                                    },
+                                                    "toBeStringified": true
+                                                },
+                                                "eventSource": "click",
+                                                "responseDependents": {
+                                                    "onSuccess": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "context",
+                                                                "config": {
+                                                                    "requestMethod": "add",
+                                                                    "key": "dellCarManifestTriggerData",
+                                                                    "data": "responseData"
+                                                                }
+                                                            },
+                                                            {
+                                                                "type": "microservice",
+                                                                "config": {
+                                                                    "microserviceId": "performManifest",
+                                                                    "isLocal": false,
+                                                                    "LocalService": "assets/Responses/dellCarPerformManifestMockData.json",
+                                                                    "requestMethod": "post",
+                                                                    "body": {
+                                                                        "apiUsageClientName": "DELL",
+                                                                        "apiUsageLocationName": "Bydgoszcz",
+                                                                        "callSource": "FrontEnd",
+                                                                        "carrier": "#shippingTermsDetails.carrierName",
+                                                                        "carrierServiceType": "#shippingTermsDetails.serviceTypeCode",
+                                                                        "carrierType": "#shippingTermsDetails.carrierTypeCode",
+                                                                        "ip": "::1",
+                                                                        "manifestBoxList": [
+                                                                            {
+                                                                                "shipmentBoxNumber": "001",
+                                                                                "trackingNumber": "#dellCarsManifestTrackingNumber",
+                                                                                "returnAirBill": "#dellCarsManifestTrackingNumber.boxContent.box[0].returnAirbill",
+                                                                                "shippedWeight": "#shippingManifestTraxData.boxContent.box[0].weight",
+                                                                                "weightUom": "#shippingManifestTraxData.boxContent.box[0].weightUomCode"
+                                                                            }
+                                                                        ],
+                                                                        "manifestedBy": "#userAccountInfo.PersonalDetails.USERID",
+                                                                        "shipmentId": "#shippingShipmentID",
+                                                                        "userPass": {
+                                                                            "userName": "#userAccountInfo.PersonalDetails.USERID",
+                                                                            "password": "#loginUUID.password"
+                                                                        }
+                                                                    },
+                                                                    "removeUndefinedFields": [
+                                                                        {
+                                                                            "KeyName": "returnAirBill",
+                                                                            "KeyValue": "#dellCarsManifestTrackingNumber.boxContent.box[0].returnAirbill"
+                                                                        }
+                                                                    ],
+                                                                    "toBeStringified": true
+                                                                },
+                                                                "eventSource": "click",
+                                                                "responseDependents": {
+                                                                    "onSuccess": {
+                                                                        "actions": [
+                                                                            {
+                                                                                "type": "context",
+                                                                                "config": {
+                                                                                    "requestMethod": "add",
+                                                                                    "key": "shippingPerformManifestData",
+                                                                                    "data": "responseData"
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "type": "clearScreenData"
+                                                                            },
+                                                                            {
+                                                                                "type": "renderTemplate",
+                                                                                "config": {
+                                                                                    "templateId": "dashboard.json",
+                                                                                    "mode": "local"
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "onFailure": {
+                                                                        "actions": [
+                                                                            {
+                                                                                "type": "handleCommonServices",
+                                                                                "config": {
+                                                                                    "type": "errorRenderTemplate"
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "type": "handleDellCarShippingActions",
+                                                                                "methodType": "enableExit"
+                                                                            }
+                                                                        ]
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    "onFailure": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "handleCommonServices",
+                                                                "config": {
+                                                                    "type": "errorRenderTemplate"
+                                                                }
+                                                            },
+                                                            {
+                                                                "type": "handleDellCarShippingActions",
+                                                                "methodType": "enableExit"
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": [
+                                            {
+                                                "type": "microservice",
+                                                "config": {
+                                                    "microserviceId": "manifestTrax",
+                                                    "isLocal": false,
+                                                    "LocalService": "assets/Responses/manifestTraxMockData.json",
+                                                    "requestMethod": "post",
+                                                    "body": {
+                                                        "actionType": "carrierShipment",
+                                                        "processType": "ship",
+                                                        "boxNo": "001",
+                                                        "boxContent": {
+                                                            "boxCount": "1",
+                                                            "box": [
+                                                                {
+                                                                    "trackingNo": "#dellCarShippingSelectedPrinter",
+                                                                    "boxNo": "001",
+                                                                    "item": "#shippingItemBcn",
+                                                                    "weight": "#shippingManifestTraxData.boxContent.box[0].weight",
+                                                                    "weightUomCode": "#shippingManifestTraxData.boxContent.box[0].weightUomCode"
+                                                                }
+                                                            ]
+                                                        },
+                                                        "carrierTypeCode": "#shippingTermsDetails.carrierTypeCode",
+                                                        "packingListNo": "#shippingShipmentID",
+                                                        "outboundOrderId": "#shippingOutBoundOrderId",
+                                                        "locationName": "#userSelectedLocationName",
+                                                        "clientName": "DELL",
+                                                        "contractName": "#userSelectedContractName",
+                                                        "carrierName": "#shippingTermsDetails.carrierName",
+                                                        "serviceTypeCode": "#shippingTermsDetails.serviceTypeCode",
+                                                        "serviceTypeId": "#shippingTermsDetails.serviceTypeId",
+                                                        "xelusFlexFieldList": [
+                                                            {
+                                                                "contextAttributeName": "detailFF502",
+                                                                "FlexFieldID": "",
+                                                                "FlexFieldName": "",
+                                                                "FlexFieldValue": ""
+                                                            },
+                                                            {
+                                                                "contextAttributeName": "detailFF5081",
+                                                                "FlexFieldID": "",
+                                                                "FlexFieldName": "",
+                                                                "FlexFieldValue": ""
+                                                            },
+                                                            {
+                                                                "contextAttributeName": "detailFF81",
+                                                                "FlexFieldID": "",
+                                                                "FlexFieldName": "",
+                                                                "FlexFieldValue": ""
+                                                            }
+                                                        ]
+                                                    },
+                                                    "removeUndefinedFields": [
+                                                        {
+                                                          "KeyName": "item",
+                                                          "KeyValue": "#shippingItemBcn"
+                                                        }
+                                                      ],
+                                                    "toBeStringified": true
+                                                },
+                                                "eventSource": "click",
+                                                "responseDependents": {
+                                                    "onSuccess": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "context",
+                                                                "config": {
+                                                                    "requestMethod": "add",
+                                                                    "key": "shippingManifestTraxData",
+                                                                    "data": "responseData"
+                                                                }
+                                                            },
+                                                            {
+                                                                "type": "microservice",
+                                                                "config": {
+                                                                    "microserviceId": "dellCarManifest",
+                                                                    "isLocal": false,
+                                                                    "LocalService": "assets/Responses/dellCarManifestMockData.json",
+                                                                    "requestMethod": "post",
+                                                                    "body": {
+                                                                        "actionType": "carrierShipment",
+                                                                        "processType": "ship",
+                                                                        "carrierShipmentXml": {
+                                                                            "location": "#userSelectedLocationName",
+                                                                            "client": "DELL",
+                                                                            "contract": "#userSelectedContractName",
+                                                                            "locationId": "#userSelectedLocation",
+                                                                            "outboundOrderId": "#shippingOutBoundOrderId",
+                                                                            "carrierId": "#shippingTermsDetails.carrierCodeId",
+                                                                            "carrierName": "#shippingTermsDetails.carrierName",
+                                                                            "carrierTypeId": "#shippingTermsDetails.carrierTypeId",
+                                                                            "workOrderId": "#repairUnitInfo.WORKORDER_ID",
+                                                                            "serviceTypeCode": "#shippingTermsDetails.serviceTypeCode",
+                                                                            "serviceTypeId": "#shippingTermsDetails.serviceTypeId",
+                                                                            "carrierTypeCode": "#shippingTermsDetails.carrierTypeCode"
+                                                                        },
+                                                                        "userLoginId": "#userAccountInfo.PersonalDetails.USERID"
+                                                                    },
+                                                                    "toBeStringified": true
+                                                                },
+                                                                "eventSource": "click",
+                                                                "responseDependents": {
+                                                                    "onSuccess": {
+                                                                        "actions": [
+                                                                            {
+                                                                                "type": "context",
+                                                                                "config": {
+                                                                                    "requestMethod": "add",
+                                                                                    "key": "dellCarManifestTriggerData",
+                                                                                    "data": "responseData"
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "type": "microservice",
+                                                                                "config": {
+                                                                                    "microserviceId": "performManifest",
+                                                                                    "isLocal": false,
+                                                                                    "LocalService": "assets/Responses/dellCarPerformManifestMockData.json",
+                                                                                    "requestMethod": "post",
+                                                                                    "body": {
+                                                                                        "apiUsageClientName": "DELL",
+                                                                                        "apiUsageLocationName": "Bydgoszcz",
+                                                                                        "callSource": "FrontEnd",
+                                                                                        "carrier": "#shippingTermsDetails.carrierName",
+                                                                                        "carrierServiceType": "#shippingTermsDetails.serviceTypeCode",
+                                                                                        "carrierType": "#shippingTermsDetails.carrierTypeCode",
+                                                                                        "ip": "::1",
+                                                                                        "manifestBoxList": [
+                                                                                            {
+                                                                                                "shipmentBoxNumber": "001",
+                                                                                                "trackingNumber": "#shippingManifestTraxData.trackingNoTextBox",
+                                                                                                "returnAirBill": "#dellCarsManifestTrackingNumber.boxContent.box[0].returnAirbill",
+                                                                                                "shippedWeight": "#shippingManifestTraxData.boxContent.box[0].weight",
+                                                                                                "weightUom": "#shippingManifestTraxData.boxContent.box[0].weightUomCode"
+                                                                                            }
+                                                                                        ],
+                                                                                        "manifestedBy": "#userAccountInfo.PersonalDetails.USERID",
+                                                                                        "shipmentId": "#shippingShipmentID",
+                                                                                        "userPass": {
+                                                                                            "userName": "#userAccountInfo.PersonalDetails.USERID",
+                                                                                            "password": "#loginUUID.password"
+                                                                                        }
+                                                                                    },
+                                                                                    "removeUndefinedFields": [
+                                                                                        {
+                                                                                            "KeyName": "returnAirBill",
+                                                                                            "KeyValue": "#dellCarsManifestTrackingNumber.boxContent.box[0].returnAirbill"
+                                                                                        }
+                                                                                    ],
+                                                                                    "toBeStringified": true
+                                                                                },
+                                                                                "eventSource": "click",
+                                                                                "responseDependents": {
+                                                                                    "onSuccess": {
+                                                                                        "actions": [
+                                                                                            {
+                                                                                                "type": "context",
+                                                                                                "config": {
+                                                                                                    "requestMethod": "add",
+                                                                                                    "key": "shippingPerformManifestData",
+                                                                                                    "data": "responseData"
+                                                                                                }
+                                                                                            },
+                                                                                            {
+                                                                                                "type": "updateComponent",
+                                                                                                "config": {
+                                                                                                    "key": "dellCarManifestPrinterUUID",
+                                                                                                    "properties": {
+                                                                                                        "disabled": true
+                                                                                                    }
+                                                                                                },
+                                                                                                "eventSource": "click"
+                                                                                            },
+                                                                                            {
+                                                                                                "type": "updateComponent",
+                                                                                                "config": {
+                                                                                                    "key": "dellCarMainestCompleteButtonUUID",
+                                                                                                    "properties": {
+                                                                                                        "disabled": true
+                                                                                                    }
+                                                                                                },
+                                                                                                "eventSource": "click"
+                                                                                            },
+                                                                                            {
+                                                                                                "type": "updateComponent",
+                                                                                                "config": {
+                                                                                                    "key": "dellCarManifestTaskUUID",
+                                                                                                    "properties": {
+                                                                                                        "expanded": false,
+                                                                                                        "disabled": false,
+                                                                                                        "header": {
+                                                                                                            "title": "Manifest",
+                                                                                                            "svgIcon": "description_icon",
+                                                                                                            "statusIcon": "check_circle",
+                                                                                                            "statusClass": "complete-status",
+                                                                                                            "class": "greyish-black subtitle1 font-weight-700",
+                                                                                                            "iconClass": "complete-task"
+                                                                                                        }
+                                                                                                    }
+                                                                                                },
+                                                                                                "eventSource": "click"
+                                                                                            },
+                                                                                            {
+                                                                                                "type": "updateComponent",
+                                                                                                "config": {
+                                                                                                    "key": "dellCarTrackingNumberUUID",
+                                                                                                    "properties": {
+                                                                                                        "expanded": true,
+                                                                                                        "disabled": false,
+                                                                                                        "header": {
+                                                                                                            "title": "Tracking Number",
+                                                                                                            "svgIcon": "description_icon",
+                                                                                                            "iconClass": "active-header",
+                                                                                                            "class": "greyish-black subtitle1 font-weight-700"
+                                                                                                        }
+                                                                                                    }
+                                                                                                },
+                                                                                                "eventSource": "click"
+                                                                                            }
+                                                                                        ]
+                                                                                    },
+                                                                                    "onFailure": {
+                                                                                        "actions": [
+                                                                                            {
+                                                                                                "type": "handleCommonServices",
+                                                                                                "config": {
+                                                                                                    "type": "errorRenderTemplate"
+                                                                                                }
+                                                                                            },
+                                                                                            {
+                                                                                                "type": "handleDellCarShippingActions",
+                                                                                                "methodType": "enableExit"
+                                                                                            }
+                                                                                        ]
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "onFailure": {
+                                                                        "actions": [
+                                                                            {
+                                                                                "type": "handleCommonServices",
+                                                                                "config": {
+                                                                                    "type": "errorRenderTemplate"
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "type": "handleDellCarShippingActions",
+                                                                                "methodType": "enableExit"
+                                                                            }
+                                                                        ]
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    "onFailure": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "handleCommonServices",
+                                                                "config": {
+                                                                    "type": "errorRenderTemplate"
+                                                                }
+                                                            },
+                                                            {
+                                                                "type": "handleDellCarShippingActions",
+                                                                "methodType": "enableExit"
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "ctype": "taskPanel",
+                "title": "",
+                "disabled": true,
+                "isblueBorder": true,
+                "header": {
+                    "title": "Tracking Number",
+                    "svgIcon": "description_icon",
+                    "class": "greyish-black subtitle1 font-weight-700",
+                    "iconClass": "active-header",
+                    "statusIcon": "hourglass_empty",
+                    "statusClass": "incomplete-status"
+                },
+                "expanded": false,
+                "hideToggle": "true",
+                "isEditable": true,
+                "isMandatory": true,
+                "uuid": "dellCarTrackingNumberUUID",
+                "visibility": true,
+                "hidden": false,
+                "isUpperCase": true,
+                "hooks": [],
+                "validations": [],
+                "actions": [],
+                "items": [
+                    {
+                        "ctype": "label",
+                        "text": "Record the Tracking Number",
+                        "labelClass": "greyish-black body-italic"
+                    },
+                    {
+                        "ctype": "textField",
+                        "uuid": "dellCarTrackingNumberTextFieldUUID",
+                        "hooks": [],
+                        "type": "text",
+                        "placeholder": "Scan #",
+                        "submitable": true,
+                        "visibility": true,
+                        "dellReceiving": true,
+                        "required": true,
+                        "label": "Tracking Number",
+                        "labelPosition": "left",
+                        "textfieldClass": "col-6 p-0 ",
+                        "name": "TrackingNumber",
+                        "isUpperCase": true,
+                        "labelClass": "greyish-black subtitle1",
+                        "formGroupClass": "flex-container-half-width small-text",
+                        "validations": [
+                            {
+                                "type": "regex",
+                                "script": "^[a-zA-Z0-9]{0,32}$"
+                            }
+                        ],
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "trackingNumberText",
+                                    "data": "dellCarTrackingNumberFormData"
+                                },
+                                "eventSource": "input"
+                            }
+                        ]
+                    }
+                ],
+                "footer": [
+                    {
+                        "ctype": "button",
+                        "color": "primary",
+                        "text": "Complete",
+                        "uuid": "dellCarTrackingNumberCompleteButtonUUID",
+                        "class": "primary-btn",
+                        "visibility": true,
+                        "hidden": false,
+                        "disabled": true,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "actions": [
+                            {
+                                "type": "handleDellCarShippingActions",
+                                "methodType": "clearErrorAndDisableExit",
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "context",
+                                "config": {
+                                    "key": "dellCarTrackingNumberFormData",
+                                    "data": "formData",
+                                    "requestMethod": "add"
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "condition",
+                                "eventSource": "click",
+                                "config": {
+                                    "operation": "isValid",
+                                    "lhs": "#shippingManifestTraxData.trackingNoTextBox"
+                                },
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "condition",
+                                                "eventSource": "click",
+                                                "config": {
+                                                    "operation": "isEqualTo",
+                                                    "lhs": "#shippingManifestTraxData.trackingNoTextBox",
+                                                    "rhs": "#dellCarTrackingNumberFormData.TrackingNumber"
+                                                },
+                                                "responseDependents": {
+                                                    "onSuccess": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "handleDellCarShippingActions",
+                                                                "methodType": "destinationPalletFromTrackingNumber"
+                                                            }
+                                                        ]
+                                                    },
+                                                    "onFailure": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "updateComponent",
+                                                                "config": {
+                                                                    "key": "errorTitleUUID",
+                                                                    "properties": {
+                                                                        "titleValue": "Tracking Number does not match",
+                                                                        "isShown": true
+                                                                    }
+                                                                }
+                                                            },
+                                                            {
+                                                                "type": "handleDellCarShippingActions",
+                                                                "methodType": "enableExit"
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": [
+                                            {
+                                                "type": "handleDellCarShippingActions",
+                                                "methodType": "destinationPalletFromTrackingNumber"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "footer": [
+            {
+                "ctype": "toolbar",
+                "toolbarClass": "pagecontent-footer",
+                "uuid": "pageFooterUUID",
+                "items": [
+                    {
+                        "ctype": "iconbutton",
+                        "iconButtonClass": "body primary-btn",
+                        "text": "Exit ",
+                        "uuid": "dellCarShippingExitUUID",
+                        "visibility": true,
+                        "disabled": true,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "icon": "close",
+                        "iconClass": "active-header",
+                        "actions": [
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "errorTitleUUID",
+                                    "properties": {
+                                        "titleValue": "",
+                                        "isShown": false
+                                    }
+                                }
+                            },
+                            {
+                                "type": "renderTemplate",
+                                "config": {
+                                    "templateId": "dashboard.json",
+                                    "mode": "local"
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "iconText",
+                        "uuid": "addNoteLabelUUID",
+                        "icon": "add_comment",
+                        "text": "Add Note",
+                        "disabled": true,
+                        "textCss": "",
+                        "iconPosition": "Before",
+                        "iconTextClass": "footer-shipping-addNote body",
+                        "actions": []
+                    },
+                    {
+                        "ctype": "iconbutton",
+                        "uuid": "discrepancyResumeUUID",
+                        "visibility": true,
+                        "disabled": true,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "icon": "play_arrow",
+                        "iconClass": "",
+                        "hidden": true,
+                        "disableRipple": true
+                    },
+                    {
+                        "ctype": "spacer",
+                        "uuid": "emptySpaceUUID",
+                        "class": "empty-space"
+                    },
+                    {
+                        "ctype": "iconbutton",
+                        "uuid": "discrepancyPauseUUID",
+                        "visibility": true,
+                        "disabled": true,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "icon": "pause",
+                        "iconClass": "",
+                        "disableRipple": true,
+                        "actions": []
+                    },
+                    {
+                        "ctype": "nativeDropdown",
+                        "dropdownClass": "footer-dropdown dropdown-container body2",
+                        "uuid": "shippingResultCodeUUID",
+                        "name": "ResultCodes",
+                        "isDropdownNotSelected": true,
+                        "dataSource": "#resultCodesForDiscrepancy",
+                        "code": "resultCode",
+                        "displayValue": "resultCode",
+                        "disabled": true,
+                        "actions": []
+                    },
+                    {
+                        "ctype": "button",
+                        "color": "primary",
+                        "text": "Time Out",
+                        "uuid": "packOutTimeoutUUID",
+                        "visibility": true,
+                        "disabled": true,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "buttonClass": "footer-button primary-btn",
+                        "class": "primary-btn",
+                        "actions": []
+                    }
+                ]
+            }
+        ]
+    },
+    "Result": "SUCCESS"
+}

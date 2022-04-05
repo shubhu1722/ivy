@@ -1,0 +1,54 @@
+{
+    "ctype": "subProcess",
+    "title": "HPReceiving",
+    "uuid": "dashboardUUID",
+    "clientName": "HP_Receving",
+    "subMenuIndex": 0,
+    "openRightNav": false,
+    "hooks": [
+        {
+            "type": "microservice",
+            "hookType": "beforeInit",
+            "config": {
+                "microserviceId": "getSubProcessPageBody",
+                "requestMethod": "get",
+                "params": {
+                    "subProcessId": "#getReferenceDataKeys.subProcess.Receiving.subProcessID",
+                    "userName": "#userAccountInfo.PersonalDetails.USERID"
+                },
+                "isLocal": false,
+                "LocalService": "assets/Responses/SubProcess/HP/receivingSubProcess.json"
+            },
+            "responseDependents": {
+                "onSuccess": {
+                    "actions": [
+                        {
+                            "type": "context",
+                            "config": {
+                                "requestMethod": "add",
+                                "key": "receivingSearchData",
+                                "data": "responseData"
+                            }
+                        },
+                        {
+                            "type": "renderTemplate",
+                            "config": {
+                                "mode": "remote",
+                                "targetId": "mainPageContentBodysp",
+                                "templateId": "receivingSearchData"
+                            }
+                        }
+                    ]
+                },
+                "onFailure": {
+                    "actions": [
+                        {
+                            "type": "toast",
+                            "message": "Failed to fetch HP Receiving JSON"
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}

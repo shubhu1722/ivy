@@ -1,0 +1,541 @@
+{
+  "type": "dialog",
+  "uuid": "pauseDialogUUID",
+  "config": {
+    "title": "Move to Hold",
+    "disableClose": true,
+    "items": [
+      {
+        "ctype": "nativeDropdown",
+        "formGroupClass": "discrepancy-holddrpdwn",
+        "uuid": "holdTypeUUID",
+        "label": "Hold Type",
+        "name": "holdType",
+        "required": true,
+        "dataSource": "#filteredHoldTypes",
+        "code": "storageHoldCode",
+        "displayValue": "storageHoldCode",
+        "actions": [
+          {
+            "type": "context",
+            "config": {
+              "requestMethod": "add",
+              "key": "storageHoldCode",
+              "data": "elementControlValue"
+            },
+            "eventSource": "change"
+          },
+          {
+            "type": "condition",
+            "config": {
+              "operation": "isEqualTo",
+              "lhs": "#storageHoldCode",
+              "rhs": "AWAITING PART"
+            },
+            "eventSource": "change",
+            "responseDependents": {
+              "onSuccess": {
+                "actions": [
+                  {
+                    "type": "context",
+                    "config": {
+                      "requestMethod": "add",
+                      "key": "storageHoldSubCode",
+                      "data": ""
+                    }
+                  },
+                  {
+                    "type": "updateComponent",
+                    "config": {
+                      "key": "holdCodeUUID",
+                      "properties": {
+                        "hidden": true,
+                        "required": false
+                      }
+                    },
+                    "eventSource": "change"
+                  },
+                  {
+                    "type": "updateComponent",
+                    "config": {
+                      "key": "holdPartUUID",
+                      "properties": {
+                        "hidden": false,
+                        "required": true
+                      }
+                    },
+                    "eventSource": "change"
+                  },
+                  {
+                    "type": "conditionalFilterData",
+                    "config": {
+                      "data": "#holdCodesForDiscrepancy",
+                      "targetContextKey": "holdSubCodeData",
+                      "keyName": "#storageHoldCode",
+                      "filterRefValue": "storageHoldCode",
+                      "name": "holdCode",
+                      "targetUUID": "holdCodeUUID"
+                    },
+                    "eventSource": "change"
+                  },
+                  {
+                    "type": "conditionalFilterData",
+                    "config": {
+                      "data": "#holdCodesForDiscrepancy",
+                      "targetContextKey": "holdBin",
+                      "keyName": "#storageHoldCode",
+                      "filterRefValue": "storageHoldCode",
+                      "name": "holdBin",
+                      "targetUUID": "holdBinUUID"
+                    }
+                  },
+                  {
+                    "type": "conditionalDestinationLocationData",
+                    "config": {
+                      "data": "#holdCodesForDiscrepancy",
+                      "filterRefValue": "destStkLocationName"
+                    },
+                    "eventSource": "change"
+                  },
+                  {
+                    "type": "resetControl",
+                    "config": {
+                      "key": "holdBin"
+                    },
+                    "eventSource": "click"
+                  }
+                ]
+              },
+              "onFailure": {
+                "actions": [
+                  {
+                    "type": "updateComponent",
+                    "config": {
+                      "key": "holdCodeUUID",
+                      "properties": {
+                        "hidden": false,
+                        "required": true
+                      }
+                    },
+                    "eventSource": "change"
+                  },
+                  {
+                    "type": "updateComponent",
+                    "config": {
+                      "key": "holdPartUUID",
+                      "properties": {
+                        "hidden": true,
+                        "required": false
+                      }
+                    },
+                    "eventSource": "change"
+                  },
+                  {
+                    "type": "resetControl",
+                    "config": {
+                      "key": "holdBin"
+                    },
+                    "eventSource": "click"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "type": "conditionalFilterData",
+            "config": {
+              "data": "#holdCodesForDiscrepancy",
+              "targetContextKey": "holdSubCodeData",
+              "keyName": "#storageHoldCode",
+              "filterRefValue": "storageHoldCode",
+              "name": "holdCode",
+              "targetUUID": "holdCodeUUID"
+            },
+            "eventSource": "change"
+          }
+        ]
+      },
+      {
+        "ctype": "nativeDropdown",
+        "formGroupClass": "discrepancy-holddrpdwn",
+        "uuid": "holdCodeUUID",
+        "label": "Hold Code",
+        "name": "holdCode",
+        "dataSource": "#holdSubCodeData",
+        "code": "storageHoldSubCode",
+        "displayValue": "storageHoldSubCode",
+        "defaultFilterValue": "#holdCode",
+        "required": true,
+        "hidden": false,
+        "actions": [
+          {
+            "type": "context",
+            "config": {
+              "requestMethod": "add",
+              "key": "storageHoldSubCode",
+              "data": "elementControlValue"
+            },
+            "eventSource": "change"
+          },
+          {
+            "type": "conditionalFilterData",
+            "config": {
+              "data": "#holdSubCodeData",
+              "targetContextKey": "holdBin",
+              "keyName": "#storageHoldSubCode",
+              "filterRefValue": "storageHoldSubCode",
+              "name": "holdBin",
+              "targetUUID": "holdBinUUID"
+            },
+            "eventSource": "change"
+          },
+          {
+            "type": "conditionalDestinationLocationData",
+            "config": {
+              "data": "#holdBin",
+              "filterRefValue": "destStkLocationName"
+            },
+            "eventSource": "change"
+          }
+        ]
+      },
+      {
+        "ctype": "textField",
+        "uuid": "holdPartUUID",
+        "submitable": false,
+        "disabled": false,
+        "validations": [],
+        "inLine": true,
+        "formGroupClass": "flex-container",
+        "textfieldClass": "hold-textfield-container",
+        "labelClass": "hold-tf-label",
+        "hooks": [],
+        "name": "storageHoldSubCodeValue",
+        "label": "Part Number(s)",
+        "labelPosition": "left",
+        "tooltip": "",
+        "TooltipPosition": "",
+        "defaultValue": "",
+        "readonly": false,
+        "type": "text",
+        "required": false,
+        "placeholder": "Enter Value",
+        "value": "",
+        "prefix": false,
+        "prefixIcon": "",
+        "suffix": false,
+        "suffixIcon": "",
+        "hidden": true,
+        "actions": []
+      },
+      {
+        "ctype": "nativeDropdown",
+        "formGroupClass": "discrepancy-holddrpdwn",
+        "uuid": "holdBinUUID",
+        "label": "Hold Bin",
+        "name": "holdBin",
+        "dataSource": "#holdBin",
+        "code": "bin",
+        "displayValue": "bin",
+        "defaultValue": "#bin",
+        "required": true,
+        "hidden": false,
+        "actions": [
+          {
+            "type": "context",
+            "config": {
+              "requestMethod": "add",
+              "key": "bin",
+              "data": "elementControlValue"
+            },
+            "eventSource": "change"
+          }
+        ]
+      },
+      {
+        "ctype": "textarea",
+        "label": "Add note",
+        "name": "holdAddNote",
+        "textareaContainer": "timeout-class required-note",
+        "uuid": "holdNodeUUID",
+        "required": true,
+        "submitable": true,
+        "value": "#mbrtimeoutNotes.holdAddNote",
+        "actions": []
+      }
+    ],
+    "footer": [
+      {
+        "ctype": "button",
+        "color": "primary",
+        "text": "Cancel",
+        "uuid": "cancelHoldUUID",
+        "closeType": "close",
+        "disableClose": true,
+        "visibility": true,
+        "dialogButton": true,
+        "type": "",
+        "hooks": [],
+        "validations": [],
+        "actions": []
+      },
+      {
+        "ctype": "button",
+        "color": "primary",
+        "text": "Done",
+        "uuid": "doneHoldUUID",
+        "dialogButton": true,
+        "visibility": true,
+        "disabled": true,
+        "type": "submit",
+        "closeType": "success",
+        "hooks": [],
+        "validations": [],
+        "actions": [
+          {
+            "type": "context",
+            "config": {
+              "key": "mbrtimeoutNotes",
+              "data": "formData",
+              "requestMethod": "add",
+              "value": "holdAddNote"
+            },
+            "eventSource": "click"
+          }
+        ]
+      }
+    ]
+  },
+  "eventSource": "click",
+  "responseDependents": {
+    "onSuccess": {
+      "actions": [
+        {
+          "type": "context",
+          "config": {
+            "key": "holdDialogData",
+            "data": "formData",
+            "requestMethod": "add"
+          },
+          "eventSource": "click"
+        },
+        {
+          "type": "condition",
+          "config": {
+            "operation": "notEmpty",
+            "lhs": "#storageHoldSubCode"
+          },
+          "eventSource": "click",
+          "responseDependents": {
+            "onSuccess": {
+              "actions": []
+            },
+            "onFailure": {
+              "actions": [
+                {
+                  "type": "context",
+                  "config": {
+                    "requestMethod": "add",
+                    "key": "storageHoldSubCode",
+                    "data": "#holdDialogData.storageHoldSubCodeValue"
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "microservice",
+          "config": {
+            "microserviceId": "validateBin",
+            "requestMethod": "get",
+            "params": {
+              "locationId": "#repairUnitInfo.LOCATION_ID",
+              "wareHouseId": "#repairUnitInfo.WAREHOUSE_ID",
+              "binName": "#holdDialogData.holdBin",
+              "userName": "#loginUUID.username"
+            },
+            "toBeStringified": true,
+            "isLocal": false,
+            "LocalService": "assets/Responses/mockHoldSubCode.json"
+          },
+          "responseDependents": {
+            "onSuccess": {
+              "actions": [
+                {
+                  "type": "microservice",
+                  "config": {
+                    "microserviceId": "addInfoCodes",
+                    "isLocal": false,
+                    "LocalService": "assets/Responses/performFA.json",
+                    "requestMethod": "post",
+                    "body": {
+                      "bcn": "#discrepancyUnitInfo.ITEM_BCN",
+                      "notes": "#holdDialogData.holdAddNote",
+                      "workCenter": "#discrepancyUnitInfo.WORKCENTER",
+                      "geography": "#discrepancyUnitInfo.GEONAME",
+                      "part": "#discrepancyUnitInfo.PART_NO",
+                      "woTimeLoggedInHours": "1",
+                      "userName": "#userAccountInfo.PersonalDetails.USERID",
+                      "password": "#loginUUID.password",
+                      "flexFields": [
+
+                      ]
+                    },
+                    "toBeStringified": true,
+                    "spliceIfEmptyValueObject": [
+                      {
+                        "identifier": "flexFields",
+                        "valueField": "value",
+                        "keyToBeRemoved": "flexFields"
+                      }
+                    ]
+                  },
+                  "responseDependents": {
+                    "onSuccess": {
+                      "actions": [
+                        {
+                          "type": "context",
+                          "config": {
+                            "requestMethod": "add",
+                            "key": "addInfoRespData",
+                            "data": "responseData"
+                          }
+                        },
+                        {
+                          "type": "microservice",
+                          "config": {
+                            "microserviceId": "moveinventory",
+                            "requestMethod": "post",
+                            "body": {
+                              "apiUsageClientName": "#discrepancyUnitInfo.CLIENTNAME",
+                              "apiUsageLocationName": "#discrepancyUnitInfo.GEONAME",
+                              "callSource": "FrontEnd",
+                              "ip": "::1",
+                              "items": {
+                                "addtionalDetails": {
+                                  "comments": "#holdDialogData.holdAddNote",
+                                  "storageHoldCode": "#storageHoldCode",
+                                  "storageHoldSubCode": "#storageHoldSubCode"
+                                },
+                                "destinationLocation": {
+                                  "bin": "#holdDialogData.holdBin",
+                                  "geography": "#discrepancyUnitInfo.GEONAME",
+                                  "stockingLocation": "#destStkLocationName",
+                                  "warehouse": "#discrepancyUnitInfo.WAREHOUSE_NAME"
+                                },
+                                "item": [
+                                  {
+                                    "bcn": "#discrepancyUnitInfo.ITEM_BCN",
+                                    "owner": "#discrepancyUnitInfo.CLIENTNAME",
+                                    "partNo": "#discrepancyUnitInfo.PART_NO",
+                                    "serialNo": "#discrepancyUnitInfo.SERIAL_NO"
+                                  }
+                                ],
+                                "notes": "#holdDialogData.holdAddNote"
+                              },
+                              "usrPwd": {
+                                "userName": "#loginUUID.username",
+                                "password": "#loginUUID.password"
+                              }
+                            },
+                            "toBeStringified": true
+                          },
+                          "responseDependents": {
+                            "onSuccess": {
+                              "actions": [
+                                { "type": "clearScreenData" },
+                                {
+                                  "type": "renderTemplate",
+                                  "config": {
+                                    "templateId": "dashboard.json",
+                                    "mode": "local"
+                                  }
+                                },
+                                {
+                                  "type": "pauseScreenData"
+                                },
+                                {
+                                  "type": "context",
+                                  "config": {
+                                    "key": "dellDebugholdDialogData",
+                                    "data": "formData",
+                                    "requestMethod": "add"
+                                  }
+                                }
+                              ]
+                            },
+                            "onFailure": {
+                              "actions": [
+                                {
+                                  "type": "handleCommonServices",
+                                  "config": {
+                                    "type": "errorRenderTemplate",
+                                    "contextKey": "errorMsg",
+                                    "updateKey": "errorTitleUUID"
+                                  }
+                                }
+                              ]
+                            }
+                          },
+                          "eventSource": "click"
+                        }
+                      ]
+                    },
+                    "onFailure": {
+                      "actions": [
+                        {
+                          "type": "handleCommonServices",
+                          "config": {
+                            "type": "errorRenderTemplate",
+                            "contextKey": "errorMsg",
+                            "updateKey": "errorTitleUUID"
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  "eventSource": "click"
+                },
+                {
+                  "type": "closeAllDialogs"
+                }
+              ]
+            },
+            "onFailure": {
+              "actions": [
+                {
+                  "type": "context",
+                  "config": {
+                    "requestMethod": "add",
+                    "key": "moveinventoryForDiscrepancy",
+                    "data": "responseData"
+                  }
+                },
+                {
+                  "type": "updateComponent",
+                  "config": {
+                    "key": "holdBinErrorUUID",
+                    "properties": {
+                      "titleValue": "#moveinventoryForDiscrepancy",
+                      "isShown": true
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "eventSource": "click"
+        }
+      ]
+    },
+    "onFailure": {
+      "actions": [
+        {
+          "type": "resetData",
+          "eventSource": "click"
+        }
+      ]
+    }
+  }
+}

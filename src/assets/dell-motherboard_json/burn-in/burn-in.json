@@ -1,0 +1,208 @@
+{
+  "ResultData": {
+    "ctype": "page",
+    "uuid": "dellMBRPageUUID",
+    "contentClass": "",
+    "css": "",
+    "visibility": false,
+    "hooks": [
+      {
+        "type": "context",
+        "hookType": "afterInit",
+        "config": {
+          "requestMethod": "restoreSavedData"
+        }
+      },
+      {
+        "type": "condition",
+        "hookType": "afterInit",
+        "config": {
+          "operation": "isValid",
+          "lhs": "#testPlatformValue"
+        },
+        "responseDependents": {
+          "onSuccess": {
+            "actions": [
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "lastNoteTestPlatformUUID",
+                  "properties": {
+                    "titleValue": "#testPlatformValue"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "type": "condition",
+        "hookType": "afterInit",
+        "config": {
+          "operation": "isValid",
+          "lhs": "#getLastNote"
+        },
+        "responseDependents": {
+          "onSuccess": {
+            "actions": [
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "lastNoteTextUUID",
+                  "properties": {
+                    "title": "#getLastNote"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "type": "context",
+        "hookType": "afterInit",
+        "config": {
+          "requestMethod": "populateMBRScreenWithStoredData"
+        }
+      }
+    ],
+    "validations": [],
+    "action": [],
+    "header": [
+      {
+        "ctype": "breadcrumb",
+        "breadcrumbs": [
+          {
+            "label": "#userSelectedLocationName"
+          },
+          {
+            "label": "#userSelectedClientName"
+          },
+          {
+            "label": "#userSelectedContractName"
+          }
+        ]
+      },
+      {
+        "ctype": "toolbar",
+        "toolbarClass": "pagecontent-header",
+        "items": [
+          {
+            "ctype": "title",
+            "uuid": "subProcessTitleUUID",
+            "titleValue": "Burn In",
+            "titleClass": "section-title"
+          },
+          {
+            "ctype": "iconbutton",
+            "iconButtonClass": "headeropen-button",
+            "text": "",
+            "uuid": "pageopenUUID",
+            "visibility": true,
+            "disabled": false,
+            "hidden": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "icon": "menu_open",
+            "disableRipple": true,
+            "iconClass": "header-icon",
+            "actions": [
+              {
+                "type": "toggle",
+                "eventSource": "click",
+                "name": "subProcessRightNavref"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "openUUID",
+                  "properties": {
+                    "hidden": false
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "pageopenUUID",
+                  "properties": {
+                    "hidden": true
+                  }
+                },
+                "eventSource": "click"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "items": [
+      {
+        "ctype": "title",
+        "uuid": "successTitleUUID",
+        "titleClass": "success-title",
+        "isShown": false
+      },
+      {
+        "ctype": "title",
+        "uuid": "errorTitleUUID",
+        "containerId": "prebodysectionone",
+        "titleClass": "error-title",
+        "isShown": false
+      },
+      {
+        "ctype": "taskPanel",
+        "containerId": "prebodysectionone",
+        "header": {
+          "title": "Last Note",
+          "svgIcon": "description_icon",
+          "statusIcon": "hourglass_empty",
+          "statusClass": "incomplete-status",
+          "class": "greyish-black font-weight-700"
+        },
+        "expanded": true,
+        "isblueBorder": true,
+        "disabled": false,
+        "hideToggle": true,
+        "uuid": "dellBurnInNoteTaskPanelUUID",
+        "visibility": false,
+        "hooks": [],
+        "validations": [],
+        "actions": [],
+        "items": [
+          {
+            "ctype": "disabled",
+            "uuid": "lastNoteDisabledUUID",
+            "disabledClass": "disabledFalse"
+          },
+          {
+            "ctype": "title",
+            "uuid": "lastNoteTextUUID",
+            "titleClass": "greyish-black body-italic",
+            "title": "No content"
+          },
+          {
+            "ctype": "title",
+            "uuid": "lastNoteTestPlatformUUID",
+            "titleClass": "greyish-black body-italic",
+            "title": "Test Platform"
+          }
+        ],
+        "footer": []
+      },
+      {
+        "ctype": "dellWcOperationsMessageReadPanel"
+      }
+    ],
+    "footer": [
+      {
+        "ctype": "dellWcOperationsTimeOutFooter",
+        "uuid": "dellWcOperationsTimeOutFooterUUID"
+      }
+    ]
+  },
+  "Result": "SUCCESS"
+}

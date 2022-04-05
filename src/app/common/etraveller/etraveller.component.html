@@ -1,0 +1,100 @@
+<div class="mat-dialog-header">
+    <div class="flex pl-10">
+        <mat-icon svgIcon="description_icon">description_icon</mat-icon>
+        <span class="section-title greyish-black">{{title |translate}}</span>
+    </div>
+    <button mat-icon-button class="close-button" [mat-dialog-close]="true">
+        <mat-icon class="close-icon">close</mat-icon>
+    </button>
+</div>
+<mat-dialog-content>
+    <mat-tab-group
+    class="ivy-tabs ivy-tabs-etraveller"
+    [disableRipple]="true"
+    [dynamicHeight]="false"
+    animationDuration="0"
+    mat-align-tabs="start">
+    <ng-container *ngIf="itemHistoryVisible">
+        <mat-tab label="Item History">
+            <div class="tbl" label="item History">
+                <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 ">
+                    <ng-container matColumnDef="timestamp">
+                        <th mat-header-cell class="table_hd table_TD" *matHeaderCellDef> Time & Date </th>
+                        <td mat-cell class="right" *matCellDef="let element"> {{element.timestamp}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="workcentername">
+                        <th mat-header-cell class="table_hd" *matHeaderCellDef>WorkCenter</th>
+                        <td mat-cell class="right" *matCellDef="let element"> {{element.workcentername}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="note">
+                        <th mat-header-cell class="table_hd" *matHeaderCellDef>Notes</th>
+                        <td mat-cell class="right" *matCellDef="let element"> {{element.note}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="login">
+                        <th mat-header-cell class="table_hd" *matHeaderCellDef>User ID</th>
+                        <td mat-cell class="right" *matCellDef="let element"> {{element.login}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="orderitemopername">
+                        <th mat-header-cell class="table_hd" *matHeaderCellDef>Task</th>
+                        <td mat-cell class="right" *matCellDef="let element"> {{element.orderitemopername}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="referenceorderid">
+                        <th mat-header-cell class="table_hd" *matHeaderCellDef>Ref Order</th>
+                        <td mat-cell class="right" *matCellDef="let element"> {{element.referenceorderid}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="orderid">
+                        <th mat-header-cell class="table_hd" *matHeaderCellDef>Operator Order</th>
+                        <td mat-cell class="right" *matCellDef="let element"> {{element.orderid}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="conditionname">
+                        <th mat-header-cell class="table_hd" *matHeaderCellDef>Condition</th>
+                        <td mat-cell class="right" *matCellDef="let element"> {{element.conditionname}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="orderprocesstypecode">
+                        <th mat-header-cell class="table_hd" *matHeaderCellDef>OPT</th>
+                        <td mat-cell class="right" *matCellDef="let element"> {{element.orderprocesstypecode}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="replacedAddedPN">
+                        <th mat-header-cell class="table_hd" *matHeaderCellDef>Replaced/Added PN</th>
+                        <td mat-cell class="right" *matCellDef="let element"> {{element.replacedAddedPN}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="location">
+                        <th mat-header-cell class="table_hd" *matHeaderCellDef>Location</th>
+                        <td mat-cell class="right" *matCellDef="let element"> {{element.location}} </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky: true"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+            </div>
+        </mat-tab>
+    </ng-container>
+    <ng-container *ngIf="keyDataVisible">
+        <mat-tab class="" label="Key Data">
+            <ng-container #keyDataUnitDetails></ng-container>
+        </mat-tab>
+    </ng-container>
+    <ng-container *ngIf="partsVisible">
+        <mat-tab label="Parts">
+            <app-parts> </app-parts>
+        </mat-tab>
+    </ng-container>
+        <ng-container *ngIf="flexFieldVisible">
+            <mat-tab label="Flex Fields">
+                <div class="tb2">
+                    <div class="unitDetailsDiv" *ngFor="let item of hpEtravellerFlexFieldData ;let indexOfelement=index;">
+                        <label class="keyDataLabel">{{item.displayValue}}</label>
+                        <div class="keyDataLeftDivisionBlock" *ngFor="let item of item.subParts">
+                            <span class="flexfieldvalueLabel">{{item.ffName}} :</span>
+                            <span class="keyDatavalue">{{item.ffValue }}</span>
+                        </div>
+                    </div>
+                </div>
+            </mat-tab>
+        </ng-container>
+        <ng-container *ngIf="repositoryVisible">
+            <mat-tab label="Repository">
+                <app-etraveller-repository></app-etraveller-repository>
+            </mat-tab>
+        </ng-container>
+    </mat-tab-group>
+</mat-dialog-content>

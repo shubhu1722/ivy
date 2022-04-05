@@ -1,0 +1,1602 @@
+{
+    "ResultData": {
+        "ctype": "page",
+        "uuid": "pageUUID",
+        "contentClass": "",
+        "css": "",
+        "visibility": true,
+        "hooks": [
+            {
+                "type": "microservice",
+                "config": {
+                    "microserviceId": "getResultCodes",
+                    "requestMethod": "get",
+                    "params": {
+                        "bcn": "#UnitInfo.ITEM_BCN",
+                        "validateResult": "1"
+                    }
+                },
+                "responseDependents": {
+                    "onSuccess": {
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "verifoneMegaLabelResultCodesRes",
+                                    "data": "responseData"
+                                }
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "verifoneMegaLabelResultCodesUUID",
+                                    "dropDownProperties": {
+                                        "options": "#verifoneMegaLabelResultCodesRes"
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    "onFailure": {
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "errorDisp",
+                                    "data": "responseData"
+                                }
+                            },
+                            {
+                                "type": "condition",
+                                "config": {
+                                    "operation": "isEqualTo",
+                                    "lhs": "#errorDisp",
+                                    "rhs": "No Record Found"
+                                },
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "errorTitleUUID",
+                                                    "properties": {
+                                                        "titleValue": "#errorDisp",
+                                                        "isShown": false
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": [
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "errorTitleUUID",
+                                                    "properties": {
+                                                        "titleValue": "#errorDisp",
+                                                        "isShown": true
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+        ],
+        "validations": [],
+        "action": [],
+        "header": [
+            {
+                "ctype": "breadcrumb",
+                "breadcrumbs": [
+                    {
+                        "label": "#userSelectedLocationName"
+                    },
+                    {
+                        "label": "#userSelectedClientName"
+                    },
+                    {
+                        "label": "#userSelectedContractName"
+                    }
+                ]
+            },
+            {
+                "ctype": "toolbar",
+                "toolbarClass": "pagecontent-header",
+                "items": [
+                    {
+                        "ctype": "title",
+                        "uuid": "subProcessTitleUUID",
+                        "titleValue": "Mega Label",
+                        "titleClass": "section-title"
+                    },
+                    {
+                        "ctype": "spacer",
+                        "uuid": "emptySpaceUUID",
+                        "class": "empty-space"
+                    },
+                    {
+                        "ctype": "iconbutton",
+                        "iconButtonClass": "headeropen-button",
+                        "text": "",
+                        "uuid": "pageopenUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "hidden": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "icon": "menu_open",
+                        "disableRipple": true,
+                        "iconClass": "header-icon",
+                        "css": "padding-bottom: 35px;",
+                        "actions": [
+                            {
+                                "type": "toggle",
+                                "eventSource": "click",
+                                "name": "subProcessRightNavref"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "openUUID",
+                                    "properties": {
+                                        "hidden": false
+                                    }
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "pageopenUUID",
+                                    "properties": {
+                                        "hidden": true
+                                    }
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "items": [
+            {
+                "ctype": "title",
+                "uuid": "successTitleUUID",
+                "titleClass": "success-title",
+                "isShown": false
+            },
+            {
+                "ctype": "title",
+                "uuid": "errorTitleUUID",
+                "containerId": "prebodysectionone",
+                "titleClass": "error-title",
+                "isShown": false
+            },
+            {
+                "ctype": "toolbar",
+                "toolbarClass": "creatorTask-Toolbar",
+                "hoverClass": "background-white",
+                "items": [
+                    {
+                        "ctype": "iconText",
+                        "hoverClass": "blue-icon",
+                        "svgIcon": "print",
+                        "text": "Add Print",
+                        "iconTextClass": "creatorTask-Icontext",
+                        "uuid": "verifoneMegaLabelReplaceIconUUID",
+                        "textClass": "heading3-regular greyish-black",
+                        "iconPosition": "top",
+                        "actions": [
+                            {
+                                "type": "updateComponent",
+                                "eventSource": "click",
+                                "config": {
+                                    "key": "errorTitleUUID",
+                                    "properties": {
+                                        "titleValue": "",
+                                        "isShown": false
+                                    }
+                                }
+                            },
+                            {
+                                "type": "verifone-handleProcessActions",
+                                "eventSource": "click",
+                                "config": {
+                                    "svgIcon": "replace",
+                                    "text": "Replace",
+                                    "processType": "replace"
+                                }
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "verifoneMegaLabelDefectUUID",
+                                    "dropDownProperties": {
+                                        "options": "#verifoneMegaLabelDefectCodesRes"
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "footer": [
+            {
+                "ctype": "toolbar",
+                "toolbarClass": "pagecontent-footer",
+                "items": [
+                    {
+                        "ctype": "iconbutton",
+                        "iconButtonClass": "footer-save body primary-btn",
+                        "text": "Exit",
+                        "uuid": "discrepancySaveUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "icon": "save",
+                        "actions": [
+                            {
+                                "type": "resetQuoteDebugScreen",
+                                "config": {
+                                    "key": "discrepancySaveUUID",
+                                    "loadDashboard": true
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "clearAllContext",
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "delete",
+                                    "key": "currentWC"
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "iconText",
+                        "uuid": "verifoneMegaLabelAddNoteUUID",
+                        "icon": "add_comment",
+                        "text": "Add Note",
+                        "textCss": "",
+                        "iconPosition": "Before",
+                        "iconTextClass": "footer-addNote body",
+                        "actions": [
+                            {
+                                "type": "dialog",
+                                "uuid": "verifoneMegaLabelAddNoteDialogUUID",
+                                "config": {
+                                    "title": "Add Note",
+                                    "items": [
+                                        {
+                                            "ctype": "textarea",
+                                            "name": "addNote",
+                                            "textareaClass": "note-class",
+                                            "uuid": "verifoneMegaLabelNoteUUID",
+                                            "required": true,
+                                            "value": "#timeoutNotes.addNote",
+                                            "actions": [
+                                                {
+                                                    "type": "updateComponent",
+                                                    "config": {
+                                                        "key": "verifoneMegaLabelDoneButtonUUID",
+                                                        "properties": {
+                                                            "disabled": false
+                                                        }
+                                                    },
+                                                    "eventSource": "onLoad"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "footer": [
+                                        {
+                                            "ctype": "button",
+                                            "color": "primary",
+                                            "text": "Cancel",
+                                            "uuid": "verifoneMegaLabelCancelHoldUUID",
+                                            "closeType": "close",
+                                            "disableClose": true,
+                                            "visibility": true,
+                                            "dialogButton": true,
+                                            "type": "",
+                                            "hooks": [],
+                                            "validations": [],
+                                            "actions": []
+                                        },
+                                        {
+                                            "ctype": "button",
+                                            "color": "primary",
+                                            "text": "Done",
+                                            "uuid": "verifoneMegaLabelDoneButtonUUID",
+                                            "dialogButton": true,
+                                            "visibility": true,
+                                            "disabled": true,
+                                            "type": "submit",
+                                            "closeType": "success",
+                                            "hooks": [],
+                                            "validations": [],
+                                            "actions": []
+                                        }
+                                    ]
+                                },
+                                "eventSource": "click",
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "key": "timeoutNotes",
+                                                    "data": "formData",
+                                                    "requestMethod": "add",
+                                                    "value": "addNote"
+                                                },
+                                                "eventSource": "click"
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": []
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "spacer",
+                        "uuid": "emptySpaceUUID",
+                        "class": "empty-space"
+                    },
+                    {
+                        "ctype": "iconbutton",
+                        "uuid": "unitPausebtnUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "icon": "pause",
+                        "iconClass": "footer-btnas",
+                        "disableRipple": true,
+                        "actions": [
+                          {
+                            "type":"showOLEPausebuttonInScreen",
+                            "eventSource": "click"
+                          }
+                        ]
+                    },
+                    {
+                        "ctype": "nativeDropdown",
+                        "dropdownClass": "footer-dropdown dropdown-container body2",
+                        "uuid": "verifoneMegaLabelResultCodesUUID",
+                        "name": "ResultCodes",
+                        "dataSource": "#verifoneMegaLabelResultCodesRes",
+                        "code": "resultCode",
+                        "displayValue": "resultCode",
+                        "disabled": false,
+                        "visibility": true,
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "selectedResultcode",
+                                    "data": "elementControlValue"
+                                },
+                                "eventSource": "change"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "verifoneMegaLabelTimeOutUUID",
+                                    "properties": {
+                                        "disabled": false
+                                    }
+                                },
+                                "eventSource": "change"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "errorTitleUUID",
+                                    "properties": {
+                                        "titleValue": "",
+                                        "isShown": true
+                                    }
+                                },
+                                "eventSource": "change"
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "button",
+                        "color": "primary",
+                        "text": "Time Out",
+                        "uuid": "verifoneMegaLabelTimeOutUUID",
+                        "visibility": true,
+                        "disabled": true,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "buttonClass": "footer-button primary-btn",
+                        "class": "primary-btn",
+                        "actions": [
+                            {
+                                "type": "updateComponent",
+                                "eventSource": "click",
+                                "config": {
+                                    "key": "errorTitleUUID",
+                                    "properties": {
+                                        "titleValue": "",
+                                        "isShown": false
+                                    }
+                                }
+                            },
+                            {
+                                "type": "condition",
+                                "config": {
+                                    "operation": "isValid",
+                                    "lhs": "#selectedResultcode"
+                                },
+                                "eventSource": "click",
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "dialog",
+                                                "uuid": "addNoteDialogUUID2",
+                                                "config": {
+                                                    "title": "Time Out",
+                                                    "items": [
+                                                        {
+                                                            "ctype": "textarea",
+                                                            "label": "Add note",
+                                                            "name": "addNote",
+                                                            "textareaContainer": "timeout-class",
+                                                            "uuid": "addNoteTimeoutUUID2",
+                                                            "required": false,
+                                                            "value": "#timeoutNotes.addNote",
+                                                            "actions": []
+                                                        }
+                                                    ],
+                                                    "footer": [
+                                                        {
+                                                            "ctype": "button",
+                                                            "color": "primary",
+                                                            "text": "Close",
+                                                            "uuid": "closeButtonUUID2",
+                                                            "closeType": "close",
+                                                            "inputClass": "close-button",
+                                                            "disableClose": true,
+                                                            "visibility": true,
+                                                            "dialogButton": true,
+                                                            "actions": []
+                                                        },
+                                                        {
+                                                            "ctype": "button",
+                                                            "color": "primary",
+                                                            "text": "Done",
+                                                            "uuid": "doneHoldUUID2",
+                                                            "dialogButton": true,
+                                                            "visibility": true,
+                                                            "disableClose": false,
+                                                            "type": "submit",
+                                                            "closeType": "success",
+                                                            "actions": []
+                                                        }
+                                                    ]
+                                                },
+                                                "eventSource": "click",
+                                                "responseDependents": {
+                                                    "onSuccess": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "context",
+                                                                "config": {
+                                                                    "requestMethod": "add",
+                                                                    "key": "timeoutNotes",
+                                                                    "data": "formData"
+                                                                }
+                                                            },
+                                                            {
+                                                                "type": "condition",
+                                                                "config": {
+                                                                    "operation": "isEqualTo",
+                                                                    "lhs": "#isScrapSelected",
+                                                                    "rhs": true
+                                                                },
+                                                                "responseDependents": {
+                                                                    "onSuccess": {
+                                                                        "actions": [
+                                                                            {
+                                                                                "type": "condition",
+                                                                                "config": {
+                                                                                    "operation": "isValid",
+                                                                                    "lhs": "#timeoutNotes.addNote"
+                                                                                },
+                                                                                "responseDependents": {
+                                                                                    "onSuccess": {
+                                                                                        "actions": [
+                                                                                            {
+                                                                                                "type": "microservice",
+                                                                                                "config": {
+                                                                                                    "microserviceId": "performTimeOut",
+                                                                                                    "requestMethod": "post",
+                                                                                                    "body": {
+                                                                                                        "timeOutRequest": {
+                                                                                                            "location": "#UnitInfo.GEONAME",
+                                                                                                            "bcn": "#UnitInfo.ITEM_BCN",
+                                                                                                            "workCenter": "#UnitInfo.WORKCENTER",
+                                                                                                            "password": "#loginUUID.password",
+                                                                                                            "warrantyInd": "false",
+                                                                                                            "notes": "#timeoutNotes.addNote",
+                                                                                                            "resultCode": "#selectedResultcode",
+                                                                                                            "infoCodeList": {
+                                                                                                                "infoCode": [
+                                                                                                                    {
+                                                                                                                        "type": "Fail",
+                                                                                                                        "value": "#verifoneMegaLabelscrapScrap"
+                                                                                                                    }
+                                                                                                                ]
+                                                                                                            }
+                                                                                                        },
+                                                                                                        "modifyWarranty": 0,
+                                                                                                        "timeOutType": "ProcessImmediate",
+                                                                                                        "clientName": "#UnitInfo.CLIENTNAME",
+                                                                                                        "contractName": "#UnitInfo.CONTRACTNAME",
+                                                                                                        "userName": "#loginUUID.username",
+                                                                                                        "userPass": "#loginUUID.password",
+                                                                                                        "ip": "::1",
+                                                                                                        "callSource": "FrontEnd",
+                                                                                                        "apiUsage_LocationName": "#UnitInfo.GEONAME",
+                                                                                                        "apiUsage_ClientName": "#UnitInfo.CLIENTNAME"
+                                                                                                    },
+                                                                                                    "toBeStringified": true,
+                                                                                                    "removeUndefinedFields": [
+                                                                                                        {
+                                                                                                            "KeyName": "notes",
+                                                                                                            "KeyValue": "#timeoutNotes.addNote"
+                                                                                                        }
+                                                                                                    ]
+                                                                                                },
+                                                                                                "responseDependents": {
+                                                                                                    "onSuccess": {
+                                                                                                        "actions": [
+                                                                                                            {
+                                                                                                                "type": "context",
+                                                                                                                "config": {
+                                                                                                                    "requestMethod": "add",
+                                                                                                                    "key": "timeoutNotes",
+                                                                                                                    "data": ""
+                                                                                                                }
+                                                                                                            },
+                                                                                                            {
+                                                                                                                "type": "clearAllContext"
+                                                                                                            },
+                                                                                                            {
+                                                                                                                "type": "clearScreenData",
+                                                                                                                "eventSource": "click"
+                                                                                                            },
+                                                                                                            {
+                                                                                                                "type": "context",
+                                                                                                                "config": {
+                                                                                                                    "requestMethod": "delete",
+                                                                                                                    "key": "currentWC"
+                                                                                                                }
+                                                                                                            },
+                                                                                                            {
+                                                                                                                "type": "renderTemplate",
+                                                                                                                "config": {
+                                                                                                                    "templateId": "dashboard.json",
+                                                                                                                    "mode": "local"
+                                                                                                                }
+                                                                                                            },
+                                                                                                            {
+                                                                                                                "type": "microservice",
+                                                                                                                "config": {
+                                                                                                                    "microserviceId": "getSearchCriteria",
+                                                                                                                    "isLocal": false,
+                                                                                                                    "LocalService": "assets/Responses/getSearchCriteria.json",
+                                                                                                                    "requestMethod": "get",
+                                                                                                                    "params": {
+                                                                                                                        "locationId": "#userSelectedLocation",
+                                                                                                                        "clientId": "#userSelectedClient",
+                                                                                                                        "contractId": "#userSelectedContract",
+                                                                                                                        "searchType": "#userSelectedSubProcessType",
+                                                                                                                        "userName": "#userAccountInfo.PersonalDetails.USERID"
+                                                                                                                    }
+                                                                                                                },
+                                                                                                                "responseDependents": {
+                                                                                                                    "onSuccess": {
+                                                                                                                        "actions": [
+                                                                                                                            {
+                                                                                                                                "type": "context",
+                                                                                                                                "config": {
+                                                                                                                                    "requestMethod": "add",
+                                                                                                                                    "key": "getSearchCriteriaData",
+                                                                                                                                    "data": "responseData"
+                                                                                                                                }
+                                                                                                                            },
+                                                                                                                            {
+                                                                                                                                "type": "renderTemplate",
+                                                                                                                                "config": {
+                                                                                                                                    "mode": "remote",
+                                                                                                                                    "targetId": "mainPageContentBody",
+                                                                                                                                    "templateId": "getSearchCriteriaData"
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                        ]
+                                                                                                                    },
+                                                                                                                    "onFailure": {
+                                                                                                                        "actions": [
+                                                                                                                            {
+                                                                                                                                "type": "context",
+                                                                                                                                "config": {
+                                                                                                                                    "requestMethod": "add",
+                                                                                                                                    "key": "errorDisp",
+                                                                                                                                    "data": "responseData"
+                                                                                                                                }
+                                                                                                                            },
+                                                                                                                            {
+                                                                                                                                "type": "condition",
+                                                                                                                                "config": {
+                                                                                                                                    "operation": "isEqualTo",
+                                                                                                                                    "lhs": "#errorDisp",
+                                                                                                                                    "rhs": "No Record Found"
+                                                                                                                                },
+                                                                                                                                "responseDependents": {
+                                                                                                                                    "onSuccess": {
+                                                                                                                                        "actions": [
+                                                                                                                                            {
+                                                                                                                                                "type": "updateComponent",
+                                                                                                                                                "config": {
+                                                                                                                                                    "key": "errorTitleUUID",
+                                                                                                                                                    "properties": {
+                                                                                                                                                        "titleValue": "#errorDisp",
+                                                                                                                                                        "isShown": false
+                                                                                                                                                    }
+                                                                                                                                                }
+                                                                                                                                            }
+                                                                                                                                        ]
+                                                                                                                                    },
+                                                                                                                                    "onFailure": {
+                                                                                                                                        "actions": [
+                                                                                                                                            {
+                                                                                                                                                "type": "updateComponent",
+                                                                                                                                                "config": {
+                                                                                                                                                    "key": "errorTitleUUID",
+                                                                                                                                                    "properties": {
+                                                                                                                                                        "titleValue": "#errorDisp",
+                                                                                                                                                        "isShown": true
+                                                                                                                                                    }
+                                                                                                                                                }
+                                                                                                                                            }
+                                                                                                                                        ]
+                                                                                                                                    }
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                        ]
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            }
+                                                                                                        ]
+                                                                                                    },
+                                                                                                    "onFailure": {
+                                                                                                        "actions": [
+                                                                                                            {
+                                                                                                                "type": "context",
+                                                                                                                "config": {
+                                                                                                                    "requestMethod": "add",
+                                                                                                                    "key": "errorDisp",
+                                                                                                                    "data": "responseData"
+                                                                                                                }
+                                                                                                            },
+                                                                                                            {
+                                                                                                                "type": "condition",
+                                                                                                                "config": {
+                                                                                                                    "operation": "isEqualTo",
+                                                                                                                    "lhs": "#errorDisp",
+                                                                                                                    "rhs": "No Record Found"
+                                                                                                                },
+                                                                                                                "responseDependents": {
+                                                                                                                    "onSuccess": {
+                                                                                                                        "actions": [
+                                                                                                                            {
+                                                                                                                                "type": "updateComponent",
+                                                                                                                                "config": {
+                                                                                                                                    "key": "errorTitleUUID",
+                                                                                                                                    "properties": {
+                                                                                                                                        "titleValue": "#errorDisp",
+                                                                                                                                        "isShown": false
+                                                                                                                                    }
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                        ]
+                                                                                                                    },
+                                                                                                                    "onFailure": {
+                                                                                                                        "actions": [
+                                                                                                                            {
+                                                                                                                                "type": "updateComponent",
+                                                                                                                                "config": {
+                                                                                                                                    "key": "errorTitleUUID",
+                                                                                                                                    "properties": {
+                                                                                                                                        "titleValue": "#errorDisp",
+                                                                                                                                        "isShown": true
+                                                                                                                                    }
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                        ]
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            }
+                                                                                                        ]
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        ]
+                                                                                    },
+                                                                                    "onFailure": {
+                                                                                        "actions": [
+                                                                                            {
+                                                                                                "type": "updateComponent",
+                                                                                                "config": {
+                                                                                                    "key": "errorTitleUUID",
+                                                                                                    "properties": {
+                                                                                                        "titleValue": "Notes are mandatory for Result Code which starts with Fail",
+                                                                                                        "isShown": true
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        ]
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "onFailure": {
+                                                                        "actions": [
+                                                                            {
+                                                                                "type": "condition",
+                                                                                "config": {
+                                                                                    "operation": "isContains",
+                                                                                    "lhs": "#selectedResultcode",
+                                                                                    "rhs": "fail"
+                                                                                },
+                                                                                "responseDependents": {
+                                                                                    "onSuccess": {
+                                                                                        "actions": [
+                                                                                            {
+                                                                                                "type": "condition",
+                                                                                                "config": {
+                                                                                                    "operation": "isValid",
+                                                                                                    "lhs": "#timeoutNotes.addNote"
+                                                                                                },
+                                                                                                "responseDependents": {
+                                                                                                    "onSuccess": {
+                                                                                                        "actions": [
+                                                                                                            {
+                                                                                                                "type": "microservice",
+                                                                                                                "config": {
+                                                                                                                    "microserviceId": "performTimeOut",
+                                                                                                                    "requestMethod": "post",
+                                                                                                                    "body": {
+                                                                                                                        "timeOutRequest": {
+                                                                                                                            "location": "#UnitInfo.GEONAME",
+                                                                                                                            "bcn": "#UnitInfo.ITEM_BCN",
+                                                                                                                            "workCenter": "#UnitInfo.WORKCENTER",
+                                                                                                                            "password": "#loginUUID.password",
+                                                                                                                            "warrantyInd": "false",
+                                                                                                                            "notes": "#timeoutNotes.addNote",
+                                                                                                                            "resultCode": "#selectedResultcode"
+                                                                                                                        },
+                                                                                                                        "modifyWarranty": 0,
+                                                                                                                        "timeOutType": "ProcessImmediate",
+                                                                                                                        "clientName": "#UnitInfo.CLIENTNAME",
+                                                                                                                        "contractName": "#UnitInfo.CONTRACTNAME",
+                                                                                                                        "userName": "#loginUUID.username",
+                                                                                                                        "userPass": "#loginUUID.password",
+                                                                                                                        "ip": "::1",
+                                                                                                                        "callSource": "FrontEnd",
+                                                                                                                        "apiUsage_LocationName": "#UnitInfo.GEONAME",
+                                                                                                                        "apiUsage_ClientName": "#UnitInfo.CLIENTNAME"
+                                                                                                                    },
+                                                                                                                    "toBeStringified": true,
+                                                                                                                    "removeUndefinedFields": [
+                                                                                                                        {
+                                                                                                                            "KeyName": "notes",
+                                                                                                                            "KeyValue": "#timeoutNotes.addNote"
+                                                                                                                        }
+                                                                                                                    ]
+                                                                                                                },
+                                                                                                                "responseDependents": {
+                                                                                                                    "onSuccess": {
+                                                                                                                        "actions": [
+                                                                                                                            {
+                                                                                                                                "type": "context",
+                                                                                                                                "config": {
+                                                                                                                                    "requestMethod": "add",
+                                                                                                                                    "key": "timeoutNotes",
+                                                                                                                                    "data": ""
+                                                                                                                                }
+                                                                                                                            },
+                                                                                                                            {
+                                                                                                                                "type": "clearAllContext"
+                                                                                                                            },
+                                                                                                                            {
+                                                                                                                                "type": "clearScreenData",
+                                                                                                                                "eventSource": "click"
+                                                                                                                            },
+                                                                                                                            {
+                                                                                                                                "type": "context",
+                                                                                                                                "config": {
+                                                                                                                                    "requestMethod": "delete",
+                                                                                                                                    "key": "currentWC"
+                                                                                                                                }
+                                                                                                                            },
+                                                                                                                            {
+                                                                                                                                "type": "renderTemplate",
+                                                                                                                                "config": {
+                                                                                                                                    "templateId": "dashboard.json",
+                                                                                                                                    "mode": "local"
+                                                                                                                                }
+                                                                                                                            },
+                                                                                                                            {
+                                                                                                                                "type": "microservice",
+                                                                                                                                "config": {
+                                                                                                                                    "microserviceId": "getSearchCriteria",
+                                                                                                                                    "isLocal": false,
+                                                                                                                                    "LocalService": "assets/Responses/getSearchCriteria.json",
+                                                                                                                                    "requestMethod": "get",
+                                                                                                                                    "params": {
+                                                                                                                                        "locationId": "#userSelectedLocation",
+                                                                                                                                        "clientId": "#userSelectedClient",
+                                                                                                                                        "contractId": "#userSelectedContract",
+                                                                                                                                        "searchType": "#userSelectedSubProcessType",
+                                                                                                                                        "userName": "#userAccountInfo.PersonalDetails.USERID"
+                                                                                                                                    }
+                                                                                                                                },
+                                                                                                                                "responseDependents": {
+                                                                                                                                    "onSuccess": {
+                                                                                                                                        "actions": [
+                                                                                                                                            {
+                                                                                                                                                "type": "context",
+                                                                                                                                                "config": {
+                                                                                                                                                    "requestMethod": "add",
+                                                                                                                                                    "key": "getSearchCriteriaData",
+                                                                                                                                                    "data": "responseData"
+                                                                                                                                                }
+                                                                                                                                            },
+                                                                                                                                            {
+                                                                                                                                                "type": "renderTemplate",
+                                                                                                                                                "config": {
+                                                                                                                                                    "mode": "remote",
+                                                                                                                                                    "targetId": "mainPageContentBody",
+                                                                                                                                                    "templateId": "getSearchCriteriaData"
+                                                                                                                                                }
+                                                                                                                                            }
+                                                                                                                                        ]
+                                                                                                                                    },
+                                                                                                                                    "onFailure": {
+                                                                                                                                        "actions": [
+                                                                                                                                            {
+                                                                                                                                                "type": "context",
+                                                                                                                                                "config": {
+                                                                                                                                                    "requestMethod": "add",
+                                                                                                                                                    "key": "errorDisp",
+                                                                                                                                                    "data": "responseData"
+                                                                                                                                                }
+                                                                                                                                            },
+                                                                                                                                            {
+                                                                                                                                                "type": "condition",
+                                                                                                                                                "config": {
+                                                                                                                                                    "operation": "isEqualTo",
+                                                                                                                                                    "lhs": "#errorDisp",
+                                                                                                                                                    "rhs": "No Record Found"
+                                                                                                                                                },
+                                                                                                                                                "responseDependents": {
+                                                                                                                                                    "onSuccess": {
+                                                                                                                                                        "actions": [
+                                                                                                                                                            {
+                                                                                                                                                                "type": "updateComponent",
+                                                                                                                                                                "config": {
+                                                                                                                                                                    "key": "errorTitleUUID",
+                                                                                                                                                                    "properties": {
+                                                                                                                                                                        "titleValue": "#errorDisp",
+                                                                                                                                                                        "isShown": false
+                                                                                                                                                                    }
+                                                                                                                                                                }
+                                                                                                                                                            }
+                                                                                                                                                        ]
+                                                                                                                                                    },
+                                                                                                                                                    "onFailure": {
+                                                                                                                                                        "actions": [
+                                                                                                                                                            {
+                                                                                                                                                                "type": "updateComponent",
+                                                                                                                                                                "config": {
+                                                                                                                                                                    "key": "errorTitleUUID",
+                                                                                                                                                                    "properties": {
+                                                                                                                                                                        "titleValue": "#errorDisp",
+                                                                                                                                                                        "isShown": true
+                                                                                                                                                                    }
+                                                                                                                                                                }
+                                                                                                                                                            }
+                                                                                                                                                        ]
+                                                                                                                                                    }
+                                                                                                                                                }
+                                                                                                                                            }
+                                                                                                                                        ]
+                                                                                                                                    }
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                        ]
+                                                                                                                    },
+                                                                                                                    "onFailure": {
+                                                                                                                        "actions": [
+                                                                                                                            {
+                                                                                                                                "type": "context",
+                                                                                                                                "config": {
+                                                                                                                                    "requestMethod": "add",
+                                                                                                                                    "key": "errorDisp",
+                                                                                                                                    "data": "responseData"
+                                                                                                                                }
+                                                                                                                            },
+                                                                                                                            {
+                                                                                                                                "type": "condition",
+                                                                                                                                "config": {
+                                                                                                                                    "operation": "isEqualTo",
+                                                                                                                                    "lhs": "#errorDisp",
+                                                                                                                                    "rhs": "No Record Found"
+                                                                                                                                },
+                                                                                                                                "responseDependents": {
+                                                                                                                                    "onSuccess": {
+                                                                                                                                        "actions": [
+                                                                                                                                            {
+                                                                                                                                                "type": "updateComponent",
+                                                                                                                                                "config": {
+                                                                                                                                                    "key": "errorTitleUUID",
+                                                                                                                                                    "properties": {
+                                                                                                                                                        "titleValue": "#errorDisp",
+                                                                                                                                                        "isShown": false
+                                                                                                                                                    }
+                                                                                                                                                }
+                                                                                                                                            }
+                                                                                                                                        ]
+                                                                                                                                    },
+                                                                                                                                    "onFailure": {
+                                                                                                                                        "actions": [
+                                                                                                                                            {
+                                                                                                                                                "type": "updateComponent",
+                                                                                                                                                "config": {
+                                                                                                                                                    "key": "errorTitleUUID",
+                                                                                                                                                    "properties": {
+                                                                                                                                                        "titleValue": "#errorDisp",
+                                                                                                                                                        "isShown": true
+                                                                                                                                                    }
+                                                                                                                                                }
+                                                                                                                                            }
+                                                                                                                                        ]
+                                                                                                                                    }
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                        ]
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            }
+                                                                                                        ]
+                                                                                                    },
+                                                                                                    "onFailure": {
+                                                                                                        "actions": [
+                                                                                                            {
+                                                                                                                "type": "updateComponent",
+                                                                                                                "config": {
+                                                                                                                    "key": "errorTitleUUID",
+                                                                                                                    "properties": {
+                                                                                                                        "titleValue": "Notes are mandatory for Result Code which starts with Fail",
+                                                                                                                        "isShown": true
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            }
+                                                                                                        ]
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        ]
+                                                                                    },
+                                                                                    "onFailure": {
+                                                                                        "actions": [
+                                                                                            {
+                                                                                                "type": "condition",
+                                                                                                "config": {
+                                                                                                    "operation": "isEqualTo",
+                                                                                                    "lhs": "#selectedResultcode",
+                                                                                                    "rhs": "PassPkg"
+                                                                                                },
+                                                                                                "responseDependents": {
+                                                                                                    "onSuccess": {
+                                                                                                        "actions": [
+                                                                                                            {
+                                                                                                                "type": "microservice",
+                                                                                                                "config": {
+                                                                                                                    "microserviceId": "getprocessffbycountry",
+                                                                                                                    "requestMethod": "get",
+                                                                                                                    "params": {
+                                                                                                                        "itemId": "#UnitInfo.ITEM_ID",
+                                                                                                                        "resultCode": "#selectedResultcode"
+                                                                                                                    }
+                                                                                                                },
+                                                                                                                "responseDependents": {
+                                                                                                                    "onSuccess": {
+                                                                                                                        "actions": [
+                                                                                                                            {
+                                                                                                                                "type": "context",
+                                                                                                                                "config": {
+                                                                                                                                    "requestMethod": "add",
+                                                                                                                                    "key": "verifoneMegaLabelProcFFByCountry",
+                                                                                                                                    "data": "responseData"
+                                                                                                                                }
+                                                                                                                            },
+                                                                                                                            {
+                                                                                                                                "type": "condition",
+                                                                                                                                "config": {
+                                                                                                                                    "operation": "isEqualTo",
+                                                                                                                                    "lhs": "#verifoneMegaLabelProcFFByCountry.flexFieldName",
+                                                                                                                                    "rhs": "Country of Origin"
+                                                                                                                                },
+                                                                                                                                "responseDependents": {
+                                                                                                                                    "onSuccess": {
+                                                                                                                                        "actions": [
+                                                                                                                                            {
+                                                                                                                                                "type": "microservice",
+                                                                                                                                                "config": {
+                                                                                                                                                    "microserviceId": "performTimeOut",
+                                                                                                                                                    "requestMethod": "post",
+                                                                                                                                                    "body": {
+                                                                                                                                                        "timeOutRequest": {
+                                                                                                                                                            "location": "#UnitInfo.GEONAME",
+                                                                                                                                                            "bcn": "#UnitInfo.ITEM_BCN",
+                                                                                                                                                            "workCenter": "#UnitInfo.WORKCENTER",
+                                                                                                                                                            "password": "#loginUUID.password",
+                                                                                                                                                            "warrantyInd": "false",
+                                                                                                                                                            "notes": "#timeoutNotes.addNote",
+                                                                                                                                                            "resultCode": "#selectedResultcode"
+                                                                                                                                                        },
+                                                                                                                                                        "modifyWarranty": 0,
+                                                                                                                                                        "timeOutType": "ProcessImmediate",
+                                                                                                                                                        "clientName": "#UnitInfo.CLIENTNAME",
+                                                                                                                                                        "contractName": "#UnitInfo.CONTRACTNAME",
+                                                                                                                                                        "userName": "#loginUUID.username",
+                                                                                                                                                        "userPass": "#loginUUID.password",
+                                                                                                                                                        "ip": "::1",
+                                                                                                                                                        "callSource": "FrontEnd",
+                                                                                                                                                        "apiUsage_LocationName": "#UnitInfo.GEONAME",
+                                                                                                                                                        "apiUsage_ClientName": "#UnitInfo.CLIENTNAME"
+                                                                                                                                                    },
+                                                                                                                                                    "toBeStringified": true,
+                                                                                                                                                    "removeUndefinedFields": [
+                                                                                                                                                        {
+                                                                                                                                                            "KeyName": "notes",
+                                                                                                                                                            "KeyValue": "#timeoutNotes.addNote"
+                                                                                                                                                        }
+                                                                                                                                                    ]
+                                                                                                                                                },
+                                                                                                                                                "responseDependents": {
+                                                                                                                                                    "onSuccess": {
+                                                                                                                                                        "actions": [
+                                                                                                                                                            {
+                                                                                                                                                                "type": "context",
+                                                                                                                                                                "config": {
+                                                                                                                                                                    "requestMethod": "add",
+                                                                                                                                                                    "key": "timeoutNotes",
+                                                                                                                                                                    "data": ""
+                                                                                                                                                                }
+                                                                                                                                                            },
+                                                                                                                                                            {
+                                                                                                                                                                "type": "clearAllContext"
+                                                                                                                                                            },
+                                                                                                                                                            {
+                                                                                                                                                                "type": "clearScreenData",
+                                                                                                                                                                "eventSource": "click"
+                                                                                                                                                            },
+                                                                                                                                                            {
+                                                                                                                                                                "type": "context",
+                                                                                                                                                                "config": {
+                                                                                                                                                                    "requestMethod": "delete",
+                                                                                                                                                                    "key": "currentWC"
+                                                                                                                                                                }
+                                                                                                                                                            },
+                                                                                                                                                            {
+                                                                                                                                                                "type": "renderTemplate",
+                                                                                                                                                                "config": {
+                                                                                                                                                                    "templateId": "dashboard.json",
+                                                                                                                                                                    "mode": "local"
+                                                                                                                                                                }
+                                                                                                                                                            },
+                                                                                                                                                            {
+                                                                                                                                                                "type": "microservice",
+                                                                                                                                                                "config": {
+                                                                                                                                                                    "microserviceId": "getSearchCriteria",
+                                                                                                                                                                    "isLocal": false,
+                                                                                                                                                                    "LocalService": "assets/Responses/getSearchCriteria.json",
+                                                                                                                                                                    "requestMethod": "get",
+                                                                                                                                                                    "params": {
+                                                                                                                                                                        "locationId": "#userSelectedLocation",
+                                                                                                                                                                        "clientId": "#userSelectedClient",
+                                                                                                                                                                        "contractId": "#userSelectedContract",
+                                                                                                                                                                        "searchType": "#userSelectedSubProcessType",
+                                                                                                                                                                        "userName": "#userAccountInfo.PersonalDetails.USERID"
+                                                                                                                                                                    }
+                                                                                                                                                                },
+                                                                                                                                                                "responseDependents": {
+                                                                                                                                                                    "onSuccess": {
+                                                                                                                                                                        "actions": [
+                                                                                                                                                                            {
+                                                                                                                                                                                "type": "context",
+                                                                                                                                                                                "config": {
+                                                                                                                                                                                    "requestMethod": "add",
+                                                                                                                                                                                    "key": "getSearchCriteriaData",
+                                                                                                                                                                                    "data": "responseData"
+                                                                                                                                                                                }
+                                                                                                                                                                            },
+                                                                                                                                                                            {
+                                                                                                                                                                                "type": "renderTemplate",
+                                                                                                                                                                                "config": {
+                                                                                                                                                                                    "mode": "remote",
+                                                                                                                                                                                    "targetId": "mainPageContentBody",
+                                                                                                                                                                                    "templateId": "getSearchCriteriaData"
+                                                                                                                                                                                }
+                                                                                                                                                                            }
+                                                                                                                                                                        ]
+                                                                                                                                                                    },
+                                                                                                                                                                    "onFailure": {
+                                                                                                                                                                        "actions": [
+                                                                                                                                                                            {
+                                                                                                                                                                                "type": "context",
+                                                                                                                                                                                "config": {
+                                                                                                                                                                                    "requestMethod": "add",
+                                                                                                                                                                                    "key": "errorDisp",
+                                                                                                                                                                                    "data": "responseData"
+                                                                                                                                                                                }
+                                                                                                                                                                            },
+                                                                                                                                                                            {
+                                                                                                                                                                                "type": "condition",
+                                                                                                                                                                                "config": {
+                                                                                                                                                                                    "operation": "isEqualTo",
+                                                                                                                                                                                    "lhs": "#errorDisp",
+                                                                                                                                                                                    "rhs": "No Record Found"
+                                                                                                                                                                                },
+                                                                                                                                                                                "responseDependents": {
+                                                                                                                                                                                    "onSuccess": {
+                                                                                                                                                                                        "actions": [
+                                                                                                                                                                                            {
+                                                                                                                                                                                                "type": "updateComponent",
+                                                                                                                                                                                                "config": {
+                                                                                                                                                                                                    "key": "errorTitleUUID",
+                                                                                                                                                                                                    "properties": {
+                                                                                                                                                                                                        "titleValue": "#errorDisp",
+                                                                                                                                                                                                        "isShown": false
+                                                                                                                                                                                                    }
+                                                                                                                                                                                                }
+                                                                                                                                                                                            }
+                                                                                                                                                                                        ]
+                                                                                                                                                                                    },
+                                                                                                                                                                                    "onFailure": {
+                                                                                                                                                                                        "actions": [
+                                                                                                                                                                                            {
+                                                                                                                                                                                                "type": "updateComponent",
+                                                                                                                                                                                                "config": {
+                                                                                                                                                                                                    "key": "errorTitleUUID",
+                                                                                                                                                                                                    "properties": {
+                                                                                                                                                                                                        "titleValue": "#errorDisp",
+                                                                                                                                                                                                        "isShown": true
+                                                                                                                                                                                                    }
+                                                                                                                                                                                                }
+                                                                                                                                                                                            }
+                                                                                                                                                                                        ]
+                                                                                                                                                                                    }
+                                                                                                                                                                                }
+                                                                                                                                                                            }
+                                                                                                                                                                        ]
+                                                                                                                                                                    }
+                                                                                                                                                                }
+                                                                                                                                                            }
+                                                                                                                                                        ]
+                                                                                                                                                    },
+                                                                                                                                                    "onFailure": {
+                                                                                                                                                        "actions": [
+                                                                                                                                                            {
+                                                                                                                                                                "type": "context",
+                                                                                                                                                                "config": {
+                                                                                                                                                                    "requestMethod": "add",
+                                                                                                                                                                    "key": "errorDisp",
+                                                                                                                                                                    "data": "responseData"
+                                                                                                                                                                }
+                                                                                                                                                            },
+                                                                                                                                                            {
+                                                                                                                                                                "type": "condition",
+                                                                                                                                                                "config": {
+                                                                                                                                                                    "operation": "isEqualTo",
+                                                                                                                                                                    "lhs": "#errorDisp",
+                                                                                                                                                                    "rhs": "No Record Found"
+                                                                                                                                                                },
+                                                                                                                                                                "responseDependents": {
+                                                                                                                                                                    "onSuccess": {
+                                                                                                                                                                        "actions": [
+                                                                                                                                                                            {
+                                                                                                                                                                                "type": "updateComponent",
+                                                                                                                                                                                "config": {
+                                                                                                                                                                                    "key": "errorTitleUUID",
+                                                                                                                                                                                    "properties": {
+                                                                                                                                                                                        "titleValue": "#errorDisp",
+                                                                                                                                                                                        "isShown": false
+                                                                                                                                                                                    }
+                                                                                                                                                                                }
+                                                                                                                                                                            }
+                                                                                                                                                                        ]
+                                                                                                                                                                    },
+                                                                                                                                                                    "onFailure": {
+                                                                                                                                                                        "actions": [
+                                                                                                                                                                            {
+                                                                                                                                                                                "type": "updateComponent",
+                                                                                                                                                                                "config": {
+                                                                                                                                                                                    "key": "errorTitleUUID",
+                                                                                                                                                                                    "properties": {
+                                                                                                                                                                                        "titleValue": "#errorDisp",
+                                                                                                                                                                                        "isShown": true
+                                                                                                                                                                                    }
+                                                                                                                                                                                }
+                                                                                                                                                                            }
+                                                                                                                                                                        ]
+                                                                                                                                                                    }
+                                                                                                                                                                }
+                                                                                                                                                            }
+                                                                                                                                                        ]
+                                                                                                                                                    }
+                                                                                                                                                }
+                                                                                                                                            }
+                                                                                                                                        ]
+                                                                                                                                    },
+                                                                                                                                    "onFailure": {
+                                                                                                                                        "actions": [
+                                                                                                                                            {
+                                                                                                                                                "type": "updateComponent",
+                                                                                                                                                "config": {
+                                                                                                                                                    "key": "errorTitleUUID",
+                                                                                                                                                    "properties": {
+                                                                                                                                                        "titleValue": "Unit has no process flex field 'Country of Origin'",
+                                                                                                                                                        "isShown": true
+                                                                                                                                                    }
+                                                                                                                                                }
+                                                                                                                                            }
+                                                                                                                                        ]
+                                                                                                                                    }
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                        ]
+                                                                                                                    },
+                                                                                                                    "onFailure": {
+                                                                                                                        "actions": [
+                                                                                                                            {
+                                                                                                                                "type": "context",
+                                                                                                                                "config": {
+                                                                                                                                    "requestMethod": "add",
+                                                                                                                                    "key": "errorDisp",
+                                                                                                                                    "data": "responseData"
+                                                                                                                                }
+                                                                                                                            },
+                                                                                                                            {
+                                                                                                                                "type": "condition",
+                                                                                                                                "config": {
+                                                                                                                                    "operation": "isEqualTo",
+                                                                                                                                    "lhs": "#errorDisp",
+                                                                                                                                    "rhs": "No Record Found"
+                                                                                                                                },
+                                                                                                                                "responseDependents": {
+                                                                                                                                    "onSuccess": {
+                                                                                                                                        "actions": [
+                                                                                                                                            {
+                                                                                                                                                "type": "updateComponent",
+                                                                                                                                                "config": {
+                                                                                                                                                    "key": "errorTitleUUID",
+                                                                                                                                                    "properties": {
+                                                                                                                                                        "titleValue": "#errorDisp",
+                                                                                                                                                        "isShown": false
+                                                                                                                                                    }
+                                                                                                                                                }
+                                                                                                                                            }
+                                                                                                                                        ]
+                                                                                                                                    },
+                                                                                                                                    "onFailure": {
+                                                                                                                                        "actions": [
+                                                                                                                                            {
+                                                                                                                                                "type": "updateComponent",
+                                                                                                                                                "config": {
+                                                                                                                                                    "key": "errorTitleUUID",
+                                                                                                                                                    "properties": {
+                                                                                                                                                        "titleValue": "#errorDisp",
+                                                                                                                                                        "isShown": true
+                                                                                                                                                    }
+                                                                                                                                                }
+                                                                                                                                            }
+                                                                                                                                        ]
+                                                                                                                                    }
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                        ]
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            }
+                                                                                                        ]
+                                                                                                    },
+                                                                                                    "onFailure": {
+                                                                                                        "actions": [
+                                                                                                            {
+                                                                                                                "type": "microservice",
+                                                                                                                "config": {
+                                                                                                                    "microserviceId": "performTimeOut",
+                                                                                                                    "requestMethod": "post",
+                                                                                                                    "body": {
+                                                                                                                        "timeOutRequest": {
+                                                                                                                            "location": "#UnitInfo.GEONAME",
+                                                                                                                            "bcn": "#UnitInfo.ITEM_BCN",
+                                                                                                                            "workCenter": "#UnitInfo.WORKCENTER",
+                                                                                                                            "password": "#loginUUID.password",
+                                                                                                                            "warrantyInd": "false",
+                                                                                                                            "notes": "#timeoutNotes.addNote",
+                                                                                                                            "resultCode": "#selectedResultcode"
+                                                                                                                        },
+                                                                                                                        "modifyWarranty": 0,
+                                                                                                                        "timeOutType": "ProcessImmediate",
+                                                                                                                        "clientName": "#UnitInfo.CLIENTNAME",
+                                                                                                                        "contractName": "#UnitInfo.CONTRACTNAME",
+                                                                                                                        "userName": "#loginUUID.username",
+                                                                                                                        "userPass": "#loginUUID.password",
+                                                                                                                        "ip": "::1",
+                                                                                                                        "callSource": "FrontEnd",
+                                                                                                                        "apiUsage_LocationName": "#UnitInfo.GEONAME",
+                                                                                                                        "apiUsage_ClientName": "#UnitInfo.CLIENTNAME"
+                                                                                                                    },
+                                                                                                                    "toBeStringified": true,
+                                                                                                                    "removeUndefinedFields": [
+                                                                                                                        {
+                                                                                                                            "KeyName": "notes",
+                                                                                                                            "KeyValue": "#timeoutNotes.addNote"
+                                                                                                                        }
+                                                                                                                    ]
+                                                                                                                },
+                                                                                                                "responseDependents": {
+                                                                                                                    "onSuccess": {
+                                                                                                                        "actions": [
+                                                                                                                            {
+                                                                                                                                "type": "context",
+                                                                                                                                "config": {
+                                                                                                                                    "requestMethod": "add",
+                                                                                                                                    "key": "timeoutNotes",
+                                                                                                                                    "data": ""
+                                                                                                                                }
+                                                                                                                            },
+                                                                                                                            {
+                                                                                                                                "type": "clearAllContext"
+                                                                                                                            },
+                                                                                                                            {
+                                                                                                                                "type": "clearScreenData",
+                                                                                                                                "eventSource": "click"
+                                                                                                                            },
+                                                                                                                            {
+                                                                                                                                "type": "context",
+                                                                                                                                "config": {
+                                                                                                                                    "requestMethod": "delete",
+                                                                                                                                    "key": "currentWC"
+                                                                                                                                }
+                                                                                                                            },
+                                                                                                                            {
+                                                                                                                                "type": "renderTemplate",
+                                                                                                                                "config": {
+                                                                                                                                    "templateId": "dashboard.json",
+                                                                                                                                    "mode": "local"
+                                                                                                                                }
+                                                                                                                            },
+                                                                                                                            {
+                                                                                                                                "type": "microservice",
+                                                                                                                                "config": {
+                                                                                                                                    "microserviceId": "getSearchCriteria",
+                                                                                                                                    "isLocal": false,
+                                                                                                                                    "LocalService": "assets/Responses/getSearchCriteria.json",
+                                                                                                                                    "requestMethod": "get",
+                                                                                                                                    "params": {
+                                                                                                                                        "locationId": "#userSelectedLocation",
+                                                                                                                                        "clientId": "#userSelectedClient",
+                                                                                                                                        "contractId": "#userSelectedContract",
+                                                                                                                                        "searchType": "#userSelectedSubProcessType",
+                                                                                                                                        "userName": "#userAccountInfo.PersonalDetails.USERID"
+                                                                                                                                    }
+                                                                                                                                },
+                                                                                                                                "responseDependents": {
+                                                                                                                                    "onSuccess": {
+                                                                                                                                        "actions": [
+                                                                                                                                            {
+                                                                                                                                                "type": "context",
+                                                                                                                                                "config": {
+                                                                                                                                                    "requestMethod": "add",
+                                                                                                                                                    "key": "getSearchCriteriaData",
+                                                                                                                                                    "data": "responseData"
+                                                                                                                                                }
+                                                                                                                                            },
+                                                                                                                                            {
+                                                                                                                                                "type": "renderTemplate",
+                                                                                                                                                "config": {
+                                                                                                                                                    "mode": "remote",
+                                                                                                                                                    "targetId": "mainPageContentBody",
+                                                                                                                                                    "templateId": "getSearchCriteriaData"
+                                                                                                                                                }
+                                                                                                                                            }
+                                                                                                                                        ]
+                                                                                                                                    },
+                                                                                                                                    "onFailure": {
+                                                                                                                                        "actions": [
+                                                                                                                                            {
+                                                                                                                                                "type": "context",
+                                                                                                                                                "config": {
+                                                                                                                                                    "requestMethod": "add",
+                                                                                                                                                    "key": "errorDisp",
+                                                                                                                                                    "data": "responseData"
+                                                                                                                                                }
+                                                                                                                                            },
+                                                                                                                                            {
+                                                                                                                                                "type": "condition",
+                                                                                                                                                "config": {
+                                                                                                                                                    "operation": "isEqualTo",
+                                                                                                                                                    "lhs": "#errorDisp",
+                                                                                                                                                    "rhs": "No Record Found"
+                                                                                                                                                },
+                                                                                                                                                "responseDependents": {
+                                                                                                                                                    "onSuccess": {
+                                                                                                                                                        "actions": [
+                                                                                                                                                            {
+                                                                                                                                                                "type": "updateComponent",
+                                                                                                                                                                "config": {
+                                                                                                                                                                    "key": "errorTitleUUID",
+                                                                                                                                                                    "properties": {
+                                                                                                                                                                        "titleValue": "#errorDisp",
+                                                                                                                                                                        "isShown": false
+                                                                                                                                                                    }
+                                                                                                                                                                }
+                                                                                                                                                            }
+                                                                                                                                                        ]
+                                                                                                                                                    },
+                                                                                                                                                    "onFailure": {
+                                                                                                                                                        "actions": [
+                                                                                                                                                            {
+                                                                                                                                                                "type": "updateComponent",
+                                                                                                                                                                "config": {
+                                                                                                                                                                    "key": "errorTitleUUID",
+                                                                                                                                                                    "properties": {
+                                                                                                                                                                        "titleValue": "#errorDisp",
+                                                                                                                                                                        "isShown": true
+                                                                                                                                                                    }
+                                                                                                                                                                }
+                                                                                                                                                            }
+                                                                                                                                                        ]
+                                                                                                                                                    }
+                                                                                                                                                }
+                                                                                                                                            }
+                                                                                                                                        ]
+                                                                                                                                    }
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                        ]
+                                                                                                                    },
+                                                                                                                    "onFailure": {
+                                                                                                                        "actions": [
+                                                                                                                            {
+                                                                                                                                "type": "context",
+                                                                                                                                "config": {
+                                                                                                                                    "requestMethod": "add",
+                                                                                                                                    "key": "errorDisp",
+                                                                                                                                    "data": "responseData"
+                                                                                                                                }
+                                                                                                                            },
+                                                                                                                            {
+                                                                                                                                "type": "condition",
+                                                                                                                                "config": {
+                                                                                                                                    "operation": "isEqualTo",
+                                                                                                                                    "lhs": "#errorDisp",
+                                                                                                                                    "rhs": "No Record Found"
+                                                                                                                                },
+                                                                                                                                "responseDependents": {
+                                                                                                                                    "onSuccess": {
+                                                                                                                                        "actions": [
+                                                                                                                                            {
+                                                                                                                                                "type": "updateComponent",
+                                                                                                                                                "config": {
+                                                                                                                                                    "key": "errorTitleUUID",
+                                                                                                                                                    "properties": {
+                                                                                                                                                        "titleValue": "#errorDisp",
+                                                                                                                                                        "isShown": false
+                                                                                                                                                    }
+                                                                                                                                                }
+                                                                                                                                            }
+                                                                                                                                        ]
+                                                                                                                                    },
+                                                                                                                                    "onFailure": {
+                                                                                                                                        "actions": [
+                                                                                                                                            {
+                                                                                                                                                "type": "updateComponent",
+                                                                                                                                                "config": {
+                                                                                                                                                    "key": "errorTitleUUID",
+                                                                                                                                                    "properties": {
+                                                                                                                                                        "titleValue": "#errorDisp",
+                                                                                                                                                        "isShown": true
+                                                                                                                                                    }
+                                                                                                                                                }
+                                                                                                                                            }
+                                                                                                                                        ]
+                                                                                                                                    }
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                        ]
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            }
+                                                                                                        ]
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        ]
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    "onFailure": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "updateComponent",
+                                                                "config": {
+                                                                    "key": "errorTitleUUID",
+                                                                    "properties": {
+                                                                        "titleValue": "Data is not valid"
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": []
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "Result": "SUCCESS"
+}

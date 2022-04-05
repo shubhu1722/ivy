@@ -1,0 +1,47 @@
+<mat-drawer-container class="sidenav-container">
+  <mat-drawer class="sidenav col-md-2 col-sm-12" #left style="background-color: #464C59;padding: 0" #drawerleft [position]="leftsideNav.position"
+    [mode]="mode" disableClose=true [opened]="leftsideNav.opened">
+    <div class="flex_container stack_vertical">
+      <!-- header -->
+      <header class="flex_item leftside_header">
+        <ng-container #leftnavheader></ng-container>
+        <!-- <div class="logo_container">
+          <img src="../../../assets/logo.png" style="width: 74px;height: 68px;display: block;margin: 0 auto" alt="">
+        </div> -->
+      </header>
+      <!-- body -->
+      <div class="flex_item divider_top scrollable">
+        <ng-container #leftnavbody></ng-container>
+        <!-- <app-menu-list-item *ngFor="let item of navItems" [item]="item"></app-menu-list-item> -->
+      </div>
+      <!-- footer -->
+      <footer class="flex_item divider_top align_end">
+        <ng-container #leftnavfooter></ng-container>
+      </footer>
+    </div>
+  </mat-drawer>
+
+  <mat-drawer #drawerright [mode]="mode" [position]="rightsidenav.position" [opened]="rightsidenav.opened" style="width: 30%">
+    <!-- <header style="height: 9%"> -->
+      <ng-container #rightnavheader></ng-container>
+    <!-- </header> -->
+    <div style="height: 90%; overflow: auto">
+      <ng-container #rightnavbody></ng-container>
+    </div>
+    <footer>
+      <ng-container #rightnavfooter></ng-container>
+    </footer>
+  </mat-drawer>
+  <mat-drawer-content autosize [style]="{'margin-left': (screenWidth < 641) ? '0px':'16em'}" style = "background: rgb(226, 231, 237);" [class]="pcBodyClass">
+    <header>
+      <ng-container #header></ng-container>
+    </header>
+    <!-- mainContent -->
+    <div style="height: 100%">
+      <ng-container #pageContent></ng-container>
+    </div>
+    <footer>
+      <ng-container #footer></ng-container>
+    </footer>
+  </mat-drawer-content>
+</mat-drawer-container>

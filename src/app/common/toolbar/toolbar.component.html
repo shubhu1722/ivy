@@ -1,0 +1,6 @@
+<mat-toolbar [style]="css" [class]="toolbarClass">
+  <mat-toolbar-row [hover-class]="hoverClass" [class]="togglePosition">
+    <ng-container #toolbarElement></ng-container>
+    <ng-content></ng-content>
+  </mat-toolbar-row>
+</mat-toolbar>

@@ -1,0 +1,70 @@
+{
+    "ctype": "subProcess",
+    "title": "REWORK",
+    "uuid": "dellReworkUUID",
+    "clientName": "DELL",
+    "subMenuIndex": 0,
+    "openRightNav": false,
+    "hooks": [
+        {
+            "type": "microservice",
+            "hookType": "beforeInit",
+            "config": {
+                "microserviceId": "getSubProcessPageBody",
+                "requestMethod": "get",
+                "params": {
+                    "subProcessId": "#wcSubprocess.REWORK.subProcessID",
+                    "userName": "#userAccountInfo.PersonalDetails.USERID"
+                },
+                "isLocal": false,
+                "LocalService": "assets/Responses/SubProcess/DELL/dellReworkSubProcess.json"
+            },
+            "responseDependents": {
+                "onSuccess": {
+                    "actions": [
+                        {
+                            "type": "microservice",
+                            "hookType": "afterInit",
+                            "config": {
+                              "microserviceId": "getCurrPrevRODetailsBySN",
+                              "requestMethod": "get",
+                              "params": {
+                                "serialNo": "#repairUnitInfo.SERIAL_NO",
+                                "locationId": "#userSelectedLocation",
+                                "clientId": "#userSelectedClient",
+                                "contractId": "#userSelectedContract",
+                                "userName": "#loginUUID.username"
+                              }
+                            },
+                            "responseDependents": {
+                              "onSuccess": {
+                                "actions": [
+                                    {
+                                        "type": "renderTemplate",
+                                        "config": {
+                                            "mode": "remote",
+                                            "targetId": "mainPageContentBodysp",
+                                            "templateId": "getSubProcessPageBody"
+                                        }
+                                    }
+                                ]
+                              },
+                              "onFailure": {
+                                "actions": []
+                              }
+                            }
+                          }
+                    ]
+                },
+                "onFailure": {
+                    "actions": [
+                        {
+                            "type": "toast",
+                            "message": "Failed to fetch Dell Rework JSON"
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}

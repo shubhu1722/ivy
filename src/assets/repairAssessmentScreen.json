@@ -1,0 +1,48 @@
+{
+  "ctype": "subProcess",
+  "title": "ASSESSMENT",
+  "slWcName" : "HP_DEBUG",
+  "uuid": "assesmentUUID",
+  "fetchDataFromPrevWC":true,
+  "subMenuIndex": 0,
+  "clientName": "HP",
+  "openRightNav": false,
+  "hooks": [
+    {
+      "type": "microservice",
+      "hookType": "beforeInit",
+      "config": {
+        "microserviceId": "getSubProcessPageBody",
+        "requestMethod": "get",
+        "params": {
+          "subProcessId": "#wcSubprocess.ASSESSMENT.subProcessID",
+          "userName": "#userAccountInfo.PersonalDetails.USERID"
+        },
+        "isLocal": false,
+        "LocalService": "assets/Responses/SubProcess/HP/repairAssessmentSubProcess.json"
+      },
+      "responseDependents": {
+        "onSuccess": {
+          "actions": [
+            { 
+              "type": "renderTemplate",
+              "config": {
+                "mode": "remote",
+                "targetId": "mainPageContentBodysp",
+                "templateId": "getSubProcessPageBody"
+              }
+            }
+          ]
+        },
+        "onFailure": {
+          "actions": [
+            {
+              "type": "toast",
+              "message": "Failed to fetch Repair Assessment JSON"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

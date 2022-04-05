@@ -1,0 +1,10 @@
+<div  [formGroup]="group" [class]="formGroupClass" [style]="formGroupStyles" [hidden]="hidden">
+<label [for]="name" [hidden]="hidden" [style]="labelstyles" [class]="labelClass">{{label| translate}} <span class="sub-label" *ngIf="sublabelVal"><br/>{{sublabelVal| translate}}</span></label>
+<mat-button-toggle-group [disabled]='disabled' [name]='name' [hidden]="hidden" [value]="selectedVal" [vertical]='vertical' [attr.checked]='checked'
+    [id]='id' [attr.visibility]='visibilty' [style]='css' [class]="toggleClass" (change)="toggle($event)">
+    
+    <mat-button-toggle *ngFor="let item of options" value="{{item.value}}"  
+    [style.background-color]="activeItemBGColor" [class] ="item.innerClass" >{{item.text | translate}}<span *ngIf="item.circleClass" [class]="item.circleClass"></span></mat-button-toggle>
+</mat-button-toggle-group>
+<ng-container #afterButtonToggle></ng-container>
+</div>

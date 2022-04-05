@@ -1,0 +1,614 @@
+{
+  "ResultData": {
+    "ctype": "page",
+    "uuid": "pageUUID",
+    "css": "",
+    "visibility": true,
+    "hooks": [
+      {
+        "type": "condition",
+        "hookType": "afterInit",
+        "config": {
+            "operation": "isEqualTo",
+            "lhs": "#isTimeOutFromCiscoWC",
+            "rhs": true
+        },
+        "responseDependents": {
+            "onSuccess": {
+                "actions": [
+                  {
+                    "type": "microservice",
+                    "config": {
+                      "microserviceId": "getUnitInfo",
+                      "requestMethod": "get",
+                      "params": {
+                        "unitIdentificationValue": "#userSearchCriteriaCisco.unitIdentificationValue",
+                        "identificatorType": "#userSearchCriteriaCisco.identificatorType",
+                        "locationId": "#userSelectedLocation",
+                        "clientId": "#userSelectedClient",
+                        "contractId": "#userSelectedContract"
+                      }
+                    },
+                    "eventSource": "click",
+                    "responseDependents": {
+                      "onSuccess": {
+                        "actions": [
+                          {
+                            "type": "context",
+                            "config": {
+                              "requestMethod": "add",
+                              "key": "UnitInfo",
+                              "data": "responseData"
+                            }
+                          },
+                          {
+                            "type": "condition",
+                            "config": {
+                              "operation": "isValid",
+                              "lhs": "#UnitInfo.DESTINATIONWC"
+                            },
+                            "responseDependents": {
+                              "onSuccess": {
+                                "actions": [
+                                  {
+                                    "type": "concatContexts",
+                                    "config": {
+                                        "contextKey": "nextWorkCenterMessage",
+                                        "contexts": [
+                                            "Unit has been Timed Out to",
+                                            "'",
+                                            "#UnitInfo.DESTINATIONWC",
+                                            "'"
+                                        ]
+                                    }
+                                  },
+                                  {
+                                    "type": "updateComponent",
+                                    "config": {
+                                        "key": "searchCriteriaErrorTitleUUID",
+                                        "properties": {
+                                            "titleValue": "#nextWorkCenterMessage",
+                                            "titleClass": "success-title",
+                                            "isShown": true
+                                        }
+                                    }
+                                  }
+                                ]
+                              },
+                              "onFailure": {
+                                "actions": [
+                                  {
+                                    "type": "concatContexts",
+                                    "config": {
+                                        "contextKey": "nextWorkCenterMessage",
+                                        "contexts": [
+                                            "Unit has been Timed Out to",
+                                            "'",
+                                            "#UnitInfo.WORKCENTER",
+                                            "'"
+                                        ]
+                                    }
+                                  },
+                                  {
+                                    "type": "updateComponent",
+                                    "config": {
+                                        "key": "searchCriteriaErrorTitleUUID",
+                                        "properties": {
+                                            "titleValue": "#nextWorkCenterMessage",
+                                            "titleClass": "success-title",
+                                            "isShown": true
+                                        }
+                                    }
+                                  }
+                                ]
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      "onFailure": {
+                        "actions": [
+                          {
+                            "type": "context",
+                            "config": {
+                              "requestMethod": "add",
+                              "key": "errorMsg",
+                              "data": "responseData"
+                            }
+                          },
+                          {
+                            "type": "updateComponent",
+                            "config": {
+                              "key": "searchCriteriaErrorTitleUUID",
+                              "properties": {
+                                "titleValue": "#errorMsg",
+                                "isShown": true
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+            },
+            "onFailure": {
+                "actions": []
+            }
+        }
+    }
+    ],
+    "validations": [],
+    "action": [],
+    "header": [
+      {
+        "ctype": "toolbar",
+        "toolbarClass": "searchCriteria-toolbar section-title",
+        "items": [
+          {
+            "ctype": "title",
+            "title": "WC Operation"
+          }
+        ]
+      }
+    ],
+    "items": [
+      {
+        "ctype": "title",
+        "uuid": "searchCriteriaErrorTitleUUID",
+        "titleClass": "error-title",
+        "isShown": false
+      },
+      {
+        "ctype": "formPanel",
+        "title": "IQAPreScreen",
+        "header": "",
+        "uuid": "IQAPreScreenUUID",
+        "formPanelClass": "searchCriteria-panel-full",
+        "visibility": true,
+        "hooks": [],
+        "validations": [],
+        "actions": [],
+        "items": [
+          {
+            "ctype": "textField",
+            "uuid": "unitIdentificationValueUUID",
+            "hooks": [],
+            "validations": [],
+            "textfieldClass": "searchcriteris-text-full",
+            "type": "text",
+            "required": true,
+            "placeholder": "Scan Number",
+            "submitable": true,
+            "isUpperCase": true,
+            "label": "",
+            "labelPosition": "",
+            "name": "unitIdentificationValue",
+            "prefix": "true",
+            "prefixIcon": "qr_code_scanner",
+            "suffix": true,
+            "suffixIcon": "arrow_forward",
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "key": "userSearchCriteriaCisco",
+                  "data": "formData",
+                  "requestMethod": "add"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "findIdentificatorType",
+                "eventSource": "click",
+                "config": {
+                  "wc": "CISCO",
+                  "key": "userSearchCriteriaCisco",
+                  "unitIdentificationValue": "#userSearchCriteriaCisco.unitIdentificationValue",
+                  "objectKey": "identificatorType"
+                }
+              },
+              {
+                "type": "microservice",
+                "config": {
+                  "microserviceId": "getUnitInfo",
+                  "requestMethod": "get",
+                  "params": {
+                    "unitIdentificationValue": "#userSearchCriteriaCisco.unitIdentificationValue",
+                    "identificatorType": "#userSearchCriteriaCisco.identificatorType",
+                    "locationId": "#userSelectedLocation",
+                    "clientId": "#userSelectedClient",
+                    "contractId": "#userSelectedContract"
+                  }
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "UnitInfo",
+                          "data": "responseData"
+                        }
+                      },
+                      {
+                        "type": "condition",
+                        "config": {
+                          "operation": "isEqualTo",
+                          "lhs": "#UnitInfo.ONHOLD",
+                          "rhs": "1"
+                        },
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "searchCriteriaErrorTitleUUID",
+                                  "properties": {
+                                    "titleValue": "HOLDERROR: Unit can't be processed, as this is currently on hold, Storage IS NOT same as the one on the workorder",
+                                    "isShown": true
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": [
+                              {
+                                "type": "condition",
+                                "config": {
+                                  "operation": "isValidList",
+                                  "validList": [
+                                    "#UnitInfo.DESTINATIONWC",
+                                    "#UnitInfo.WORKCENTER_ID"
+                                  ]
+                                },
+                                "responseDependents": {
+                                  "onSuccess": {
+                                    "actions": [
+                                      {
+                                        "type": "condition",
+                                        "config": {
+                                          "operation": "isEqualTo",
+                                          "lhs": "#UnitInfo.STATUS",
+                                          "rhs": "Time Out"
+                                        },
+                                        "responseDependents": {
+                                          "onSuccess": {
+                                            "actions": [
+                                              {
+                                                "type": "condition",
+                                                "config": {
+                                                  "operation": "isValid",
+                                                  "lhs": "#UnitInfo.DESTINATIONWC"
+                                                },
+                                                "responseDependents": {
+                                                  "onSuccess": {
+                                                    "actions": [
+                                                      {
+                                                        "type": "hou-timeInCiscoMicroServices",
+                                                        "eventSource": "click"
+                                                      }
+                                                    ]
+                                                  },
+                                                  "onFailure": {
+                                                    "actions": [
+                                                      {
+                                                        "type": "errorPrepareAndRender",
+                                                        "config": {
+                                                          "key": "searchCriteriaErrorTitleUUID",
+                                                          "properties": {
+                                                            "titleValue": "Item- {0} Reached to it's Destination Workcenter: {1}",
+                                                            "isShown": true
+                                                          },
+                                                          "valueArray": [
+                                                            "#UnitInfo.ITEM_BCN",
+                                                            "#UnitInfo.WORKCENTER"
+                                                          ]
+                                                        }
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          "onFailure": {
+                                            "actions": [
+                                              {
+                                                "type": "condition",
+                                                "config": {
+                                                  "operation": "isValid",
+                                                  "lhs": "#UnitInfo.STATUS"
+                                                },
+                                                "responseDependents": {
+                                                  "onSuccess": {
+                                                    "actions": [
+                                                      {
+                                                        "type": "microservice",
+                                                        "config": {
+                                                          "microserviceId": "getBomCount",
+                                                          "requestMethod": "post",
+                                                          "body": {
+                                                            "locationId": "#userSelectedLocation",
+                                                            "mainPartNo": "#UnitInfo.PART_NO"
+                                                          },
+                                                          "toBeStringified": true
+                                                        },
+                                                        "responseDependents": {
+                                                          "onSuccess": {
+                                                            "actions": [
+                                                              {
+                                                                "type": "context",
+                                                                "config": {
+                                                                  "requestMethod": "add",
+                                                                  "key": "BomCount",
+                                                                  "data": "responseData"
+                                                                }
+                                                              },
+                                                              {
+                                                                "type": "microservice",
+                                                                "config": {
+                                                                  "microserviceId": "getResultCodes",
+                                                                  "requestMethod": "get",
+                                                                  "params": {
+                                                                    "bcn": "#UnitInfo.ITEM_BCN",
+                                                                    "validateResult": 1
+                                                                  }
+                                                                },
+                                                                "responseDependents": {
+                                                                  "onSuccess": {
+                                                                    "actions": [
+                                                                      {
+                                                                        "type": "context",
+                                                                        "config": {
+                                                                          "requestMethod": "add",
+                                                                          "key": "ResultCodes",
+                                                                          "data": "responseData"
+                                                                        }
+                                                                      },
+                                                                      {
+                                                                        "type": "microservice",
+                                                                        "config": {
+                                                                          "microserviceId": "getBomsByMainPartNo",
+                                                                          "requestMethod": "post",
+                                                                          "body": {
+                                                                            "locationId": "#userSelectedLocation",
+                                                                            "mainPartNo": "#UnitInfo.PART_NO"
+                                                                          },
+                                                                          "toBeStringified": true
+                                                                        },
+                                                                        "responseDependents": {
+                                                                          "onSuccess": {
+                                                                            "actions": [
+                                                                              {
+                                                                                "type": "context",
+                                                                                "config": {
+                                                                                  "requestMethod": "add",
+                                                                                  "key": "BomsByMainPartNo",
+                                                                                  "data": "responseData"
+                                                                                }
+                                                                              },
+                                                                              {
+                                                                                "type": "microservice",
+                                                                                "config": {
+                                                                                  "microserviceId": "getConditionFlexFields",
+                                                                                  "requestMethod": "get",
+                                                                                  "params": {
+                                                                                    "locationId": "#userSelectedLocation",
+                                                                                    "clientId": "#userSelectedClient",
+                                                                                    "contractId": "#userSelectedContract"
+                                                                                  }
+                                                                                },
+                                                                                "responseDependents": {
+                                                                                  "onSuccess": {
+                                                                                    "actions": [
+                                                                                      {
+                                                                                        "type": "context",
+                                                                                        "config": {
+                                                                                          "requestMethod": "add",
+                                                                                          "key": "conditionOptions",
+                                                                                          "data": "responseData"
+                                                                                        }
+                                                                                      },
+                                                                                      {
+                                                                                        "type": "hou-commonCiscoWCOperations",
+                                                                                        "eventSource": "click"
+                                                                                      }
+                                                                                    ]
+                                                                                  },
+                                                                                  "onFailure": {
+                                                                                    "actions": [
+                                                                                      {
+                                                                                        "type": "context",
+                                                                                        "config": {
+                                                                                          "requestMethod": "add",
+                                                                                          "key": "errorDisp",
+                                                                                          "data": "responseData"
+                                                                                        }
+                                                                                      },
+                                                                                      {
+                                                                                        "type": "updateComponent",
+                                                                                        "config": {
+                                                                                          "key": "searchCriteriaErrorTitleUUID",
+                                                                                          "properties": {
+                                                                                            "titleValue": "#errorDisp",
+                                                                                            "isShown": true
+                                                                                          }
+                                                                                        }
+                                                                                      }
+                                                                                    ]
+                                                                                  }
+                                                                                }
+                                                                              }
+                                                                            ]
+                                                                          },
+                                                                          "onFailure": {
+                                                                            "actions": [
+                                                                              {
+                                                                                "type": "hou-commonCiscoWCOperations",
+                                                                                "eventSource": "click"
+                                                                              }
+                                                                            ]
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    ]
+                                                                  },
+                                                                  "onFailure": {
+                                                                    "actions": [
+                                                                      {
+                                                                        "type": "context",
+                                                                        "config": {
+                                                                          "requestMethod": "add",
+                                                                          "key": "errorDisp",
+                                                                          "data": "responseData"
+                                                                        }
+                                                                      },
+                                                                      {
+                                                                        "type": "updateComponent",
+                                                                        "config": {
+                                                                          "key": "searchCriteriaErrorTitleUUID",
+                                                                          "properties": {
+                                                                            "titleValue": "#errorDisp",
+                                                                            "isShown": true
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                }
+                                                              }
+                                                            ]
+                                                          },
+                                                          "onFailure": {
+                                                            "actions": [
+                                                              {
+                                                                "type": "context",
+                                                                "config": {
+                                                                  "requestMethod": "add",
+                                                                  "key": "errorDisp",
+                                                                  "data": "responseData"
+                                                                }
+                                                              },
+                                                              {
+                                                                "type": "updateComponent",
+                                                                "config": {
+                                                                  "key": "searchCriteriaErrorTitleUUID",
+                                                                  "properties": {
+                                                                    "titleValue": "#errorDisp",
+                                                                    "isShown": true
+                                                                  }
+                                                                }
+                                                              }
+                                                            ]
+                                                          }
+                                                        }
+                                                      }
+                                                    ]
+                                                  },
+                                                  "onFailure": {
+                                                    "actions": [
+                                                      {
+                                                        "type": "condition",
+                                                        "config": {
+                                                          "operation": "isValid",
+                                                          "lhs": "#UnitInfo.DESTINATIONWC"
+                                                        },
+                                                        "responseDependents": {
+                                                          "onSuccess": {
+                                                            "actions": [
+                                                              {
+                                                                "type": "hou-secondtimeInCiscoMicroServices",
+                                                                "eventSource": "click"
+                                                              }
+                                                            ]
+                                                          },
+                                                          "onFailure": {
+                                                            "actions": [
+                                                              {
+                                                                "type": "errorPrepareAndRender",
+                                                                "config": {
+                                                                  "key": "searchCriteriaErrorTitleUUID",
+                                                                  "properties": {
+                                                                    "titleValue": "Item- {0} Reached to it's Destination Workcenter: {1}",
+                                                                    "isShown": true
+                                                                  },
+                                                                  "valueArray": [
+                                                                    "#UnitInfo.ITEM_BCN",
+                                                                    "#UnitInfo.WORKCENTER"
+                                                                  ]
+                                                                }
+                                                              }
+                                                            ]
+                                                          }
+                                                        }
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "onFailure": {
+                                    "actions": [
+                                      {
+                                        "type": "updateComponent",
+                                        "config": {
+                                          "key": "searchCriteriaErrorTitleUUID",
+                                          "properties": {
+                                            "titleValue": "This unit is in Perform Exit Routing",
+                                            "isShown": true
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "errorMsg",
+                          "data": "responseData"
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "searchCriteriaErrorTitleUUID",
+                          "properties": {
+                            "titleValue": "#errorMsg",
+                            "isShown": true
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "footer": []
+  },
+  "Result": "SUCCESS"
+}

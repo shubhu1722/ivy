@@ -1,0 +1,239 @@
+{
+    "ResultData": {
+        "ctype": "page",
+        "uuid": "pageUUID",
+        "visibility": true,
+        "hooks": [
+            {
+                "type": "microservice",
+                "hookType": "afterInit",
+                "config": {
+                    "microserviceId": "getRMAList",
+                    "requestMethod": "get",
+                    "params": {
+                        "rmaNumber": "#receivingUserSearchCriteria.receivingOrderIdValue"
+                    }
+                },
+                "responseDependents": {
+                    "onSuccess": {
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "rmaListData",
+                                    "data": "responseData"
+                                },
+                                "hookType": "afterInit"
+                            },
+                            {
+                                "type": "renderVerifoneReceivingRMAData"
+                            }                           
+                        ]
+                    },
+                    "onFailure": {
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "errorResp",
+                                    "data": "responseData"
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "errorTitleUUID",
+                                    "properties": {
+                                        "titleValue": "#errorResp",
+                                        "isShown": false
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+        ],
+        "header": [
+            {
+                "ctype": "breadcrumb",
+                "style": "padding-left: 4px;",
+                "breadcrumbs": [
+                    {
+                        "label": "#userSelectedLocationName"
+                    },
+                    {
+                        "label": "#userSelectedClientName"
+                    },
+                    {
+                        "label": "#userSelectedContractName"
+                    }
+                ]
+            },
+            {
+                "ctype": "toolbar",
+                "css": "padding-top: 35px;",
+                "toolbarClass": "pagecontent-header",
+                "items": [
+                    {
+                        "ctype": "title",
+                        "uuid": "RMAListHHeadertitleuuid",
+                        "titleValue": "RMA List",
+                        "titleClass": "section-title",
+                        "css": "padding-bottom: 35px;padding-left: 4px;"
+                    },
+                    {
+                        "ctype": "spacer",
+                        "uuid": "emptySpaceUUID",
+                        "class": "empty-space"
+                    },
+                    {
+                        "ctype": "iconbutton",
+                        "iconButtonClass": "headeropen-button",
+                        "text": "",
+                        "uuid": "pageopenUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "hidden": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "icon": "menu_open",
+                        "disableRipple": true,
+                        "iconClass": "header-icon",
+                        "css": "padding-bottom: 35px;",
+                        "actions": [
+                            {
+                                "type": "toggle",
+                                "eventSource": "click",
+                                "name": "subProcessRightNavref"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "openUUID",
+                                    "properties": {
+                                        "hidden": false
+                                    }
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "pageopenUUID",
+                                    "properties": {
+                                        "hidden": true
+                                    }
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "items": [
+            {
+                "ctype": "title",
+                "uuid": "errorTitleUUID",
+                "titleClass": "error-title",
+                "isShown": false,
+                "containerId": "prebodysectionone"
+            },
+            {
+                "ctype": "taskPanel",
+                "containerId": "prebodysectionone",
+                "header": {
+                    "title": "RMA",
+                    "svgIcon": "description_icon",
+                    "iconClass": "active-header",
+                    "class": "po-specific"
+                },
+                "expanded": false,
+                "hideToggle": true,
+                "uuid": "rmaListTaskPanelUUID",
+                "visibility": false,
+                "disabled": false,
+                "hooks": [],
+                "validations": [],
+                "actions": [],
+                "items": [
+                    {
+                        "ctype": "verifoneRmaReceivingTable",
+                        "uuid": "verifoneRmaReceivingTableUUID",
+                        "formGroupClass": "batch-action-buttons body2 ",
+                        "labelPosition": "before",
+                        "name": "moroccanCEMark",
+                        "batchData": "#rmaListData",
+                        "names": [
+                          "text1",
+                          "text2",
+                          "text3"
+                        ],
+                        "options": [
+                        ],
+                        "validations": [],
+                        "label": "",
+                        "hooks": [],
+                        "actions": [
+                        ],
+                        "required": false,
+                        "submitable": false,
+                        "visibility": true
+                    }
+                ],
+                "footer": [
+                    
+                ]
+            }
+        ],
+        "footer": [
+            {
+                "ctype": "toolbar",
+                "toolbarClass": "pagecontent-footer",
+                "items": [
+                    {
+                        "ctype": "iconbutton",
+                        "iconButtonClass": "footer-save body primary-btn",
+                        "text": "Exit",
+                        "uuid": "saveUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "icon": "close",
+                        "actions": [
+                            {
+                                "type":"context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "isFromRMAList",
+                                    "data": false
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "clearAllContext",
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "renderTemplate",
+                                "config": {
+                                    "templateId": "dashboard.json",
+                                    "mode": "local"
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "Result": "SUCCESS"
+}

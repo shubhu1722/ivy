@@ -1,0 +1,89 @@
+{
+	"Receipt":{
+		"ReceiptInfo":{
+			"User": "Bhupendra.Singh4",  #userAccountInfo.PersonalDetails.USERID
+			"Pwd": "Changeme@143",
+			"CarrierName": "",
+			"PackingListNo": "",
+			"PackingListNoPackingListNo": "",
+			"TrackingNo": "5678901234 ",  // empty
+			"Lines": {
+				"Line": {
+					"LineNo": "1",
+					"Items": {
+						"Item": {
+							"PartNum": "Y3J80AV ", #scanSerialNumberResp.OrderPartNumber
+							"Quantity": "1",
+							"OriginalSerialNumber": "",
+							"OriginalBCN": "",
+							"SerialNum": "5678901234 ", #scanSerialNumberResp.SerialNumber
+							"BCN": {
+								"_Number": ""
+							},
+							"FixedAssetTag": "", #getOrders.TP_ORDER_NO
+							"ReasonCode": "",
+							"ReasonNotes": "",
+							"ResultCode": "Process Unit", #scanSerialNumberResp.ResultCode
+							"Warranty": "true", #warranty 
+							"Notes": "",
+							"RevisionLevel": "",
+							"FlexFields": {
+								"FlexField": [
+									{
+										"Name": "BOX",
+										"Value": "BYD BOX - ACC NOT OK"
+										
+									},
+									{
+										"Name": "SN Mismatch",
+										"Value": "SNM"
+										
+									},
+									{
+										"Name": "CSO Mismatch",
+	    								"Value": "NA"
+										
+									},
+									{
+										"Name": "Battery SN",
+										"Value": "5678901234 "
+										
+									},
+									{
+										"Name": "AC Adapter SN",
+										"Value": "5678901234 "
+									
+									}
+								]
+							}
+						}
+					}
+				}
+			},
+			"ReceiptFlexFields": {
+				"FlexFields":{
+				   "FlexField":  [
+					{
+						"Name": "",
+						"Value": ""
+					},
+					{
+						"Name": "",
+						"Value": ""
+					}
+				]
+				}
+			},
+			"ExternalReceiptData": {
+				"ReceiptNumber": "",
+				"Application": "",
+				"Warehouse": ""
+			},
+			"IP": ":1",
+			"CallSource": "FrontEnd",
+			"APIUsage_LocationName": "Bydgoszcz", LOCATION_NAME
+			"APIUsage_ClientName": "HP" CLIENT_NAME
+		},
+		"RefOrder":"3038143945"   REFERENCE_ORDER_ID
+	}
+}

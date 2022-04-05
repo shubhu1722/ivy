@@ -1,0 +1,8 @@
+<div [formGroup]="group" [class]= "textareaContainer" [hidden]="hidden">
+  <label *ngIf="label !== ''" [for]="name" [style]="labelstyles" [class]="labelPosition">{{label | translate}}</label>
+  <mat-form-field appearance="outline" [class] ="textareaClass">
+    <textarea matInput [formControlName]="name" [placeholder]="placeholder | translate" [id]="name" [value]="value | translate" [name]="name" [readonly]="readonly"
+      [required]="required" [matTooltip]="tooltip" [matTooltipPosition]="TooltipPosition"
+      (keyup)="onlocalChange($event)"></textarea>
+  </mat-form-field>
+</div>

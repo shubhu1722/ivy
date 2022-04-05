@@ -1,0 +1,78 @@
+<div [formGroup]="group" class="col-12">
+  <div class="d-flex flex-column pt-1">
+    <div class="row">
+      <div class="pcb_In col-3 p-1">Part Number</div>
+      <div class="labels-PCB pcbValues col-2 p-1"></div>
+      <div class="pcb_In col-3 p-1">TAN Number</div>
+      <div class="scan-no col-2 p-1">Serial Number</div>
+      <div class="dropdown col-2 p-1">Condition</div>
+    </div>
+  </div>
+
+  <div *ngFor="let item of counter(bomCount); let i=index" class="d-flex flex-column pt-1">
+    <div class="row" style="height: 20px;">
+      <label for="" class="float-left pcbLabels col-3 p-1 ">{{getLabelData(i)}}</label>
+      <label for="" class="float-left pcbLabels col-2 p-1 "></label>
+      <label for="" class="float-left pcbLabels col-3 p-1 ">{{getTanLabelData(i)}}</label>
+      <label for="" class="float-left pcbLabels col-2 p-1 "></label>
+      <label for="" class="float-left pcbLabels col-2 p-1 "></label>
+    </div>
+
+    <div class="row">
+      <div class="pcb_In col-3 p-1">
+        <mat-form-field appearance="outline" *ngIf="getLabelData(i)">
+          <input matInput [formControlName]="getName(names[0],i)" [placeholder]="getLabelData(i)" type="text"
+            [id]="getName(names[0],i)" [value]="value" [name]="getName(names[0],i)"
+            [required]="getRequiredStatus(i)?'true':'false'" (input)="onInput($event,i)" textFieldRef
+            [pattern]="getRequiredForPCB(i)" (keyup)="onKeyUpEvent($event,i)" #pcbno>
+        </mat-form-field>
+        <mat-form-field appearance="outline" *ngIf="!getLabelData(i)" class="disabled">
+          <input matInput textFieldRef [pattern]="getRequiredForPCB(i)" disabled="true">
+        </mat-form-field>
+      </div>
+      <div class="labels-PCB pcbValues col-2 p-1">
+        <!-- pcb Values-->
+        <input [formControlName]="getName(names[1],i)" *ngIf="getLabelData(i)" [id]="getName(names[1],i)"
+          [required]="getRequiredStatus(i)?'true':'false'" [name]="getName(names[1],i)" placeholder="-" readonly>
+      </div>
+      <div class="col-3 p-1">
+        <!-- TAN Number-->
+        <mat-form-field appearance="outline" *ngIf="getTanLabelData(i)">
+          <input matInput [formControlName]="getName(names[4],i)" [placeholder]="getTanLabelData(i)" type="text"
+            [id]="getName(names[4],i)" [value]="value" [name]="getName(names[4],i)"
+            [required]="getRequiredStatus(i)?'true':'false'" (keyup)="onTanInput($event,i)" textFieldRef
+            [pattern]="getRequiredForTan(i)" #pcbno>
+        </mat-form-field>
+        <mat-form-field appearance="outline" *ngIf="!getTanLabelData(i)" class="disabled">
+          <input matInput textFieldRef [pattern]="getRequiredForTan(i)" disabled="true">
+        </mat-form-field>
+      </div>
+      <div class="scan-no col-2 p-1">
+        <!-- Scan No -->
+        <mat-form-field appearance="outline">
+          <input matInput [formControlName]="getName(names[2],i)" [placeholder]="getPlaceholder(i)" type="text"
+            [id]="getName(names[2],i)" [value]="value" [name]="getName(names[2],i)"
+            [required]="getRequiredStatus(i)?'true':'false'" (input)="onScanNoInput($event,i)"
+            [pattern]='getRequiredStatus(i)? "^[a-zA-Z0-9]{6,20}$" : "^.*$"' (keyup)="onKeyUpEvent($event,i)"
+            #textFieldRef>
+        </mat-form-field>
+        <!-- <mat-form-field appearance="outline" *ngIf="!getLabelData(i)" class="disabled">
+                    <input matInput textFieldRef placeholder="Scan Serial Number" disabled="true">
+                </mat-form-field> -->
+      </div>
+      <div class="pcb-dropdown col-2 p-1">
+        <!-- dropdown No -->
+        <div class="formGroupClass" *ngIf="getLabelData(i)">
+          <select [formControlName]="getName(names[3],i)" [id]="getName(names[3],i)" class="body"
+            [required]="getRequiredStatus(i)?'true':'false'" (change)="changeDropdown($event,i)"
+            class="dropdown-container body2">
+            <option selected disabled value="null">-Select-</option>
+            <option *ngFor="let option of getOptions(i)" [value]="option.code">{{option.displayValue | translate}}
+            </option>
+          </select>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

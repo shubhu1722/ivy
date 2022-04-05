@@ -1,0 +1,613 @@
+{
+  "status": true,
+  "message": null,
+  "data": {
+    "sourceType": "PLATFORM",
+    "roheaderffIds": "35881,35675,35882,35677",
+    "rolineffIds": "35857,36007,35848,35983,35855,36002,39530,39534,39528,39532,39527,39531,35851,35996,39529,39533,35853,35999,35856,35992,35852,35998,35854,36001,35849,35994",
+    "workcenterffIds": "49889,108953",
+    "ffId": "49911",
+    "qrffId": "49953",
+    "udffId": "109219",
+    "arcffId": "49957",
+    "ftffId": "49949",
+    "tmffID": "50932",
+    "faffId": "1073",
+    "rrffId": "109469",
+    "debugwcID": 23383,
+    "reworkwcID": 23384,
+    "obawcID": 23381,
+    "ctFFID": "108895",
+    "prFFID": "49920",
+    "ccFFID": "49925",
+    "vftUnitDamageFFID": "109220",
+    "mbRepairMarksFFID": "72547",
+    "mbBeforeRLFFID": "85328",
+    "QrActionFaffId": "1065",
+    "hpVMIWCIDforPremium": "23381",
+    "dellDebugARCWorkCenterName": "DELL_AIO_DEBUG_ARC",
+    "dellDebugWorkCenterName": "DELL_AIO_DEBUG",
+    "dellL2DebugWorkCenterName": "L2_DEBUG",
+    "dellDebugMenuName": "DEBUG",
+    "dellDebugArcMenuName": "DEBUG_ARC",
+    "dellL2DebugMenuName": "L2_DEBUG",
+    "dellWRPRouteName": "WRP",
+    "dellWRP3RouteName": "WRP3",
+    "dellDebugDefaultActionCodeId": 85641,
+    "dellDebugDefaultActionCode": "RPL",
+    "dellFinalTestDefaultDeviceInterface": "PC DR NF PASS",
+    "dellQrAddNoteDefaultValue": "Operating System Installed Version or Task Performed?",
+    "dellWorKInstructionsLinks": "https://www.dell.com/support/home/en/uk/pldhs1/product-support/servicetag/",
+    "dellDebugDefaultReplaceResultCode": "PART_REQ",
+    "dellReplacedACAdapter": "Replaced AC Adapter",
+    "predictionAccessRole": "Glb_Predictive_Repair",
+    "locationBasedFF": {
+      "Louisville": {
+        "WRP": {
+          "msgRead": {
+            "DELL_AIO_DEBUG": "109069",
+            "L2_DEBUG": "109081",
+            "DELL_AIO_DEBUG_ARC": "109093",
+            "DELL_AIO_VMI": "109077",
+            "DELL_AIO_REWORK": "109070",
+            "DELL_AIO_PA": "109073",
+            "DELL_AIO_EXT_TEST": "109080",
+            "DELL_AIO_QR": "109075",
+            "DELL_AIO_VALIDATION": "109076",
+            "DELL_AIO_ESTIMATE": "109079",
+            "DELL_AIO_FTEST": "109071",
+            "DELL_AIO_OBA": "109072",
+            "DELL_AIO_ASSEMBLY": "111085",
+            "DELL_AIO_PACKOUT": "109074"
+          },
+          "Beep_Code": {
+            "DELL_AIO_DEBUG": "109063",
+            "L2_DEBUG": "109064",
+            "DELL_AIO_DEBUG_ARC": "109087"
+          },
+          "Test_Step": {
+            "DELL_AIO_DEBUG": "109065",
+            "L2_DEBUG": "109066",
+            "DELL_AIO_DEBUG_ARC": "109089"
+          },
+          "EPSA_Code": {
+            "DELL_AIO_DEBUG": "109059",
+            "L2_DEBUG": "109060",
+            "DELL_AIO_DEBUG_ARC": "109083"
+          },
+          "PCDR_Code": {
+            "DELL_AIO_DEBUG": "109061",
+            "L2_DEBUG": "109062",
+            "DELL_AIO_DEBUG_ARC": "109085"
+          },
+          "RAM": {
+            "DELL_AIO_DEBUG": "110049",
+            "L2_DEBUG": "110654",
+            "DELL_AIO_DEBUG_ARC": "110051"
+          },
+          "Damage_Type": {
+            "DELL_AIO_ESTIMATE": "16683"
+          },
+          "Repair_Action": 16301,
+          "Main_Issue": 16300,
+          "Main Issue2": 16542,
+          "debugId": 47680,
+          "ffIdValidation": 111585,
+          "ffIdReworkWRP": 110535,
+          "ffIdReworkWRP3": 110536,
+          "ObaPrint": "LOU_DELL_REPAIR_LETTER_PRD",
+          "ReworkBin": "DELL_AIO_PARTS-DFLT",
+          "moveInventoryBin": "DELL_AIO_DMR-DFLT",
+          "sourceStockingLoc": "DELL_AIO_WIP",
+          "destinationStockingLoc": "Dell_AIO_DMR",
+          "templateId": "DELL AIO Louisville",
+          "financialCode": "DELLAIO",
+          "loaderName": "LOU_DELLAIO_STOP_PROCESS",
+          "VMI_WC_ID": "47670",
+          "commodityFFID": "16903"
+        },
+        "WRP3": {
+          "msgRead": {
+            "DELL_AIO_DEBUG": "109069",
+            "L2_DEBUG": "109081",
+            "DELL_AIO_DEBUG_ARC": "109093",
+            "DELL_AIO_VMI": "109101",
+            "DELL_AIO_REWORK": "109094",
+            "DELL_AIO_PA": "109097",
+            "DELL_AIO_EXT_TEST": "109104",
+            "DELL_AIO_QR": "109099",
+            "DELL_AIO_VALIDATION": "109100",
+            "DELL_AIO_ESTIMATE": "109103",
+            "DELL_AIO_FTEST": "109095",
+            "DELL_AIO_OBA": "109096",
+            "DELL_AIO_ASSEMBLY": "111086",
+            "DELL_AIO_PACKOUT": "109098"
+          },
+          "Beep_Code": {
+            "DELL_AIO_DEBUG": "109063",
+            "L2_DEBUG": "109064",
+            "DELL_AIO_DEBUG_ARC": "109087"
+          },
+          "Test_Step": {
+            "DELL_AIO_DEBUG": "109065",
+            "L2_DEBUG": "109066",
+            "DELL_AIO_DEBUG_ARC": "109089"
+          },
+          "EPSA_Code": {
+            "DELL_AIO_DEBUG": "109059",
+            "L2_DEBUG": "109060",
+            "DELL_AIO_DEBUG_ARC": "109083"
+          },
+          "PCDR_Code": {
+            "DELL_AIO_DEBUG": "109061",
+            "L2_DEBUG": "109062",
+            "DELL_AIO_DEBUG_ARC": "109085"
+          },
+          "RAM": {
+            "DELL_AIO_DEBUG": "110049",
+            "L2_DEBUG": "110654",
+            "DELL_AIO_DEBUG_ARC": "110051"
+          },
+          "Damage_Type": {
+            "DELL_AIO_ESTIMATE": "16683"
+          },
+          "Repair_Action": 16301,
+          "Main_Issue": 16300,
+          "Main Issue2": 16542,
+          "debugId": 47680,
+          "ffIdValidation": 111598,
+          "ffIdReworkWRP": 110535,
+          "ffIdReworkWRP3": 110536,
+          "ReworkBin": "DELL_AIO_PARTS-DFLT",
+          "moveInventoryBin": "DELL_AIO_DMR-DFLT",
+          "sourceStockingLoc": "DELL_AIO_WIP",
+          "destinationStockingLoc": "Dell_AIO_DMR",
+          "templateId": "DELL AIO Louisville",
+          "financialCode": "DELLAIO",
+          "loaderName": "LOU_DELLAIO_STOP_PROCESS",
+          "VMI_WC_ID": "47670",
+          "commodityFFID": "16903"
+        }
+      },
+      "AMERICAS NETWORK": {
+        "WRP": {
+          "msgRead": {
+            "DELL_AIO_DEBUG": "80747",
+            "L2_DEBUG": "82647",
+            "DELL_AIO_DEBUG_ARC": "80748",
+            "DELL_AIO_VMI": "80756",
+            "DELL_AIO_REWORK": "80749",
+            "DELL_AIO_PA": "80752",
+            "DELL_AIO_EXT_TEST": "80759",
+            "DELL_AIO_QR": "80754",
+            "DELL_AIO_VALIDATION": "80755",
+            "DELL_AIO_ESTIMATE": "80758",
+            "DELL_AIO_FTEST": "80750",
+            "DELL_AIO_OBA": "80751",
+            "DELL_AIO_ASSEMBLY": "110652",
+            "DELL_AIO_PACKOUT": "80753"
+          },
+          "Beep_Code": {
+            "DELL_AIO_DEBUG": "64667",
+            "L2_DEBUG": "64668",
+            "DELL_AIO_DEBUG_ARC": "79674"
+          },
+          "Test_Step": {
+            "DELL_AIO_DEBUG": "64669",
+            "L2_DEBUG": "64670",
+            "DELL_AIO_DEBUG_ARC": "79675"
+          },
+          "EPSA_Code": {
+            "DELL_AIO_DEBUG": "64526",
+            "L2_DEBUG": "64527",
+            "DELL_AIO_DEBUG_ARC": "79672"
+          },
+          "PCDR_Code": {
+            "DELL_AIO_DEBUG": "64546",
+            "L2_DEBUG": "64666",
+            "DELL_AIO_DEBUG_ARC": "79673"
+          },
+          "RAM": {
+            "DELL_AIO_DEBUG": "110085",
+            "L2_DEBUG": "110663",
+            "DELL_AIO_DEBUG_ARC": "110087"
+          },
+          "Damage_Type": {
+            "DELL_AIO_ESTIMATE": "16682"
+          },
+          "ReworkBin": "Default",
+          "ffIdReworkWRP": 110546,
+          "ffIdReworkWRP3": 110547,
+          "Repair_Action": 1895,
+          "Main_Issue": 1894,
+          "Main Issue2": 16543,
+          "debugId": 22503,
+          "ObaPrint": "TOR_DELL_REPAIR_LETTER_PRD",
+          "moveInventoryBin": "Default",
+          "sourceStockingLoc": "DELL_AIO_WIP",
+          "destinationStockingLoc": "Dell_AIO_DMR",
+          "templateId": "DELL AIO Canada",
+          "financialCode": "DELLAIONBD",
+          "loaderName": "TOR_DELLAIO_STOP_PROCESS",
+          "VMI_WC_ID": "22502",
+          "commodityFFID": "16902"
+        },
+        "WRP3": {
+          "msgRead": {
+            "DELL_AIO_DEBUG": "80747",
+            "L2_DEBUG": "82647",
+            "DELL_AIO_DEBUG_ARC": "80748",
+            "DELL_AIO_VMI": "80766",
+            "DELL_AIO_REWORK": "80763",
+            "DELL_AIO_PA": "80770",
+            "DELL_AIO_EXT_TEST": "80768",
+            "DELL_AIO_QR": "80765",
+            "DELL_AIO_VALIDATION": "80764",
+            "DELL_AIO_ESTIMATE": "80767",
+            "DELL_AIO_FTEST": "80760",
+            "DELL_AIO_OBA": "80762",
+            "DELL_AIO_ASSEMBLY": "110653",
+            "DELL_AIO_PACKOUT": "80761"
+          },
+          "Beep_Code": {
+            "DELL_AIO_DEBUG": "64667",
+            "L2_DEBUG": "64668",
+            "DELL_AIO_DEBUG_ARC": "79674"
+          },
+          "Test_Step": {
+            "DELL_AIO_DEBUG": "64669",
+            "L2_DEBUG": "64670",
+            "DELL_AIO_DEBUG_ARC": "79675"
+          },
+          "EPSA_Code": {
+            "DELL_AIO_DEBUG": "64526",
+            "L2_DEBUG": "64527",
+            "DELL_AIO_DEBUG_ARC": "79672"
+          },
+          "PCDR_Code": {
+            "DELL_AIO_DEBUG": "64546",
+            "L2_DEBUG": "64666",
+            "DELL_AIO_DEBUG_ARC": "79673"
+          },
+          "RAM": {
+            "DELL_AIO_DEBUG": "110085",
+            "L2_DEBUG": "110663",
+            "DELL_AIO_DEBUG_ARC": "110087"
+          },
+          "Damage_Type": {
+            "DELL_AIO_ESTIMATE": "16682"
+          },
+          "ReworkBin": "Default",
+          "ffIdReworkWRP": 110546,
+          "ffIdReworkWRP3": 110547,
+          "Repair_Action": 1895,
+          "Main_Issue": 1894,
+          "Main Issue2": 16543,
+          "debugId": 22503,
+          "moveInventoryBin": "Default",
+          "sourceStockingLoc": "DELL_AIO_WIP",
+          "destinationStockingLoc": "Dell_AIO_DMR",
+          "templateId": "DELL AIO Canada",
+          "financialCode": "DELLAIONBD",
+          "loaderName": "TOR_DELLAIO_STOP_PROCESS",
+          "VMI_WC_ID": "22502",
+          "commodityFFID": "16902"
+        }
+      }
+    },
+    "subProcess": {
+      "WCOperation": [
+        {
+          "wcName": "DELL_AIO_VMI",
+          "wcID": 22502,
+          "subProcess": {
+            "VMI": {
+              "subProcessID": "2161",
+              "subProcessName": "VMI"
+            }
+          }
+        },
+        {
+          "wcName": "DELL_AIO_EXT_TEST",
+          "wcID": 47647,
+          "subProcess": {
+            "EXT_TEST": {
+              "subProcessID": "2219",
+              "subProcessName": "EXT_TEST - (BURN IN)"
+            }
+          }
+        },
+        {
+          "wcName": "DELL_AIO_DEBUG",
+          "wcID": 22503,
+          "subProcess": {
+            "ASSESSMENT": {
+              "subProcessID": "2183",
+              "subProcessName": "ASSESSMENT"
+            },
+            "ECN": {
+              "subProcessID": "2184",
+              "subProcessName": "ECN"
+            },
+            "DEBUG": {
+              "subProcessID": "2185",
+              "subProcessName": "DEBUG"
+            },
+            "DEBUG_ARC": {
+              "subProcessID": "2188",
+              "subProcessName": "DEBUG_ARC"
+            },
+            "L2_DEBUG": {
+              "subProcessID": "2265",
+              "subProcessName": "L2_DEBUG"
+            },
+            "PR_DEBUG": {
+              "subProcessID": "3001",
+              "subProcessName": "PR_DEBUG"
+            },
+            "PR_ARC_DEBUG": {
+              "subProcessID": "3002",
+              "subProcessName": "PR_ARC_DEBUG"
+            },
+            "PR_L2_DEBUG": {
+              "subProcessID": "3003",
+              "subProcessName": "PR_L2_DEBUG"
+            }
+          }
+        },
+        {
+          "wcName": "Grief",
+          "wcID": 35718,
+          "subProcess": {
+            "GRIEF": {
+              "subProcessID": "2198",
+              "subProcessName": "GRIEF"
+            }
+          }
+        },
+        {
+          "wcName": "DELL_AIO_REWORK",
+          "wcID": 22500,
+          "subProcess": {
+            "REWORK": {
+              "subProcessID": "2223",
+              "subProcessName": "REWORK"
+            }
+          }
+        },
+        {
+          "wcName": "DELL_AIO_VALIDATION",
+          "wcID": 25513,
+          "subProcess": {
+            "VALIDATION": {
+              "subProcessID": "2220",
+              "subProcessName": "VALIDATION"
+            }
+          }
+        },
+        {
+          "wcName": "DELL_AIO_QR",
+          "wcID": 22501,
+          "subProcess": {
+            "QR": {
+              "subProcessID": "2221",
+              "subProcessName": "QR"
+            }
+          }
+        },
+        {
+          "wcName": "DELL_AIO_ASSEMBLY",
+          "wcID": 22501,
+          "subProcess": {
+            "ASSEMBLY": {
+              "subProcessID": "2261",
+              "subProcessName": "ASSEMBLY"
+            }
+          }
+        },
+        {
+          "wcName": "DELL_AIO_OBA",
+          "wcID": 22501,
+          "subProcess": {
+            "OBA": {
+              "subProcessID": "2263",
+              "subProcessName": "OBA"
+            }
+          }
+        },
+        {
+          "wcName": "DELL_AIO_PA",
+          "wcID": 22501,
+          "subProcess": {
+            "PA": {
+              "subProcessID": "2258",
+              "subProcessName": "PA"
+            }
+          }
+        },
+        {
+          "wcName": "DELL_AIO_ESTIMATE",
+          "wcID": 24230,
+          "subProcess": {
+            "ESTIMATE": {
+              "subProcessID": "2259",
+              "subProcessName": "ESTIMATE"
+            }
+          }
+        },
+        {
+          "wcName": "DELL_AIO_FTEST",
+          "wcID": 22495,
+          "subProcess": {
+            "FTEST": {
+              "subProcessID": "2260",
+              "subProcessName": "FINAL TEST"
+            }
+          }
+        },
+        {
+          "wcName": "DELL_AIO_DEBUG_ARC",
+          "wcID": 22503,
+          "subProcess": {
+            "ASSESSMENT": {
+              "subProcessID": "2183",
+              "subProcessName": "ASSESSMENT"
+            },
+            "ECN": {
+              "subProcessID": "2184",
+              "subProcessName": "ECN"
+            },
+            "DEBUG": {
+              "subProcessID": "2185",
+              "subProcessName": "DEBUG"
+            },
+            "DEBUG_ARC": {
+              "subProcessID": "2188",
+              "subProcessName": "DEBUG_ARC"
+            },
+            "L2_DEBUG": {
+              "subProcessID": "2265",
+              "subProcessName": "L2_DEBUG"
+            },
+            "PR_DEBUG": {
+              "subProcessID": "3001",
+              "subProcessName": "PR_DEBUG"
+            },
+            "PR_ARC_DEBUG": {
+              "subProcessID": "3002",
+              "subProcessName": "PR_ARC_DEBUG"
+            },
+            "PR_L2_DEBUG": {
+              "subProcessID": "3003",
+              "subProcessName": "PR_L2_DEBUG"
+            }
+          }
+        },
+        {
+          "wcName": "L2_DEBUG",
+          "wcID": 22503,
+          "subProcess": {
+            "ASSESSMENT": {
+              "subProcessID": "2183",
+              "subProcessName": "ASSESSMENT"
+            },
+            "ECN": {
+              "subProcessID": "2184",
+              "subProcessName": "ECN"
+            },
+            "DEBUG": {
+              "subProcessID": "2185",
+              "subProcessName": "DEBUG"
+            },
+            "DEBUG_ARC": {
+              "subProcessID": "2188",
+              "subProcessName": "DEBUG_ARC"
+            },
+            "L2_DEBUG": {
+              "subProcessID": "2265",
+              "subProcessName": "L2_DEBUG"
+            },
+            "PR_DEBUG": {
+              "subProcessID": "3001",
+              "subProcessName": "PR_DEBUG"
+            },
+            "PR_ARC_DEBUG": {
+              "subProcessID": "3002",
+              "subProcessName": "PR_ARC_DEBUG"
+            },
+            "PR_L2_DEBUG": {
+              "subProcessID": "3003",
+              "subProcessName": "PR_L2_DEBUG"
+            }
+          }
+        },
+        {
+          "wcName": "DELL_AIO_PACKOUT",
+          "wcID": 22497,
+          "subProcess": {
+            "PACKOUT": {
+              "subProcessID": "2286",
+              "subProcessName": "PACKOUT"
+            }
+          }
+        }
+      ],
+      "Shipping": [
+        {
+          "subProcessName": "SHIPPING",
+          "subProcessID": 2365,
+          "screenName": "SHIPPING"
+        }
+      ],
+      "Receiving": [
+        {
+          "subProcessName": "SEARCH",
+          "subProcessID": 2159,
+          "screenName": "SEARCH"
+        },
+        {
+          "subProcessName": "CONFIRM",
+          "subProcessID": 2160,
+          "screenName": "CONFIRM"
+        }
+      ]
+    },
+    "workInstructionInfo": {
+      "permissions": {
+        "DEBUG": "true",
+        "DEBUG_ARC": "true",
+        "L2_DEBUG": "true",
+        "REWORK": "true",
+        "ASSESSMENT": "true"
+      },
+      "Level": {
+        "ModelLevel": {
+          "Screens": [
+            "DEBUG",
+            "DEBUG_ARC",
+            "L2_DEBUG",
+            "REWORK",
+            "ASSESSMENT"
+          ],
+          "params": {
+            "customInstructionType": "WORK_INSTRUCTION",
+            "sourceType": "MODEL_NUMBER",
+            "secondSource": "#userSelectedLocation",
+            "userName": "#userAccountInfo.PersonalDetails.USERID",
+            "firstSource": "#getPartModelAndWarrentyDetails.MODEL_NUMBER",
+            "locationId": "#userSelectedLocation",
+            "clientId": "#userSelectedClient",
+            "contractId": "#userSelectedContract",
+            "contractName": "#userSelectedContractName",
+            "locationName": "#userSelectedLocationName",
+            "clientName": "#userSelectedClientName"
+          }
+        },
+        "ScreenLevel": {
+          "Screens": [],
+          "params": {
+            "customInstructionType": "WORK_INSTRUCTION",
+            "sourceType": "SUBPROCESS_NAME",
+            "secondSource": "",
+            "userName": "#userAccountInfo.PersonalDetails.USERID",
+            "firstSource": "#currentWC",
+            "locationId": "#userSelectedLocation",
+            "clientId": "#userSelectedClient",
+            "contractId": "#userSelectedContract",
+            "contractName": "#userSelectedContractName",
+            "locationName": "#userSelectedLocationName",
+            "clientName": "#userSelectedClientName"
+          }
+        }
+      }
+    },
+    "workInstructionsLinksInfo": {
+      "ASSESSMENT": "ASSESSMENT",
+      "ECN": "ECN",
+      "DEBUG": "DEBUG",
+      "DEBUG_ARC": "DEBUG_ARC",
+      "L2_DEBUG": "L2_DEBUG",
+      "REWORK": "REWORK"
+    }
+  }
+}

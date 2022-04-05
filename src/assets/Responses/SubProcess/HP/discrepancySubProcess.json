@@ -1,0 +1,696 @@
+{
+    "ResultData": {
+        "ctype": "page",
+        "uuid": "pageUUID",
+        "css": "",
+        "visibility": true,
+        "hooks": [
+            {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "currentTaskPanelUUID",
+                  "data": "timeInTaskUUID"
+                },
+                "hookType" : "afterInit"
+              },
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "currentTaskPanelPropertiesUUID",
+                  "data": {
+                    "disabled": false 
+                  }
+                },
+                "hookType": "afterInit"
+              }
+        ],
+        "validations": [],
+        "action": [],
+        "header": [
+            {
+                "ctype": "breadcrumb",
+                "breadcrumbs": [
+                    {
+                        "label": "#userSelectedLocationName"
+                    },
+                    {
+                        "label": "#userSelectedClientName"
+                    },
+                    {
+                        "label": "#userSelectedContractName"
+                    }
+                ]
+            },
+            {
+                "ctype": "toolbar",
+                "toolbarClass": "pagecontent-header",
+                "items": [
+                    {
+                        "ctype": "title",
+                        "title": "Discrepancy",
+                        "titleClass": "section-title"
+                    },
+                    {
+                        "ctype": "iconbutton",
+                        "iconButtonClass": "headeropen-button",
+                        "text": "",
+                        "uuid": "pageopenUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "hidden": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "icon": "menu_open",
+                        "disableRipple": true,
+                        "iconClass": "header-icon",
+                        "actions": [
+                            {
+                                "type": "toggle",
+                                "eventSource": "click",
+                                "name": "subProcessRightNavref"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "openUUID",
+                                    "properties": {
+                                        "hidden": false
+                                    }
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "pageopenUUID",
+                                    "properties": {
+                                        "hidden": true
+                                    }
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "items": [
+            {
+                "ctype": "title",
+                "uuid": "discrepancyErrorTitleUUID",
+                "titleClass": "error-title",
+                "isShown": false
+            },
+            {
+                "ctype": "taskPanel",
+                "title": "",
+                "header": {
+                    "title": "Discrepancy Details",
+                    "icon": "description",
+                    "class": "active-header"
+                },
+                "expanded": true,
+                "hideToggle": "true",
+                "uuid": "timeInTaskUUID",
+                "visibility": false,
+                "isBasedOnResultCode": true,
+                "hooks": [],
+                "validations": [],
+                "actions": [],
+                "items": [
+                    {
+                        "ctype": "title",
+                        "title": "Timed In: ",
+                        "titleValue": "#getTimeInDetailsResp.timedIn",
+                        "uuid": "timeInTitleUUID",
+                        "titleClass": "subtitle1"
+                    },
+                    {
+                        "ctype": "title",
+                        "title": "Elapsed Time:  ",
+                        "titleValue": "#getTimeInDetailsResp.elapsedTime",
+                        "uuid": "elapsedTimeTitleUUID",
+                        "titleClass": "subtitle1"
+                    },
+                    {
+                        "ctype": "title",
+                        "title": "Confirm response from admin team.",
+                        "uuid": "adminCommentUUID",
+                        "titleClass": "subtitle1"
+                    }
+                ],
+                "footer": []
+            }
+        ],
+        "footer": [
+            {
+                "ctype": "toolbar",
+                "toolbarClass": "pagecontent-footer",
+                "items": [
+                    {
+                        "ctype": "iconbutton",
+                        "iconButtonClass": "footer-save body",
+                        "text": "Exit",
+                        "uuid": "discrepancySaveUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "icon": "save",
+                        "actions": [
+                            {
+                                "type": "renderTemplate",
+                                "config": {
+                                    "templateId": "dashboard.json",
+                                    "mode": "local"
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "iconbutton",
+                        "iconButtonClass": "footer-save ml-1 body",
+                        "text": " Exit",
+                        "uuid": "exitUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "type": "submit",
+                        "icon": "close",
+                        "actions": [
+                            {
+                                "type": "clearScreenData",
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "delete",
+                                    "key": "currentWC"
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "renderTemplate",
+                                "config": {
+                                    "templateId": "dashboard.json",
+                                    "mode": "local"
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "iconText",
+                        "uuid": "discrepancyIconUUID",
+                        "icon": "add_comment",
+                        "text": "Add Note",
+                        "disabled": false,
+                        "textCss": "",
+                        "iconPosition": "Before",
+                        "iconTextClass": "footer-addNote body",
+                        "actions": [
+                            {
+                                "type": "dialog",
+                                "uuid": "addNoteDialogUUID",
+                                "config": {
+                                    "title": "Add Note",
+                                    "items": [
+                                        {
+                                            "ctype": "textarea",
+                                            "name": "addNote",
+                                            "textareaClass": "note-class",
+                                            "uuid": "addNoteUUID",
+                                            "required": true,
+                                            "value": "#discripancytimeoutNotes.addNote",
+                                            "actions": [
+                                                {
+                                                    "type": "updateComponent",
+                                                    "config": {
+                                                        "key": "doneaddnoteUUID",
+                                                        "properties": {
+                                                            "disabled": false
+                                                        }
+                                                    },
+                                                    "eventSource": "onLoad"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "footer": [
+                                        {
+                                            "ctype": "button",
+                                            "color": "primary",
+                                            "text": "Cancel",
+                                            "uuid": "cancelHoldUUID",
+                                            "closeType": "close",
+                                            "disableClose": true,
+                                            "visibility": true,
+                                            "dialogButton": true,
+                                            "type": "",
+                                            "hooks": [],
+                                            "validations": [],
+                                            "actions": []
+                                        },
+                                        {
+                                            "ctype": "button",
+                                            "color": "primary",
+                                            "text": "Done",
+                                            "uuid": "doneaddnoteUUID",
+                                            "dialogButton": true,
+                                            "visibility": true,
+                                            "disabled": true,
+                                            "type": "submit",
+                                            "closeType": "success",
+                                            "hooks": [],
+                                            "validations": [],
+                                            "actions": []
+                                        }
+                                    ]
+                                },
+                                "eventSource": "click",
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "key": "discripancytimeoutNotes",
+                                                    "data": "formData",
+                                                    "requestMethod": "add",
+                                                    "value": "addNote"
+                                                },
+                                                "eventSource": "click"
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": []
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "iconbutton",
+                        "uuid": "discrepancyResumeUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "icon": "play_arrow",
+                        "iconClass": "",
+                        "hidden": true,
+                        "disableRipple": true
+                    },
+                    {
+                        "ctype": "spacer",
+                        "uuid": "emptySpaceUUID",
+                        "class": "empty-space"
+                    },
+                    {
+                        "ctype": "iconbutton",
+                        "uuid": "discrepancyPauseUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "icon": "pause",
+                        "iconClass": "",
+                        "disableRipple": true,
+                        "actions": [
+                            {
+                                "type": "dialog",
+                                "uuid": "pauseDialogUUID",
+                                "config": {
+                                    "title": "Hold",
+                                    "items": [
+                                        {
+                                            "ctype": "nativeDropdown",
+                                            "formGroupClass": "discrepancy-holddrpdwn",
+                                            "uuid": "holdTypeUUID",
+                                            "label": "Hold Type",
+                                            "name": "holdType",
+                                            "dataSource": "#holdCodesForDiscrepancy",
+                                            "code": "storageHoldSubCode",
+                                            "displayValue": "storageHoldSubCode",
+                                            "defaultValue": "#storageHoldSubCode",
+                                            "actions": [
+                                                {
+                                                    "type": "context",
+                                                    "config": {
+                                                        "requestMethod": "add",
+                                                        "key": "storageHoldSubCode",
+                                                        "data": "elementControlValue"
+                                                    },
+                                                    "eventSource": "change"
+                                                },
+                                                {
+                                                    "type": "GetValueFromArray",
+                                                    "config": {
+                                                        "arrayData": "#holdCodesForDiscrepancy",
+                                                        "PullValue": "storageHoldCode"
+                                                    },
+                                                    "eventSource": "change"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "ctype": "textarea",
+                                            "label": "Add note",
+                                            "name": "holdAddNote",
+                                            "textareaContainer": "timeout-class required-note",
+                                            "uuid": "holdNodeUUID",
+                                            "required": true,
+                                            "submitable": true,
+                                            "value": "#holdAddNote.holdAddNote",
+                                            "actions": []
+                                        }
+                                    ],
+                                    "footer": [
+                                        {
+                                            "ctype": "button",
+                                            "color": "primary",
+                                            "text": "Cancel",
+                                            "uuid": "cancelHoldUUID",
+                                            "closeType": "close",
+                                            "disableClose": true,
+                                            "visibility": true,
+                                            "dialogButton": true,
+                                            "type": "",
+                                            "hooks": [],
+                                            "validations": [],
+                                            "actions": []
+                                        },
+                                        {
+                                            "ctype": "button",
+                                            "color": "primary",
+                                            "text": "Done",
+                                            "uuid": "doneHoldUUID",
+                                            "dialogButton": true,
+                                            "visibility": true,
+                                            "disabled": true,
+                                            "type": "submit",
+                                            "closeType": "success",
+                                            "hooks": [],
+                                            "validations": [],
+                                            "actions": [
+                                                {
+                                                    "type": "context",
+                                                    "config": {
+                                                        "key": "discripancytimeoutNotes",
+                                                        "data": "formData",
+                                                        "requestMethod": "add",
+                                                        "value": "holdAddNote"
+                                                    },
+                                                    "eventSource": "click"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "eventSource": "click",
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "key": "holdDialogData",
+                                                    "data": "formData",
+                                                    "requestMethod": "add"
+                                                },
+                                                "eventSource": "click"
+                                            },
+                                            {
+                                                "type": "microservice",
+                                                "config": {
+                                                    "microserviceId": "moveinventory",
+                                                    "requestMethod": "post",
+                                                    "body": {
+                                                        "apiUsageClientName": "#discrepancyUnitInfo.CLIENTNAME",
+                                                        "apiUsageLocationName": "#discrepancyUnitInfo.GEONAME",
+                                                        "callSource": "FrontEnd",
+                                                        "ip": "::1",
+                                                        "items": {
+                                                            "addtionalDetails": {
+                                                                "comments": "#holdDialogData.holdAddNote",
+                                                                "fixedAssetTag": "#discrepancyUnitInfo.FAT",
+                                                                "storageHoldCode": "#storageHoldCode",
+                                                                "storageHoldSubCode": "#storageHoldSubCode"
+                                                            },
+                                                            "destinationLocation": {
+                                                                "bin": "Default",
+                                                                "geography": "#discrepancyUnitInfo.GEONAME",
+                                                                "stockingLocation": "WUR DGI",
+                                                                "warehouse": "HP LAPTOP WUR"
+                                                            },
+                                                            "item": [
+                                                                {
+                                                                    "bcn": "#discrepancyUnitInfo.ITEM_BCN",
+                                                                    "owner": "#discrepancyUnitInfo.CLIENTNAME",
+                                                                    "partNo": "#discrepancyUnitInfo.PART_NO",
+                                                                    "quantity": "1",
+                                                                    "serialNo": "#discrepancyUnitInfo.SERIAL_NO",
+                                                                    "condition": "Defective"
+                                                                }
+                                                            ],
+                                                            "notes": "#holdDialogData.holdAddNote",
+                                                            "sourceLocation": {
+                                                                "bin": "Default",
+                                                                "geography": "#discrepancyUnitInfo.GEONAME",
+                                                                "stockingLocation": "WIP",
+                                                                "warehouse": "HP LAPTOP WUR"
+                                                            }
+                                                        },
+                                                        "usrPwd": {
+                                                            "userName": "#loginUUID.username",
+                                                            "password": "#loginUUID.password"
+                                                        }
+                                                    },
+                                                    "toBeStringified": true
+                                                },
+                                                "responseDependents": {
+                                                    "onSuccess": {
+                                                        "actions": [{
+                                                            "type": "pauseScreenData"
+                                                        },
+                                                            {
+                                                                "type": "renderTemplate",
+                                                                "config": {
+                                                                    "templateId": "dashboard.json",
+                                                                    "mode": "local"
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    "onFailure": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "context",
+                                                                "config": {
+                                                                    "requestMethod": "add",
+                                                                    "key": "moveinventory",
+                                                                    "data": "responseData"
+                                                                }
+                                                            },
+                                                            {
+                                                                "type": "updateComponent",
+                                                                "config": {
+                                                                    "key": "discrepancyErrorTitleUUID",
+                                                                    "properties": {
+                                                                        "titleValue": "#moveinventory",
+                                                                        "isShown": true
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                },
+                                                "eventSource": "click"
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {}
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "nativeDropdown",
+                        "dropdownClass": "footer-dropdown body2",
+                        "uuid": "discrepancyResultCodesUUID",
+                        "name": "ResultCodes",
+                        "dataSource": "#resultCodesForDiscrepancy",
+                        "code": "resultCode",
+                        "displayValue": "resultCode",
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "SelectedDescripencyResultcode",
+                                    "data": "elementControlValue"
+                                },
+                                "eventSource": "change"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "discrepancyTimeoutUUID",
+                                    "properties": {
+                                        "disabled": false
+                                    }
+                                },
+                                "eventSource": "change"
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "button",
+                        "color": "primary",
+                        "text": "Time Out",
+                        "uuid": "discrepancyTimeoutUUID",
+                        "visibility": true,
+                        "disabled": true,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "buttonClass": "footer-button primary-btn",
+                        "class": "primary-btn",
+                        "actions": [
+                            {
+                                "type": "microservice",
+                                "eventSource": "click",
+                                "config": {
+                                    "microserviceId": "getStopShipProcess",
+                                    "requestMethod": "get",
+                                    "params": {
+                                        "locationId": "#discrepancyUnitInfo.LOCATION_ID",
+                                        "clientId": "#discrepancyUnitInfo.CLIENT_ID",
+                                        "contract": "#discrepancyUnitInfo.CONTRACT_ID",
+                                        "bcn": "#discrepancyUnitInfo.ITEM_BCN",
+                                        "serial": "#discrepancyUnitInfo.SERIAL_NO",
+                                        "fat": "#discrepancyUnitInfo.FAT",
+                                        "partNo": "#discrepancyUnitInfo.PART_NO",
+                                        "opt": "#discrepancyUnitInfo.ROUTE",
+                                        "wcid": "#discrepancyUnitInfo.WORKCENTER_ID",
+                                        "userName": "#userAccountInfo.PersonalDetails.USERID"
+                                    }
+                                },
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "microservice",
+                                                "config": {
+                                                    "microserviceId": "performTimeOut",
+                                                    "requestMethod": "post",
+                                                    "body": {
+                                                        "timeOutRequest": {
+                                                            "location": "#discrepancyUnitInfo.GEONAME",
+                                                            "bcn": "#discrepancyUnitInfo.ITEM_BCN",
+                                                            "workCenter": "#discrepancyUnitInfo.WORKCENTER",
+                                                            "password": "#loginUUID.password",
+                                                            "warrantyInd": "false",
+                                                            "notes": "#discripancytimeoutNotes.addNote",
+                                                            "resultCode": "#SelectedDescripencyResultcode"
+                                                        },
+                                                        "modifyWarranty": 0,
+                                                        "timeOutType": "ProcessImmediate",
+                                                        "clientName": "#discrepancyUnitInfo.CLIENTNAME",
+                                                        "contractName": "#discrepancyUnitInfo.CONTRACTNAME",
+                                                        "userName": "#loginUUID.username",
+                                                        "userPass": "#loginUUID.password",
+                                                        "ip": "::1",
+                                                        "callSource": "FrontEnd",
+                                                        "apiUsage_LocationName": "#discrepancyUnitInfo.GEONAME",
+                                                        "apiUsage_ClientName": "#discrepancyUnitInfo.CLIENTNAME"
+                                                    },
+                                                    "toBeStringified": true,
+                                                    "removeUndefinedFields": [
+                                                        {
+                                                            "KeyName": "notes",
+                                                            "KeyValue": "#discripancytimeoutNotes.addNote"
+                                                        }
+                                                    ]
+                                                },
+                                                "responseDependents": {
+                                                    "onSuccess": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "clearScreenData"
+                                                            },
+                                                            {
+                                                                "type": "renderTemplate",
+                                                                "config": {
+                                                                    "templateId": "dashboard.json",
+                                                                    "mode": "local"
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    "onFailure": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "context",
+                                                                "config": {
+                                                                    "requestMethod": "add",
+                                                                    "key": "performTimeoutForDiscrepancy",
+                                                                    "data": "responseData"
+                                                                }
+                                                            },
+                                                            {
+                                                                "type": "updateComponent",
+                                                                "config": {
+                                                                    "key": "discrepancyErrorTitleUUID",
+                                                                    "properties": {
+                                                                        "titleValue": "#performTimeoutForDiscrepancy",
+                                                                        "isShown": true
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "getStopShipProcessForDiscrepancy",
+                                                    "data": "responseData"
+                                                }
+                                            },
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "discrepancyErrorTitleUUID",
+                                                    "properties": {
+                                                        "titleValue": "#getStopShipProcessForDiscrepancy",
+                                                        "isShown": true
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "Result": "SUCCESS"
+}

@@ -1,0 +1,605 @@
+{
+  "status": true,
+  "message": null,
+  "data": {
+    "priorityCount": 3,
+    "css": "",
+    "ctype": "page",
+    "visibility": true,
+    "action": [],
+    "header": [],
+    "contentClass": "eco-tasks",
+    "validations": [],
+    "uuid": "c92ebe52-8abf-4718-af9f-183cee162420",
+    "hooks": [],
+    "items": [
+      {
+        "hideToggle": true,
+        "hidden": false,
+        "footer": [
+          {
+            "ctype": "button",
+            "color": "primary",
+            "visibility": true,
+            "tooltip": "Complete Serial Scan",
+            "text": "Complete",
+            "validations": [],
+            "type": "submit",
+            "uuid": "79b454e0-ce22-42b7-bd6a-3cbe19c998db",
+            "hooks": [],
+            "actions": [
+              {
+                "eventSource": "click",
+                "type": "updateComponent",
+                "config": {
+                  "key": "firstPriroty1Eco",
+                  "properties": {
+                    "expanded": false,
+                    "header": {
+                      "statusClass": "complete-status",
+                      "icon": "description",
+                      "statusIcon": "check_circle",
+                      "title": "ECO - SECR_NB_15007 BIOS Crisis recovery & CMOS reset procedure when No boot/No video/Hangs at POST issue",
+                      "class": "complete-task",
+                      "iconClass": "complete-task"
+                    },
+                    "disabled": false
+                  }
+                }
+              },
+              {
+                "eventSource": "click",
+                "type": "updateComponent",
+                "config": {
+                  "key": "79b454e0-ce22-42b7-bd6a-3cbe19c998db",
+                  "properties": {
+                    "disabled": true
+                  }
+                }
+              },
+              {
+                "eventSource": "click",
+                "type": "updateComponent",
+                "config": {
+                  "key": "69eed15e-5ee1-41f5-b236-55eb8a6b7374",
+                  "properties": {
+                    "expanded": true,
+                    "header": {
+                      "icon": "description",
+                      "title": "ECO - c06033821 Clicking Sound or Hard Drive Issues Due to Loose Screws",
+                      "iconClass": "active-header"
+                    },
+                    "disabled": false
+                  }
+                }
+              },
+              {
+                "eventSource": "click",
+                "type": "updateComponent",
+                "config": {
+                  "key": "4f032eea-8399-4218-8c19-d619100d209b",
+                  "properties": {
+                    "disabledClass": "disabledTrue"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "title": "",
+        "priority": 1,
+        "uuid": "firstPriroty1Eco",
+        "expanded": false,
+        "ctype": "taskPanel",
+        "header": {
+          "icon": "description",
+          "title": "ECO - SECR_NB_15007 BIOS Crisis recovery & CMOS reset procedure when No boot/No video/Hangs at POST issue",
+          "class": "title-normal",
+          "status": ""
+        },
+        "disabled": true,
+        "validations": [],
+        "hooks": [],
+        "actions": [],
+        "items": [
+          {
+            "ctype": "disabled",
+            "disabledClass": "disabledFalse",
+            "uuid": "4f032eea-8399-4218-8c19-d619100d209b"
+          },
+          {
+            "ctype": "title",
+            "titleValue": "BIOS Crisis recovery & CMOS reset procedure when No boot/No video/Hangs at POST issue",
+            "uuid": "26e5c65b-67d3-44c2-a749-90dd63edeed0"
+          },
+          {
+            "ctype": "link",
+            "name": "Orginal ECO Document",
+            "href": "http://localhost:10029/media-service/downloadMedia?fileName=SECR_NB_15007.pdf",
+            "uuid": "b704b791-c439-45a0-8d28-c319279782a6"
+          }
+        ]
+      },
+      {
+        "hideToggle": true,
+        "hidden": false,
+        "footer": [
+          {
+            "ctype": "button",
+            "color": "primary",
+            "visibility": true,
+            "tooltip": "Complete Serial Scan",
+            "text": "Complete",
+            "validations": [],
+            "type": "submit",
+            "uuid": "c17ac140-77ba-4cad-b977-e7bce784c320",
+            "hooks": [],
+            "actions": [
+              {
+                "eventSource": "click",
+                "type": "updateComponent",
+                "config": {
+                  "key": "69eed15e-5ee1-41f5-b236-55eb8a6b7374",
+                  "properties": {
+                    "expanded": false,
+                    "header": {
+                      "statusClass": "complete-status",
+                      "icon": "description",
+                      "statusIcon": "check_circle",
+                      "title": "ECO - c06033821 Clicking Sound or Hard Drive Issues Due to Loose Screws",
+                      "class": "complete-task",
+                      "iconClass": "complete-task"
+                    },
+                    "disabled": false
+                  }
+                }
+              },
+              {
+                "eventSource": "click",
+                "type": "updateComponent",
+                "config": {
+                  "key": "c17ac140-77ba-4cad-b977-e7bce784c320",
+                  "properties": {
+                    "disabled": true
+                  }
+                }
+              },
+              {
+                "eventSource": "click",
+                "type": "updateComponent",
+                "config": {
+                  "key": "59f62fbf-7950-4021-b0fb-683f7185c535",
+                  "properties": {
+                    "expanded": true,
+                    "header": {
+                      "icon": "description",
+                      "title": "ECO - c06629881 Mouse Cursor Is Slow, Choppy When Scrolling Across Different Menu Items in the HP Computer Setup (F10 BIOS)- NEW!",
+                      "iconClass": "active-header"
+                    },
+                    "disabled": false
+                  }
+                }
+              },
+              {
+                "eventSource": "click",
+                "type": "updateComponent",
+                "config": {
+                  "key": "6359613c-f351-4559-b0ee-7093dddf417e",
+                  "properties": {
+                    "disabledClass": "disabledTrue"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "title": "",
+        "priority": 1,
+        "uuid": "69eed15e-5ee1-41f5-b236-55eb8a6b7374",
+        "expanded": false,
+        "ctype": "taskPanel",
+        "header": {
+          "icon": "description",
+          "title": "ECO - c06033821 Clicking Sound or Hard Drive Issues Due to Loose Screws",
+          "class": "title-normal",
+          "status": ""
+        },
+        "disabled": true,
+        "validations": [],
+        "hooks": [],
+        "actions": [],
+        "items": [
+          {
+            "ctype": "disabled",
+            "disabledClass": "disabledFalse",
+            "uuid": "6359613c-f351-4559-b0ee-7093dddf417e"
+          },
+          {
+            "ctype": "title",
+            "titleValue": "Clicking Sound or Hard Drive Issues Due to Loose Screws",
+            "uuid": "65721c01-65fa-4747-9ee1-ddefe0cefc58"
+          },
+          {
+            "ctype": "link",
+            "name": "Orginal ECO Document",
+            "href": "http://10.8.140.108:10029/media-service/downloadMedia?fileName=c06033821.pdf",
+            "uuid": "17547e0d-d220-47c6-9b65-705cc4c2be39"
+          }
+        ]
+      },
+      {
+        "hideToggle": true,
+        "hidden": false,
+        "footer": [
+          {
+            "ctype": "button",
+            "color": "primary",
+            "visibility": true,
+            "tooltip": "Complete Serial Scan",
+            "text": "Complete",
+            "validations": [],
+            "type": "submit",
+            "uuid": "80596acd-7423-4d1d-869f-8fb68d55999d",
+            "hooks": [],
+            "actions": [
+              {
+                "eventSource": "click",
+                "type": "updateComponent",
+                "config": {
+                  "key": "59f62fbf-7950-4021-b0fb-683f7185c535",
+                  "properties": {
+                    "expanded": false,
+                    "header": {
+                      "statusClass": "complete-status",
+                      "icon": "description",
+                      "statusIcon": "check_circle",
+                      "title": "ECO - c06629881 Mouse Cursor Is Slow, Choppy When Scrolling Across Different Menu Items in the HP Computer Setup (F10 BIOS)- NEW!",
+                      "class": "complete-task",
+                      "iconClass": "complete-task"
+                    },
+                    "disabled": false
+                  }
+                }
+              },
+              {
+                "eventSource": "click",
+                "type": "updateComponent",
+                "config": {
+                  "key": "80596acd-7423-4d1d-869f-8fb68d55999d",
+                  "properties": {
+                    "disabled": true
+                  }
+                }
+              },
+              {
+                "eventSource": "click",
+                "type": "updateComponent",
+                "config": {
+                  "key": "recordRamDetailsUUID",
+                  "properties": {
+                    "expanded": true,
+                    "header": {
+                      "icon": "description",
+                      "title": "Record RAM Details",
+                      "iconClass": "active-header"
+                    },
+                    "disabled": false
+                  }
+                }
+              },
+              {
+                "eventSource": "click",
+                "type": "updateComponent",
+                "config": {
+                  "key": "f104ae6d-cd2c-4318-8359-3329ded18592",
+                  "properties": {
+                    "disabledClass": "disabledTrue"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "title": "",
+        "priority": 1,
+        "uuid": "59f62fbf-7950-4021-b0fb-683f7185c535",
+        "expanded": false,
+        "ctype": "taskPanel",
+        "header": {
+          "icon": "description",
+          "title": "ECO - c06629881 Mouse Cursor Is Slow, Choppy When Scrolling Across Different Menu Items in the HP Computer Setup (F10 BIOS)- NEW!",
+          "class": "title-normal",
+          "status": ""
+        },
+        "disabled": true,
+        "validations": [],
+        "hooks": [],
+        "actions": [],
+        "items": [
+          {
+            "ctype": "disabled",
+            "disabledClass": "disabledFalse",
+            "uuid": "f104ae6d-cd2c-4318-8359-3329ded18592"
+          },
+          {
+            "ctype": "title",
+            "titleValue": "Mouse Cursor Is Slow, Choppy When Scrolling Across Different Menu Items in the HP Computer Setup (F10 BIOS)- NEW!",
+            "uuid": "e0080d0d-2895-4b9b-b957-02577e71bb46"
+          },
+          {
+            "ctype": "link",
+            "name": "Orginal ECO Document",
+            "href": "http://localhost:10029/media-service/downloadMedia?fileName=c00563806.docx",
+            "uuid": "1a03ad1d-728d-4e90-adf7-026c9d98b44c"
+          }
+        ]
+      },
+      {
+        "hideToggle": true,
+        "hidden": false,
+        "footer": [],
+        "title": "",
+        "priority": 2,
+        "uuid": "f02edb8f-423f-4ddf-9d5a-85f4668f021b",
+        "expanded": false,
+        "ctype": "taskPanel",
+        "header": {
+          "icon": "description",
+          "title": "ECO - c06085861 Hotkeys Stop Working After Windows Update to RS4",
+          "class": "title-normal",
+          "status": ""
+        },
+        "disabled": false,
+        "validations": [],
+        "hooks": [],
+        "actions": [],
+        "items": [
+          {
+            "ctype": "disabled",
+            "disabledClass": "disabledFalse",
+            "uuid": "bde89937-a2ad-43a2-85a6-1c56f4c34612"
+          },
+          {
+            "ctype": "title",
+            "titleValue": "Hotkeys Stop Working After Windows Update to RS4",
+            "uuid": "112892af-383c-4785-b3fe-8f0ce7a733a0"
+          },
+          {
+            "ctype": "link",
+            "name": "Orginal ECO Document",
+            "href": "http://10.8.140.108:10029/media-service/downloadMedia?fileName=c06085861.pdf",
+            "uuid": "e9ceaa9f-8a7c-4516-8a95-99429cb89c5d"
+          }
+        ]
+      },
+      {
+        "hideToggle": true,
+        "hidden": false,
+        "footer": [],
+        "title": "",
+        "priority": 2,
+        "uuid": "926cdb2d-5da2-4d3d-bad4-34a5d6ac4f4b",
+        "expanded": false,
+        "ctype": "taskPanel",
+        "header": {
+          "icon": "description",
+          "title": "ECO - HP beep code How to decode beep code",
+          "class": "title-normal",
+          "status": ""
+        },
+        "disabled": false,
+        "validations": [],
+        "hooks": [],
+        "actions": [],
+        "items": [
+          {
+            "ctype": "disabled",
+            "disabledClass": "disabledFalse",
+            "uuid": "2e148097-1864-4602-b2c0-722927ab0a4b"
+          },
+          {
+            "ctype": "title",
+            "titleValue": "How to decode beep code",
+            "uuid": "b70d1848-dcd8-4d68-a281-3680e8149e09"
+          },
+          {
+            "ctype": "link",
+            "name": "Orginal ECO Document",
+            "href": "http://10.8.140.108:10029/media-service/downloadMedia?fileName=HP beep code.pdf",
+            "uuid": "34623de7-9b25-4a92-8902-475317efb747"
+          }
+        ]
+      },
+      {
+        "hideToggle": true,
+        "hidden": false,
+        "footer": [],
+        "title": "",
+        "priority": 2,
+        "uuid": "259ffe1a-db26-409d-9103-fc50f9459603",
+        "expanded": false,
+        "ctype": "taskPanel",
+        "header": {
+          "icon": "description",
+          "title": "ECO - c06348554 WLAN Performance Is Poor, Connections Drops Frequently",
+          "class": "title-normal",
+          "status": ""
+        },
+        "disabled": false,
+        "validations": [],
+        "hooks": [],
+        "actions": [],
+        "items": [
+          {
+            "ctype": "disabled",
+            "disabledClass": "disabledFalse",
+            "uuid": "686089ab-2f50-44d9-8a5f-fa482f8bef2e"
+          },
+          {
+            "ctype": "title",
+            "titleValue": "WLAN Performance Is Poor, Connections Drops Frequently",
+            "uuid": "ab8aa45e-d3c6-48e6-af16-2303b7c15d5f"
+          },
+          {
+            "ctype": "link",
+            "name": "Orginal ECO Document",
+            "href": "http://10.8.140.108:10029/media-service/downloadMedia?fileName=c06348554.pdf",
+            "uuid": "700fcbdc-d5f0-4fc1-80e8-422d5e0c46e2"
+          }
+        ]
+      },
+      {
+        "hideToggle": true,
+        "hidden": false,
+        "footer": [],
+        "title": "",
+        "priority": 2,
+        "uuid": "81d811e3-dde1-4142-89da-c91462275a9d",
+        "expanded": false,
+        "ctype": "taskPanel",
+        "header": {
+          "icon": "description",
+          "title": "ECO - c06575423 Resolution Issues on External Monitor(s) While Docked",
+          "class": "title-normal",
+          "status": ""
+        },
+        "disabled": false,
+        "validations": [],
+        "hooks": [],
+        "actions": [],
+        "items": [
+          {
+            "ctype": "disabled",
+            "disabledClass": "disabledFalse",
+            "uuid": "2fa7512b-fc7f-4ddb-9e21-af3fca3d65a5"
+          },
+          {
+            "ctype": "title",
+            "titleValue": "Resolution Issues on External Monitor(s) While Docked",
+            "uuid": "8c9cdde2-bb5c-42a8-9f95-9601cb14858a"
+          },
+          {
+            "ctype": "link",
+            "name": "Orginal ECO Document",
+            "href": "http://10.8.140.108:10029/media-service/downloadMedia?fileName=c06575423.pdf",
+            "uuid": "3836eebe-b769-4198-9154-39179cb3991f"
+          }
+        ]
+      },
+      {
+        "hideToggle": true,
+        "hidden": false,
+        "footer": [],
+        "title": "",
+        "priority": 2,
+        "uuid": "3c5cc1a9-e990-40a7-adef-054461361cd9",
+        "expanded": false,
+        "ctype": "taskPanel",
+        "header": {
+          "icon": "description",
+          "title": "ECO - c06610162 Battery Not Charging- NEW!",
+          "class": "title-normal",
+          "status": ""
+        },
+        "disabled": false,
+        "validations": [],
+        "hooks": [],
+        "actions": [],
+        "items": [
+          {
+            "ctype": "disabled",
+            "disabledClass": "disabledFalse",
+            "uuid": "1d6ae580-42ee-48a1-ab92-f9c8ae5440ce"
+          },
+          {
+            "ctype": "title",
+            "titleValue": "Battery Not Charging- NEW!",
+            "uuid": "76f3019e-72c6-49b5-afa7-b600f25cd939"
+          },
+          {
+            "ctype": "link",
+            "name": "Orginal ECO Document",
+            "href": "http://10.8.140.108:10029/media-service/downloadMedia?fileName=c06610162.pdf",
+            "uuid": "eb720dbe-95fa-422b-8838-290c87491d5a"
+          }
+        ]
+      },
+      {
+        "hideToggle": true,
+        "hidden": false,
+        "footer": [],
+        "title": "",
+        "priority": 2,
+        "uuid": "d0624087-b83c-46d9-ab3a-bbaccfb1df5d",
+        "expanded": false,
+        "ctype": "taskPanel",
+        "header": {
+          "icon": "description",
+          "title": "ECO - c06601569 (HP lt4132 LTE/HSPA+ 4G WWAN) Memory Integrity Error Appears When Feature Is Enabled- NEW!",
+          "class": "title-normal",
+          "status": ""
+        },
+        "disabled": false,
+        "validations": [],
+        "hooks": [],
+        "actions": [],
+        "items": [
+          {
+            "ctype": "disabled",
+            "disabledClass": "disabledFalse",
+            "uuid": "d433fab0-2360-493f-a3bb-e1a0ae1abc48"
+          },
+          {
+            "ctype": "title",
+            "titleValue": "(HP lt4132 LTE/HSPA+ 4G WWAN) Memory Integrity Error Appears When Feature Is Enabled- NEW!",
+            "uuid": "8ada5786-1d04-421f-bebe-5e515fea9191"
+          },
+          {
+            "ctype": "link",
+            "name": "Orginal ECO Document",
+            "href": "http://10.8.140.108:10029/media-service/downloadMedia?fileName=c06601569.pdf",
+            "uuid": "3a7c8e84-71c9-444c-abdf-e2e590847083"
+          }
+        ]
+      },
+      {
+        "hideToggle": true,
+        "hidden": false,
+        "footer": [],
+        "title": "",
+        "priority": 2,
+        "uuid": "1923f916-f935-4c91-9f62-b8502171a32d",
+        "expanded": false,
+        "ctype": "taskPanel",
+        "header": {
+          "icon": "description",
+          "title": "ECO - c06606385 Black Screen Is Displayed for a Few Seconds When Playing an HD Video With the Movies & TV App- NEW!",
+          "class": "title-normal",
+          "status": ""
+        },
+        "disabled": false,
+        "validations": [],
+        "hooks": [],
+        "actions": [],
+        "items": [
+          {
+            "ctype": "disabled",
+            "disabledClass": "disabledFalse",
+            "uuid": "b22276d9-5861-4e9c-8f14-a9d1fafee341"
+          },
+          {
+            "ctype": "title",
+            "titleValue": "Black Screen Is Displayed for a Few Seconds When Playing an HD Video With the Movies & TV App- NEW!",
+            "uuid": "05b8df2b-b696-4c35-8c05-3c0199ea0697"
+          },
+          {
+            "ctype": "link",
+            "name": "Orginal ECO Document",
+            "href": "http://10.8.140.108:10029/media-service/downloadMedia?fileName=c06606385.pdf",
+            "uuid": "3e58ce79-646d-4471-b76f-1c7d0e4ba034"
+          }
+        ]
+      }
+    ]
+  }
+}

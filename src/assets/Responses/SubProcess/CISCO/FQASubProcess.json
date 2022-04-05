@@ -1,0 +1,3357 @@
+{
+  "ResultData": {
+    "ctype": "page",
+    "uuid": "pageUUID",
+    "visibility": true,
+    "hooks": [
+      {
+        "type": "microservice",
+        "hookType": "afterInit",
+        "config": {
+          "microserviceId": "getResultCodes",
+          "isLocal": false,
+          "LocalService": "assets/Responses/mockBGA.json",
+          "requestMethod": "get",
+          "params": {
+            "bcn": "#UnitInfo.ITEM_BCN",
+            "validateResult": 1
+          }
+        },
+        "responseDependents": {
+          "onSuccess": {
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "getFQAResultcodes",
+                  "data": "responseData"
+                }
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "ResultCodeBFAUUID",
+                  "dropDownProperties": {
+                    "options": "#getFQAResultcodes"
+                  }
+                }
+              }
+            ]
+          },
+          "onFailure": {
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "errorMsg",
+                  "data": "responseData"
+                }
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "errorTitleUUID",
+                  "properties": {
+                    "titleValue": "#errorMsg",
+                    "isShown": true
+                  }
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "hookType": "afterInit",
+        "type": "context",
+        "config": {
+          "data": "no",
+          "requestMethod": "add",
+          "key": "cosmeticDamageResult"
+        }
+      },
+      {
+        "type": "context",
+        "config": {
+          "requestMethod": "add",
+          "key": "fqaFlexFields",
+          "data": []
+        }
+      },
+      {
+        "type": "context",
+        "config": {
+          "requestMethod": "add",
+          "key": "Cosmeticdamagetaskdata",
+          "data": ""
+        }
+      },
+      {
+        "type": "context",
+        "config": {
+          "requestMethod": "add",
+          "key": "bootTestSelectedAction",
+          "data": ""
+        }
+      },
+      {
+        "type": "context",
+        "config": {
+          "requestMethod": "add",
+          "key": "ledTestSelectedAction",
+          "data": ""
+        }
+      },
+      {
+        "type": "context",
+        "config": {
+          "requestMethod": "add",
+          "key": "svtTestSelectedAction",
+          "data": ""
+        }
+      },
+      {
+        "type": "context",
+        "hookType": "afterInit",
+        "config": {
+          "requestMethod": "add",
+          "key": "testFailCheckFQA",
+          "data": "pass"
+        }
+      }
+    ],
+    "header": [
+      {
+        "ctype": "breadcrumb",
+        "style": "padding-left: 4px;",
+        "breadcrumbs": [
+          {
+            "label": "#userSelectedLocationName"
+          },
+          {
+            "label": "#UnitInfo.CLIENTNAME"
+          },
+          {
+            "label": "#userSelectedContractName"
+          }
+        ]
+      },
+      {
+        "ctype": "toolbar",
+        "css": "padding-top: 35px;",
+        "toolbarClass": "pagecontent-header",
+        "items": [
+          {
+            "ctype": "title",
+            "uuid": "FQAHeadertitleuuid",
+            "titleValue": "FQA",
+            "titleClass": "section-title_FQA",
+            "css": "padding-bottom: 35px;"
+          },
+          {
+            "ctype": "iconbutton",
+            "iconButtonClass": "headeropen-button",
+            "text": "",
+            "uuid": "pageopenUUID",
+            "visibility": true,
+            "disabled": false,
+            "hidden": false,
+            "type": "submit",
+            "hooks": [],
+            "css": "padding-bottom: 35px;",
+            "validations": [],
+            "icon": "menu_open",
+            "disableRipple": true,
+            "iconClass": "header-icon",
+            "actions": [
+              {
+                "type": "toggle",
+                "eventSource": "click",
+                "name": "subProcessRightNavref"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "openUUID",
+                  "properties": {
+                    "hidden": false
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "pageopenUUID",
+                  "properties": {
+                    "hidden": true
+                  }
+                },
+                "eventSource": "click"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "items": [
+      {
+        "ctype": "title",
+        "uuid": "errorTitleUUID",
+        "titleClass": "error-title",
+        "isShown": false
+      },
+      {
+        "ctype": "taskPanel",
+        "header": {
+          "title": "Cosmetic Damage Inspection",
+          "icon": "description",
+          "statusIcon": "hourglass_empty",
+          "statusClass": "incomplete-status"
+        },
+        "expanded": true,
+        "hideToggle": "true",
+        "uuid": "cosmeticdamageinspectionUUID",
+        "visibility": true,
+        "hooks": [],
+        "validations": [],
+        "actions": [],
+        "items": [
+          {
+            "ctype": "disabled",
+            "uuid": "cosmeticPanelDisabled",
+            "disabledClass": "disabledFalse"
+          },
+          {
+            "ctype": "title",
+            "uuid": "customerComplaintHeaderUUID",
+            "titleClass": "greyish-black subtitle1 ",
+            "title": "Is there Cosmetic Damage?",
+            "titleValue": ""
+          },
+          {
+            "formGroupClass": "buttoon-toggle-cls body2 Fqa-YesNo-Button",
+            "ctype": "actionToggle",
+            "labelPosition": "before",
+            "name": "moroccanCEMark",
+            "selectedVal": "no",
+            "options": [
+              {
+                "bgcolor": "light-blue",
+                "color": "white",
+                "text": "NO",
+                "value": "no"
+              },
+              {
+                "bgcolor": "light-blue",
+                "color": "white",
+                "text": "YES",
+                "value": "yes"
+              }
+            ],
+            "validations": [],
+            "label": "",
+            "uuid": "cosmeticdamageinspectionToggleValues",
+            "hooks": [],
+            "actions": [
+              {
+                "eventSource": "change",
+                "type": "context",
+                "config": {
+                  "data": "elementControlValue",
+                  "requestMethod": "add",
+                  "key": "cosmeticDamageResult"
+                }
+              },
+              {
+                "eventSource": "change",
+                "type": "condition",
+                "config": {
+                  "operation": "isEqualTo",
+                  "lhs": "#cosmeticDamageResult",
+                  "rhs": "no"
+                },
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "disableComponent",
+                        "config": {
+                          "key": "cosmeticDamagePartUUID",
+                          "property": "cosmeticDamagePartDropdown"
+                        }
+                      },
+                      {
+                        "type": "disableComponent",
+                        "config": {
+                          "key": "cosmeticDamageUUID",
+                          "property": "cosmeticDamageDropdown"
+                        }
+                      },
+                      {
+                        "type": "disableComponent",
+                        "config": {
+                          "key": "componentDescriptionUUID",
+                          "property": "componentDescription"
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "cosmeticDamageButtonUUID",
+                          "properties": {
+                            "disabled": false
+                          }
+                        },
+                        "eventSource": "change"
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "cosmeticDamageButtonUUID",
+                          "properties": {
+                            "disabled": true
+                          }
+                        },
+                        "eventSource": "change"
+                      },
+                      {
+                        "type": "enableComponent",
+                        "config": {
+                          "key": "cosmeticDamagePartUUID",
+                          "property": "cosmeticDamagePartDropdown"
+                        }
+                      },
+                      {
+                        "type": "enableComponent",
+                        "config": {
+                          "key": "cosmeticDamageUUID",
+                          "property": "cosmeticDamageDropdown"
+                        }
+                      },
+                      {
+                        "type": "enableComponent",
+                        "config": {
+                          "key": "componentDescriptionUUID",
+                          "property": "componentDescription"
+                        }
+                      },
+                      {
+                        "type": "condition",
+                        "config": {
+                          "lhs": "#cosmeticDamage.length",
+                          "rhs": "1",
+                          "operation": "isEqualTo"
+                        },
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "filterAndGetIndex",
+                                "config": {
+                                  "data": "#cosmeticDamage",
+                                  "objectKey": "flexFieldName",
+                                  "getValueBy": "Cosmetic Damage",
+                                  "contextKey": "cosmeticDDValue",
+                                  "operation": "getIndex"
+                                }
+                              },
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "cosmeticDamageUUID",
+                                  "fieldProperties": {
+                                    "cosmeticDamageDropdown": "#cosmeticDDValue.flexFieldValue"
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": []
+                          }
+                        }
+                      },
+                      {
+                        "type": "filterAndGetIndex",
+                        "config": {
+                          "data": "#getLoopingFlexFieldValuesData",
+                          "objectKey": "flexFieldName",
+                          "getValueBy": "Cosmetic Damage",
+                          "contextKey": "cosmeticDDValue",
+                          "operation": "getIndex"
+                        }
+                      },
+                      {
+                        "type": "condition",
+                        "hookType": "afterInit",
+                        "config": {
+                          "lhs": "#cosmeticDDValue",
+                          "operation": "isValid"
+                        },
+                        "eventSource": "change",
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "cosmeticDamageUUID",
+                                  "fieldProperties": {
+                                    "cosmeticDamageDropdown": "#cosmeticDDValue.flexFieldValue"
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": []
+                          }
+                        }
+                      },
+                      {
+                        "type": "condition",
+                        "config": {
+                          "lhs": "#cosmeticDamagePart.length",
+                          "rhs": "1",
+                          "operation": "isEqualTo"
+                        },
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "filterAndGetIndex",
+                                "config": {
+                                  "data": "#cosmeticDamagePart",
+                                  "objectKey": "flexFieldName",
+                                  "getValueBy": "Cosmetic Damage Part",
+                                  "contextKey": "cosmeticPartDDValue",
+                                  "operation": "getIndex"
+                                }
+                              },
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "cosmeticDamagePartUUID",
+                                  "fieldProperties": {
+                                    "cosmeticDamagePartDropdown": "#cosmeticPartDDValue.flexFieldValue"
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": []
+                          }
+                        }
+                      },
+                      {
+                        "type": "filterAndGetIndex",
+                        "hookType": "afterInit",
+                        "config": {
+                          "data": "#getLoopingFlexFieldValuesData",
+                          "objectKey": "flexFieldName",
+                          "getValueBy": "Cosmetic Damage Part",
+                          "contextKey": "cosmeticPartDDValue",
+                          "operation": "getIndex"
+                        },
+                        "eventSource": "change"
+                      },
+                      {
+                        "type": "condition",
+                        "hookType": "afterInit",
+                        "config": {
+                          "lhs": "#cosmeticPartDDValue",
+                          "operation": "isValid"
+                        },
+                        "eventSource": "change",
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "cosmeticDamagePartUUID",
+                                  "fieldProperties": {
+                                    "cosmeticDamagePartDropdown": "#cosmeticPartDDValue.flexFieldValue"
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": []
+                          }
+                        }
+                      },
+                      {
+                        "type": "filterAndGetIndex",
+                        "hookType": "afterInit",
+                        "config": {
+                          "data": "#getLoopingFlexFieldValuesData",
+                          "objectKey": "flexFieldName",
+                          "getValueBy": "Component Damage",
+                          "contextKey": "componentDamageValue",
+                          "operation": "getIndex"
+                        },
+                        "eventSource": "change"
+                      },
+                      {
+                        "type": "condition",
+                        "hookType": "afterInit",
+                        "config": {
+                          "lhs": "#componentDamageValue",
+                          "operation": "isValid"
+                        },
+                        "eventSource": "change",
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "componentDescriptionUUID",
+                                  "properties": {
+                                    "value": "#componentDamageValue.flexFieldValue"
+                                  }
+                                }
+                              },
+                              {
+                                "type": "context",
+                                "config": {
+                                  "requestMethod": "add",
+                                  "key": "componentdescriptiondata",
+                                  "data": "#componentDamageValue.flexFieldValue"
+                                },
+                                "eventSource": "change"
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": []
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ],
+            "submitable": true
+          },
+          {
+            "ctype": "divider",
+            "dividerClass": "spacer-borderFQACosmetic"
+          },
+          {
+            "ctype": "nativeDropdown",
+            "dropdownClass": "dropdown-container condition-dropdwn body2",
+            "uuid": "cosmeticDamageUUID",
+            "inLine": true,
+            "disabled": true,
+            "inputStyles": "width: 20%;",
+            "defaultValue": "",
+            "name": "cosmeticDamageDropdown",
+            "dataSource": "#cosmeticDamage",
+            "label": "Cosmetic Damage",
+            "labelClass": "label-onFQAcosmeticdamage",
+            "formGroupClass": "form-group-margin",
+            "labelPosition": "left",
+            "hooks": [],
+            "code": "flexFieldValue",
+            "required": true,
+            "displayValue": "flexFieldValue",
+            "hidden": false,
+            "validations": [],
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "cosmeticDamageSelectedDropDown",
+                  "data": "elementControlName"
+                },
+                "eventSource": "change"
+              }
+            ]
+          },
+          {
+            "ctype": "nativeDropdown",
+            "dropdownClass": "dropdown-container condition-dropdwn body2",
+            "uuid": "cosmeticDamagePartUUID",
+            "defaultValue": "",
+            "name": "cosmeticDamagePartDropdown",
+            "disabled": true,
+            "inLine": true,
+            "inputStyles": "width: 20%;",
+            "dataSource": "#cosmeticDamagePart",
+            "label": "Cosmetic Damage Part",
+            "labelClass": "label-onFQAcosmeticdamagepart",
+            "formGroupClass": "form-group-margin",
+            "hooks": [],
+            "code": "flexFieldValue",
+            "required": true,
+            "displayValue": "flexFieldValue",
+            "hidden": false,
+            "validations": [],
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "cosmeticDamagePartSelectedDropDown",
+                  "data": "elementControlName"
+                },
+                "eventSource": "change"
+              }
+            ]
+          },
+          {
+            "ctype": "textField",
+            "formGroupClass": "form-group-margin",
+            "uuid": "componentDescriptionUUID",
+            "hooks": [],
+            "validations": [],
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "componentdescriptiondata",
+                  "data": "elementControlName"
+                },
+                "eventSource": "keyup"
+              }
+            ],
+            "type": "text",
+            "isTrimRequired": false,
+            "css": "left:22px;width:40%",
+            "required": false,
+            "placeholder": "Enter Description",
+            "submitable": true,
+            "disabled": true,
+            "label": "Component Damage Part",
+            "labelPosition": "left",
+            "name": "componentDescription",
+            "inputStyles": ""
+          }
+        ],
+        "footer": [
+          {
+            "ctype": "button",
+            "color": "primary",
+            "text": "Complete",
+            "class": "primary-btn",
+            "checkGroupValidity":true,
+            "uuid": "cosmeticDamageButtonUUID",
+            "visibility": true,
+            "disabled": false,
+            "type": "submit",
+            "name":"CosmeticDamageCompleteUUID",
+            "tooltip": "",
+            "hooks": [],
+            "validations": [],
+            "actions": [
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "cosmeticdamageinspectionUUID",
+                  "properties": {
+                    "expanded": false,
+                    "disabled": false,
+                    "header": {
+                      "title": "Cosmetic Damage Inspection",
+                      "icon": "description",
+                      "statusIcon": "check_circle",
+                      "statusClass": "complete-status",
+                      "class": "complete-task",
+                      "iconClass": "complete-task"
+                    }
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "condition",
+                "config": {
+                  "operation": "isEqualTo",
+                  "lhs": "#cosmeticDamageResult",
+                  "rhs": "no"
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "bootTestUUID",
+                          "properties": {
+                            "expanded": true,
+                            "disabled": false
+                          }
+                        },
+                        "eventSource": "click"
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "cosmeticPanelDisabled",
+                          "properties": {
+                            "disabledClass": "disabledTrue"
+                          }
+                        },
+                        "eventSource": "click"
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "cosmeticDamageButtonUUID",
+                          "properties": {
+                            "disabled": true
+                          }
+                        },
+                        "eventSource": "click"
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "ResultCodeBFAUUID",
+                          "fieldProperties": {
+                            "ResultCodes": "Fail TnC"
+                          }
+                        },
+                        "eventSource": "click"
+                      },
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "SelectedBFAResultCode",
+                          "data": "Fail TnC"
+                        }
+                      },
+                      {
+                        "type": "enableComponent",
+                        "config": {
+                          "key": "ResultCodeBFAUUID",
+                          "property": "ResultCodes"
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "BFAtimeoutUUID",
+                          "properties": {
+                            "disabled": false
+                          }
+                        },
+                        "eventSource": "change"
+                      },
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "Cosmeticdamagetaskdata",
+                          "data": "formData"
+                        },
+                        "eventSource": "click"
+                      },
+                      {
+                        "type": "condition",
+                        "config": {
+                          "operation": "isValid",
+                          "lhs": "#Cosmeticdamagetaskdata.cosmeticDamageDropdown"
+                        },
+                        "eventSource": "click",
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "fqaFlexFields",
+                                "config": {
+                                  "contextArray": "#fqaFlexFields",
+                                  "ffObject": {
+                                    "name": "Cosmetic Damage",
+                                    "value": "#Cosmeticdamagetaskdata.cosmeticDamageDropdown"
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": [
+                              {
+                                "type": "fqaFlexFields",
+                                "config": {
+                                  "contextArray": "#fqaFlexFields",
+                                  "ffObject": {
+                                    "name": "Cosmetic Damage",
+                                    "value": "#Cosmeticdamagetaskdata.cosmeticDamageDropdown"
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      },
+                      {
+                        "type": "condition",
+                        "config": {
+                          "operation": "isValid",
+                          "lhs": "#Cosmeticdamagetaskdata.cosmeticDamagePartDropdown"
+                        },
+                        "eventSource": "click",
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "fqaFlexFields",
+                                "config": {
+                                  "contextArray": "#fqaFlexFields",
+                                  "ffObject": {
+                                    "name": "Cosmetic Damage Part",
+                                    "value": "#Cosmeticdamagetaskdata.cosmeticDamagePartDropdown"
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": [
+                              {
+                                "type": "fqaFlexFields",
+                                "config": {
+                                  "contextArray": "#fqaFlexFields",
+                                  "ffObject": {
+                                    "name": "Cosmetic Damage",
+                                    "value": "#Cosmeticdamagetaskdata.cosmeticDamagePartDropdown"
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      },
+                      {
+                        "type": "condition",
+                        "config": {
+                          "operation": "isValid",
+                          "lhs": "#componentdescriptiondata"
+                        },
+                        "eventSource": "click",
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "fqaFlexFields",
+                                "config": {
+                                  "contextArray": "#fqaFlexFields",
+                                  "ffObject": {
+                                    "name": "Component Damage",
+                                    "value": "#componentdescriptiondata"
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": [
+                              {
+                                "type": "condition",
+                                "config": {
+                                  "operation": "isEqualTo",
+                                  "lhs": "#Cosmeticdamagetaskdata.componentDescription",
+                                  "rhs": ""
+                                },
+                                "eventSource": "click",
+                                "responseDependents": {
+                                  "onSuccess": {
+                                    "actions": []
+                                  },
+                                  "onFailure": {
+                                    "actions": [
+                                      {
+                                        "type": "fqaFlexFields",
+                                        "config": {
+                                          "contextArray": "#fqaFlexFields",
+                                          "ffObject": {
+                                            "name": "Component Damage",
+                                            "value": "#Cosmeticdamagetaskdata.componentDescription"
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      },
+                      {
+                        "type": "fqaFlexFields",
+                        "config": {
+                          "contextArray": "#fqaFlexFields",
+                          "ffObject": {
+                            "name": "Boot Test",
+                            "value": "Pass"
+                          }
+                        }
+                      },
+                      {
+                        "type": "fqaFlexFields",
+                        "config": {
+                          "contextArray": "#fqaFlexFields",
+                          "ffObject": {
+                            "name": "LED Test",
+                            "value": "Pass"
+                          }
+                        }
+                      },
+                      {
+                        "type": "fqaFlexFields",
+                        "config": {
+                          "contextArray": "#fqaFlexFields",
+                          "ffObject": {
+                            "name": "SVT Test",
+                            "value": "Pass"
+                          }
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "cosmeticDamageButtonUUID",
+                          "properties": {
+                            "disabled": true
+                          }
+                        },
+                        "eventSource": "click"
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "cosmeticPanelDisabled",
+                          "properties": {
+                            "disabledClass": "disabledTrue"
+                          }
+                        },
+                        "eventSource": "click"
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "ctype": "taskPanel",
+        "header": {
+          "title": "Boot Test",
+          "icon": "description",
+          "statusIcon": "hourglass_empty",
+          "statusClass": "incomplete-status"
+        },
+        "expanded": false,
+        "hideToggle": "true",
+        "uuid": "bootTestUUID",
+        "visibility": false,
+        "disabled": true,
+        "hooks": [
+          {
+            "type": "filterAndGetIndex",
+            "hookType": "afterInit",
+            "config": {
+              "data": "#getLoopingFlexFieldValuesData",
+              "objectKey": "flexFieldName",
+              "getValueBy": "Boot Test",
+              "contextKey": "bootTestActionBtnValue",
+              "operation": "getIndex"
+            },
+            "eventSource": "change"
+          },
+          {
+            "type": "condition",
+            "hookType": "afterInit",
+            "config": {
+              "lhs": "#bootTestActionBtnValue",
+              "operation": "isValid"
+            },
+            "eventSource": "change",
+            "responseDependents": {
+              "onSuccess": {
+                "actions": [
+                  {
+                    "type": "updateComponent",
+                    "config": {
+                      "key": "bootTestToggleValues",
+                      "properties": {
+                        "selectedVal": "#bootTestActionBtnValue.flexFieldValue"
+                      }
+                    }
+                  },
+                  {
+                    "type": "context",
+                    "config": {
+                      "data": "#bootTestActionBtnValue.flexFieldValue",
+                      "requestMethod": "add",
+                      "key": "bootTestSelectedAction"
+                    }
+                  },
+                  {
+                    "type": "updateComponent",
+                    "config": {
+                      "key": "bootTestButtonUUID",
+                      "properties": {
+                        "disabled": false
+                      }
+                    }
+                  }
+                ]
+              },
+              "onFailure": {
+                "actions": []
+              }
+            }
+          }
+        ],
+        "validations": [],
+        "actions": [],
+        "items": [
+          {
+            "ctype": "disabled",
+            "uuid": "bootTestPanelDisabled",
+            "disabledClass": "disabledFalse"
+          },
+          {
+            "ctype": "title",
+            "uuid": "alertDataPanelUUID",
+            "titleClass": "sidenav-title body2",
+            "title": "",
+            "titleValue": ""
+          },
+          {
+            "ctype": "label",
+            "text": "Record result of the Boot Test",
+            "labelClass": "greyish-black body-italic",
+            "labelPosition": "left",
+            "value": ""
+          },
+          {
+            "ctype": "title",
+            "title": "Boot Test Result ",
+            "titleValue": "",
+            "uuid": "bootTestTitleUUID",
+            "titleClass": "boottestlabelcss"
+          },
+          {
+            "formGroupClass": "buttoon-toggle-cls body2 ciscoFQAtestpanel",
+            "ctype": "actionToggleFQA",
+            "labelPosition": "before",
+            "name": "boottesttoggle",
+            "selectedVal": "#cosmeticDamageResult",
+            "options": "#bootTestToggleValues",
+            "validations": [],
+            "label": "",
+            "uuid": "bootTestToggleValues",
+            "text": "flexFieldValue",
+            "value": "flexFieldValue",
+            "hooks": [],
+            "actions": [
+              {
+                "eventSource": "change",
+                "type": "context",
+                "config": {
+                  "data": "elementControlValue",
+                  "requestMethod": "add",
+                  "key": "bootTestSelectedAction"
+                }
+              },
+              {
+                "eventSource": "change",
+                "type": "updateComponent",
+                "config": {
+                  "key": "bootTestToggleValues",
+                  "properties": {
+                    "disabled": false
+                  }
+                }
+              },
+              {
+                "eventSource": "change",
+                "type": "updateComponent",
+                "config": {
+                  "key": "bootTestButtonUUID",
+                  "properties": {
+                    "disabled": false
+                  }
+                }
+              }
+            ],
+            "required": true,
+            "submitable": true
+          },
+          {
+            "ctype": "divider",
+            "dividerClass": "spacer-border"
+          }
+        ],
+        "footer": [
+          {
+            "ctype": "button",
+            "color": "primary",
+            "text": "Complete",
+            "class": "primary-btn",
+            "css": "margin-top: 14px;",
+            "uuid": "bootTestButtonUUID",
+            "visibility": true,
+            "disabled": true,
+            "checkGroupValidity":false,
+            "type": "submit",
+            "tooltip": "",
+            "hooks": [],
+            "validations": [],
+            "actions": [
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "bootTestUUID",
+                  "properties": {
+                    "expanded": false,
+                    "disabled": false,
+                    "header": {
+                      "title": "Boot Test",
+                      "icon": "description",
+                      "statusIcon": "check_circle",
+                      "statusClass": "complete-status",
+                      "class": "complete-task",
+                      "iconClass": "complete-task"
+                    }
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "ledTestToggleUUID",
+                  "properties": {
+                    "options": "#ledTestToggleValues"
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "condition",
+                "config": {
+                  "operation": "isEqualTo",
+                  "lhs": "#bootTestSelectedAction",
+                  "rhs": "Fail"
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "ResultCodeBFAUUID",
+                          "fieldProperties": {
+                            "ResultCodes": "FailDBUG"
+                          }
+                        },
+                        "eventSource": "click"
+                      },
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "SelectedBFAResultCode",
+                          "data": "FailDBUG"
+                        }
+                      },
+                      {
+                        "type": "enableComponent",
+                        "config": {
+                          "key": "ResultCodeBFAUUID",
+                          "property": "ResultCodes"
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "BFAtimeoutUUID",
+                          "properties": {
+                            "disabled": false
+                          }
+                        },
+                        "eventSource": "change"
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "ledTestUUID",
+                          "properties": {
+                            "expanded": false,
+                            "disabled": true
+                          }
+                        },
+                        "eventSource": "click"
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "svtTestUUID",
+                          "properties": {
+                            "expanded": false,
+                            "disabled": true
+                          }
+                        },
+                        "eventSource": "click"
+                      },
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "boottesttaskdata",
+                          "data": "formData"
+                        },
+                        "eventSource": "click"
+                      },
+                      {
+                        "type": "fqaFlexFields",
+                        "config": {
+                          "contextArray": "#fqaFlexFields",
+                          "ffObject": {
+                            "name": "Boot Test",
+                            "value": "#bootTestSelectedAction"
+                          }
+                        }
+                      },
+                      {
+                        "type": "fqaFlexFields",
+                        "config": {
+                          "contextArray": "#fqaFlexFields",
+                          "ffObject": {
+                            "name": "LED Test",
+                            "value": "Pass"
+                          }
+                        }
+                      },
+                      {
+                        "type": "fqaFlexFields",
+                        "config": {
+                          "contextArray": "#fqaFlexFields",
+                          "ffObject": {
+                            "name": "SVT Test",
+                            "value": "Pass"
+                          }
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "bootTestPanelDisabled",
+                          "properties": {
+                            "disabledClass": "disabledTrue"
+                          }
+                        },
+                        "eventSource": "click"
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "bootTestButtonUUID",
+                          "properties": {
+                            "disabled": true
+                          }
+                        },
+                        "eventSource": "click"
+                      },
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "testFailCheckFQA",
+                          "data": "Fail"
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "ledTestUUID",
+                          "properties": {
+                            "expanded": true,
+                            "disabled": false
+                          }
+                        },
+                        "eventSource": "click"
+                      },
+                      {
+                        "type": "fqaFlexFields",
+                        "config": {
+                          "contextArray": "#fqaFlexFields",
+                          "ffObject": {
+                            "name": "Boot Test",
+                            "value": "#bootTestSelectedAction"
+                          }
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "bootTestPanelDisabled",
+                          "properties": {
+                            "disabledClass": "disabledTrue"
+                          }
+                        },
+                        "eventSource": "click"
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "bootTestButtonUUID",
+                          "properties": {
+                            "disabled": true
+                          }
+                        },
+                        "eventSource": "click"
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "ctype": "taskPanel",
+        "header": {
+          "title": "LED Test",
+          "icon": "description",
+          "statusIcon": "hourglass_empty",
+          "statusClass": "incomplete-status"
+        },
+        "expanded": false,
+        "hideToggle": "true",
+        "uuid": "ledTestUUID",
+        "visibility": false,
+        "disabled": true,
+        "hooks": [
+          {
+            "type": "filterAndGetIndex",
+            "hookType": "afterInit",
+            "config": {
+              "data": "#getLoopingFlexFieldValuesData",
+              "objectKey": "flexFieldName",
+              "getValueBy": "LED Test",
+              "contextKey": "ledTestActionBtnValue",
+              "operation": "getIndex"
+            },
+            "eventSource": "change"
+          },
+          {
+            "type": "condition",
+            "hookType": "afterInit",
+            "config": {
+              "lhs": "#ledTestActionBtnValue",
+              "operation": "isValid"
+            },
+            "eventSource": "change",
+            "responseDependents": {
+              "onSuccess": {
+                "actions": [
+                  {
+                    "type": "updateComponent",
+                    "config": {
+                      "key": "ledTestToggleValues",
+                      "properties": {
+                        "selectedVal": "#ledTestActionBtnValue.flexFieldValue"
+                      }
+                    }
+                  },
+                  {
+                    "type": "context",
+                    "config": {
+                      "data": "#ledTestActionBtnValue.flexFieldValue",
+                      "requestMethod": "add",
+                      "key": "ledTestSelectedAction"
+                    }
+                  },
+                  {
+                    "type": "updateComponent",
+                    "config": {
+                      "key": "ledTestCompleteUUID",
+                      "properties": {
+                        "disabled": false
+                      }
+                    }
+                  }
+                ]
+              },
+              "onFailure": {
+                "actions": []
+              }
+            }
+          }
+        ],
+        "validations": [],
+        "actions": [],
+        "items": [
+          {
+            "ctype": "disabled",
+            "uuid": "ledTestPanelDisabled",
+            "disabledClass": "disabledFalse"
+          },
+          {
+            "ctype": "title",
+            "uuid": "alertDataPanelUUID",
+            "titleClass": "sidenav-title body2",
+            "title": "",
+            "titleValue": ""
+          },
+          {
+            "ctype": "label",
+            "text": "Record result of the LED Test",
+            "labelClass": "greyish-black body-italic",
+            "labelPosition": "left",
+            "value": ""
+          },
+          {
+            "ctype": "title",
+            "title": "LED Test Result ",
+            "titleValue": "",
+            "uuid": "LedTestTitleUUID",
+            "titleClass": "boottestlabelcss"
+          },
+          {
+            "formGroupClass": "buttoon-toggle-cls body2 ciscoFQAtestpanel",
+            "ctype": "actionToggleFQA",
+            "labelPosition": "before",
+            "name": "ledTestToggle",
+            "selectedVal": "",
+            "options": "#ledTestToggleValues",
+            "text": "flexFieldValue",
+            "value": "flexFieldValue",
+            "validations": [],
+            "label": "",
+            "uuid": "ledTestToggleValues",
+            "hooks": [],
+            "actions": [
+              {
+                "eventSource": "change",
+                "type": "context",
+                "config": {
+                  "data": "elementControlValue",
+                  "requestMethod": "add",
+                  "key": "ledTestSelectedAction"
+                }
+              },
+              {
+                "eventSource": "change",
+                "type": "updateComponent",
+                "config": {
+                  "key": "ledTestToggleUUID",
+                  "properties": {
+                    "disabled": false
+                  }
+                }
+              },
+              {
+                "eventSource": "change",
+                "type": "updateComponent",
+                "config": {
+                  "key": "ledTestCompleteUUID",
+                  "properties": {
+                    "disabled": false
+                  }
+                }
+              }
+            ],
+            "required": true,
+            "submitable": true
+          },
+          {
+            "ctype": "divider",
+            "dividerClass": "spacer-border"
+          }
+        ],
+        "footer": [
+          {
+            "ctype": "button",
+            "color": "primary",
+            "text": "Complete",
+            "class": "primary-btn",
+            "uuid": "ledTestCompleteUUID",
+            "visibility": true,
+            "disabled": true,
+            "checkGroupValidity":false,
+            "type": "submit",
+            "tooltip": "",
+            "hooks": [],
+            "validations": [],
+            "actions": [
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "ledTestUUID",
+                  "properties": {
+                    "expanded": false,
+                    "disabled": false,
+                    "header": {
+                      "title": "LED Test",
+                      "icon": "description",
+                      "statusIcon": "check_circle",
+                      "statusClass": "complete-status",
+                      "class": "complete-task",
+                      "iconClass": "complete-task"
+                    }
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "condition",
+                "config": {
+                  "operation": "isEqualTo",
+                  "lhs": "#ledTestSelectedAction",
+                  "rhs": "Fail"
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "ResultCodeBFAUUID",
+                          "fieldProperties": {
+                            "ResultCodes": "FailDBUG"
+                          }
+                        },
+                        "eventSource": "click"
+                      },
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "SelectedBFAResultCode",
+                          "data": "FailDBUG"
+                        }
+                      },
+                      {
+                        "type": "enableComponent",
+                        "config": {
+                          "key": "ResultCodeBFAUUID",
+                          "property": "ResultCodes"
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "BFAtimeoutUUID",
+                          "properties": {
+                            "disabled": false
+                          }
+                        },
+                        "eventSource": "click"
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "svtTestUUID",
+                          "properties": {
+                            "expanded": false,
+                            "disabled": true
+                          }
+                        },
+                        "eventSource": "click"
+                      },
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "ledtesttaskdata",
+                          "data": "formData"
+                        },
+                        "eventSource": "click"
+                      },
+                      {
+                        "type": "fqaFlexFields",
+                        "config": {
+                          "contextArray": "#fqaFlexFields",
+                          "ffObject": {
+                            "name": "LED Test",
+                            "value": "#ledTestSelectedAction"
+                          }
+                        }
+                      },
+                      {
+                        "type": "fqaFlexFields",
+                        "config": {
+                          "contextArray": "#fqaFlexFields",
+                          "ffObject": {
+                            "name": "SVT Test",
+                            "value": "Pass"
+                          }
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "ledTestPanelDisabled",
+                          "properties": {
+                            "disabledClass": "disabledTrue"
+                          }
+                        },
+                        "eventSource": "click"
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "ledTestCompleteUUID",
+                          "properties": {
+                            "disabled": true
+                          }
+                        },
+                        "eventSource": "click"
+                      },
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "testFailCheckFQA",
+                          "data": "Fail"
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "svtTestUUID",
+                          "properties": {
+                            "expanded": true,
+                            "disabled": false
+                          }
+                        },
+                        "eventSource": "click"
+                      },
+                      {
+                        "type": "fqaFlexFields",
+                        "config": {
+                          "contextArray": "#fqaFlexFields",
+                          "ffObject": {
+                            "name": "LED Test",
+                            "value": "#ledTestSelectedAction"
+                          }
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "ledTestPanelDisabled",
+                          "properties": {
+                            "disabledClass": "disabledTrue"
+                          }
+                        },
+                        "eventSource": "click"
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "ledTestCompleteUUID",
+                          "properties": {
+                            "disabled": true
+                          }
+                        },
+                        "eventSource": "click"
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "ctype": "taskPanel",
+        "header": {
+          "title": "SVT Test",
+          "icon": "description",
+          "statusIcon": "hourglass_empty",
+          "statusClass": "incomplete-status"
+        },
+        "expanded": false,
+        "hideToggle": "true",
+        "uuid": "svtTestUUID",
+        "visibility": false,
+        "disabled": true,
+        "hooks": [
+          {
+            "type": "filterAndGetIndex",
+            "hookType": "afterInit",
+            "config": {
+              "data": "#getLoopingFlexFieldValuesData",
+              "objectKey": "flexFieldName",
+              "getValueBy": "SVT Test",
+              "contextKey": "svtTestActionBtnValue",
+              "operation": "getIndex"
+            },
+            "eventSource": "change"
+          },
+          {
+            "type": "condition",
+            "hookType": "afterInit",
+            "config": {
+              "lhs": "#svtTestActionBtnValue",
+              "operation": "isValid"
+            },
+            "eventSource": "change",
+            "responseDependents": {
+              "onSuccess": {
+                "actions": [
+                  {
+                    "type": "updateComponent",
+                    "config": {
+                      "key": "svtTestToggleValues",
+                      "properties": {
+                        "selectedVal": "#svtTestActionBtnValue.flexFieldValue"
+                      }
+                    }
+                  },
+                  {
+                    "type": "context",
+                    "config": {
+                      "data": "#svtTestActionBtnValue.flexFieldValue",
+                      "requestMethod": "add",
+                      "key": "svtTestSelectedAction"
+                    }
+                  },
+                  {
+                    "type": "updateComponent",
+                    "config": {
+                      "key": "svtTestCompleteUUID",
+                      "properties": {
+                        "disabled": false
+                      }
+                    }
+                  }
+                ]
+              },
+              "onFailure": {
+                "actions": []
+              }
+            }
+          }
+        ],
+        "validations": [],
+        "actions": [],
+        "items": [
+          {
+            "ctype": "disabled",
+            "uuid": "svtTestPanelDisabled",
+            "disabledClass": "disabledFalse"
+          },
+          {
+            "ctype": "title",
+            "uuid": "alertDataPanelUUID",
+            "titleClass": "sidenav-title body2",
+            "title": "",
+            "titleValue": ""
+          },
+          {
+            "ctype": "label",
+            "text": "In case of a failed timeout, record the result of the test and timeout the unit.",
+            "labelClass": "greyish-black body-italic",
+            "labelPosition": "left",
+            "value": ""
+          },
+          {
+            "ctype": "title",
+            "title": "SVT Test Result: ",
+            "titleValue": "",
+            "uuid": "SNUUID",
+            "titleClass": "boottestlabelcss"
+          },
+          {
+            "formGroupClass": "buttoon-toggle-cls body2 ciscoFQAtestpanel",
+            "ctype": "actionToggleFQA",
+            "labelPosition": "before",
+            "name": "svttesttoggle",
+            "selectedVal": "#svtTestSelectedAction",
+            "options": "#svtTestToggleValues",
+            "text": "flexFieldValue",
+            "value": "flexFieldValue",
+            "validations": [],
+            "label": "",
+            "uuid": "svtTestToggleValues",
+            "hooks": [],
+            "actions": [
+              {
+                "eventSource": "change",
+                "type": "context",
+                "config": {
+                  "data": "elementControlValue",
+                  "requestMethod": "add",
+                  "key": "svtTestSelectedAction"
+                }
+              },
+              {
+                "eventSource": "change",
+                "type": "updateComponent",
+                "config": {
+                  "key": "svtTestUUID",
+                  "properties": {
+                    "disabled": false
+                  }
+                }
+              },
+              {
+                "eventSource": "change",
+                "type": "updateComponent",
+                "config": {
+                  "key": "svtTestCompleteUUID",
+                  "properties": {
+                    "disabled": false
+                  }
+                }
+              }
+            ],
+            "required": true,
+            "submitable": true
+          },
+          {
+            "ctype": "divider",
+            "dividerClass": "spacer-border"
+          }
+        ],
+        "footer": [
+          {
+            "ctype": "button",
+            "color": "primary",
+            "text": "Complete",
+            "class": "primary-btn",
+            "uuid": "svtTestCompleteUUID",
+            "visibility": true,
+            "disabled": true,
+            "checkGroupValidity":false,
+            "type": "submit",
+            "tooltip": "",
+            "hooks": [],
+            "validations": [],
+            "actions": [
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "svtTestUUID",
+                  "properties": {
+                    "expanded": false,
+                    "disabled": false,
+                    "header": {
+                      "title": "SVT Test Result:",
+                      "icon": "description",
+                      "statusIcon": "check_circle",
+                      "statusClass": "complete-status",
+                      "class": "complete-task",
+                      "iconClass": "complete-task"
+                    }
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "condition",
+                "config": {
+                  "operation": "isEqualTo",
+                  "lhs": "#svtTestSelectedAction",
+                  "rhs": "Fail"
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "ResultCodeBFAUUID",
+                          "fieldProperties": {
+                            "ResultCodes": "FailDBUG"
+                          }
+                        },
+                        "eventSource": "click"
+                      },
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "SelectedBFAResultCode",
+                          "data": "FailDBUG"
+                        }
+                      },
+                      {
+                        "type": "enableComponent",
+                        "config": {
+                          "key": "ResultCodeBFAUUID",
+                          "property": "ResultCodes"
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "BFAtimeoutUUID",
+                          "properties": {
+                            "disabled": false
+                          }
+                        },
+                        "eventSource": "click"
+                      },
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "svttesttaskdata",
+                          "data": "formData"
+                        },
+                        "eventSource": "click"
+                      },
+                      {
+                        "type": "fqaFlexFields",
+                        "config": {
+                          "contextArray": "#fqaFlexFields",
+                          "ffObject": {
+                            "name": "SVT Test",
+                            "value": "#svtTestSelectedAction"
+                          }
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "svtTestPanelDisabled",
+                          "properties": {
+                            "disabledClass": "disabledTrue"
+                          }
+                        },
+                        "eventSource": "click"
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "svtTestCompleteUUID",
+                          "properties": {
+                            "disabled": true
+                          }
+                        },
+                        "eventSource": "click"
+                      },
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "testFailCheckFQA",
+                          "data": "Fail"
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "enableComponent",
+                        "config": {
+                          "key": "ResultCodeBFAUUID",
+                          "property": "ResultCodes"
+                        }
+                      },
+                      {
+                        "type": "fqaFlexFields",
+                        "config": {
+                          "contextArray": "#fqaFlexFields",
+                          "ffObject": {
+                            "name": "SVT Test",
+                            "value": "#svtTestSelectedAction"
+                          }
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "svtTestPanelDisabled",
+                          "properties": {
+                            "disabledClass": "disabledTrue"
+                          }
+                        },
+                        "eventSource": "click"
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "svtTestCompleteUUID",
+                          "properties": {
+                            "disabled": true
+                          }
+                        },
+                        "eventSource": "click"
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "type": "condition",
+                "config": {
+                  "operation": "isEqualTo",
+                  "lhs": "#testFailCheckFQA",
+                  "rhs": "Fail"
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": []
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "ResultCodeBFAUUID",
+                          "fieldProperties": {
+                            "ResultCodes": "PassPkg"
+                          }
+                        }
+                      },
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "SelectedBFAResultCode",
+                          "data": "PassPkg"
+                        }
+                      },
+                      {
+                        "type": "enableComponent",
+                        "config": {
+                          "key": "ResultCodeBFAUUID",
+                          "property": "ResultCodes"
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "BFAtimeoutUUID",
+                          "properties": {
+                            "disabled": false
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "footer": [
+      {
+        "ctype": "toolbar",
+        "toolbarClass": "pagecontent-footer",
+        "items": [
+          {
+            "ctype": "iconbutton",
+            "iconButtonClass": "footer-save body primary-btn",
+            "text": "Exit",
+            "uuid": "saveUUID",
+            "visibility": true,
+            "disabled": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "icon": "save",
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "BFANotes",
+                  "data": ""
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "fqaFlexFields",
+                  "data": []
+                }
+              },
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "Cosmeticdamagetaskdata",
+                  "data": ""
+                }
+              },
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "bootTestSelectedAction",
+                  "data": ""
+                }
+              },
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "ledTestSelectedAction",
+                  "data": ""
+                }
+              },
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "svtTestSelectedAction",
+                  "data": ""
+                }
+              },
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "testTasksData",
+                  "data": ""
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "renderTemplate",
+                "config": {
+                  "templateId": "dashboard.json",
+                  "mode": "local"
+                },
+                "eventSource": "click"
+              }      
+            ]
+          },
+          {
+            "ctype": "iconText",
+            "uuid": "IconUUID",
+            "iconTextClass": "footer-addNote addNoteCls body",
+            "icon": "add_comment",
+            "text": "Add Note",
+            "iconPosition": "Before",
+            "actions": [
+              {
+                "type": "dialog",
+                "uuid": "addNoteDialogUUID",
+                "config": {
+                  "title": "Add Note",
+                  "items": [
+                    {
+                      "ctype": "textarea",
+                      "name": "addNote",
+                      "textareaClass": "note-class",
+                      "uuid": "addNoteUUID",
+                      "required": true,
+                      "value": "#BFANotes.addNote",
+                      "actions": [
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "doneHoldUUID",
+                            "properties": {
+                              "disabled": false
+                            }
+                          },
+                          "eventSource": "change"
+                        }
+                      ]
+                    }
+                  ],
+                  "footer": [
+                    {
+                      "ctype": "button",
+                      "color": "primary",
+                      "text": "Close",
+                      "uuid": "closeButtonUUID",
+                      "closeType": "close",
+                      "inputClass": "close-button",
+                      "disableClose": true,
+                      "visibility": true,
+                      "dialogButton": true,
+                      "type": "",
+                      "hooks": [],
+                      "validations": [],
+                      "actions": []
+                    },
+                    {
+                      "ctype": "button",
+                      "color": "primary",
+                      "text": "Done",
+                      "uuid": "doneHoldUUID",
+                      "dialogButton": true,
+                      "visibility": true,
+                      "type": "submit",
+                      "disabled": true,
+                      "closeType": "success",
+                      "hooks": [],
+                      "validations": [],
+                      "actions": []
+                    }
+                  ]
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "BFANotes",
+                          "data": "formData"
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "ctype": "spacer",
+            "uuid": "emptySpaceUUID",
+            "class": "empty-space"
+          },
+          {
+            "ctype": "iconbutton",
+            "uuid": "unitPausebtnUUID",
+            "visibility": true,
+            "disabled": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "icon": "pause",
+            "iconClass": "footer-btnas",
+            "disableRipple": true,
+            "actions": [
+              {
+                "type":"showOLEPausebuttonInScreen",
+                "eventSource": "click"
+              }
+            ]
+          },
+          {
+            "ctype": "nativeDropdown",
+            "dropdownClass": "footer-dropdown dropdown-container body2",
+            "uuid": "ResultCodeBFAUUID",
+            "isDropdownNotSelected": true,
+            "name": "ResultCodes",
+            "dataSource": "",
+            "defaultvalue": "",
+            "code": "resultCode",
+            "displayValue": "resultCode",
+            "disabled": true,
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "SelectedBFAResultCode",
+                  "data": "elementControlName"
+                },
+                "eventSource": "change"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "BFAtimeoutUUID",
+                  "properties": {
+                    "disabled": false
+                  }
+                },
+                "eventSource": "change"
+              },
+              {
+                "type": "condition",
+                "config": {
+                  "operation": "isEqualTo",
+                  "lhs": "#testFailCheckFQA",
+                  "rhs": "Fail"
+                },
+                "eventSource": "change",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "condition",
+                        "config": {
+                          "operation": "isEqualTo",
+                          "lhs": "#SelectedBFAResultCode",
+                          "rhs": "PassPkg"
+                        },
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "BFAtimeoutUUID",
+                                  "properties": {
+                                    "disabled": true
+                                  }
+                                }
+                              },
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "errorTitleUUID",
+                                  "properties": {
+                                    "titleValue": "Unit cannot be moved to Packout workcenter.",
+                                    "isShown": true
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": [
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "BFAtimeoutUUID",
+                                  "properties": {
+                                    "disabled": false
+                                  }
+                                }
+                              },
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "errorTitleUUID",
+                                  "properties": {
+                                    "titleValue": "",
+                                    "isShown": false
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "BFAtimeoutUUID",
+                          "properties": {
+                            "disabled": false
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "ctype": "button",
+            "color": "primary",
+            "buttonClass": "footer-button",
+            "text": "Time Out",
+            "uuid": "BFAtimeoutUUID",
+            "visibility": true,
+            "checkGroupValidity": false,
+            "disabled": true,
+            "hidden": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "actions": [
+              {
+                "type": "updateComponent",
+                "eventSource": "click",
+                "config": {
+                  "key": "errorTitleUUID",
+                  "properties": {
+                    "titleValue": "",
+                    "isShown": false
+                  }
+                }
+              },
+              {
+                "type": "condition",
+                "config": {
+                  "operation": "isValid",
+                  "lhs": "#SelectedBFAResultCode"
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "condition",
+                        "config": {
+                          "operation": "isContains",
+                          "lhs": "#SelectedBFAResultCode",
+                          "rhs": "Pass"
+                        },
+                        "eventSource": "click",
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "condition",
+                                "config": {
+                                  "operation": "isEqualTo",
+                                  "lhs": "#SelectedBFAResultCode", 
+                                  "rhs": "PassPkg"
+                                },
+                                "eventSource": "change",
+                                "responseDependents": {
+                                  "onSuccess": {
+                                    "actions": [
+                                      {
+                                        "type": "microservice",
+                                        "config": {
+                                          "microserviceId": "getprocessffbycountry",
+                                          "requestMethod": "get",
+                                          "params": {
+                                            "itemId": "#UnitInfo.ITEM_ID",
+                                            "resultCode": "#SelectedBFAResultCode"  
+                                          }
+                                        },
+                                        "responseDependents": {
+                                          "onSuccess": {
+                                            "actions": [
+                                              {
+                                                "type": "context",
+                                                "config": {
+                                                  "requestMethod": "add",
+                                                  "key": "getFQAprocffbycountry",  
+                                                  "data": "responseData"
+                                                }
+                                              },
+                                              {
+                                                "type": "condition",
+                                                "config": {
+                                                  "operation": "isEqualTo",
+                                                  "lhs": "#getFQAprocffbycountry.flexFieldName", 
+                                                  "rhs": "Country of Origin"
+                                                },
+                                                "eventSource": "change",
+                                                "responseDependents": {
+                                                  "onSuccess": {
+                                                    "actions": [
+                                                      {
+                                                        "type": "dialog",
+                                                        "uuid": "addNoteDialogUUID2",
+                                                        "config": {
+                                                          "title": "Time Out",
+                                                          "items": [
+                                                            {
+                                                              "ctype": "textarea",
+                                                              "label": "Add note",
+                                                              "name": "addNote",
+                                                              "textareaContainer": "timeout-class",
+                                                              "uuid": "addNoteTimeoutUUID2",
+                                                              "required": false,
+                                                              "value": "#BFANotes.addNote",
+                                                              "actions": [
+                                                                {
+                                                                  "type": "updateComponent",
+                                                                  "config": {
+                                                                    "key": "doneHoldUUID2",
+                                                                    "properties": {
+                                                                      "disabled": false
+                                                                    }
+                                                                  },
+                                                                  "eventSource": "change"
+                                                                }
+                                                              ]
+                                                            }
+                                                          ],
+                                                          "footer": [
+                                                            {
+                                                              "ctype": "button",
+                                                              "color": "primary",
+                                                              "text": "Close",
+                                                              "uuid": "closeButtonUUID2",
+                                                              "closeType": "close",
+                                                              "inputClass": "close-button",
+                                                              "disableClose": true,
+                                                              "visibility": true,
+                                                              "dialogButton": true,
+                                                              "type": "",
+                                                              "hooks": [],
+                                                              "validations": [],
+                                                              "actions": []
+                                                            },
+                                                            {
+                                                              "ctype": "button",
+                                                              "color": "primary",
+                                                              "text": "Done",
+                                                              "uuid": "doneHoldUUID2",
+                                                              "dialogButton": true,
+                                                              "visibility": true,
+                                                              "disableClose": false,
+                                                              "disabled": false,
+                                                              "type": "submit",
+                                                              "closeType": "success",
+                                                              "hooks": [],
+                                                              "validations": [],
+                                                              "actions": []
+                                                            }
+                                                          ]
+                                                        },
+                                                        "eventSource": "click",
+                                                        "responseDependents": {
+                                                          "onSuccess": {
+                                                            "actions": [
+                                                              {
+                                                                "type": "context",
+                                                                "config": {
+                                                                  "requestMethod": "add",
+                                                                  "key": "BFANotes",
+                                                                  "data": "formData"
+                                                                }
+                                                              },
+                                                              {
+                                                                "type": "microservice",
+                                                                "config": {
+                                                                  "microserviceId": "performTimeOut",
+                                                                  "requestMethod": "post",
+                                                                  "body": {
+                                                                    "timeOutRequest": {
+                                                                      "location": "#UnitInfo.GEONAME",
+                                                                      "bcn": "#UnitInfo.ITEM_BCN",
+                                                                      "workCenter": "#UnitInfo.WORKCENTER",
+                                                                      "password": "#loginUUID.password",
+                                                                      "warrantyInd": "false",
+                                                                      "notes": "#BFANotes.addNote",
+                                                                      "resultCode": "#SelectedBFAResultCode",
+                                                                      "workCenterFlexFieldList": {
+                                                                        "flexField": "#fqaFlexFields"
+                                                                      }
+                                                                    },
+                                                                    "modifyWarranty": 0,
+                                                                    "timeOutType": "ProcessImmediate",
+                                                                    "clientName": "#UnitInfo.CLIENTNAME",
+                                                                    "contractName": "#UnitInfo.CONTRACTNAME",
+                                                                    "userName": "#loginUUID.username",
+                                                                    "userPass": "#loginUUID.password",
+                                                                    "ip": "::1",
+                                                                    "callSource": "FrontEnd",
+                                                                    "apiUsage_LocationName": "#UnitInfo.GEONAME",
+                                                                    "apiUsage_ClientName": "#UnitInfo.CLIENTNAME"
+                                                                  },
+                                                                  "toBeStringified": true,
+                                                                  "removeUndefinedFields": [
+                                                                    {
+                                                                      "KeyName": "notes",
+                                                                      "KeyValue": "#BFANotes.addNote"
+                                                                    }
+                                                                  ],
+                                                                  "spliceIfEmptyValueObject": [
+                                                                    {
+                                                                      "identifier": "flexField",
+                                                                      "valueField": "value",
+                                                                      "keyToBeRemoved": "workCenterFlexFieldList"
+                                                                    }
+                                                                  ]
+                                                                },
+                                                                "responseDependents": {
+                                                                  "onSuccess": {
+                                                                    "actions": [
+                                                                      {
+                                                                        "type": "clearScreenData"
+                                                                      },                                                      
+                                                                      {
+                                                                        "type": "context",
+                                                                        "config": {
+                                                                          "requestMethod": "delete",
+                                                                          "key": "currentWC"
+                                                                        },
+                                                                        "eventSource": "click"
+                                                                      },
+                                                                      {
+                                                                        "type": "context",
+                                                                        "config": {
+                                                                          "requestMethod": "add",
+                                                                          "key": "BFANotes",
+                                                                          "data": ""
+                                                                        }
+                                                                      },
+                                                                      {
+                                                                        "type": "context",
+                                                                        "config": {
+                                                                          "requestMethod": "add",
+                                                                          "key": "fqaFlexFields",
+                                                                          "data": []
+                                                                        }
+                                                                      },
+                                                                      {
+                                                                        "type": "context",
+                                                                        "config": {
+                                                                          "requestMethod": "add",
+                                                                          "key": "Cosmeticdamagetaskdata",
+                                                                  "data": ""
+                                                                }
+                                                              },
+                                                              {
+                                                                "type": "context",
+                                                                "config": {
+                                                                  "requestMethod": "add",
+                                                                  "key": "bootTestSelectedAction",
+                                                                  "data": ""
+                                                                }
+                                                              },
+                                                              {
+                                                                "type": "context",
+                                                                "config": {
+                                                                  "requestMethod": "add",
+                                                                  "key": "ledTestSelectedAction",
+                                                                  "data": ""
+                                                                }
+                                                              },
+                                                              {
+                                                                "type": "context",
+                                                                "config": {
+                                                                  "requestMethod": "add",
+                                                                  "key": "svtTestSelectedAction",
+                                                                  "data": ""
+                                                                }
+                                                              },
+                                                              {
+                                                                "type": "context",
+                                                                "config": {
+                                                                  "requestMethod": "add",
+                                                                          "key": "testTasksData",
+                                                                          "data": ""
+                                                                        },
+                                                                        "eventSource": "click"
+                                                                      },
+                                                                      {
+                                                                        "type": "renderTemplate",
+                                                                        "config": {
+                                                                          "templateId": "dashboard.json",
+                                                                          "mode": "local"
+                                                                        },
+                                                                        "eventSource": "click"
+                                                                      },
+                                                                      {
+                                                                        "type": "context",
+                                                                        "config": {
+                                                                          "requestMethod": "add",
+                                                                          "key": "fqaFlexFields",
+                                                                          "data": []
+                                                                        }
+                                                                      },
+                                                                      {
+                                                                        "type": "context",
+                                                                        "config": {
+                                                                          "requestMethod": "add",
+                                                                          "key": "Cosmeticdamagetaskdata",
+                                                                          "data": ""
+                                                                        }
+                                                                      },
+                                                                      {
+                                                                        "type": "context",
+                                                                        "config": {
+                                                                          "requestMethod": "add",
+                                                                          "key": "bootTestSelectedAction",
+                                                                          "data": ""
+                                                                        }
+                                                                      },
+                                                                      {
+                                                                        "type": "context",
+                                                                        "config": {
+                                                                          "requestMethod": "add",
+                                                                          "key": "ledTestSelectedAction",
+                                                                          "data": ""
+                                                                        }
+                                                                      },
+                                                                      {
+                                                                        "type": "context",
+                                                                        "config": {
+                                                                          "requestMethod": "add",
+                                                                          "key": "svtTestSelectedAction",
+                                                                          "data": ""
+                                                                        }
+                                                                      }                                            
+                                                                    ]
+                                                                  },
+                                                                  "onFailure": {
+                                                                    "actions": [
+                                                                      {
+                                                                        "type": "context",
+                                                                        "config": {
+                                                                          "requestMethod": "add",
+                                                                          "key": "errorMsg",
+                                                                          "data": "responseData"
+                                                                        }
+                                                                      },
+                                                                      {
+                                                                        "type": "updateComponent",
+                                                                        "config": {
+                                                                          "key": "errorTitleUUID",
+                                                                          "properties": {
+                                                                            "titleValue": "#errorMsg",
+                                                                            "isShown": true
+                                                                          }
+                                                                        }
+                                                                      },
+                                                                      {
+                                                                        "type": "context",
+                                                                        "config": {
+                                                                          "requestMethod": "add",
+                                                                          "key": "fqaFlexFields",
+                                                                          "data": []
+                                                                        }
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                }
+                                                              },
+                                                              {
+                                                                "type": "context",
+                                                                "config": {
+                                                                  "requestMethod": "add",
+                                                                  "key": "fqaFlexFields",
+                                                                  "data": []
+                                                                }
+                                                              },
+                                                              {
+                                                                "type": "context",
+                                                                "config": {
+                                                                  "requestMethod": "add",
+                                                                  "key": "Cosmeticdamagetaskdata",
+                                                                  "data": ""
+                                                                }
+                                                              },
+                                                              {
+                                                                "type": "context",
+                                                                "config": {
+                                                                  "requestMethod": "add",
+                                                                  "key": "bootTestSelectedAction",
+                                                                  "data": ""
+                                                                }
+                                                              },
+                                                              {
+                                                                "type": "context",
+                                                                "config": {
+                                                                  "requestMethod": "add",
+                                                                  "key": "ledTestSelectedAction",
+                                                                  "data": ""
+                                                                }
+                                                              },
+                                                              {
+                                                                "type": "context",
+                                                                "config": {
+                                                                  "requestMethod": "add",
+                                                                  "key": "svtTestSelectedAction",
+                                                                  "data": ""
+                                                                }
+                                                              }
+                                                            ]
+                                                          },
+                                                          "onFailure": {
+                                                            "actions": [
+                                                              {
+                                                                "type": "updateComponent",
+                                                                "eventSource": "click",
+                                                                "config": {
+                                                                  "key": "errorTitleUUID",
+                                                                  "properties": {
+                                                                    "titleValue": "Data is not valid"
+                                                                  }
+                                                                }
+                                                              }
+                                                            ]
+                                                          }
+                                                        }
+                                                      }
+                                                    ]
+                                                  },
+                                                  "onFailure": {
+                                                    "actions": [
+                                                      {
+                                                        "type": "updateComponent",
+                                                        "config": {
+                                                          "key": "errorTitleUUID",
+                                                          "properties": {
+                                                            "titleValue": "Unit has no process flex field 'Country of Origin'",
+                                                            "isShown": true
+                                                          }
+                                                        }
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          "onFailure": {
+                                            "actions": [
+                                              {
+                                                "type": "context",
+                                                "config": {
+                                                  "requestMethod": "add",
+                                                  "key": "errorMsg",
+                                                  "data": "responseData"
+                                                }
+                                              },
+                                              {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                  "key": "errorTitleUUID",
+                                                  "properties": {
+                                                    "titleValue": "#errorMsg",
+                                                    "isShown": true
+                                                  }
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "onFailure": {
+                                    "actions": [
+                                      {
+                                        "type": "microservice",
+                                        "config": {
+                                          "microserviceId": "performTimeOut",
+                                          "requestMethod": "post",
+                                          "body": {
+                                            "timeOutRequest": {
+                                              "location": "#UnitInfo.GEONAME",
+                                              "bcn": "#UnitInfo.ITEM_BCN",
+                                              "workCenter": "#UnitInfo.WORKCENTER",
+                                              "password": "#loginUUID.password",
+                                              "warrantyInd": "false",
+                                              "notes": "#BFANotes.addNote",
+                                              "resultCode": "#SelectedBFAResultCode",
+                                              "workCenterFlexFieldList": {
+                                                "flexField": "#fqaFlexFields"
+                                              }
+                                            },
+                                            "modifyWarranty": 0,
+                                            "timeOutType": "ProcessImmediate",
+                                            "clientName": "#UnitInfo.CLIENTNAME",
+                                            "contractName": "#UnitInfo.CONTRACTNAME",
+                                            "userName": "#loginUUID.username",
+                                            "userPass": "#loginUUID.password",
+                                            "ip": "::1",
+                                            "callSource": "FrontEnd",
+                                            "apiUsage_LocationName": "#UnitInfo.GEONAME",
+                                            "apiUsage_ClientName": "#UnitInfo.CLIENTNAME"
+                                          },
+                                          "toBeStringified": true,
+                                          "removeUndefinedFields": [
+                                            {
+                                              "KeyName": "notes",
+                                              "KeyValue": "#BFANotes.addNote"
+                                            }
+                                          ]
+                                        },
+                                        "responseDependents": {
+                                          "onSuccess": {
+                                            "actions": [
+                                              {
+                                                "type": "clearScreenData"
+                                              },                                                      
+                                              {
+                                                "type": "context",
+                                                "config": {
+                                                  "requestMethod": "delete",
+                                                  "key": "currentWC"
+                                                },
+                                                "eventSource": "click"
+                                              },
+                                              {
+                                                "type": "context",
+                                                "config": {
+                                                  "requestMethod": "add",
+                                                  "key": "BFANotes",
+                                                  "data": ""
+                                                }
+                                              },
+                                              {
+                                                "type": "context",
+                                                "config": {
+                                                  "requestMethod": "add",
+                                                  "key": "fqaFlexFields",
+                                                  "data": []
+                                                }
+                                              },
+                                              {
+                                                "type": "context",
+                                                "config": {
+                                                  "requestMethod": "add",
+                                                  "key": "Cosmeticdamagetaskdata",
+                                                  "data": ""
+                                                }
+                                              },
+                                              {
+                                                "type": "context",
+                                                "config": {
+                                                  "requestMethod": "add",
+                                                  "key": "bootTestSelectedAction",
+                                                  "data": ""
+                                                }
+                                              },
+                                              {
+                                                "type": "context",
+                                                "config": {
+                                                  "requestMethod": "add",
+                                                  "key": "ledTestSelectedAction",
+                                                  "data": ""
+                                                }
+                                              },
+                                              {
+                                                "type": "context",
+                                                "config": {
+                                                  "requestMethod": "add",
+                                                  "key": "svtTestSelectedAction",
+                                                  "data": ""
+                                                }
+                                              },
+                                              {
+                                                "type": "context",
+                                                "config": {
+                                                  "requestMethod": "add",
+                                                  "key": "testTasksData",
+                                                  "data": ""
+                                                },
+                                                "eventSource": "click"
+                                              },
+                                              {
+                                                "type": "renderTemplate",
+                                                "config": {
+                                                  "templateId": "dashboard.json",
+                                                  "mode": "local"
+                                                },
+                                                "eventSource": "click"
+                                              },
+                                              {
+                                                "type": "context",
+                                                "config": {
+                                                  "requestMethod": "add",
+                                                  "key": "fqaFlexFields",
+                                                  "data": []
+                                                }
+                                              },
+                                              {
+                                                "type": "context",
+                                                "config": {
+                                                  "requestMethod": "add",
+                                                  "key": "Cosmeticdamagetaskdata",
+                                                  "data": ""
+                                                }
+                                              },
+                                              {
+                                                "type": "context",
+                                                "config": {
+                                                  "requestMethod": "add",
+                                                  "key": "bootTestSelectedAction",
+                                                  "data": ""
+                                                }
+                                              },
+                                              {
+                                                "type": "context",
+                                                "config": {
+                                                  "requestMethod": "add",
+                                                  "key": "ledTestSelectedAction",
+                                                  "data": ""
+                                                }
+                                              },
+                                              {
+                                                "type": "context",
+                                                "config": {
+                                                  "requestMethod": "add",
+                                                  "key": "svtTestSelectedAction",
+                                                  "data": ""
+                                                }
+                                              }                                      
+                                            ]
+                                          },
+                                          "onFailure": {
+                                            "actions": [
+                                              {
+                                                "type": "context",
+                                                "config": {
+                                                  "requestMethod": "add",
+                                                  "key": "errorMsg",
+                                                  "data": "responseData"
+                                                }
+                                              },
+                                              {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                  "key": "errorTitleUUID",
+                                                  "properties": {
+                                                    "titleValue": "#errorMsg",
+                                                    "isShown": true
+                                                  }
+                                                }
+                                              },
+                                              {
+                                                "type": "context",
+                                                "config": {
+                                                  "requestMethod": "add",
+                                                  "key": "fqaFlexFields",
+                                                  "data": []
+                                                }
+                                              },
+                                              {
+                                                "type": "context",
+                                                "config": {
+                                                  "requestMethod": "add",
+                                                  "key": "Cosmeticdamagetaskdata",
+                                                  "data": ""
+                                                }
+                                              },
+                                              {
+                                                "type": "context",
+                                                "config": {
+                                                  "requestMethod": "add",
+                                                  "key": "bootTestSelectedAction",
+                                                  "data": ""
+                                                }
+                                              },
+                                              {
+                                                "type": "context",
+                                                "config": {
+                                                  "requestMethod": "add",
+                                                  "key": "ledTestSelectedAction",
+                                                  "data": ""
+                                                }
+                                              },
+                                              {
+                                                "type": "context",
+                                                "config": {
+                                                  "requestMethod": "add",
+                                                  "key": "svtTestSelectedAction",
+                                                  "data": ""
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      } 
+                                    ]
+                                  }
+                                }
+                              }                                                           
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": [
+                              {
+                                "type": "dialog",
+                                "uuid": "addNoteDialogUUID2",
+                                "config": {
+                                  "title": "Time Out",
+                                  "items": [
+                                    {
+                                      "ctype": "textarea",
+                                      "label": "Add note",
+                                      "name": "addNote",
+                                      "textareaContainer": "timeout-class",
+                                      "uuid": "addNoteTimeoutUUID2",
+                                      "required": true,
+                                      "value": "#BFANotes.addNote",
+                                      "actions": [
+                                        {
+                                          "type": "updateComponent",
+                                          "config": {
+                                            "key": "doneHoldUUID2",
+                                            "properties": {
+                                              "disabled": false
+                                            }
+                                          },
+                                          "eventSource": "change"
+                                        }
+                                      ]
+                                    }
+                                  ],
+                                  "footer": [
+                                    {
+                                      "ctype": "button",
+                                      "color": "primary",
+                                      "text": "Close",
+                                      "uuid": "closeButtonUUID2",
+                                      "closeType": "close",
+                                      "inputClass": "close-button",
+                                      "disableClose": true,
+                                      "visibility": true,
+                                      "dialogButton": true,
+                                      "type": "",
+                                      "hooks": [],
+                                      "validations": [],
+                                      "actions": []
+                                    },
+                                    {
+                                      "ctype": "button",
+                                      "color": "primary",
+                                      "text": "Done",
+                                      "uuid": "doneHoldUUID2",
+                                      "dialogButton": true,
+                                      "visibility": true,
+                                      "disableClose": false,
+                                      "disabled": true,
+                                      "type": "submit",
+                                      "closeType": "success",
+                                      "hooks": [],
+                                      "validations": [],
+                                      "actions": []
+                                    }
+                                  ]
+                                },
+                                "eventSource": "click",
+                                "responseDependents": {
+                                  "onSuccess": {
+                                    "actions": [
+                                      {
+                                        "type": "context",
+                                        "config": {
+                                          "requestMethod": "add",
+                                          "key": "BFANotes",
+                                          "data": "formData"
+                                        }
+                                      },
+                                      {
+                                        "type": "microservice",
+                                        "config": {
+                                          "microserviceId": "performTimeOut",
+                                          "requestMethod": "post",
+                                          "body": {
+                                            "timeOutRequest": {
+                                              "location": "#UnitInfo.GEONAME",
+                                              "bcn": "#UnitInfo.ITEM_BCN",
+                                              "workCenter": "#UnitInfo.WORKCENTER",
+                                              "password": "#loginUUID.password",
+                                              "warrantyInd": "false",
+                                              "notes": "#BFANotes.addNote",
+                                              "resultCode": "#SelectedBFAResultCode",
+                                              "workCenterFlexFieldList": {
+                                                "flexField": "#fqaFlexFields"
+                                              }
+                                            },
+                                            "modifyWarranty": 0,
+                                            "timeOutType": "ProcessImmediate",
+                                            "clientName": "#UnitInfo.CLIENTNAME",
+                                            "contractName": "#UnitInfo.CONTRACTNAME",
+                                            "userName": "#loginUUID.username",
+                                            "userPass": "#loginUUID.password",
+                                            "ip": "::1",
+                                            "callSource": "FrontEnd",
+                                            "apiUsage_LocationName": "#UnitInfo.GEONAME",
+                                            "apiUsage_ClientName": "#UnitInfo.CLIENTNAME"
+                                          },
+                                          "toBeStringified": true,
+                                          "removeUndefinedFields": [
+                                            {
+                                              "KeyName": "notes",
+                                              "KeyValue": "#BFANotes.addNote"
+                                            }
+                                          ],
+                                          "spliceIfEmptyValueObject": [
+                                            {
+                                              "identifier": "flexField",
+                                              "valueField": "value",
+                                              "keyToBeRemoved": "workCenterFlexFieldList"
+                                            }
+                                          ]
+                                        },
+                                        "responseDependents": {
+                                          "onSuccess": {
+                                            "actions": [
+                                              {
+                                                "type": "clearScreenData"
+                                              },                                                      
+                                              {
+                                                "type": "context",
+                                                "config": {
+                                                  "requestMethod": "delete",
+                                                  "key": "currentWC"
+                                                },
+                                                "eventSource": "click"
+                                              },
+                                              {
+                                                "type": "context",
+                                                "config": {
+                                                  "requestMethod": "add",
+                                                  "key": "BFANotes",
+                                                  "data": ""
+                                                }
+                                              },
+                                              {
+                                                "type": "context",
+                                                "config": {
+                                                  "requestMethod": "add",
+                                                  "key": "fqaFlexFields",
+                                                  "data": []
+                                                }
+                                              },
+                                              {
+                                                "type": "context",
+                                                "config": {
+                                                  "requestMethod": "add",
+                                                  "key": "testTasksData",
+                                                  "data": ""
+                                                },
+                                                "eventSource": "click"
+                                              },
+                                              {
+                                                "type": "renderTemplate",
+                                                "config": {
+                                                  "templateId": "dashboard.json",
+                                                  "mode": "local"
+                                                },
+                                                "eventSource": "click"
+                                              }                                            
+                                            ]
+                                          },
+                                          "onFailure": {
+                                            "actions": [
+                                              {
+                                                "type": "context",
+                                                "config": {
+                                                  "requestMethod": "add",
+                                                  "key": "errorMsg",
+                                                  "data": "responseData"
+                                                }
+                                              },
+                                              {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                  "key": "errorTitleUUID",
+                                                  "properties": {
+                                                    "titleValue": "#errorMsg",
+                                                    "isShown": true
+                                                  }
+                                                }
+                                              },
+                                              {
+                                                "type": "context",
+                                                "config": {
+                                                  "requestMethod": "add",
+                                                  "key": "fqaFlexFields",
+                                                  "data": []
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      },
+                                      {
+                                        "type": "context",
+                                        "config": {
+                                          "requestMethod": "add",
+                                          "key": "fqaFlexFields",
+                                          "data": []
+                                        }
+                                      },
+                                      {
+                                        "type": "context",
+                                        "config": {
+                                          "requestMethod": "add",
+                                          "key": "Cosmeticdamagetaskdata",
+                                          "data": ""
+                                        }
+                                      },
+                                      {
+                                        "type": "context",
+                                        "config": {
+                                          "requestMethod": "add",
+                                          "key": "bootTestSelectedAction",
+                                          "data": ""
+                                        }
+                                      },
+                                      {
+                                        "type": "context",
+                                        "config": {
+                                          "requestMethod": "add",
+                                          "key": "ledTestSelectedAction",
+                                          "data": ""
+                                        }
+                                      },
+                                      {
+                                        "type": "context",
+                                        "config": {
+                                          "requestMethod": "add",
+                                          "key": "svtTestSelectedAction",
+                                          "data": ""
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "onFailure": {
+                                    "actions": [
+                                      {
+                                        "type": "updateComponent",
+                                        "eventSource": "click",
+                                        "config": {
+                                          "key": "errorTitleUUID",
+                                          "properties": {
+                                            "titleValue": "Data is not valid"
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": []
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "Result": "SUCCESS"
+}

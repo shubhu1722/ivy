@@ -1,0 +1,697 @@
+{
+    "ResultData": {
+        "ctype": "page",
+        "uuid": "pageUUID",
+        "visibility": true,
+        "hooks": [
+            {
+                "type": "microservice",
+                "hookType": "afterInit",
+                "config": {
+                    "microserviceId": "getprocessFlexFields",
+                    "isLocal": false,
+                    "LocalService": "assets/Responses/mockBGA.json",
+                    "requestMethod": "get",
+                    "params": {
+                        "bcn": "#UnitInfo.ITEM_BCN",
+                        "serialNo": "#UnitInfo.SERIAL_NO",
+                        "flexFieldId": "111124"
+                    }
+                },
+                "responseDependents": {
+                    "onSuccess": {
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "getReturnReasoncodeData",
+                                    "data": "responseData"
+                                }
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "returnreasoncodedataUUID",
+                                    "properties": {
+                                        "text": "#getReturnReasoncodeData.0.flexFieldValue"
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    "onFailure": {
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                  "requestMethod": "add",
+                                  "key": "errorDisp",
+                                  "data": "responseData"
+                                }
+                              },
+                              {
+                                "type": "condition",
+                                "config": {
+                                  "operation": "isEqualTo",
+                                  "lhs": "#errorDisp",
+                                  "rhs": "No Record Found"
+                                },
+                                "responseDependents": {
+                                  "onSuccess": {
+                                    "actions": [
+                                      {
+                                        "type": "updateComponent",
+                                        "config": {
+                                          "key": "errorTitleUUID",
+                                          "properties": {
+                                            "titleValue": "#errorDisp",
+                                            "isShown": false
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "onFailure": {
+                                    "actions": [
+                                      {
+                                        "type": "updateComponent",
+                                        "config": {
+                                          "key": "errorTitleUUID",
+                                          "properties": {
+                                            "titleValue": "#errorDisp",
+                                            "isShown": true
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+        ],
+        "validations": [],
+        "action": [],
+        "header": [
+            {
+                "ctype": "toolbar",
+                "toolbarClass": "pagecontent-header preScreen-header",
+                "items": [
+                    {
+                        "ctype": "title",
+                        "uuid": "pageContentTitleUUID",
+                        "titleClass": "section-title",
+                        "title": "RMA - Startup"
+                    },
+                    {
+                        "ctype": "iconbutton",
+                        "iconButtonClass": "headeropen-button",
+                        "text": "",
+                        "uuid": "pageopenUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "hidden": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "icon": "menu_open",
+                        "disableRipple": true,
+                        "iconClass": "header-icon",
+                        "actions": [
+                            {
+                                "type": "toggle",
+                                "eventSource": "click",
+                                "name": "subProcessRightNavref"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "openUUID",
+                                    "properties": {
+                                        "hidden": false
+                                    }
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "pageopenUUID",
+                                    "properties": {
+                                        "hidden": true
+                                    }
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "items": [
+            {
+                "ctype": "title",
+                "uuid": "errorTitleUUID",
+                "titleClass": "error-title",
+                "isShown": false
+            },
+            {
+                "ctype": "taskPanel",
+                "header": {
+                    "title": "Return Reason Code",
+                    "icon": "description"
+                },
+                "expanded": true,
+                "isKeepExpanded": true,
+                "hideToggle": "true",
+                "uuid": "returnreasoncodepanelUUID",
+                "name": "returnreasoncode",
+                "visibility": false,
+                "disabled": false,
+                "items": [
+                    {
+                        "ctype": "disabled",
+                        "uuid": "returnreasoncodeDisabledUUID",
+                        "disabledClass": "disabledFalse"
+                    },
+                    {
+                        "ctype": "flexFields",
+                        "uuid": "listTitleUUID",
+                        "flexClass": "d-flex",
+                        "items": [
+                            {
+                                "ctype": "label",
+                                "text": "Return Reason Code  : ",
+                                "labelClass": "subtitle1 mr-2"
+                            },
+                            {
+                                "ctype": "label",
+                                "uuid": "returnreasoncodedataUUID",
+                                "text": "",
+                                "labelClass": "greyish-black",
+                                "labelPosition": "left"
+                            }
+                        ]
+                    }
+                ],
+                "footer": []
+            },
+            {
+                "ctype": "taskPanel",
+                "header": {
+                    "title": "Counterfit",
+                    "icon": "description"
+                },
+                "expanded": true,
+                "isKeepExpanded": true,
+                "hideToggle": "true",
+                "uuid": "counterfitUUID",
+                "name": "counterfit",
+                "visibility": false,
+                "disabled": false,
+                "items": [
+                    {
+                        "ctype": "disabled",
+                        "uuid": "counterfitDisabledUUID",
+                        "disabledClass": "disabledFalse"
+                    },
+                    {
+                        "ctype": "label",
+                        "text": "Is the unit counterfit ?",
+                        "labelClass": "body cosmetictext"
+                    },
+                    {
+                        "ctype": "actionToggle",
+                        "uuid": "counterfitToggleUUID",
+                        "name": "counterfitToggle",
+                        "formGroupClass": "buttoon-toggle-cls body2 action-position",
+                        "label": "",
+                        "validations": [],
+                        "labelPosition": "before",
+                        "hooks": [],
+                        "required": true,
+                        "submitable": true,
+                        "selectedVal": "",
+                        "options": [
+                            {
+                                "bgcolor": "light-blue",
+                                "color": "white",
+                                "text": "YES",
+                                "value": "YES"
+                            },
+                            {
+                                "bgcolor": "light-blue",
+                                "color": "white",
+                                "text": "NO",
+                                "value": "NO"
+                            }
+                        ],
+                        "actions": [
+                            {
+                                "type": "context",
+                                "eventSource": "change",
+                                "config": {
+                                    "key": "counterfitToggleData",
+                                    "requestMethod": "add",
+                                    "data": "elementControlValue"
+                                }
+                            },
+                            {
+                                "type": "updateComponent",
+                                "eventSource": "change",
+                                "config": {
+                                    "key": "CounterfitCompleteUUID",
+                                    "properties": {
+                                        "disabled": false
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ],
+                "footer": [
+                    {
+                        "ctype": "button",
+                        "color": "primary",
+                        "text": "Complete",
+                        "uuid": "CounterfitCompleteUUID",
+                        "visibility": true,
+                        "checkGroupValidity": false,
+                        "disabled": true,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "CounterfitData",
+                                    "data": "formData"
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "condition",
+                                "eventSource": "click",
+                                "config": {
+                                    "operation": "isEqualTo",
+                                    "lhs": "#counterfitToggleData",
+                                    "rhs": "YES"
+                                },
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "microservice",
+                                                "config": {
+                                                    "microserviceId": "getstorageholdsubcode",
+                                                    "requestMethod": "get",
+                                                    "params": {
+                                                        "locationId": "#userSelectedLocation",
+                                                        "clientId": "#userSelectedClient",
+                                                        "contractId": "#userSelectedContract",
+                                                        "route": "#UnitInfo.ROUTE",
+                                                        "username": "#loginUUID.username",
+                                                        "workCenterId": "#UnitInfo.WORKCENTER_ID",
+                                                        "operationType": "MOVEINVENTORY"
+                                                    },
+                                                    "isLocal": false,
+                                                    "LocalService": "assets/Responses/mockHoldSubCode.json"
+                                                },
+                                                "responseDependents": {
+                                                    "onSuccess": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "context",
+                                                                "config": {
+                                                                    "requestMethod": "add",
+                                                                    "key": "getstorageholdsubcode",
+                                                                    "data": "responseData"
+                                                                }
+                                                            },
+                                                            {
+                                                                "type": "microservice",
+                                                                "eventSource": "click",
+                                                                "config": {
+                                                                    "microserviceId": "moveinventory",
+                                                                    "requestMethod": "post",
+                                                                    "body": {
+                                                                        "items": {
+                                                                            "addtionalDetails": {
+                                                                                "storageHoldCode": "#getstorageholdsubcode.0.storageHoldCode"
+                                                                            },
+                                                                            "destinationLocation": {
+                                                                                "bin": "#getstorageholdsubcode.0.bin",
+                                                                                "geography": "#getstorageholdsubcode.0.locationName",
+                                                                                "stockingLocation": "#getstorageholdsubcode.0.destStkLocationName",
+                                                                                "warehouse": "#getstorageholdsubcode.0.wareHouseName"
+                                                                            },
+                                                                            "item": [
+                                                                                {
+                                                                                    "bcn": "#UnitInfo.ITEM_BCN",
+                                                                                    "partNo": "#UnitInfo.PART_NO",
+                                                                                    "serialNo": "#UnitInfo.SERIAL_NO"
+                                                                                }
+                                                                            ]
+                                                                        },
+                                                                        "usrPwd": {
+                                                                            "userName": "#loginUUID.username",
+                                                                            "password": "#loginUUID.password"
+                                                                        },
+                                                                        "ip": "::1",
+                                                                        "callSource": "FrontEnd",
+                                                                        "apiUsageLocationName": "#UnitInfo.GEONAME",
+                                                                        "apiUsageClientName": "#UnitInfo.CLIENTNAME"
+                                                                    },
+                                                                    "toBeStringified": true
+                                                                },
+                                                                "responseDependents": {
+                                                                    "onSuccess": {
+                                                                        "actions": [
+                                                                            {
+                                                                                "type": "clearScreenData",
+                                                                                "eventSource": "click"
+                                                                            },
+                                                                            {
+                                                                                "type": "context",
+                                                                                "config": {
+                                                                                    "requestMethod": "delete",
+                                                                                    "key": "currentWC"
+                                                                                },
+                                                                                "eventSource": "click"
+                                                                            },
+                                                                            {
+                                                                                "type": "renderTemplate",
+                                                                                "eventSource": "click",
+                                                                                "config": {
+                                                                                    "templateId": "dashboard.json",
+                                                                                    "mode": "local"
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "onFailure": {
+                                                                        "actions": []
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    "onFailure": {
+                                                        "actions": []
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": [
+                                            {
+                                                "type": "condition",
+                                                "eventSource": "click",
+                                                "config": {
+                                                    "operation": "isEqualTo",
+                                                    "lhs": "#counterfitToggleData",
+                                                    "rhs": "NO"
+                                                },
+                                                "responseDependents": {
+                                                    "onSuccess": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "updateComponent",
+                                                                "config": {
+                                                                    "key": "RmaStartupTimeoutUUID",
+                                                                    "properties": {
+                                                                        "disabled": false
+                                                                    }
+                                                                },
+                                                                "eventSource": "click"
+                                                            },
+                                                            {
+                                                                "type": "updateComponent",
+                                                                "config": {
+                                                                    "key": "counterfitDisabledUUID",
+                                                                    "properties": {
+                                                                        "disabledClass": "disabledTrue"
+                                                                    }
+                                                                },
+                                                                "eventSource": "click"
+                                                            },
+                                                            {
+                                                                "type": "updateComponent",
+                                                                "config": {
+                                                                    "key": "CounterfitCompleteUUID",
+                                                                    "properties": {
+                                                                        "disabled": true
+                                                                    }
+                                                                },
+                                                                "eventSource": "click"
+                                                            },
+                                                            {
+                                                                "type": "updateComponent",
+                                                                "config": {
+                                                                    "key": "counterfitUUID",
+                                                                    "properties": {
+                                                                        "expanded": false,
+                                                                        "disabled": false,
+                                                                        "header": {
+                                                                            "title": "Counterfit",
+                                                                            "icon": "description",
+                                                                            "statusIcon": "check_circle",
+                                                                            "statusClass": "complete-status",
+                                                                            "class": "complete-task",
+                                                                            "iconClass": "complete-task"
+                                                                        }
+                                                                    }
+                                                                },
+                                                                "eventSource": "click"
+                                                            },
+                                                            {
+                                                                "type": "updateComponent",
+                                                                "config": {
+                                                                    "key": "RmaStartupTimeoutUUID",
+                                                                    "properties": {
+                                                                        "disabled": false
+                                                                    }
+                                                                },
+                                                                "eventSource": "click"
+                                                            }
+                                                        ]
+                                                    },
+                                                    "onFailure": {
+                                                        "actions": []
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "footer": [
+            {
+                "ctype": "toolbar",
+                "toolbarClass": "pagecontent-footer",
+                "items": [
+                    {
+                        "ctype": "iconbutton",
+                        "iconButtonClass": "footer-save body primary-btn",
+                        "text": "Exit",
+                        "uuid": "saveUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "icon": "save",
+                        "actions": [
+                            {
+                                "type": "renderTemplate",
+                                "config": {
+                                    "templateId": "dashboard.json",
+                                    "mode": "local"
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "iconText",
+                        "uuid": "IconUUID",
+                        "iconTextClass": "footer-addNote addNoteCls body",
+                        "icon": "add_comment",
+                        "text": "Add Note",
+                        "iconPosition": "Before",
+                        "actions": [
+                            {
+                                "type": "dialog",
+                                "uuid": "addNoteDialogUUID",
+                                "config": {
+                                    "title": "Add Note",
+                                    "items": [
+                                        {
+                                            "ctype": "textarea",
+                                            "name": "addNote",
+                                            "textareaClass": "note-class",
+                                            "uuid": "addNoteUUID",
+                                            "required": true,
+                                            "value": "#RmaStartupNotes.addNote",
+                                            "actions": []
+                                        }
+                                    ],
+                                    "footer": [
+                                        {
+                                            "ctype": "button",
+                                            "color": "primary",
+                                            "text": "Close",
+                                            "uuid": "closeButtonUUID",
+                                            "closeType": "close",
+                                            "inputClass": "close-button",
+                                            "disableClose": true,
+                                            "visibility": true,
+                                            "dialogButton": true,
+                                            "type": "",
+                                            "hooks": [],
+                                            "validations": [],
+                                            "actions": []
+                                        },
+                                        {
+                                            "ctype": "button",
+                                            "color": "primary",
+                                            "text": "Done",
+                                            "uuid": "doneHoldUUID",
+                                            "dialogButton": true,
+                                            "visibility": true,
+                                            "disabled": true,
+                                            "type": "submit",
+                                            "closeType": "success",
+                                            "hooks": [],
+                                            "validations": [],
+                                            "actions": []
+                                        }
+                                    ]
+                                },
+                                "eventSource": "click",
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "RmaStartupNotes",
+                                                    "data": "formData"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "spacer",
+                        "uuid": "emptySpaceUUID",
+                        "class": "empty-space"
+                    },
+                    {
+                        "ctype": "button",
+                        "color": "primary",
+                        "buttonClass": "footer-button",
+                        "text": "Next",
+                        "class": "econxtbtnclass",
+                        "uuid": "RmaStartupTimeoutUUID",
+                        "visibility": true,
+                        "disabled": true,
+                        "hidden": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "actions": [
+                            {
+                                "type": "updateComponent",
+                                "eventSource": "click",
+                                "config": {
+                                    "key": "errorTitleUUID",
+                                    "properties": {
+                                        "titleValue": "",
+                                        "isShown": false
+                                    }
+                                }
+                            },
+                            {
+                                "type": "clearScreenData",
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "delete",
+                                    "key": "currentWC"
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "microservice",
+                                "eventSource": "click",
+                                "config": {
+                                    "microserviceId": "getCiscoTestStations",
+                                    "isLocal": false,
+                                    "LocalService": "assets/Responses/mockTestTasks.json",
+                                    "requestMethod": "get",
+                                    "params": {
+                                        "serialNo": "#UnitInfo.SERIAL_NO",
+                                        "slStationName": "#UnitInfo.WORKCENTER",
+                                        "locationId": "#UnitInfo.LOCATION_ID",
+                                        "ownerId": "#UnitInfo.OWNER_ID"
+                                    }
+                                },
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "testTasksData",
+                                                    "data": "responseData"
+                                                }
+                                            },
+                                            {
+                                                "type": "renderTemplate",
+                                                "config": {
+                                                    "templateId": "houston/houston-RMATest.json",
+                                                    "mode": "local"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": [
+                                            {
+                                                "type": "renderTemplate",
+                                                "config": {
+                                                    "templateId": "houston/houston-RMATest.json",
+                                                    "mode": "local"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "Result": "SUCCESS"
+}

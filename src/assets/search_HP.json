@@ -1,0 +1,409 @@
+{
+    "ctype": "sidenav",
+    "_comment": " This is the dashboard metadata json which has a sidenav and main content",
+    "title": "Dashboard",
+    "uuid": "dashboardUUID",
+    "css": "",
+    "visibility": true,
+    "hooks": [],
+    "validations": [],
+    "action": [],
+    "mode": "side",
+    "fixedInViewport": "",
+    "leftsideNav": {
+        "position": "start",
+        "opened": "true",
+        "sideNavHeader": [
+            {
+                "ctype": "title",
+                "title": "---",
+                "uuid": "titleUUID",
+                "css": "color:white;padding:5px 2px 0px 12px"
+            },
+            {
+                "ctype": "title",
+                "title": "Due:",
+                "uuid": "titleUUID",
+                "css": "color:#0180E5;padding:0px 2px 10px 12px"
+            },
+            {
+                "ctype": "title",
+                "title": "Model:",
+                "uuid": "titleUUID",
+                "css": "color:white;padding:2px 2px 0px 12px;margin: 5px 0px 0px 0px;"
+            },
+            {
+                "ctype": "title",
+                "title": "Serial Number:",
+                "uuid": "titleUUID",
+                "css": "color:white;padding:0px 2px 0px 12px;margin: 0px;"
+            },
+            {
+                "ctype": "title",
+                "title": "Warranty:",
+                "uuid": "titleUUID",
+                "css": "color:white;padding:0px 2px 9px 12px;margin: 0px;"
+            },
+            {
+                "ctype": "divider",
+                "css": "border-top-color: rgba(255,255,255,0.1);"
+            },
+            {
+                "ctype": "iconText",
+                "css": "color: rgba(255,255,255,0.5);padding:10px 2px 10px 12px",
+                "uuid": "IconUUID",
+                "icon": "description",
+                "text": "View eTraveller",
+                "textCss": "",
+                "iconPosition": "Before"
+            },
+            {
+                "ctype": "iconText",
+                "css": "color: rgba(255,255,255,0.5);padding:0px 2px 10px 12px",
+                "icon": "chat",
+                "text": "View Notes",
+                "textCss": "",
+                "iconPosition": "Before"
+            },
+            {
+                "ctype": "divider",
+                "css": "border-top-color: rgba(255,255,255,0.1);"
+            }
+        ],
+        "sideNavBody": [
+            {
+                "ctype": "menuListItem",
+                "uuid": "menuListItemUUID",
+                "iconList": [
+                    "panorama_fish_eye",
+                    "description",
+                    "description",
+                    "description",
+                    "description",
+                    "description"
+                ],
+                "childrenIcon": [
+                    "adjust"
+                ],
+                "dataSource": "#SubprocessMenu"
+            }
+        ],
+        "sideNavFooter": [
+            {
+                "ctype": "iconText",
+                "text": "userAccountInfo.PersonalDetails.USERID",
+                "textCSS": "color:white;font-family: 'Lato-Bold', 'Lato Bold', 'Lato'; font-weight: 700; font-style: normal;",
+                "icon": "account_circle"
+            },
+            {
+                "ctype": "iconText",
+                "text": "Logout",
+                "textCSS": "color:#D8D9DC;font-family: 'Lato-Bold', 'Lato Bold', 'Lato';font-style: normal;",
+                "icon": "power_settings_new"
+            }
+        ]
+    },
+    "rightsidenav": {
+        "position": "end",
+        "opened": "true",
+        "sideNavHeader": [
+            {
+                "ctype": "toolbar",
+                "css": "font-size: 20px;line-height:20px;font-weight:bold;display:flex;justify-content:space-between;-webkit-flex-direction:row;flex-direction:row;-webkit-align-items:flex-start;align-items:flex-start;-webkit-flex-wrap:nowrap;flex-wrap:nowrap;width:100%;min-height:0;position:relative;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;",
+                "items": [
+                    {
+                        "ctype": "title",
+                        "title": "Work Instructions",
+                        "css": "padding: 14px 0 0 0;font-weight: 600;font-style: normal;font-size: 17px;letter-spacing: normal;color: #505050;vertical-align:none;text-align: left;line-height: normal;text-transform: none;"
+                    },
+                    {
+                        "ctype": "textField",
+                        "uuid": "searchUUID",
+                        "submitable": false,
+                        "disabled": false,
+                        "visibility": false,
+                        "validations": [],
+                        "labelstyles": "color:rgba(0,100,0,0.8); font-weight:700; font-size:13px;",
+                        "inputStyles": "width: 100%;",
+                        "hooks": [],
+                        "actions": [],
+                        "name": "string",
+                        "label": "",
+                        "labelPosition": "",
+                        "tooltip": "",
+                        "TooltipPosition": "",
+                        "defaultvalue": "",
+                        "readonly": false,
+                        "type": "text",
+                        "required": false,
+                        "placeholder": "Search",
+                        "value": "",
+                        "prefix": false,
+                        "prefixIcon": "",
+                        "suffix": false,
+                        "suffixIcon": "",
+                        "css": "font-size:14px;padding: 14px 0 0 0;width:80%;float:right;"
+                    },
+                    {
+                        "ctype": "iconbutton",
+                        "inputStyles": "border:none",
+                        "text": "",
+                        "uuid": "closeUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "actions": [
+                            {
+                                "type": "toggle",
+                                "eventSource": "click"
+                            }
+                        ],
+                        "icon": "menu_open",
+                        "iconcss": "color:black;font-size:21px",
+                        "disableRipple": true,
+                        "css": "padding: 10px 0 0px 8px;color:black,font-size:14px"
+                    }
+                ]
+            }
+        ],
+        "sideNavBody": [
+            {
+                "ctype": "title",
+                "title": "No content Available",
+                "css": "padding: 14px 0 0 0;font-weight: 600;font-style: normal;font-size: 17px;letter-spacing: normal;color: #505050;vertical-align:none;text-align: left;line-height: normal;text-transform: none;"
+            },
+            {
+                "ctype": "pdfViewer",
+                "title": "test pdf displays for demo purpose"
+            }
+        ],
+        "sideNavFooter": []
+    },
+    "pageContentBody": [
+        {
+            "ctype": "page",
+            "uuid": "pageUUID",
+            "css": "",
+            "visibility": true,
+            "hooks": [],
+            "validations": [],
+            "action": [],
+            "header": [
+                {
+                    "ctype": "toolbar",
+                    "css": "background:#e2e7ed !important;font-size: 20px;line-height:20px;font-weight:bold;color:#000;display:flex;justify-content:space-between;-webkit-flex-direction:row;flex-direction:row;-webkit-align-items:flex-start;align-items:flex-start;-webkit-flex-wrap:nowrap;flex-wrap:nowrap;width:100%;min-height:0;position:relative;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;",
+                    "items": [
+                        {
+                            "ctype": "title",
+                            "title": "Search"
+                        }
+                    ]
+                }
+            ],
+            "items": [
+                {
+                    "ctype": "taskPanel",
+                    "title": "",
+                    "header": {
+                        "title": "Scan Value",
+                        "icon": "description",
+                        "css": "color:black",
+                        "status": ""
+                    },
+                    "expanded": "true",
+                    "hideToggle": "true",
+                    "uuid": "scanValueTaskUUID",
+                    "css": "width:50%;margin:auto;height:10vh",
+                    "visibility": false,
+                    "hooks": [],
+                    "validations": [],
+                    "actions": [],
+                    "items": [
+                        {
+                            "ctype": "textField",
+                            "uuid": "ScanSerialNumberUUID",
+                            "hooks": [],
+                            "validations": [
+                                {
+                                    "type": "regex",
+                                    "script": ""
+                                }
+                            ],
+                            "actions": [],
+                            "type": "text",
+                            "css": "width:50%",
+                            "required": true,
+                            "placeholder": "Scan #",
+                            "submitable": true,
+                            "label": "Scan Serial Number",
+                            "labelPosition": "left",
+                            "name": "ScanSerialNumber",
+                            "inputStyles": "width: 50%",
+                            "value": ""
+                        },
+                        {
+                            "ctype": "checkbox",
+                            "name": "No Serial Number",
+                            "actions": [],
+                            "hooks": [],
+                            "validations": [],
+                            "required": true,
+                            "submitable": true,
+                            "label": "Scan Serial Number",
+                            "labelPosition": "after",
+                            "inputStyles": "width: 50%",
+                            "value": ""
+                        }
+                    ],
+                    "footer": [
+                        {
+                            "ctype": "button",
+                            "inputStyles": "float:right",
+                            "text": "Complete",
+                            "uuid": "CompleteUUID",
+                            "visibility": true,
+                            "disabled": false,
+                            "type": "submit",
+                            "hooks": [],
+                            "validations": [],
+                            "actions": [
+                                {
+                                    "type": "toggle1",
+                                    "eventSource": "click",
+                                    "config": {
+                                        "key": "scanValueTaskUUID"
+                                    }
+                                },
+                                {
+                                    "type": "context",
+                                    "config": {
+                                        "requestMethod": "add",
+                                        "key": "scanValueTaskUUID",
+                                        "data": "formData"
+                                    },
+                                    "eventSource": "click"
+                                },
+                                {
+                                    "type": "microservice",
+                                    "config": {
+                                        "microserviceId": "assets/confirm_part_number.json",
+                                        "requestMethod": "get",
+                                        "params": {}
+                                    },
+                                    "responseDependents": {
+                                        "onSuccess": {
+                                            "actions": [
+                                                {
+                                                    "type": "context",
+                                                    "config": {
+                                                        "requestMethod": "add",
+                                                        "key": "getConfirmPartNumberJSON",
+                                                        "data": "responseData"
+                                                    }
+                                                },
+                                                {
+                                                    "type": "renderTemplate",
+                                                    "config": {
+                                                        "mode": "remote",
+                                                        "targetId": "mainPageContentBody",
+                                                        "templateId": "getConfirmPartNumberJSON"
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "onFailure": {
+                                            "actions": [
+                                                {
+                                                    "type": "toast",
+                                                    "message": "Failed to fetch getOrders"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "footer": [
+                {
+                    "ctype": "toolbar",
+                    "css": "font-size: 20px;line-height:20px;font-weight:bold;color:#000;display:flex;justify-content:space-between;-webkit-flex-direction:row;flex-direction:row;-webkit-align-items:flex-start;align-items:flex-start;-webkit-flex-wrap:nowrap;flex-wrap:nowrap;width:100%;min-height:0;position:relative;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;",
+                    "items": [
+                        {
+                            "ctype": "iconbutton",
+                            "inputStyles": "font-weight: 400;font-style:normal;font-size: 14px;color: #464C59;text-align: center;",
+                            "text": "Save & Exit",
+                            "uuid": "saveUUID",
+                            "visibility": true,
+                            "disabled": false,
+                            "type": "submit",
+                            "hooks": [],
+                            "validations": [],
+                            "actions": [],
+                            "icon": "save"
+                        },
+                        {
+                            "ctype": "iconText",
+                            "uuid": "IconUUID",
+                            "css": "font-size: 14px;font-weight: 400;color: #0180E5;margin-right: 96vh;padding-left:4px",
+                            "icon": "add_comment",
+                            "text": "Add Note",
+                            "textCss": "",
+                            "iconPosition": "Before"
+                        },
+                        {
+                            "ctype": "dropDown",
+                            "uuid": "dropdownUUID",
+                            "css": "",
+                            "hooks": [],
+                            "validations": [],
+                            "actions": [],
+                            "type": "text",
+                            "required": true,
+                            "placeholder": "",
+                            "submitable": true,
+                            "label": "",
+                            "labelPosition": "",
+                            "name": "",
+                            "inputStyles": "width:100%;border-radius:4px;padding:12px;border:1px solid rgba(0, 0, 0, .9);",
+                            "options": [
+                                {
+                                    "key": "NOKBUFSY-HP_FAILURE_ANALYSIS",
+                                    "value": "1"
+                                },
+                                {
+                                    "key": "PASS-HP_DEBUG",
+                                    "value": "2"
+                                },
+                                {
+                                    "key": "PASS-DIS-HP_DISCREPANCY",
+                                    "value": "3"
+                                },
+                                {
+                                    "key": "REREPAIR-HP_FAILURE_ANALYSIS",
+                                    "value": "4"
+                                }
+                            ]
+                        },
+                        {
+                            "ctype": "button",
+                            "inputStyles": "",
+                            "text": "Next",
+                            "uuid": "nextUUID",
+                            "visibility": true,
+                            "disabled": false,
+                            "type": "submit",
+                            "hooks": [],
+                            "validations": [],
+                            "actions": []
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

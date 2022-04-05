@@ -1,0 +1,18 @@
+<!-- <div class= "searchContainer"> -->
+<div class="textClass">
+  <input class="boxStyle" type="text" placeholder="Search...">
+  <button #iconbutton mat-flat-button (click)="onClick($event)">
+    <mat-icon class="iconStyle">menu_open</mat-icon>
+  </button>
+</div>
+<!-- </div> -->
+<div class="wiki-admin overflow-auto p-2" *ngIf="isAdmin">
+  <div class="d-flex" *ngIf="!isShowCreateWiki && isAdminAddWikiButtonDisplay && !isWikiAdmin && !isWikiDraft">
+    <button class="custButStyle" (click)="showAdminAddWiki()">Add Wiki</button>
+  </div>
+  <div *ngIf="isWikiDraft">
+    <app-edit-pending-wiki [isWikiDraft]="isWikiDraft"></app-edit-pending-wiki>
+  </div>
+  <app-pending-wiki [isWikiAdmin]="isWikiAdmin"></app-pending-wiki>
+  <app-wiki-admin *ngIf="isShowCreateWiki"></app-wiki-admin>
+</div>

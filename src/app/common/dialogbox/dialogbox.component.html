@@ -1,0 +1,16 @@
+<form [formGroup]="data.group" class="{{ isImage ? 'image-dialog-box':'dialog-box'}}">
+    <div *ngIf="isheader" class="header d-flex justify-content-between align-items-center">
+        <p mat-dialog-title>
+            <mat-icon *ngIf="data.svgIcon" [svgIcon]="data.svgIcon">{{data.svgIcon}}</mat-icon>
+            {{data.title | translate}}
+        </p>
+        <mat-icon *ngIf="!data.closeIcon" [mat-dialog-close]="close">close</mat-icon>
+    </div>
+    <div mat-dialog-content [ngClass]="{'dialog-body': minimumWidth}">
+        <p *ngIf="data.message">{{data.message | translate}}</p>
+        <ng-container #dialogcontent></ng-container>
+    </div>
+    <div mat-dialog-actions class="footer d-flex justify-content-between" [class]="data.footerclass">
+        <ng-container #footercontent></ng-container>
+    </div>
+</form>

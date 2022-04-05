@@ -1,0 +1,150 @@
+{
+  "ResultData": {
+    "ctype": "page",
+    "uuid": "pageUUID",
+    "css": "",
+    "visibility": true,
+    "hooks": [
+      {
+        "type": "microservice",
+        "hookType": "afterInit",
+        "config": {
+          "microserviceId": "getBatchWC",
+          "isLocal": false,
+          "LocalService": "assets/Responses/repairMockRamResponse.json",
+          "requestMethod": "get",
+          "params": {
+            "locationId": "#userSelectedLocation",
+            "clientId": "#userSelectedClient",
+            "contractId": "#userSelectedContract",
+            "processId": "#selectedHomeMenuId",
+            "appId": "#selectedHomeMenuId",
+            "userName": "#loginUUID.username"
+          }
+        },
+        "responseDependents": {
+          "onSuccess": {
+            "actions": [
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "verifoneWCTypeUUID",
+                  "dropDownProperties": {
+                    "options": "#getBatchWC"
+                  }
+                }
+              }
+            ]
+          },
+          "onFailure": {
+            "actions": [
+              {
+                "type": "handleCommonServices",
+                "config": {
+                  "type": "errorRenderTemplate",
+                  "contextKey": "errorMsg",
+                  "updateKey": "errorTitleUUID"
+                }
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "validations": [],
+    "action": [],
+    "header": [
+      {
+        "ctype": "toolbar",
+        "uuid": "searchCriteriaWCToolbar",
+        "toolbarClass": "searchCriteria-toolbar section-title",
+        "items": [
+          {
+            "ctype": "title",
+            "uuid": "searchCriteriaToolbarWCOperations",
+            "title": "Work Center Operations"
+          }
+        ]
+      }
+    ],
+    "items": [
+      {
+        "ctype": "title",
+        "uuid": "searchCriteriaErrorTitleUUID",
+        "titleClass": "error-title",
+        "isShown": false
+      },
+      {
+        "ctype": "title",
+        "uuid": "estimateErrorTitleUUID",
+        "titleClass": "error-title",
+        "isShown": false
+      },
+      {
+        "ctype": "formPanel",
+        "title": "",
+        "header": "",
+        "uuid": "searchCriteriaFormUUID",
+        "formPanelClass": "searchCriteria-panel",
+        "visibility": true,
+        "hooks": [],
+        "validations": [],
+        "actions": [],
+        "items": [
+          {
+            "ctype": "label",
+            "text": "Search Work Center",
+            "labelClass": "col-3 subtitle1 verifone-search-label"
+          },
+          {
+            "ctype": "nativeDropdown",
+            "uuid": "verifoneWCTypeUUID",
+            "hooks": [],
+            "validations": [],
+            "type": "text",
+            "required": true,
+            "submitable": true,
+            "label": "",
+            "labelPosition": "",
+            "name": "identificatorTypeForUnit",
+            "defaultValue": "",
+            "dropdownClass": "col-9 rounded verifone-search",
+            "code": "workcenterId",
+            "displayValue": "workcenterName",
+            "options": [],
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "verifoneWCResultData",
+                  "data": "elementControlValue"
+                },
+                "eventSource": "change"
+              },
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "verifoneWCResultValue",
+                  "data": "elementControlName"
+                },
+                "eventSource": "change"
+              },
+              {
+                "type": "renderTemplate",
+                "config": {
+                  "templateId": "verifone/verifone-batchProcess.json",
+                  "mode": "local"
+                },
+                "eventSource": "change"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "footer": []
+  },
+  "Result": "SUCCESS"
+}

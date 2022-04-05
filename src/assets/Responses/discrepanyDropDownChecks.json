@@ -1,0 +1,320 @@
+{
+    "type": "condition",
+    "config": {
+        "operation": "isEqualTo",
+        "lhs": "#discrepancyCode",
+        "rhs": "HP_NO_SN_PN"
+    },
+    "eventSource": "change",
+    "responseDependents": {
+        "onSuccess": {
+            "actions": [
+                {
+                    "type": "updateComponent",
+                    "config": {
+                        "key": "blindReceiptUUID",
+                        "fieldProperties": {
+                            "UnitSN": "MISSING",
+                            "UnitPN": "HP_NO_SN_PN"
+                        }
+                    }
+                },
+                {
+                    "type": "disableComponent",
+                    "config": {
+                        "key": "UnitSNUUID",
+                        "property": "UnitSN"
+                    }
+                },
+                {
+                    "type": "disableComponent",
+                    "config": {
+                        "key": "UnitPNUUID",
+                        "property": "UnitPN"
+                    }
+                }
+            ]
+        },
+        "onFailure": {
+            "actions": [
+                {
+                    "type": "updateComponent",
+                    "config": {
+                        "key": "blindReceiptUUID",
+                        "fieldProperties": {
+                            "UnitSN": "",
+                            "UnitPN": ""
+                        }
+                    }
+                },
+                {
+                    "type": "enableComponent",
+                    "config": {
+                        "key": "UnitSNUUID",
+                        "property": "UnitSN"
+                    }
+                },
+                {
+                    "type": "enableComponent",
+                    "config": {
+                        "key": "UnitPNUUID",
+                        "property": "UnitPN"
+                    }
+                }
+            ]
+        }
+    }
+},
+{
+    "type": "condition",
+    "config": {
+        "operation": "isEqualTo",
+        "lhs": "#discrepancyCode",
+        "rhs": "HP_UNIT_BACK"
+    },
+    "eventSource": "change",
+    "responseDependents": {
+        "onSuccess": {
+            "actions": [
+                {
+                    "type": "updateComponent",
+                    "config": {
+                        "key": "blindReceiptUUID",
+                        "fieldProperties": {
+                            "UnitPN": "HP_UNIT_BACK"
+                        }
+                    }
+                },
+                {
+                    "type": "disableComponent",
+                    "config": {
+                        "key": "UnitPNUUID",
+                        "property": "UnitPN"
+                    }
+                }
+            ]
+        },
+        "onFailure": {
+            "actions": [
+                {
+                    "type": "updateComponent",
+                    "config": {
+                        "key": "blindReceiptUUID",
+                        "fieldProperties": {
+                            "UnitPN": ""
+                        }
+                    }
+                },
+                {
+                    "type": "enableComponent",
+                    "config": {
+                        "key": "UnitPNUUID",
+                        "property": "UnitPN"
+                    }
+                }
+            ]
+        }
+    }
+}
+
+{
+    "type": "updateComponent",
+    "config": {
+        "key": "blindReceiptUUID",
+        "fieldProperties": {
+            "UnitSN": "MISSING",
+            "UnitPN": "HP_EMPTY"
+        }
+    }
+},
+"createReferenceOrderInfo": {
+    "systemId": "1",
+    "UserName": "#userAccountInfo.PersonalDetails.USERID",
+    "Password": "#loginUUID.password",
+    "OrderInfo": {
+        "billToDo": {},
+        "billingTermsAbbr": "",
+        "btType": "#orderDetails.BUSINESS_TRX_TYPE_ID", //Default : CR
+        "clientAbbr": "#orderDetails.CLIENT_NAME", //hompage client name
+        "clientRefNo1": "#orderDetails.CLIENT_REFERENCE_NO1", //""
+        "clientRefNo2": "#orderDetails.CLIENT_REFERENCE_NO2", //""
+        "contract": "#orderDetails.CONTRACT_NAME", //hompage contract name
+        "custOrderNo": "#blindReceiptFormData.customerPONumber",
+        "customerAbbr": "#orderDetails.TRADING_PARTNER_NAME", //HEWLETT PACKARD
+        "dfltPOAbbrv": "",
+        "dfltPaymentTermsAbbrv": "",
+        "documentNo": "",
+        "geography": "#orderDetails.LOCATION_NAME", //hompage location name
+        "headerFlexFields": {
+            "FlexFields": []
+        },
+        "id": "",
+        "inboundAddressAbbr": "",
+        "newLineList": [
+            {
+                "ABomPN": "",
+                "condition": "",
+                "currency": "USD",
+                "custOrderLineNo": "",
+                "custPartNo": "",
+                "lineFlexFields": "",
+                "manufacturer": "",
+                "manufacturerPartNo": "",
+                "notes": "",
+                "orderLineNo": "1",
+                "partList": "",
+                "partNo": "#blindReceiptFormData.UnitPN", //Discrapency code
+                "priority": "",
+                "quantity": "1 ",
+                "reonCode": "",
+                "reonNotes": "",
+                "shippingTermsAbbr": "",
+                "status": "",
+                "taxableFlag": "",
+                "unitPrice": "1",
+                "warrantyFlag": "",
+                "ordShipTermName": "",
+                "ordShipTermAllowPartialShipment": "",
+                "ordShipTermCarrier": "",
+                "ordShipTermCarrierType": "",
+                "ordShipTermFobCode": "",
+                "ordShipTermFreightAccountCode": "",
+                "ordShipTermServiceType": ""
+            }
+        ],
+        "notes": "Quarantine",
+        "outboundAddressAbbr": "",
+        "shipToDo": {},
+        "status": "#orderDetails.ORDER_STATUS_NAME", //"Released"
+        "systemId": "1",
+        "warehouse": "#orderDetails.INBOUND_WAREHOUSE_NAME", //HP LAPTOP WUR
+        "wsFlexFields": {
+            "FlexFields": []
+        },
+        "OrdTradPart_Name": "",
+        "OrdTradPart_Note": "",
+        "OrdTradPart_OrderPaymentTerms": "",
+        "OrdTradPart_BillShipToSameContactAndAddress": "",
+        "NonValidatedTradingPartner": ""
+    },
+    "IP": "::1",
+    "CallSource": "FrontEnd",
+    "APIUsage_LocationName": "#orderDetails.LOCATION_NAME",
+    "APIUsage_ClientName": "#orderDetails.CLIENT_NAME"
+},
+"ReceiptInfo": {
+    "User": "#userAccountInfo.PersonalDetails.USERID",
+    "Pwd": "#loginUUID.password",
+    "CarrierName": "",
+    "PackingListNo": "",
+    "PackingListNoPackingListNo": "",
+    "TrackingNo": "#trackingNo",
+    "Lines": {
+        "Line": {
+            "LineNo": "1",
+            "Items": {
+                "Item": {
+                    "PartNum": "#blindReceiptFormData.UnitPN", //Discrapency code
+                    "Quantity": "1",
+                    "OriginalSerialNumber": "",
+                    "OriginalBCN": "",
+                    "SerialNum": "#blindReceiptFormData.UnitSN", //tracking number or Unit SN
+                    "BCN": {
+                        "_Number": ""
+                    },
+                    "FixedAssetTag": "#orderDetails.TRADING_PARTNER_NAME",
+                    "ReasonCode": "",
+                    "ReasonNotes": "",
+                    "ResultCode": "Good Receipt",
+                    "Warranty": "#warranty",
+                    "Notes": "",
+                    "RevisionLevel": "",
+                    "FlexFields": {
+                        "FlexField": [
+                            {
+                                "Name": "QRN_CSO",
+                                "Value": "#blindReceiptFormData.BoxCSO"
+                            },
+                            {
+                                "Name": "QRN_PN",
+                                "Value": "#blindReceiptFormData.UnitPN" //MISSING to UNIT PN
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+    },
+    "ReceiptFlexFields": {
+        "FlexFields": {
+            "FlexField": [
+                {
+                    "Name": "",
+                    "Value": ""
+                },
+                {
+                    "Name": "",
+                    "Value": ""
+                }
+            ]
+        }
+    },
+    "ExternalReceiptData": {
+        "ReceiptNumber": "",
+        "Application": "",
+        "Warehouse": ""
+    },
+    "IP": ":1",
+    "CallSource": "FrontEnd",
+    "APIUsage_LocationName": "#orderDetails.LOCATION_NAME",
+    "APIUsage_ClientName": "#orderDetails.CLIENT_NAME"
+},
+"justReturnXML": "false"
+}
+
+
+{
+    "type": "condition",
+    "config": {
+        "operation": "isEqualTo",
+        "lhs": "#searchCSONumber",
+        "rhs": "#scanSerialNumberResp.OrderSerialNumber"
+    },
+    "eventSource": "click",
+    "responseDependents": {
+        "onSuccess": {
+            "actions": [
+                {
+                    "type": "updateComponent",
+                    "config": {
+                        "key": "ConfirmPartNumberUUID",
+                        "properties": {
+                            "hidden": false
+                        },
+                        "fieldProperties": {
+                            "ROPartNumber": "#scanSerialNumberResp.OrderPartNumber",
+                            "actualPartNumber": "#scanSerialNumberResp.PartNumber"
+                        }
+                    }
+                }
+            ]
+        },
+        "onFailure": {
+            "actions": [
+                {
+                    "type": "updateComponent",
+                    "config": {
+                        "key": "ConfirmPartNumberUUID",
+                        "properties": {
+                            "hidden": false
+                        },
+                        "fieldProperties": {
+                            "ROPartNumber": "#scanSerialNumberResp.OrderPartNumber",
+                            "actualPartNumber": "#scanSerialNumberResp.PartNumber"
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}

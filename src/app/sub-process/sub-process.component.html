@@ -1,0 +1,52 @@
+ <!--left-side-nav-->
+<mat-drawer-container class="subprocess-containerClass">
+  <mat-drawer [class]="class" class="sidenav left-matdrawer col-md-2 col-sm-12" style="background-color: #464C59;padding: 0" [position]="leftsideNav.position"
+    mode=side disableClose=true [opened]="leftsideNav.opened">
+    <div class="flex_container stack_vertical">
+      <!-- header -->
+      <header class="flex_item leftside_header" [class]="leftsideNav.headerScroll">
+        <ng-container #spleftnavheader></ng-container>
+      </header>
+      <header class="flex_item leftside_header">
+        <ng-container #spleftnavheader2 ></ng-container>
+      </header>
+      <!-- body -->
+      <div [class] = "leftsideNav.menuItemscroll" class="flex_item divider_top">
+        <ng-container #spleftnavbody></ng-container>
+        <!-- <app-menu-list-item *ngFor="let item of navItems" [item]="item"></app-menu-list-item> -->
+      </div>
+      <!-- footer -->
+      <footer class="flex_item divider_top align_end">
+        <ng-container #spleftnavfooter></ng-container>
+      </footer>
+    </div>
+  </mat-drawer>
+  <!--right-side-nav-->
+  <mat-drawer #drawerright mode="side" [position]="rightsidenav.position" [opened]="rightsidenav.opened" style="width: 35%;overflow-y: auto" (closed)="sideNavClosed()">
+    <!-- <mat-drawer #sidenav mode="side" position="end" style="width: 30%" [(opened)]="opened"
+              (opened)="events.push('open!')" (closed)="events.push('close!')"> -->
+    <header style="height: 0%; display:none">
+      <ng-container #sprightnavheader></ng-container>
+    </header>
+    <div style="height: 100%; overflow: auto">
+      <ng-container #sprightnavbody></ng-container>
+    </div>
+    <footer>
+      <ng-container #sprightnavfooter></ng-container>
+    </footer>
+  </mat-drawer>
+
+  <!--main Page Content-->
+  <mat-drawer-content autosize [style]="{'margin-left': (screenWidth < 641) ? '0px':'16em'}" style = "background: rgb(226, 231, 237);" [class]="pcBodyClass">
+    <header>
+      <ng-container #spheader></ng-container>
+    </header>
+    <!-- mainContent -->
+    <div style="height: 100%">
+      <ng-container #sppageContent></ng-container>
+    </div>
+    <footer>
+      <ng-container #spfooter></ng-container>
+    </footer>
+  </mat-drawer-content>
+</mat-drawer-container>

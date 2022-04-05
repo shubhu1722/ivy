@@ -1,0 +1,1078 @@
+{
+    "ResultData":{
+        "ctype": "page",
+        "uuid": "pageUUID",
+        "css": "",
+        "visibility": true,
+        "onLoadActions": [],
+        "hooks": [
+          {
+            "type": "condition",
+            "hookType": "afterInit",
+            "config": {
+              "operation": "isValid",
+              "lhs": "#unitBlockData"
+            },
+            "responseDependents": {
+              "onSuccess": {
+                "actions": [
+                  {
+                    "type": "updateComponent",
+                    "config": {
+                      "key": "blockUnitUUID",
+                      "properties": {
+                        "titleClass": "date-text mb-2 mt-2 text-danger font-weight-bold"
+                      }
+                    }
+                  }
+                ]
+              },
+              "onFailure": {
+                "actions": [
+                  {
+                    "type": "updateComponent",
+                    "config": {
+                      "key": "blockUnitUUID",
+                      "properties": {
+                        "titleClass": "date-text mb-2 mt-2 text-white"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "type": "microservice",
+            "hookType": "afterInit",
+            "config": {
+                "microserviceId": "getPreviousWCNote",
+                "requestMethod": "get",
+                "params": {
+                    "itemId": "#UnitInfo.ITEM_ID"
+                }
+            },
+            "responseDependents": {
+                "onSuccess": {
+                    "actions": [
+                        {
+                            "type": "context",
+                            "config": {
+                                "requestMethod": "add",
+                                "key": "lastNoteData",
+                                "data": "responseData"
+                            }
+                        },
+                        {
+                            "type": "updateComponent",
+                            "config": {
+                                "key": "verifoneSolderingLastNoteTextUUID",
+                                "properties": {
+                                    "titleValue": "#lastNoteData.timeOutNote"
+                                }
+                            }
+                        }
+                    ]
+                },
+                "onFailure": {
+                    "actions": [
+                        {
+                            "type": "context",
+                            "config": {
+                                "requestMethod": "add",
+                                "key": "errorDisp",
+                                "data": "responseData"
+                            }
+                        },
+                        {
+                            "type": "condition",
+                            "config": {
+                                "operation": "isEqualTo",
+                                "lhs": "#errorDisp",
+                                "rhs": "No Record Found"
+                            },
+                            "responseDependents": {
+                                "onSuccess": {
+                                    "actions": [
+                                        {
+                                            "type": "updateComponent",
+                                            "config": {
+                                                "key": "errorTitleUUID",
+                                                "properties": {
+                                                    "titleValue": "#errorDisp",
+                                                    "isShown": false
+                                                }
+                                            }
+                                        }
+                                    ]
+                                },
+                                "onFailure": {
+                                    "actions": [
+                                        {
+                                            "type": "updateComponent",
+                                            "config": {
+                                                "key": "errorTitleUUID",
+                                                "properties": {
+                                                    "titleValue": "#errorDisp",
+                                                    "isShown": true
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+          },
+            {
+              "type": "microservice",
+              "hookType": "afterInit",
+              "config": {
+                "microserviceId": "getResultCodes",
+                "isLocal": false,
+                "LocalService": "assets/Responses/mockBGA.json",
+                "requestMethod": "get",
+                "params": {
+                  "bcn": "#UnitInfo.ITEM_BCN",
+                  "validateResult": 1
+                }
+              },
+              "responseDependents": {
+                "onSuccess": {
+                  "actions": [
+                    {
+                      "type": "context",
+                      "config": {
+                        "requestMethod": "add",
+                        "key": "getverifoneSolderingResultcodes",
+                        "data": "responseData"
+                      }
+                    },
+                    {
+                      "type": "updateComponent",
+                      "config": {
+                        "key": "verifoneResultCodesUUID",
+                        "dropDownProperties": {
+                          "options": "#getverifoneSolderingResultcodes"
+                        }
+                      }
+                    }                   
+                    
+                  ]
+                },
+                "onFailure": {
+                  "actions": [
+                    {
+                      "type": "context",
+                      "config": {
+                        "requestMethod": "add",
+                        "key": "errorDisp",
+                        "data": "responseData"
+                      }
+                    },
+                    {
+                      "type": "condition",
+                      "config": {
+                        "operation": "isEqualTo",
+                        "lhs": "#errorDisp",
+                        "rhs": "No Record Found"
+                      },
+                      "responseDependents": {
+                        "onSuccess": {
+                          "actions": [
+                            {
+                              "type": "updateComponent",
+                              "config": {
+                                "key": "errorTitleUUID",
+                                "properties": {
+                                  "titleValue": "#errorDisp",
+                                  "isShown": false
+                                }
+                              }
+                            }
+                          ]
+                        },
+                        "onFailure": {
+                          "actions": [
+                            {
+                              "type": "updateComponent",
+                              "config": {
+                                "key": "errorTitleUUID",
+                                "properties": {
+                                  "titleValue": "#errorDisp",
+                                  "isShown": true
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+          },
+          {
+              "type": "microservice",
+              "hookType": "afterInit",
+              "config": {
+                  "microserviceId": "getWcFlexFieldsLov",
+                  "requestMethod": "get",
+                  "params": {
+                      "itemId": "#UnitInfo.ITEM_ID",
+                      "ffIDs": "#getReferenceDataKeys.subProcess.VERIFONE.solderingFFID"
+                  }
+              },
+              "responseDependents": {
+                  "onSuccess": {
+                      "actions": [
+                          {
+                              "type": "context",
+                              "config": {
+                                  "requestMethod": "add",
+                                  "key": "verifonesolderingBoardPNData",
+                                  "data": "responseData"
+                              }
+                          },
+                          {
+                            "type": "filterAndGetIndex",
+                            "config": {
+                                "data": "#verifonesolderingBoardPNData",
+                                "objectKey": "flexFieldName",
+                                "getValueBy": "Board PN1",
+                                "contextKey": "boardPn1Defaultdata",
+                                "operation": "getIndex"
+                            }
+                        },
+                        {
+                          "type": "filterAndGetIndex",
+                          "config": {
+                            "data": "#verifonesolderingBoardPNData",
+                            "objectKey": "flexFieldName",
+                            "getValueBy": "Board PN2",
+                            "contextKey": "boardPn2Defaultdata",
+                            "operation": "getIndex"
+                          }
+                        },
+                        {
+                          "type": "setDefaultValue",
+                          "config": {
+                            "key": "verifoneBoardPN1UUID",
+                            "defaultValue": "#boardPn1Defaultdata.flexFieldValue"
+                          }
+                        },
+                        {
+                          "type": "setDefaultValue",
+                          "config": {
+                            "key": "verifoneBoardPN2UUID",
+                            "defaultValue": "#boardPn2Defaultdata.flexFieldValue"
+                          }
+                        }                     
+                      ]
+                  },
+                  "onFailure": {
+                    "actions":[
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "errorDisp",
+                          "data": "responseData"
+                        }
+                      },
+                      {
+                        "type": "condition",
+                        "config": {
+                          "operation": "isEqualTo",
+                          "lhs": "#errorDisp",
+                          "rhs": "No Record Found"
+                        },
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "errorTitleUUID",
+                                  "properties": {
+                                    "titleValue": "#errorDisp",
+                                    "isShown": false
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": [
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "errorTitleUUID",
+                                  "properties": {
+                                    "titleValue": "#errorDisp",
+                                    "isShown": true
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  }
+              }
+          },
+          {
+            "type": "microservice",
+            "hookType": "afterInit",
+            "config": {
+                "microserviceId": "getAlertsBySerialNumberFE",
+                "requestMethod": "post",
+                "isLocal": false,
+                "LocalService": "assets/Responses/mockBGA.json",
+                "body": {
+                    "serialNumber": "#UnitInfo.SERIAL_NO",
+                    "workCenter": "#UnitInfo.WORKCENTER"
+                },
+                "toBeStringified": true
+            },
+            "responseDependents": {
+              "onSuccess": {
+                "actions": [
+                  {
+                    "type": "context",
+                    "config": {
+                        "requestMethod": "add",
+                        "key": "specialMessageData",
+                        "data": "responseData"
+                    }
+                  },
+                  {
+                    "type": "condition",
+                    "config": {
+                      "operation": "isValid",
+                      "lhs": "#specialMessageData.rows.0.alert"
+                    },
+                    "responseDependents": {
+                      "onSuccess": {
+                        "actions": [
+                          {
+                              "type": "updateComponent",
+                              "config": {
+                                  "key": "verifoneRepairInfoSMUUID",
+                                  "properties": {
+                                      "title": "#specialMessageData.rows.0.alert",
+                                      "isShown": true
+                                  }
+                              }
+                          },
+                          {
+                            "type": "updateComponent",
+                            "config": {
+                                "key": "verifoneRepairInfoUUID",
+                                "properties": {
+                                    "expanded": true,
+                                    "disabled": false
+                                }
+                            }                            
+                          },
+                          {
+                            "type": "updateComponent",
+                            "config": {
+                                "key": "verifoneRepirInfoCompleteButtonUUID",
+                                "properties": {
+                                    "disabled": true
+                                }
+                            }                            
+                          },
+                          {
+                            "type": "updateComponent",
+                            "config": {
+                                "key": "verifonRecordUnitDetailsUUID",
+                                "properties": {
+                                    "expanded": false,
+                                    "disabled": true
+                                }
+                            }                            
+                          }                        
+                          
+                        ]
+                      },
+                      "onFailure": {
+                        "actions": [
+                          {
+                            "type": "updateComponent",
+                            "config": {
+                                "key": "verifonRecordUnitDetailsUUID",
+                                "properties": {
+                                    "expanded": true,
+                                    "disabled": false
+                                }
+                            }                            
+                          } 
+                        ]
+                      }
+                    }
+                  }
+                ]
+              },
+              "onFailure": {
+                "actions": [
+                  {
+                    "type": "updateComponent",
+                    "config": {
+                        "key": "verifonRecordUnitDetailsUUID",
+                        "properties": {
+                            "expanded": true,
+                            "disabled": false
+                        }
+                    }                            
+                  } 
+                ]
+              }
+            }
+          }
+        ],
+        "validations": [],
+        "action": [],
+        "header":[
+          {
+            "ctype": "breadcrumb",
+            "style": "padding-left: 4px;",
+            "breadcrumbs": [
+                {
+                    "label": "#userSelectedLocationName"
+                },
+                {
+                    "label": "#userSelectedClientName"
+                },
+                {
+                    "label": "#userSelectedContractName"
+                }
+            ]
+          },
+            {
+                "ctype": "toolbar",
+                "toolbarClass": "pagecontent-header",
+                "items": [
+                    {
+                      "ctype": "title",
+                      "uuid": "dellCarRepairAssessmentTitleUUID",
+                      "titleValue": "Soldering",
+                      "titleClass": "greyish-black section-title"
+                    }, 
+                    {
+                        "ctype": "iconbutton",
+                        "iconButtonClass": "headeropen-button",
+                        "text": "",
+                        "uuid": "pageopenUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "hidden": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "icon": "menu_open",
+                        "disableRipple": true,
+                        "iconClass": "header-icon",
+                        "actions": [ 
+                          {
+                            "type": "toggle",
+                            "eventSource": "click",
+                            "name": "subProcessRightNavref"
+                          },
+                          {
+                              "type": "updateComponent",
+                              "config": {
+                                  "key": "openUUID",
+                                  "properties": {
+                                      "hidden": false
+                                  }
+                              },
+                              "eventSource": "click"
+                          },
+                          {
+                              "type": "updateComponent",
+                              "config": {
+                                  "key": "pageopenUUID",
+                                  "properties": {
+                                      "hidden": true
+                                  }
+                              },
+                              "eventSource": "click"
+                          }
+                         ]
+                    }
+                ]
+            }
+        ],
+        "items": [
+          {
+            "ctype": "title",
+            "uuid": "errorTitleUUID",
+            "titleClass": "error-title",
+            "isShown": false,
+            "containerId": "prebodysectionone"
+          },
+            {
+                "ctype": "taskPanel",
+                "uuid": "verifoneLastNoteUUID",
+                "header": {
+                    "title": "Last note",
+                    "svgIcon": "description_icon",
+                    "iconClass": "active-header",
+                    "class": "po-specific"
+                  },
+                  "expanded": false,
+                  "disabled": false,
+                  "hideToggle": true,
+                  "hidden": false,
+                  "hooks": [],
+                  "validations": [],
+                  "isMandatory": false,
+                  "actions": [],
+                  "isblueBorder": true,
+                  "items":[
+                    {
+                        "ctype":"title",
+                        "uuid": "verifoneSolderingLastNoteTextUUID",
+                        "titleClass":"greyish-black body-italic assessment-alert",
+                        "title":""
+                    }
+                ],
+                "footer":[]
+            },
+            {
+                "ctype": "taskPanel",
+                "isblueBorder": true,
+                "uuid": "verifoneRepairInfoUUID",
+                "title": "",
+                "header": {
+                  "title": "Repair Information",
+                  "icon": "description",
+                  "iconClass": "active-header",
+                    "statusIcon": "hourglass_empty",
+                    "statusClass":"incomplete-status",
+                  "class": "po-specific",
+                  "svgIcon": "description_icon"
+              
+                },
+                "expanded": false,
+                "disabled": false,
+                "hideToggle": true,
+                "panelClass": "margin-top-10",
+                "hidden": false,
+                "hooks": [],
+                "validations": [],
+                "actions": [],
+                "items": [                  
+                  {
+                    "ctype": "title",
+                    "uuid": "verifoneRepairInfoSMHeadingUUID",
+                    "titleClass": "greyish-black heading2",
+                    "isShown": true,
+                    "title": "Special Message"
+                  },
+                  {
+                    "ctype": "title",
+                    "uuid": "verifoneRepairInfoSMUUID",
+                    "titleClass": "greyish-black body-italic",
+                    "isShown": false,
+                    "title": ""
+                  },
+                  {
+                    "ctype": "checkbox",
+                    "uuid": "verifoneRepairInfoCheckbox",
+                    "label": "I have read this message",
+                    "hooks": [],
+                    "validations": [],
+                    "submitable": true,
+                    "required": true,
+                    "disabled": false,
+                    "isDisableNotReq": true,
+                    "labelPosition": "after",
+                    "actions": [
+                      {
+                        "type": "context"
+                      }
+                    ]
+                  }
+                ],
+                "footer": [
+                  {
+                    "ctype": "button",
+                    "color": "primary",
+                    "text": "Complete",
+                    "class": "primary-btn",
+                    "uuid": "verifoneRepirInfoCompleteButtonUUID",
+                    "disabled": false,
+                    "hidden": false,
+                    "visibility": true,
+                    "type": "submit",
+                    "hooks": [],
+                    "validations": [],
+                    "actions": [
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "verifoneRepairInfoUUID",
+                          "properties": {
+                            "expanded": false,
+                            "disabled": false,
+                            "header": {
+                              "title": "Repair Information",
+                              "svgIcon": "description_icon",
+                              "statusIcon": "check_circle",
+                              "statusClass": "complete-status",
+                              "class": "complete-task ",
+                              "iconClass": "complete-task"
+                            }
+                          }
+                        },
+                        "eventSource": "click"
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "verifonRecordUnitDetailsUUID",
+                          "properties": {
+                            "expanded": true,
+                            "disabled": false
+                          }
+                        },
+                        "eventSource": "click"
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "verifoneRepirInfoCompleteButtonUUID",
+                          "properties": {
+                            "disabled": true
+                          }
+                        },
+                        "eventSource": "click"
+                      }
+                    ]
+                  }
+                ]
+            },
+            {
+                "ctype": "taskPanel",
+                "isblueBorder": true,
+                "uuid": "verifonRecordUnitDetailsUUID",
+                "title": "",
+                "header": {
+                  "title": "Record Unit Details",
+                  "icon": "description",
+                  "svgIcon": "description_icon",
+                
+                  "class": "po-specific"
+                },
+                "expanded": false,
+                "disabled": true,
+                "hideToggle": true,
+                "panelClass": "margin-top-10",
+                "hidden": false,
+                "hooks": [],
+                "validations": [],
+                "actions": [],
+                "items": [
+                  {
+                    "ctype": "title",
+                    "uuid": "verifoneBatteryVoltageTextUUID",
+                    "titleClass": "greyish-black body-italic assessment-alert",
+                    "title": "Record the following details"
+                  } ,
+                  {
+                    "ctype": "textField",
+                    "uuid": "verifoneBoardPN1UUID",
+                    "hooks": [],
+                    "actions": [],
+                    "type": "text",
+                    "placeholder": "Scan #",
+                    "submitable": true,
+                    "visibility": true,
+                    "disabled" : false,
+                    "focus": false,
+                    "label": "Board PN1",
+                    "labelPosition": "left",
+                    "textfieldClass": "col-6 p-0",
+                    "name": "verifoneBoardPN1Value",
+                    "required" : true,
+                    "labelClass": "dell-greyish-black col-8 p-0  vmi-bin",
+                    "formGroupClass": "flex-container-one-fourth-width mt-0 body",
+                    "validations": []
+                  },
+                  {
+                    "ctype": "textField",
+                    "uuid": "verifoneBoardPN2UUID",
+                    "hooks": [],
+                    "actions": [],
+                    "type": "text",
+                    "placeholder": "Scan #",
+                    "submitable": true,
+                    "visibility": true,
+                    "disabled" : false,
+                    "label": "Board PN2 (Optional)",
+                    "labelPosition": "left",
+                    "textfieldClass": "col-6 p-0",
+                    "name": "verifoneBoardPN2Value",
+                    "required" : false,
+                    "labelClass": "dell-greyish-black col-8 p-0  vmi-bin",
+                    "formGroupClass": "flex-container-one-fourth-width mt-0 body",
+                    "validations": []
+                  }
+                ],
+                "footer": [{
+                    "ctype": "button",
+                    "color": "primary",
+                    "text": "Complete",
+                    "class": "primary-btn",
+                    "uuid": "verifoneBVCompleteButtonUUID",
+                    "disabled": true,
+                    "hidden": false,
+                    "visibility": true,
+                    "type": "submit",
+                    "hooks": [],
+                    "validations": [],
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                            "requestMethod": "add",
+                            "key": "solderingRecordUnitFormData",
+                            "data": "formData"
+                        },
+                        "eventSource": "click"
+                      },
+                      {
+                        "type": "getVerifoneWCFlexField",
+                        "config": {
+                            "key": "getVerifoneWCFlexFieldData",
+                            "flexdata": {
+                                "BoardPN1": "#solderingRecordUnitFormData.verifoneBoardPN1Value",
+                                "BoardPN2": "#solderingRecordUnitFormData.verifoneBoardPN2Value"
+                            }
+                        },
+                        "eventSource": "click"
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "verifonRecordUnitDetailsUUID",
+                          "properties": {
+                            "expanded": false,
+                            "disabled": false,
+                            "header": {
+                              "title": "Record Unit Details",
+                              "svgIcon": "description_icon",
+                              "statusIcon": "check_circle",
+                              "statusClass": "complete-status",
+                              "class": "complete-task ",
+                              "iconClass": "complete-task"
+                            }
+                          }
+                        },
+                        "eventSource": "click"
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "verifoneBVCompleteButtonUUID",
+                          "properties": {
+                            "disabled": true
+                          }
+                        },
+                        "eventSource": "click"
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "verifoneResultCodesUUID",
+                          "properties": {
+                            "disabled": false
+                          }
+                        },
+                        "eventSource": "click"
+                      },                      
+                      {
+                        "type": "setDefaultValue",
+                        "config": {
+                          "key": "verifoneResultCodesUUID",
+                          "defaultValue": "SND_DBUG"
+                        },
+                        "eventSource": "click"
+                      },
+                      {
+                        "type": "context",                        
+                        "config": {
+                          "requestMethod":"add",
+                          "key": "SelectedSolderingResultcode",
+                          "data": "SND_DBUG"
+                        },
+                        "eventSource": "click"                        
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "verifoneTimeoutUUID",
+                          "properties": {
+                            "disabled": false
+                          }
+                        },
+                        "eventSource": "click"
+                      }                     
+                    ]
+                  }]
+            } 
+        ],
+        "footer": [
+          {
+            "ctype": "toolbar",
+            "toolbarClass": "pagecontent-footer",
+            "items": [
+              {
+                "ctype": "iconbutton",
+                "iconButtonClass": "footer-save body primary-btn",
+                "text": "Exit",
+                "uuid": "saveUUID",
+                "visibility": true,
+                "disabled": false,
+                "type": "submit",
+                "hooks": [],
+                "validations": [],
+                "icon": "close",
+                "actions": [
+                  {
+                    "type": "renderTemplate",
+                    "config": {
+                      "templateId": "dashboard.json",
+                      "mode": "local"
+                    },
+                    "eventSource": "click"
+                  }
+                ]
+              },
+              {
+                "ctype": "iconText",
+                "uuid": "verifoneAddNoteUUID",
+                "icon": "add_comment",
+                "disabled": false,
+                "text": "Add Note",
+                "textCss": "",
+                "iconPosition": "Before",
+                "iconTextClass": "footer-addNote body",
+                "actions": [
+                  {
+                    "type": "dialog",
+                    "uuid": "verifoneAddNoteDialogUUID",
+                    "config": {
+                      "title": "Add Note",
+                      "items": [
+                        {
+                          "ctype": "textarea",
+                          "name": "addNote",
+                          "textareaClass": "note-class",
+                          "uuid": "verifoneAddNoteUUID",
+                          "required": true,
+                          "disabled": false,
+                          "value": "#solderingTimeoutNotes.addNote",
+                          "actions": []
+                        }
+                      ],
+                      "footer": [
+                        {
+                          "ctype": "button",
+                          "color": "primary",
+                          "text": "Close",
+                          "uuid": "closeButtonUUID",
+                          "closeType": "close",
+                          "inputClass": "close-button",
+                          "disableClose": true,
+                          "visibility": true,
+                          "dialogButton": true,
+                          "type": "",
+                          "hooks": [],
+                          "validations": [],
+                          "actions": []
+                        },
+                        {
+                          "ctype": "button",
+                          "color": "primary",
+                          "text": "Done",
+                          "uuid": "dellObaDoneAddNoteUUID",
+                          "dialogButton": true,
+                          "visibility": true,
+                          "disabled": true,
+                          "type": "submit",
+                          "closeType": "success",
+                          "hooks": [],
+                          "validations": [],
+                          "actions": []
+                        }
+                      ]
+                    },
+                    "eventSource": "click",
+                    "responseDependents": {
+                      "onSuccess": {
+                        "actions": [
+                          {
+                            "type": "context",
+                            "config": {
+                              "key": "solderingTimeoutNotes",
+                              "data": "formData",
+                              "requestMethod": "add",
+                              "value": "addNote"
+                            }
+                          }
+                        ]
+                      },
+                      "onFailure": {
+                        "actions": []
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "ctype": "spacer",
+                "uuid": "verifoneEmptySpaceUUID",
+                "class": "empty-space"
+              },
+              {
+                "ctype": "iconbutton",
+                "uuid": "discrepancyPauseUUID",
+                "visibility": true,
+                "disabled": false,
+                "type": "submit",
+                "icon": "pause",
+                "iconClass": "",
+                "disableRipple": true,
+                "actions": [
+                    {
+                        "type":"showVerifoneOLEPausebuttonInScreen",
+                        "eventSource": "click"
+                    }
+                ]
+              },
+              {
+                "ctype": "nativeDropdown",
+                "dropdownClass": "footer-dropdown dropdown-container body2",
+                "uuid": "verifoneResultCodesUUID",
+                "name": "ResultCodes",
+                "dataSource": "#getResultCodeForDiscrepancy",
+                "code": "resultCode",
+                "displayValue": "resultCode",
+                "disabled": true,
+                "actions": [
+                  {
+                    "type": "context",
+                    "config": {
+                      "requestMethod": "add",
+                      "key": "SelectedSolderingResultcode",
+                      "data": "elementControlValue"
+                    },
+                    "eventSource": "change"
+                  },
+                  {
+                    "type": "updateComponent",
+                    "config": {
+                      "key": "verifoneTimeoutUUID",
+                      "properties": {
+                        "disabled": false
+                      }
+                    },
+                    "eventSource": "change"
+                  }
+                ]
+              },
+              {
+                "ctype": "button",
+                "color": "primary",
+                "text": "Time out",
+                "uuid": "verifoneTimeoutUUID",
+                "visibility": true,
+                "disabled": true,
+                "type": "submit",
+                "hooks": [],
+                "validations": [],
+                "buttonClass": "footer-button primary-btn",
+                "class": "primary-btn",
+                "actions": [
+                  {
+                    "type": "microservice",
+                    "eventSource": "click",
+                    "config": {
+                      "microserviceId": "performTimeOut",
+                      "requestMethod": "post",
+                      "body": {
+                        "timeOutRequest": {
+                          "location": "#UnitInfo.GEONAME",
+                          "bcn": "#UnitInfo.ITEM_BCN",
+                          "workCenter": "#UnitInfo.WORKCENTER",
+                          "password": "#loginUUID.password",
+                          "warrantyInd": "false",
+                          "notes": "#solderingTimeoutNotes.addNote",
+                          "resultCode": "#SelectedSolderingResultcode",
+                          "workCenterFlexFieldList": {
+                            "flexField": "#getVerifoneWCFlexFieldData"                             
+                          }
+                        },
+                        "modifyWarranty": 0,
+                        "timeOutType": "ProcessImmediate",
+                        "clientName": "#UnitInfo.CLIENTNAME",
+                        "contractName": "#UnitInfo.CONTRACTNAME",
+                        "userName": "#loginUUID.username",
+                        "userPass": "#loginUUID.password",
+                        "ip": "::1",
+                        "callSource": "FrontEnd",
+                        "apiUsage_LocationName": "#UnitInfo.GEONAME",
+                        "apiUsage_ClientName": "#UnitInfo.CLIENTNAME"
+                      },
+                      "toBeStringified": true
+                    },
+                    "responseDependents": {
+                      "onSuccess": {
+                        "actions":[
+                            {
+                                "type": "clearAllContext",
+                                "eventSource": "click"
+                              },
+                              {
+                                "type": "clearScreenData"
+                              },
+                              {
+                                "type": "renderTemplate",
+                                "config": {
+                                  "templateId": "dashboard.json",
+                                  "mode": "local"
+                                },
+                                "eventSource": "click"
+                              }
+                        ]
+                      },
+                      "onFailure": {
+                        "actions": [
+                          {
+                            "type": "handleCommonServices",
+                            "config": {
+                              "type": "errorRenderTemplate",
+                              "contextKey": "errorMsg",
+                              "updateKey": "errorTitleUUID"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                }
+                ]
+              }
+            ]
+          }
+        ]
+
+    },
+    "Result": "SUCCESS"
+}

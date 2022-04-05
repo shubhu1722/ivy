@@ -1,0 +1,225 @@
+{
+    "ctype": "page",
+    "uuid": "pageUUID",
+    "css": "",
+    "visibility": true,
+    "hooks": [],
+    "validations": [],
+    "action": [],
+    "header": [
+        {
+            "ctype": "toolbar",
+            "toolbarClass": "searchCriteria-toolbar section-title",
+            "items": [
+                {
+                    "ctype": "title",
+                    "title": "Receiving"
+                }
+            ]
+        }
+    ],
+    "items": [
+        {
+            "ctype": "title",
+            "uuid": "searchCriteriaErrorTitleUUID",
+            "titleClass": "error-title",
+            "isShown": false
+        },
+        {
+            "ctype": "formPanel",
+            "title": "Receiving",
+            "header": "",
+            "uuid": "receivingUUID",
+            "formPanelClass": "searchCriteria-panel",
+            "visibility": true,
+            "hooks": [],
+            "validations": [],
+            "actions": [],
+            "items": [
+                {
+                    "ctype": "nativeDropdown",
+                    "uuid": "dropdownUUID",
+                    "hooks": [],
+                    "validations": [],
+                    "actions": [],
+                    "type": "text",
+                    "required": true,
+                    "placeholder": "ReferenceOrderID",
+                    "submitable": true,
+                    "label": "",
+                    "labelPosition": "",
+                    "name": "homeSearchCriteria",
+                    "defaultValue": "TrackingNo",
+                    "dropdownClass": "searchcriteris-drpdwn",
+                    "options": [
+                        {
+                            "code": "TrackingNo",
+                            "displayValue": "Tracking Number"
+                        }
+                    ]
+                },
+                {
+                    "ctype": "textField",
+                    "uuid": "scanUUID",
+                    "hooks": [],
+                    "validations": [
+                        {
+                            "type": "regex",
+                            "script": "^[a-zA-Z0-9]{0,32}$"
+                        }
+                    ],
+                    "textfieldClass": "searchcriteris-text",
+                    "type": "text",
+                    "required": true,
+                    "placeholder": "Scan Tracking Number",
+                    "submitable": true,
+                    "label": "",
+                    "labelPosition": "",
+                    "name": "scan",
+                    "prefix": "true",
+                    "prefixIcon": "qr_code_scanner",
+                    "suffix": true,
+                    "suffixIcon": "arrow_forward",
+                    "actions": [
+                        {
+                            "type": "context",
+                            "config": {
+                                "key": "userSearchCriteria",
+                                "data": "formData",
+                                "requestMethod": "add"
+                            },
+                            "eventSource": "click"
+                        },
+                        {
+                            "type": "condition",
+                            "config": {
+                                "operation": "isEqualTo",
+                                "lhs": "#userSearchCriteria.homeSearchCriteria",
+                                "rhs": "TrackingNo"
+                            },
+                            "eventSource": "click",
+                            "responseDependents": {
+                                "onSuccess": {
+                                    "actions": [
+                                        {
+                                            "type": "context",
+                                            "config": {
+                                                "requestMethod": "add",
+                                                "key": "trackingNo",
+                                                "data": "#userSearchCriteria.scan"
+                                            }
+                                        }
+                                    ]
+                                },
+                                "onFailure": {
+                                    "actions": [
+                                        {
+                                            "type": "context",
+                                            "config": {
+                                                "requestMethod": "add",
+                                                "key": "trackingNo",
+                                                "data": ""
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "type": "microservice",
+                            "config": {
+                                "microserviceId": "getOrders",
+                                "requestMethod": "get",
+                                "params": {
+                                    "searchCriteriaValue": "#userSearchCriteria.scan",
+                                    "searchCriteriaName": "#userSearchCriteria.homeSearchCriteria",
+                                    "username": "#userAccountInfo.PersonalDetails.USERID"
+                                }
+                            },
+                            "eventSource": "click",
+                            "responseDependents": {
+                                "onSuccess": {
+                                    "actions": [
+                                        {
+                                            "type": "context",
+                                            "config": {
+                                                "requestMethod": "add",
+                                                "key": "orderDetails",
+                                                "data": "responseData"
+                                            }
+                                        },
+                                        {
+                                            "type": "context",
+                                            "config": {
+                                                "requestMethod": "add",
+                                                "key": "isGetOrdersSuccess",
+                                                "data": true
+                                            }
+                                        }
+                                    ]
+                                },
+                                "onFailure": {
+                                    "actions": []
+                                }
+                            }
+                        },
+                        {
+                            "type": "microservice",
+                            "eventSource": "click",
+                            "config": {
+                                "microserviceId": "getSubProcessMenu",
+                                "isLocal": false,
+                                "LocalService": "assets/Responses/getSubProcessMenu.json",
+                                "requestMethod": "get",
+                                "params": {
+                                    "userId": "#loginUUID.username",
+                                    "locationId": "#userSelectedLocation", 
+                                    "clientId": "#userSelectedClient",
+                                    "contractId": "#userSelectedContract",
+									"wcId": 1,
+                                    "optId": 1
+                                }
+                            },
+                            "responseDependents": {
+                                "onSuccess": {
+                                    "actions": [
+                                        {
+                                            "type": "context",
+                                            "config": {
+                                                "requestMethod": "add",
+                                                "key": "SubprocessMenu",
+                                                "data": "responseData"
+                                            }
+                                        },
+                                        {
+                                            "type": "renderTemplate",
+                                            "config": {
+                                                "templateId": "subProcess.json",
+                                                "mode": "local"
+                                            }
+                                        }
+                                    ]
+                                },
+                                "onFailure": {
+                                    "actions": [
+                                        {
+                                            "type": "updateComponent",
+                                            "config": {
+                                                "key": "searchCriteriaErrorTitleUUID",
+                                                "properties": {
+                                                    "titleValue": "Failed to fetch getSubprocess Menu.",
+                                                    "isShown": true
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "footer": []
+}

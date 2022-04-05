@@ -1,0 +1,1012 @@
+{
+    "ctype": "page",
+    "uuid": "A901-12C-FT-D",
+    "css": "",
+    "visibility": true,
+    "hooks": [],
+    "validations": [],
+    "action": [],
+    "header": [
+        {
+            "ctype": "breadcrumb",
+            "breadcrumbs": [
+                {
+                    "label": "#userSelectedLocationName"
+                },
+                {
+                    "label": "#userSelectedClientName"
+                },
+                {
+                    "label": "#userSelectedContractName"
+                }
+            ]
+        },
+        {
+            "ctype": "toolbar",
+            "toolbarClass": "pagecontent-header",
+            "items": [
+                {
+                    "ctype": "title",
+                    "uuid": "subProcessTitleUUID",
+                    "titleValue": "IQA-ECO Booking",
+                    "titleClass": "section-title"
+                }
+            ]
+        }
+    ],
+    "items": [
+        {
+            "ctype": "taskPanel",
+            "title": "",
+            "header": {
+                "title": "Rework ECO-E116671 Az ECO-t minden esetben végre kell hajtani.",
+                "icon": "description",
+                "css": "color:black",
+                "status": ""
+            },
+            "expanded": true,
+            "hideToggle": true,
+            "hidden": false,
+            "uuid": "51f8c5d2-eae5-48fe-8839-5676ea2adf4c",
+            "hooks": [],
+            "validations": [],
+            "actions": [],
+            "items": [
+                {
+                    "ctype": "title",
+                    "disabledClass": "disabledFalse",
+                    "uuid": "01a1c72f-8859-4480-a322-e48bc3c6de8f"
+                },
+                {
+                    "ctype": "title",
+                    "titleValue": "Ha a készülékben nem 800-42825-01 ventillátor található",
+                    "uuid": "c081115f-4810-420a-994d-d12fd8f8f805"
+                },
+                {
+                    "ctype": "title",
+                    "titleValue": "Cserélje a ventillátort  800-42825-01 -re",
+                    "uuid": "75c57afd-8a01-40ec-908d-b2961991ab50"
+                }
+            ],
+            "footer": [
+                {
+                    "ctype": "button",
+                    "color": "primary",
+                    "text": "complete",
+                    "uuid": "35563ce3-77e9-4eb9-8358-adfe6930fe89",
+                    "visibility": true,
+                    "disabled": false,
+                    "type": "",
+                    "hooks": [],
+                    "validations": [],
+                    "actions": [
+                        {
+                            "type": "updateComponent",
+                            "config": {
+                                "key": "51f8c5d2-eae5-48fe-8839-5676ea2adf4c",
+                                "properties": {
+                                    "expanded": false,
+                                    "disabled": true,
+                                    "header": {
+                                        "title": "Rework ECO-E116671 Az ECO-t minden esetben végre kell hajtani.",
+                                        "icon": "description",
+                                        "statusIcon": "check_circle",
+                                        "statusClass": "complete-status"
+                                    }
+                                }
+                            },
+                            "eventSource": "click"
+                        },
+                        {
+                            "type": "updateComponent",
+                            "config": {
+                                "key": "01f70c01-3ef5-4a9b-96c2-18e48cdb9898",
+                                "properties": {
+                                    "expanded": true,
+                                    "hidden": false
+                                }
+                            },
+                            "eventSource": "click"
+                        }
+                    ]
+                },
+                {
+                    "type": "updateComponent",
+                    "config": {
+                        "key": "01a1c72f-8859-4480-a322-e48bc3c6de8f",
+                        "properties": {
+                            "disabledClass": "disabledTrue"
+                        }
+                    },
+                    "eventSource": "click"
+                }
+            ]
+        },
+        {
+            "ctype": "taskPanel",
+            "title": "",
+            "header": {
+                "title": "E119205 ECO-E117316 Az ECO-t akkor kell végrehajtani ha a készülék revíziója 73-15084-05 A0-nál kisebb",
+                "icon": "description",
+                "css": "color:black",
+                "status": ""
+            },
+            "expanded": false,
+            "hideToggle": true,
+            "hidden": false,
+            "uuid": "01f70c01-3ef5-4a9b-96c2-18e48cdb9898",
+            "hooks": [],
+            "validations": [],
+            "actions": [],
+            "items": [
+                {
+                    "ctype": "title",
+                    "disabledClass": "disabledFalse",
+                    "uuid": "ece6062a-39fc-49d3-a325-6e0fd75bff06"
+                },
+                {
+                    "ctype": "title",
+                    "titleValue": "Rommon frissítés 5.02-re - Teszt",
+                    "uuid": "6a9f6523-4e96-472e-8b03-8bfd5f0c7aba"
+                },
+                {
+                    "ctype": "title",
+                    "titleValue": "FPGA frissítés - Teszt",
+                    "uuid": "d83b0890-db9e-4529-a91f-45f26d03ebd3"
+                },
+                {
+                    "ctype": "title",
+                    "titleValue": "Cserélje az  Y9 -es pozícióban található alkatrészt  19-2527-01 -re",
+                    "uuid": "19c1ccde-5a44-4e86-97ff-c82ca98cd0a1"
+                },
+                {
+                    "ctype": "title",
+                    "titleValue": "Cserélje az  U30, U77 -es pozíciókban található alkatrészeket  15-13298-02 -re",
+                    "uuid": "2b8892b2-44f0-4c02-9694-e4933adbfca1"
+                }
+            ],
+            "footer": [
+                {
+                    "ctype": "button",
+                    "color": "primary",
+                    "text": "complete",
+                    "uuid": "bb8c3ca5-e99a-4f51-9632-94aa5b16ece6",
+                    "visibility": true,
+                    "disabled": false,
+                    "type": "",
+                    "hooks": [],
+                    "validations": [],
+                    "actions": [
+                        {
+                            "type": "updateComponent",
+                            "config": {
+                                "key": "01f70c01-3ef5-4a9b-96c2-18e48cdb9898",
+                                "properties": {
+                                    "expanded": false,
+                                    "disabled": true,
+                                    "header": {
+                                        "title": "E119205 ECO-E117316 Az ECO-t akkor kell végrehajtani ha a készülék revíziója 73-15084-05 A0-nál kisebb",
+                                        "icon": "description",
+                                        "statusIcon": "check_circle",
+                                        "statusClass": "complete-status"
+                                    }
+                                }
+                            },
+                            "eventSource": "click"
+                        },
+                        {
+                            "type": "updateComponent",
+                            "config": {
+                                "key": "321573b4-11d2-48e8-99f2-6fd88989c764",
+                                "properties": {
+                                    "expanded": true,
+                                    "hidden": false
+                                }
+                            },
+                            "eventSource": "click"
+                        }
+                    ]
+                },
+                {
+                    "type": "updateComponent",
+                    "config": {
+                        "key": "ece6062a-39fc-49d3-a325-6e0fd75bff06",
+                        "properties": {
+                            "disabledClass": "disabledTrue"
+                        }
+                    },
+                    "eventSource": "click"
+                }
+            ]
+        },
+        {
+            "ctype": "taskPanel",
+            "title": "",
+            "header": {
+                "title": "Teszt ECO-EA522507 Az ECO-t akkor kell végrehajtani ha a készülék revíziója 73-15084-05 B0-nál kisebb",
+                "icon": "description",
+                "css": "color:black",
+                "status": ""
+            },
+            "expanded": false,
+            "hideToggle": true,
+            "hidden": false,
+            "uuid": "321573b4-11d2-48e8-99f2-6fd88989c764",
+            "hooks": [],
+            "validations": [],
+            "actions": [],
+            "items": [
+                {
+                    "ctype": "title",
+                    "disabledClass": "disabledFalse",
+                    "uuid": "95103707-7a37-4589-8a02-2514cd2a1627"
+                },
+                {
+                    "ctype": "title",
+                    "titleValue": "MCU frissítés 5.04-re",
+                    "uuid": "5cb5c754-7c70-43fd-a2db-10442dee4513"
+                },
+                {
+                    "ctype": "title",
+                    "titleValue": "Rommon frissítés 15.5(2r)S-re",
+                    "uuid": "c1a6138a-13b7-40b9-99f2-d4bf6b222e57"
+                },
+                {
+                    "ctype": "title",
+                    "titleValue": "Teszten automatikusan megtörténik",
+                    "uuid": "54e041ff-2127-4b67-a6fe-fbfdd0810676"
+                }
+            ],
+            "footer": [
+                {
+                    "ctype": "button",
+                    "color": "primary",
+                    "text": "complete",
+                    "uuid": "bf37a3f7-f742-4e45-9496-d215b2f218d4",
+                    "visibility": true,
+                    "disabled": false,
+                    "type": "",
+                    "hooks": [],
+                    "validations": [],
+                    "actions": [
+                        {
+                            "type": "updateComponent",
+                            "config": {
+                                "key": "321573b4-11d2-48e8-99f2-6fd88989c764",
+                                "properties": {
+                                    "expanded": false,
+                                    "disabled": true,
+                                    "header": {
+                                        "title": "Teszt ECO-EA522507 Az ECO-t akkor kell végrehajtani ha a készülék revíziója 73-15084-05 B0-nál kisebb",
+                                        "icon": "description",
+                                        "statusIcon": "check_circle",
+                                        "statusClass": "complete-status"
+                                    }
+                                }
+                            },
+                            "eventSource": "click"
+                        },
+                        {
+                            "type": "updateComponent",
+                            "config": {
+                                "key": "13b3d000-890f-4038-bc4a-3d668c58758b",
+                                "properties": {
+                                    "expanded": true,
+                                    "hidden": false
+                                }
+                            },
+                            "eventSource": "click"
+                        }
+                    ]
+                },
+                {
+                    "type": "updateComponent",
+                    "config": {
+                        "key": "95103707-7a37-4589-8a02-2514cd2a1627",
+                        "properties": {
+                            "disabledClass": "disabledTrue"
+                        }
+                    },
+                    "eventSource": "click"
+                }
+            ]
+        },
+        {
+            "ctype": "taskPanel",
+            "title": "",
+            "header": {
+                "title": "Config ECO-EA523882 Az ECO-t minden esetben végre kell hajtani",
+                "icon": "description",
+                "css": "color:black",
+                "status": ""
+            },
+            "expanded": false,
+            "hideToggle": true,
+            "hidden": false,
+            "uuid": "13b3d000-890f-4038-bc4a-3d668c58758b",
+            "hooks": [],
+            "validations": [],
+            "actions": [],
+            "items": [
+                {
+                    "ctype": "title",
+                    "disabledClass": "disabledFalse",
+                    "uuid": "d103f00b-be4d-4172-a5ad-f131094f16bb"
+                },
+                {
+                    "ctype": "textField",
+                    "uuid": "edc5a08f-70b7-47d3-8f1d-821eddbe1eca",
+                    "actions": [
+                        {
+                            "type": "context",
+                            "config": {
+                                "requestMethod": "add",
+                                "key": "ecoSearchVal",
+                                "data": "elementControlValue"
+                            },
+                            "eventSource": "input"
+                        }
+                    ],
+                    "type": "text",
+                    "required": false,
+                    "placeholder": "Search for...",
+                    "submitable": true,
+                    "visibility": true,
+                    "label": "",
+                    "readonly": false,
+                    "labelPosition": "left",
+                    "name": "e31fdab2-0bef-4a7f-8477-08640c6dd450",
+                    "labelClass": "body2",
+                    "textfieldClass": "textfield-container",
+                    "formGroupClass": "flex-container"
+                },
+                {
+                    "ctype": "button",
+                    "color": "primary",
+                    "text": "Search",
+                    "uuid": "677ba4e1-af35-42be-9fef-df6a204ef7dd",
+                    "visibility": true,
+                    "disabled": true,
+                    "type": "submit",
+                    "hooks": [],
+                    "validations": [],
+                    "actions": [
+                        {
+                            "type": "microservice",
+                            "config": {
+                                "microserviceId": "getsnbypid",
+                                "isLocal": false,
+                                "LocalService": "",
+                                "requestMethod": "get",
+                                "params": {
+                                    "pid":"#UnitInfo.PART_NO",
+                                    "searchId":1,
+                                    "serial":"#ecoSearchVal",
+                                    "userName":"#userAccountInfo.PersonalDetails.USERID"
+                                }
+                            },
+                            "eventSource": "click",
+                            "responseDependents": {
+                                "onSuccess": {
+                                    "actions": [
+                                        {
+                                            "type": "context",
+                                            "config": {
+                                                "requestMethod": "add",
+                                                "key": "ecoSearchResponse",
+                                                "data": "responseData"
+                                            }
+                                        },
+                                        {
+                                            "type": "condition",
+                                            "config": {
+                                                "operation": "isEqualTo",
+                                                "lhs": "#ecoSearchResponse.result",
+                                                "rhs": "SnIsBad"
+                                            },
+                                            "responseDependents": {
+                                                "onSuccess": {
+                                                    "actions":[
+                                                        {
+                                                            "type": "errorPrepareAndRender",
+                                                            "config": {
+                                                                "key": "ecoErrorTitle",
+                                                                "properties": {
+                                                                    "titleValue": "<get Data from HTML if condition and show here> {0}",
+                                                                    "isShown": true
+                                                                },
+                                                                "valueArray": [
+                                                                    "#ecoSearchVal"
+                                                                ]
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                "onFailure": {
+                                                    "actions":[
+                                                        {
+                                                            "type": "condition",
+                                                            "config": {
+                                                                "operation": "isEqualTo",
+                                                                "lhs": "#ecoSearchResponse.result",
+                                                                "rhs": "SnIsOk"
+                                                            },
+                                                            "responseDependents": {
+                                                                "onSuccess": {
+                                                                    "actions":[
+                                                                        {
+                                                                            "type": "errorPrepareAndRender",
+                                                                            "config": {
+                                                                                "key": "ecoErrorTitle",
+                                                                                "properties": {
+                                                                                    "titleValue": "<get Data from HTML if condition and show here> {0}",
+                                                                                    "isShown": true
+                                                                                },
+                                                                                "valueArray": [
+                                                                                    "#ecoSearchVal"
+                                                                                ]
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                },
+                                                                "onFailure": {
+                                                                    "actions":[
+                                                                        {
+                                                                            "type": "condition",
+                                                                            "config": {
+                                                                                "operation": "isEqualTo",
+                                                                                "lhs": "#ecoSearchResponse.result",
+                                                                                "rhs": ""
+                                                                            },
+                                                                            "responseDependents": {
+                                                                                "onSuccess": {
+                                                                                    "actions":[
+                                                                                        {
+                                                                                            "type": "errorPrepareAndRender",
+                                                                                            "config": {
+                                                                                                "key": "ecoErrorTitle",
+                                                                                                "properties": {
+                                                                                                    "titleValue": "<get Data from HTML if condition and show here> {0}",
+                                                                                                    "isShown": true
+                                                                                                },
+                                                                                                "valueArray": [
+                                                                                                    "#ecoSearchVal"
+                                                                                                ]
+                                                                                            }
+                                                                                        }
+                                                                                    ]
+                                                                                },
+                                                                                "onFailure": {
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            }
+                                        }
+                                    ]
+                                },
+                                "onFailure": {
+                                    "actions": [
+                                        {
+                                            "type": "toast",
+                                            "message": "Oops.. There is no associated template"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "ctype": "title",
+                    "uuid": "ecoErrorTitle",
+                    "titleClass": "error-title",
+                    "isShown": false
+                },
+                {
+                    "ctype": "title",
+                    "titleValue": "Ha a készülék szériaszáma érintett  Selejtezze  le a készüléket",
+                    "uuid": "2d970edb-0df1-4963-81f2-8af3c87e189b"
+                }
+            ],
+            "footer": [
+                {
+                    "ctype": "button",
+                    "color": "primary",
+                    "text": "complete",
+                    "uuid": "44becc92-3576-45e3-8172-470304967b29",
+                    "visibility": true,
+                    "disabled": false,
+                    "type": "",
+                    "hooks": [],
+                    "validations": [],
+                    "actions": [
+                        {
+                            "type": "updateComponent",
+                            "config": {
+                                "key": "13b3d000-890f-4038-bc4a-3d668c58758b",
+                                "properties": {
+                                    "expanded": false,
+                                    "disabled": true,
+                                    "header": {
+                                        "title": "Config ECO-EA523882 Az ECO-t minden esetben végre kell hajtani",
+                                        "icon": "description",
+                                        "statusIcon": "check_circle",
+                                        "statusClass": "complete-status"
+                                    }
+                                }
+                            },
+                            "eventSource": "click"
+                        },
+                        {
+                            "type": "updateComponent",
+                            "config": {
+                                "key": "c3c15a83-0c3c-4aa3-be8d-2cb0a18ea591",
+                                "properties": {
+                                    "expanded": true,
+                                    "hidden": false
+                                }
+                            },
+                            "eventSource": "click"
+                        }
+                    ]
+                },
+                {
+                    "type": "updateComponent",
+                    "config": {
+                        "key": "d103f00b-be4d-4172-a5ad-f131094f16bb",
+                        "properties": {
+                            "disabledClass": "disabledTrue"
+                        }
+                    },
+                    "eventSource": "click"
+                }
+            ]
+        },
+        {
+            "ctype": "taskPanel",
+            "title": "",
+            "header": {
+                "title": "BGA ECO-EA535827 Az ECO-t akkor kell végrehajtani ha a készülék revíziója 73-15084-05 C0-nál kisebb",
+                "icon": "description",
+                "css": "color:black",
+                "status": ""
+            },
+            "expanded": false,
+            "hideToggle": true,
+            "hidden": false,
+            "uuid": "c3c15a83-0c3c-4aa3-be8d-2cb0a18ea591",
+            "hooks": [],
+            "validations": [],
+            "actions": [],
+            "items": [
+                {
+                    "ctype": "title",
+                    "disabledClass": "disabledFalse",
+                    "uuid": "6bee0686-aab8-457c-8207-bcf5c29ab059"
+                },
+                {
+                    "ctype": "textField",
+                    "uuid": "522d4777-9242-43ad-acf7-13668892b286",
+                    "actions": [],
+                    "type": "text",
+                    "required": false,
+                    "placeholder": "Search for...",
+                    "submitable": true,
+                    "visibility": true,
+                    "label": "",
+                    "readonly": false,
+                    "labelPosition": "left",
+                    "name": "6ff1d9f5-f850-4407-8edf-902cad62b621",
+                    "labelClass": "body2",
+                    "textfieldClass": "textfield-container",
+                    "formGroupClass": "flex-container"
+                },
+                {
+                    "ctype": "button",
+                    "color": "primary",
+                    "text": "Search",
+                    "uuid": "09ba078b-bf45-4dff-8c4c-eec5136ff9f8",
+                    "visibility": true,
+                    "disabled": true,
+                    "type": "submit",
+                    "hooks": [],
+                    "validations": [],
+                    "actions": [
+                        {
+                            "type": "microservice",
+                            "config": {
+                                "microserviceId": "validateSerial",
+                                "isLocal": false,
+                                "LocalService": "",
+                                "requestMethod": "get",
+                                "params": "#UnitInfo.PART_NO"
+                            },
+                            "eventSource": "click",
+                            "responseDependents": {
+                                "onSuccess": {
+                                    "actions": [
+                                        {
+                                            "type": "context",
+                                            "config": {
+                                                "requestMethod": "add",
+                                                "key": "getSearchCriteriaData",
+                                                "data": "responseData"
+                                            }
+                                        },
+                                        {
+                                            "type": "renderTemplate",
+                                            "config": {
+                                                "mode": "remote",
+                                                "targetId": "mainPageContentBody",
+                                                "templateId": "getSearchCriteriaData"
+                                            }
+                                        }
+                                    ]
+                                },
+                                "onFailure": {
+                                    "actions": [
+                                        {
+                                            "type": "toast",
+                                            "message": "Oops.. There is no associated template"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "ctype": "title",
+                    "titleValue": "Ha a készülék szériaszáma  érintett :",
+                    "uuid": "f0313b44-a928-4f15-84c2-350a752a4e93"
+                },
+                {
+                    "ctype": "title",
+                    "titleValue": "Cserélje az  U7,U8,U34,U35,U60  -as pozíciókban lévő alkatrészeket",
+                    "uuid": "5d8363f6-a153-4371-8861-b334cd30f87b"
+                },
+                {
+                    "ctype": "title",
+                    "titleValue": "15-13178-04 -re ",
+                    "uuid": "96149b75-45d9-4a87-ba41-dbe1fb8701c5"
+                },
+                {
+                    "ctype": "title",
+                    "titleValue": "Csere elött a panelt 105 fokon kell melegíteni 4 órán keresztül",
+                    "uuid": "bc8f2bed-cd2c-4130-a34e-f4c7c4aaa9c7"
+                }
+            ],
+            "footer": [
+                {
+                    "ctype": "button",
+                    "color": "primary",
+                    "text": "complete",
+                    "uuid": "f33429db-3daf-48ed-880f-f8142210ee79",
+                    "visibility": true,
+                    "disabled": false,
+                    "type": "",
+                    "hooks": [],
+                    "validations": [],
+                    "actions": [
+                        {
+                            "type": "updateComponent",
+                            "config": {
+                                "key": "c3c15a83-0c3c-4aa3-be8d-2cb0a18ea591",
+                                "properties": {
+                                    "expanded": false,
+                                    "disabled": true,
+                                    "header": {
+                                        "title": "BGA ECO-EA535827 Az ECO-t akkor kell végrehajtani ha a készülék revíziója 73-15084-05 C0-nál kisebb",
+                                        "icon": "description",
+                                        "statusIcon": "check_circle",
+                                        "statusClass": "complete-status"
+                                    }
+                                }
+                            },
+                            "eventSource": "click"
+                        },
+                        {
+                            "type": "updateComponent",
+                            "config": {
+                                "key": "eb7f7e49-8599-4c1b-b0ba-63bceb327420",
+                                "properties": {
+                                    "expanded": true,
+                                    "hidden": false
+                                }
+                            },
+                            "eventSource": "click"
+                        }
+                    ]
+                },
+                {
+                    "type": "updateComponent",
+                    "config": {
+                        "key": "6bee0686-aab8-457c-8207-bcf5c29ab059",
+                        "properties": {
+                            "disabledClass": "disabledTrue"
+                        }
+                    },
+                    "eventSource": "click"
+                }
+            ]
+        },
+        {
+            "ctype": "taskPanel",
+            "title": "",
+            "header": {
+                "title": "Rework ECO-EA545520 Az ECO-t akkor kell végrehajtani ha a készülék revíziója 73-15084-05 D0-nál kisebb",
+                "icon": "description",
+                "css": "color:black",
+                "status": ""
+            },
+            "expanded": false,
+            "hideToggle": true,
+            "hidden": false,
+            "uuid": "eb7f7e49-8599-4c1b-b0ba-63bceb327420",
+            "hooks": [],
+            "validations": [],
+            "actions": [],
+            "items": [
+                {
+                    "ctype": "title",
+                    "disabledClass": "disabledFalse",
+                    "uuid": "52099ab7-18cf-4ac0-8d1c-2165ef888daf"
+                },
+                {
+                    "ctype": "title",
+                    "titleValue": "Ellenőrizze az  FL5 -ös pozícióban lévő alkatrészt.",
+                    "uuid": "b26f63cf-07ca-47d4-b7ae-ce3f4018ba76"
+                },
+                {
+                    "ctype": "title",
+                    "titleValue": "Ha az alkatrész gyártója  Minntronix  vagy  Delta ",
+                    "uuid": "2fd7a70a-5fce-4aef-a2fb-b7273eec2d20"
+                },
+                {
+                    "ctype": "title",
+                    "titleValue": "Cserélje az alkatrészt  24-2692-01 -re",
+                    "uuid": "3cb86c2f-ebad-46b5-bbea-d95df8dd9ed7"
+                }
+            ],
+            "footer": [
+                {
+                    "ctype": "button",
+                    "color": "primary",
+                    "text": "complete",
+                    "uuid": "dcfb4ee7-fabc-4298-9ce8-b2f7796579a9",
+                    "visibility": true,
+                    "disabled": false,
+                    "type": "",
+                    "hooks": [],
+                    "validations": [],
+                    "actions": [
+                        {
+                            "type": "updateComponent",
+                            "config": {
+                                "key": "eb7f7e49-8599-4c1b-b0ba-63bceb327420",
+                                "properties": {
+                                    "expanded": false,
+                                    "disabled": true,
+                                    "header": {
+                                        "title": "Rework ECO-EA545520 Az ECO-t akkor kell végrehajtani ha a készülék revíziója 73-15084-05 D0-nál kisebb",
+                                        "icon": "description",
+                                        "statusIcon": "check_circle",
+                                        "statusClass": "complete-status"
+                                    }
+                                }
+                            },
+                            "eventSource": "click"
+                        },
+                        {
+                            "type": "updateComponent",
+                            "config": {
+                                "key": "c87a6121-4aef-45b4-8e69-eadc66241325",
+                                "properties": {
+                                    "expanded": true,
+                                    "hidden": false
+                                }
+                            },
+                            "eventSource": "click"
+                        }
+                    ]
+                },
+                {
+                    "type": "updateComponent",
+                    "config": {
+                        "key": "52099ab7-18cf-4ac0-8d1c-2165ef888daf",
+                        "properties": {
+                            "disabledClass": "disabledTrue"
+                        }
+                    },
+                    "eventSource": "click"
+                }
+            ]
+        },
+        {
+            "ctype": "taskPanel",
+            "title": "",
+            "header": {
+                "title": "Rework ECO-EA562912 Az ECO-t akkor kell végrehajtani ha a készülék revíziója 73-15084-06 B0-nál kisebb",
+                "icon": "description",
+                "css": "color:black",
+                "status": ""
+            },
+            "expanded": false,
+            "hideToggle": true,
+            "hidden": false,
+            "uuid": "c87a6121-4aef-45b4-8e69-eadc66241325",
+            "hooks": [],
+            "validations": [],
+            "actions": [],
+            "items": [
+                {
+                    "ctype": "title",
+                    "disabledClass": "disabledFalse",
+                    "uuid": "f44b75c2-997a-4d00-b85f-b62c5704f998"
+                },
+                {
+                    "ctype": "title",
+                    "titleValue": "Ha a készülék szériaszáma kisebb mint  CAT2021XXXX ",
+                    "uuid": "3951adc5-b2e6-4773-b885-5c211c39c106"
+                },
+                {
+                    "ctype": "title",
+                    "titleValue": "Ellenőrizze az  Y12, Y11  pozíciókban lévó alkatrészeket",
+                    "uuid": "8abf91cd-077f-4fb0-b0ef-377019bdf391"
+                },
+                {
+                    "ctype": "title",
+                    "titleValue": "Ha a dátumkódjuk kisebb mint  1614 ",
+                    "uuid": "d9b7f31e-9ecd-43ed-83f5-3501b24c90dc"
+                },
+                {
+                    "ctype": "title",
+                    "titleValue": "Cserélje őket  19-2420-01  -re",
+                    "uuid": "cf2f921a-e359-4713-887c-55cc5f9be9bc"
+                },
+                {
+                    "ctype": "title",
+                    "titleValue": "Minimum revíziók:",
+                    "uuid": "69fb4aa3-a809-47b8-915c-3845684e00ca"
+                },
+                {
+                    "ctype": "title",
+                    "titleValue": "Új alaplap revízió:73-15084-06 B0",
+                    "uuid": "712bf365-3cc9-4353-97cc-f9216773799a"
+                },
+                {
+                    "ctype": "title",
+                    "titleValue": "Új TAN revízió:800-40055-02 B0",
+                    "uuid": "9046446f-2bd3-441f-93e1-de62e15a4188"
+                },
+                {
+                    "ctype": "title",
+                    "titleValue": "Új PIDVID:A901-12C-FT-D V05",
+                    "uuid": "40c23c6b-de4d-4efa-bbfb-208aa2002f12"
+                },
+                {
+                    "ctype": "title",
+                    "titleValue": "Új CLEI:IPMTS10DRC",
+                    "uuid": "01b433e5-d01b-4fdd-afb6-ef4ccf4f37ee"
+                },
+                {
+                    "ctype": "title",
+                    "titleValue": "Új ECI466635",
+                    "uuid": "4e516753-1c1c-4be3-8684-443455cf6b69"
+                },
+                {
+                    "ctype": "title",
+                    "titleValue": "Új FRU revízió:AC0",
+                    "uuid": "ac7edaba-7ffd-4373-8ec8-9dfaf1aeca01"
+                },
+                {
+                    "ctype": "link",
+                    "href": " Pura",
+                    "uuid": "56c82c5a-6931-498d-8193-db8f2a3364ba",
+                    "name": "Kódnév"
+                },
+                {
+                    "ctype": "link",
+                    "href": "..\/D_Data\/ECO_CIS_IQOR_FILES\/\/ECOmats\/A901-12C-FT-D20200713.pdf",
+                    "uuid": "0b9157cc-0347-4eb4-ada6-71ca086a110a",
+                    "name": "ECO mátrix: "
+                },
+                {
+                    "ctype": "link",
+                    "href": "..\/D_Data\/ECO_CIS_IQOR_FILES\/\\BOMs\/A901-12C-FT-D_V05_AC0.xls",
+                    "uuid": "466ed4c2-1194-4044-beac-47bddf59244c",
+                    "name": "BOM: "
+                },
+                {
+                    "ctype": "link",
+                    "href": "..\/D_Data\/ECO_CIS_IQOR_FILES\/\\Robbantott\/62-21233-02_C0.pdf",
+                    "uuid": "fa783290-c3d5-426c-963c-04d19acc5d87",
+                    "name": "Robbantott ábra "
+                },
+                {
+                    "ctype": "link",
+                    "href": "..\/D_Data\/ECO_CIS_IQOR_FILES\/BOMs\\73-15084-06_B0.xls",
+                    "uuid": "fa993fb9-8c0f-4a8a-974d-0e35f7759de3",
+                    "name": "BOM: "
+                },
+                {
+                    "ctype": "link",
+                    "href": "..\/D_Data\/ECO_CIS_IQOR_FILES\/PCBFAB\\60-10641-06_A0.pdf",
+                    "uuid": "b13c106b-7ef6-4b1d-861f-02d1896dd4cc",
+                    "name": "Beültetési rajz: "
+                },
+                {
+                    "ctype": "link",
+                    "href": "..\/D_Data\/ECO_CIS_IQOR_FILES\/PCAMaps\\61-11530-06_B0.pdf",
+                    "uuid": "e377505f-0cfd-40ef-8b8b-d955031e7888",
+                    "name": "PCAMAP: "
+                },
+                {
+                    "ctype": "link",
+                    "href": "..\/D_Data\/ECO_CIS_IQOR_FILES\/Schematics\\92-10913-07.pdf",
+                    "uuid": "f0eb3aaa-e359-4fcf-adb1-c03de341920b",
+                    "name": "Áramköri rajz: "
+                }
+            ],
+            "footer": [
+                {
+                    "ctype": "button",
+                    "color": "primary",
+                    "text": "complete",
+                    "uuid": "8a43dffa-6c53-4610-b629-d5f487e9ec49",
+                    "visibility": true,
+                    "disabled": false,
+                    "type": "",
+                    "hooks": [],
+                    "validations": [],
+                    "actions": [
+                        {
+                            "type": "updateComponent",
+                            "config": {
+                                "key": "c87a6121-4aef-45b4-8e69-eadc66241325",
+                                "properties": {
+                                    "expanded": false,
+                                    "disabled": true,
+                                    "header": {
+                                        "title": "Rework ECO-EA562912 Az ECO-t akkor kell végrehajtani ha a készülék revíziója 73-15084-06 B0-nál kisebb",
+                                        "icon": "description",
+                                        "statusIcon": "check_circle",
+                                        "statusClass": "complete-status"
+                                    }
+                                }
+                            },
+                            "eventSource": "click"
+                        },
+                        {
+                            "type": "updateComponent",
+                            "config": {
+                                "key": "",
+                                "properties": {
+                                    "expanded": true,
+                                    "hidden": false
+                                }
+                            },
+                            "eventSource": "click"
+                        }
+                    ]
+                },
+                {
+                    "type": "updateComponent",
+                    "config": {
+                        "key": "f44b75c2-997a-4d00-b85f-b62c5704f998",
+                        "properties": {
+                            "disabledClass": "disabledTrue"
+                        }
+                    },
+                    "eventSource": "click"
+                }
+            ]
+        }
+    ]
+}

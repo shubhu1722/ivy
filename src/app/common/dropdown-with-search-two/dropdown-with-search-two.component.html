@@ -1,0 +1,5 @@
+<div [formGroup]="group" [class]="formGroupClass" [style]="formGroupStyles" [hidden]="hidden">
+    <label *ngIf="label !== ''" [for]="name" [class]="labelClass">{{label}} </label>
+    <ngx-select-dropdown  style="outline: none" (keydown)="onKeyDown($event)" (searchChange)="searchChange($event)" (change)="changeDropdown($event)"  [style]="inputStyles" class="body" [required]="required" [class] = "dropdownClass" [formControlName]="name" tabindex="0" [multiple]="false"
+         [config]="config" [setFocus]="focus" [uuid]="uuid" [options]="options" [disabled]="disabled"></ngx-select-dropdown>
+</div>

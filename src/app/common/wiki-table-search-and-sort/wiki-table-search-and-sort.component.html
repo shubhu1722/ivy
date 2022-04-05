@@ -1,0 +1,173 @@
+<div [class]="tableDivCalss">
+    <table mat-table [dataSource]="datasource" class="mat-elevation-z8 " matSort>
+        <div *ngFor="let column of displayedColumns;">
+            <ng-container matColumnDef="{{column}}">
+                <th mat-header-cell *matHeaderCellDef [class]="tableHeaderClass">
+                    <div [ngClass]="column == 'Model Name/PN' ? 'header-style-modelPart' : 'header-style'" class="header-style">
+                        <div class="sortIconsDiv">
+                            <span *ngIf="iconList[column].showText && column == 'icon'"> </span>
+                            <span *ngIf="iconList[column].showText && column !== 'icon'">{{column | translate}}</span>
+                            <span *ngIf="iconList[column].enableSort" class="icons-wrapper">
+                                <i (click)="onSort('asc', column)" class="fas fa-sort-up"></i>
+                                <i (click)="onSort('desc', column)" class="fas fa-sort-down"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div [ngClass]="column == 'Title' ? 'searchBox-title-style' : 'searchBox-style'">
+                        <div *ngIf="searchBox && column !== 'icon' && column !== 'Date'" tabindex="0" [class]="tableSearchClass">
+                            <mat-icon [style]="search_icon">search</mat-icon>
+                            <input [style]="search_input" matInput (keyup)="applyFilter($event, column )"
+                                placeholder="Search" #input>
+                        </div>
+                        <div *ngIf="searchBox && column == 'Date'" [class]="tableSearchClass">
+                            <mat-icon [style]="search_icon">search</mat-icon>
+                            <input [style]="search_input" matInput [matDatepicker]="dp"
+                                (keyup)="applyFilter($event, column)" #input>
+                            <mat-datepicker-toggle matSuffix [for]="dp"><i class="far fa-calendar"></i>
+                            </mat-datepicker-toggle>
+                            <mat-datepicker #dp disabled="false"></mat-datepicker>
+                        </div>
+
+                        <div *ngIf="searchBox && column == 'icon' && tableType === 'Pending Approval Wiki'" [class]="tableSearchClass">
+                            <!-- <mat-label>Choose an option</mat-label> -->
+                            <select class="selectDropdown" (change)="applyPendingDropdownFilter($event, column )">
+                                <option value="-Select-" selected>-Select-</option>
+                                <option value="Instruction">Instruction</option>
+                                <option value="Comment">Comment</option>
+
+                            </select>
+
+                        </div>
+
+                        <div *ngIf="searchBox && column == 'icon' && tableType === 'Submitted Wiki'" [class]="tableSearchClass">
+                            <!-- <mat-label>Choose an option</mat-label> -->
+                            <select class="selectDropdown" (change)="applySubmitDropdownFilter($event, column )">
+                                <option value="-Select-" selected>-Select-</option>
+                                <option value="Accepted">Accepted</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Notification">Notification</option>
+
+                            </select>
+
+                        </div>
+
+
+                    </div>
+                </th>
+                <div *ngIf="tableType === 'Pending Approval Wiki'">
+                    <td  mat-cell *matCellDef="let element ; let i = index" [class]="tableDataClass">
+                        <p  *ngIf="element['wikiVersion'] == '1.1' && element['status'] !== 'PROCESS' && (isGlassIcon[i]=true)">
+                        </p>
+                        <p  *ngIf="element['wikiVersion']  !== '1.1' && element['status'] !== 'PROCESS' && (isCommentIcon[i]=true)">
+                        </p>
+                        <p  *ngIf="element['status'] == 'PROCESS' && (isLockIcon[i]=true)">
+                        </p>
+
+
+                        <span *ngIf="(column == 'icon') && isGlassIcon[i]">
+                            <mat-icon class="cellGlassIcons">
+                                hourglass_empty</mat-icon>
+                        </span>
+                        <span *ngIf="(column == 'icon') && isCommentIcon[i]">
+                            <mat-icon class="cellCommentIcons">
+                                announcement</mat-icon>
+                        </span>
+                        <span *ngIf="(column == 'icon') && isLockIcon[i]">
+                            <mat-icon class="cellLockIcons">
+                                lock</mat-icon>
+                        </span>
+                        <span *ngIf="iconList[column].showText">{{  element[column] | translate}}</span>
+                    </td>
+
+                </div>
+                <div *ngIf="tableType === 'Submitted Wiki'">
+                    <td  mat-cell *matCellDef="let element ; let i = index" [class]="tableDataClass">
+
+                        <p  *ngIf="element['status'] == 'PENDING FOR APPROVAL' && (isGlassIcon[i]=true)">
+                        </p>
+                        <p  *ngIf="element['status'] == 'PROCESS' && (isProcessIcon[i]=true)">
+                        </p>
+                        <p  *ngIf="element['status'] == 'APPROVED' && (isApproveIcon[i]=true)">
+                        </p>
+                        <p  *ngIf="element['status'] == 'REJECT' && (isRejectIcon[i]=true)">
+                        </p>
+
+
+                        <span *ngIf="(column == 'icon') && isGlassIcon[i]">
+                            <mat-icon class="cellGlassIcons">
+                                hourglass_empty</mat-icon>
+                        </span>
+
+                        <span *ngIf="(column == 'icon') && isProcessIcon[i]">
+                            <mat-icon class="cellLockIcons">
+                                lock</mat-icon>
+                        </span>
+
+                        <span *ngIf="(column == 'icon') && isApproveIcon[i]">
+                            <mat-icon class="cellApproveIcons">
+                                check_circle</mat-icon>
+                        </span>
+
+                        <span *ngIf="(column == 'icon') && isRejectIcon[i]">
+                            <mat-icon class="cellExcRejectIcons">
+                                <i class="fa fa-exclamation-circle" aria-hidden="true"></i></mat-icon>
+                        </span>
+                        <span *ngIf="iconList[column].showText">{{  element[column] | translate}}</span>
+                    </td>
+                </div>
+                <div *ngIf="tableType === 'My Draft Wiki Instructions'">
+                    <td mat-cell *matCellDef="let element ; let i = index" [class]="tableDataClass">
+
+                        <span *ngIf="(column == 'icon')" >
+                            <mat-icon class="cellGlassIcons">
+                                hourglass_empty</mat-icon>
+                        </span>
+                        <span *ngIf="iconList[column].showText">{{ element[column] | translate}}</span>
+                    </td>
+                </div>
+                <div *ngIf="tableType === 'Wiki Instruction'">
+                    <td  mat-cell *matCellDef="let element ; let i = index" [class]="tableDataClass">
+
+                        <p  *ngIf="element['status'] == 'PENDING FOR APPROVAL' && (isGlassIcon[i]=true)">
+                        </p>
+                        <p  *ngIf="element['status'] == 'PROCESS' && (isProcessIcon[i]=true)">
+                        </p>
+                        <p  *ngIf="element['status'] == 'APPROVED' && (isApproveIcon[i]=true)">
+                        </p>
+                        <p  *ngIf="element['status'] == 'REJECT' && (isRejectIcon[i]=true)">
+                        </p>
+
+
+                        <span *ngIf="(column == 'icon') && isGlassIcon[i]">
+                            <mat-icon class="cellGlassIcons">
+                                hourglass_empty</mat-icon>
+                        </span>
+
+                        <span *ngIf="(column == 'icon') && isProcessIcon[i]">
+                            <mat-icon class="cellLockIcons">
+                                lock</mat-icon>
+                        </span>
+
+                        <span *ngIf="(column == 'icon') && isApproveIcon[i]">
+                            <mat-icon class="cellApproveIcons">
+                                check_circle</mat-icon>
+                        </span>
+
+                        <span *ngIf="(column == 'icon') && isRejectIcon[i]">
+                            <mat-icon class="cellExcRejectIcons">
+                                <i class="fa fa-exclamation-circle" aria-hidden="true"></i></mat-icon>
+                        </span>
+                        <span *ngIf="iconList[column].showText">{{  element[column] | translate}}</span>
+                    </td>
+
+                </div>
+            </ng-container>
+        </div>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns; let ind = index" (click)="onClickOfRow(row, ind)"></tr>
+    </table>
+    <!-- <mat-paginator #paginator
+    [pageSize]="1" 
+    [pageSizeOptions]="[1, 10, 20]">
+    </mat-paginator> -->
+</div>

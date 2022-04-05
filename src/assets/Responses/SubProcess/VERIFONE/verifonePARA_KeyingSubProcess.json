@@ -1,0 +1,349 @@
+{
+    "ResultData": {
+        "ctype": "page",
+        "uuid": "pageUUID",
+        "visibility": true,
+        "hooks": [
+            {
+                "type": "getVerifoneCurrentWCName",
+                "hookType": "afterInit"
+            },
+            {
+                "type": "microservice",
+                "hookType": "afterInit",
+                "config": {
+                    "microserviceId": "getActiveBatch",
+                    "requestMethod": "get",
+                    "params": {
+                        "locationId": "#userSelectedLocation",
+                        "clientId": "#userSelectedClient",
+                        "contractId": "#userSelectedContract",
+                        "processId": "#selectedHomeMenuId",
+                        "appId": "#selectedHomeMenuId",
+                        "userName": "#loginUUID.username",
+                        "workCenterId": "#verifoneWCResultData"
+                    }
+                },
+                "responseDependents": {
+                    "onSuccess": {
+                        "actions": [
+                            {
+                                "type": "context",
+                                "hookType": "afterInit",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "allBatchData",
+                                    "data": []
+                                }
+                            },
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "activeBatchesData",
+                                    "data": "responseData"
+                                },
+                                "hookType": "afterInit"
+                            },
+                            {
+                                "type": "getActiveBatchProcess",
+                                "hookType": "afterInit",
+                                "config": {
+                                    "svgIcon": "replace",
+                                    "text": "Replace",
+                                    "processType": "replace"
+                                }
+                            }
+                        ]
+                    },
+                    "onFailure": {
+                        "actions": []
+                    }
+                }
+            }
+        ],
+        "header": [
+            {
+                "ctype": "breadcrumb",
+                "style": "padding-left: 4px;",
+                "breadcrumbs": [
+                    {
+                        "label": "#userSelectedLocationName"
+                    },
+                    {
+                        "label": "#userSelectedClientName"
+                    },
+                    {
+                        "label": "#userSelectedContractName"
+                    }
+                ]
+            },
+            {
+                "ctype": "toolbar",
+                "css": "padding-top: 35px;",
+                "toolbarClass": "pagecontent-header",
+                "items": [
+                    {
+                        "ctype": "title",
+                        "uuid": "verifoneLoadBatchUUID",
+                        "titleValue": "PARA Keying",
+                        "titleClass": "section-title",
+                        "css": "padding-bottom: 35px;padding-left: 4px;"
+                    },
+                    {
+                        "ctype": "iconbutton",
+                        "iconButtonClass": "headeropen-button",
+                        "text": "",
+                        "uuid": "pageopenUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "hidden": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "icon": "menu_open",
+                        "disableRipple": true,
+                        "iconClass": "header-icon",
+                        "css": "padding-bottom: 35px;",
+                        "actions": [
+                            {
+                                "type": "toggle",
+                                "eventSource": "click",
+                                "name": "subProcessRightNavref"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "openUUID",
+                                    "properties": {
+                                        "hidden": false
+                                    }
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "pageopenUUID",
+                                    "properties": {
+                                        "hidden": true
+                                    }
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "verifoneWorkInstructionOpen",
+                                "eventSource": "click"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "items": [
+            {
+                "ctype": "title",
+                "uuid": "errorTitleUUID",
+                "titleClass": "error-title",
+                "isShown": false,
+                "containerId": "prebodysectionone"
+            },
+            {
+                "ctype": "taskPanel",
+                "containerId": "prebodysectionone",
+                "header": {
+                    "title": "VERIFONE BATCH: OS-PARA Keying",
+                    "icon": "description",
+                    "statusIcon": "",
+                    "statusClass": "",
+                    "class": "po-specific",
+                    "uuid": "firstPanelUUID"
+                },
+                "expanded": true,
+                "hideToggle": true,
+                "uuid": "applyPackingUUID",
+                "visibility": false,
+                "disabled": false,
+                "hooks": [],
+                "validations": [],
+                "actions": [],
+                "items": [
+                    {
+                        "ctype": "label",
+                        "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In pulvinar condimentum vehicula.",
+                        "labelClass": "body-italic2"
+                    },
+                    {
+                        "ctype": "textField",
+                        "uuid": "keyLoadingIdUUID",
+                        "hooks": [],
+                        "validations": [],
+                        "actions": [],
+                        "type": "text",
+                        "textfieldClass": "textfield-container body2",
+                        "formGroupClass": "tan-flexContainer",
+                        "labelClass": "subtitle1",
+                        "placeholder": "Scan #",
+                        "submitable": true,
+                        "required": true,
+                        "label": "Key Loading ID",
+                        "labelPosition": "left",
+                        "name": "keyLoadingId",
+                        "value": ""
+                    }
+                ],
+                "footer": [
+                    {
+                        "ctype": "button",
+                        "color": "primary",
+                        "text": "Create Batch",
+                        "class": "primary-btn",
+                        "uuid": "applyPackingSubmittedUUID",
+                        "visibility": true,
+                        "disabled": true,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "keyingTaskData",
+                                    "data": "formData"
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "applyPackingUUID",
+                                    "properties": {
+                                        "expanded": false,
+                                        "disabled": false,
+                                        "header": {
+                                            "title": "VERIFONE BATCH: OS-CA Keying",
+                                            "icon": "description",
+                                            "class": "po-specific"
+                                        }
+                                    }
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "microservice",
+                                "eventSource": "click",
+                                "config": {
+                                    "microserviceId": "getActiveBatchIds",
+                                    "requestMethod": "get",
+                                    "params": {
+                                        "locationId": "#userSelectedLocation",
+                                        "clientId": "#userSelectedClient",
+                                        "contractId": "#userSelectedContract",
+                                        "processId": "#selectedHomeMenuId",
+                                        "appId": "#selectedHomeMenuId",
+                                        "userName": "#loginUUID.username",
+                                        "workCenterId": "#verifoneWCResultData",
+                                        "key": "#keyingTaskData.keyLoadingId",
+                                        "keyWc": "",
+                                        "workCenterName": "#verifoneWCResultValue"
+                                    }
+                                },
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "newBatchItemDetails",
+                                                    "data": "responseData"
+                                                },
+                                                "eventSource": "click"
+                                            },
+                                            {
+                                                "type": "handleBatchProcessActions",
+                                                "eventSource": "click",
+                                                "config": {
+                                                    "activeBatchResp": "#getActiveBatchIds"
+                                                }
+                                            },
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "keyLoadingIdUUID",
+                                                    "properties": {
+                                                        "value": "",
+                                                        "text":""
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "keyingTaskData",
+                                                    "data": ""
+                                                }
+                                            },
+                                            {
+                                                "type": "resetData"
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": []
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "footer": [
+            {
+                "ctype": "toolbar",
+                "toolbarClass": "pagecontent-footer",
+                "items": [
+                    {
+                        "ctype": "iconbutton",
+                        "iconButtonClass": "footer-save body primary-btn",
+                        "text": "Exit",
+                        "uuid": "saveUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "icon": "close",
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "PackoutNotes",
+                                    "data": ""
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "renderTemplate",
+                                "config": {
+                                    "templateId": "dashboard.json",
+                                    "mode": "local"
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "clearContextOfLoadBatch",
+                                "eventSource": "click"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "Result": "SUCCESS"
+}

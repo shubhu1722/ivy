@@ -1,0 +1,2389 @@
+{
+  "ResultData": {
+    "ctype": "page",
+    "uuid": "pageUUID",
+    "contentClass": "",
+    "css": "",
+    "visibility": true,
+    "hooks": [
+    {
+        "type": "microservice",
+        "hookType": "afterInit",
+        "config": {
+          "microserviceId": "getBiosAlertDetailsAssessment",
+          "isLocal": false,
+          "LocalService": "assets/Responses/repairMockBIOSResponse.json",
+          "requestMethod": "get",
+          "params": {
+            "customInstructionType": "BIOS",
+            "sourceType": "#getReferenceDataKeys.sourceType",
+            "serialNumber": "",
+            "partNumber": "",
+            "productPlatform": "#discrepancyPartAndWarrantyDetails.PRODUCT_PLATFORM",
+            "secondSource": "",
+            "username": "#userAccountInfo.PersonalDetails.USERID",
+            "locationId": "#userSelectedLocation",
+            "clientId": "#userSelectedClient",
+            "contractId": "#userSelectedContract"
+          }
+        },
+        "responseDependents": {
+          "onSuccess": {
+            "actions": [      
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "biosVersionTitleUUID",
+                  "properties": {
+                    "titleValue": "#getBiosAlertDetailsAssessment.0.bios"
+                  }
+                }
+              }
+            ]
+          },
+          "onFailure": {
+            "actions": []
+        }
+        }
+      },
+      {
+        "type": "microservice",
+        "hookType": "afterInit",
+        "config": {
+          "microserviceId": "getSoftwareAlertDetailsAssessment",
+          "isLocal": false,
+          "LocalService": "assets/Responses/repairMockEcoResponse.json",
+          "requestMethod": "get",
+          "params": {
+            "customInstructionType": "SOFTWARE",
+            "sourceType": "PARTNO",
+            "serialNumber": "",
+            "partNumber": "#discrepancyUnitInfo.PART_NO",
+            "productPlatform": "",
+            "secondSource": "",
+            "username": "#userAccountInfo.PersonalDetails.USERID",
+            "locationId": "#userSelectedLocation",
+            "clientId": "#userSelectedClient",
+            "contractId": "#userSelectedContract"
+          }
+        },       
+        
+        "responseDependents": {
+          "onSuccess": {
+            "actions": [              
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "softwareVersionTitleUUID",
+                  "properties": {
+                    "titleValue": "#getSoftwareAlertDetailsAssessment.0.software"
+                  }
+                }
+              }
+            ]
+          },
+          "onFailure": {
+            "actions": []
+        }
+        }
+      },
+      {
+        "type": "microservice",
+        "hookType": "afterInit",
+        "config": {
+          "microserviceId": "getInitialDetailsAssessment",
+          "requestMethod": "get",
+          "LocalService": "assets/Responses/repairAssessementResponse.json",
+          "isLocal": false,
+          "params": {
+            "itemBcn": "#discrepancyUnitInfo.ITEM_BCN",
+            "roHeaderFFIds": "#getReferenceDataKeys.roheaderffIds",
+            "roLineFFIds": "#getReferenceDataKeys.rolineffIds",
+            "workCenterFFIds": "#getReferenceDataKeys.workcenterffIds",
+            "itemId": "#discrepancyUnitInfo.ITEM_ID",
+            "userName": "#userAccountInfo.PersonalDetails.USERID"
+          }
+        },
+        "responseDependents": {
+          "onSuccess": {
+            "actions": [              
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "failCodeUUID",
+                  "properties": {
+                    "titleValue": "#getInitialDetailsAssessment.failCode"
+                  }
+                }
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "osReinstallUUID",
+                  "properties": {
+                    "titleValue": "#getInitialDetailsAssessment.osReinstallAllowed"
+                  }
+                }
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "winPasswordUUID",
+                  "properties": {
+                    "titleValue": "#getInitialDetailsAssessment.windowsPassword"
+                  }
+                }
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "biosPasswordUUID",
+                  "properties": {
+                    "titleValue": "#getInitialDetailsAssessment.biosPassword"
+                  }
+                }
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "expectedBiosUUID",
+                  "properties": {
+                    "titleValue": "#getInitialDetailsAssessment.expectedBiosVersion"
+                  }
+                }
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "osLanguageUUID",
+                  "properties": {
+                    "titleValue": "#getInitialDetailsAssessment.osLanguage"
+                  }
+                }
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "bsodFieldUUID",
+                  "properties": {
+                    "titleValue": "#getInitialDetailsAssessment.bsod"
+                  }
+                }
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "customerComplaintTitleUUID",
+                  "properties": {
+                    "text": "#getInitialDetailsAssessment.customerComplaints"
+                  }
+                }
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "mbRepairAssessmentPanelUUID",
+                  "properties": {
+                    "disabled": false
+                  }
+                },
+                "eventSource": "click"
+              }
+            ]
+          },
+          "onFailure": {
+            "actions": [
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "errorTitleUUID",
+                  "properties": {
+                    "titleValue": "No Data in Initial Assessment",
+                    "isShown": true
+                  }
+                }
+              }
+            ]
+        }
+        }
+      },
+      {
+        "type": "microservice",
+        "hookType": "afterInit",
+        "config": {
+          "microserviceId": "getFFValueBeforeRepair",
+          "isLocal": false,
+          "LocalService": "assets/Responses/mockBGA.json",
+          "requestMethod": "get",
+          "params": {
+            "ffId": "#getReferenceDataKeys.mbBeforeRLFFID",
+            "userName": "#userAccountInfo.PersonalDetails.USERID"
+          }
+        },        
+        "responseDependents": {
+          "onSuccess": {
+            "actions": [         
+              
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "RepairmarksbeforeRldropdownLUUID",
+                  "dropDownProperties": {
+                    "options": "#getFFValueBeforeRepair"
+                  }
+                }                
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "RepairmarksbeforeRldropdownLUUID",
+                  "fieldProperties": {
+                    "reapirmarksbeforeRLDropdown": "N"
+                  }
+                },
+                "eventSource": "click"
+              }
+            ]
+          },
+          "onFailure": {
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "errorResp",
+                  "data": "responseData"
+                }
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "errorTitleUUID",
+                  "properties": {
+                    "titleValue": "#errorResp",
+                    "isShown": true
+                  }
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "type": "microservice",
+        "hookType": "afterInit",
+        "config": {
+          "microserviceId": "getFFValueAfterRepair",
+          "isLocal": false,
+          "LocalService": "assets/Responses/mockBGA.json",
+          "requestMethod": "get",
+          "params": {
+            "ffId": "#getReferenceDataKeys.mbRepairMarksFFID",
+            "userName": "#userAccountInfo.PersonalDetails.USERID"
+          }
+        },        
+        "responseDependents": {
+          "onSuccess": {
+            "actions": [              
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "ReapirmarksonmbdropdownLUUID",
+                  "dropDownProperties": {
+                    "options": "#getFFValueAfterRepair"
+                  }
+                }
+              
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "ReapirmarksonmbdropdownLUUID",
+                  "fieldProperties": {
+                    "reapirmarksonMBDropdown": "N"
+                  }
+                }
+              }
+            ]
+          },
+          "onFailure": {
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "errorResp",
+                  "data": "responseData"
+                }
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "errorTitleUUID",
+                  "properties": {
+                    "titleValue": "#errorResp",
+                    "isShown": true
+                  }
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "type": "microservice",
+        "hookType": "afterInit",
+        "config": {
+          "microserviceId": "getDefectCodeByDefect",
+          "isLocal": false,
+          "LocalService": "assets/Responses/mockBGA.json",
+          "requestMethod": "get",
+          "params": {
+            "locationId": "#discrepancyUnitInfo.LOCATION_ID",
+            "clientId": "#discrepancyUnitInfo.CLIENT_ID",
+            "contractId": "#discrepancyUnitInfo.CONTRACT_ID",
+            "userName": "#userAccountInfo.PersonalDetails.USERID",
+            "workCenterId": "#discrepancyUnitInfo.WORKCENTER_ID",
+            "routeId": "#discrepancyUnitInfo.ROUTE_ID"
+          }
+        },
+        "responseDependents": {
+          "onSuccess": {
+            "actions": [              
+              
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "defectCodeDropdownUUID",
+                  "dropDownProperties": {
+                    "options": "#getDefectCodeByDefect"
+                  }
+                }
+              }
+            ]
+          },
+          "onFailure": {
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "errorMsg",
+                  "data": "responseData"
+                }
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "errorTitleUUID",
+                  "properties": {
+                    "titleValue": "#errorMsg",
+                    "isShown": true
+                  }
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "type": "microservice",
+        "hookType": "afterInit",
+        "config": {
+            "microserviceId": "getFFByWcRepairRespData",
+            "isLocal": false,
+            "LocalService": "assets/Responses/repairMockEcoResponse.json",
+            "requestMethod": "get",
+            "params": {
+                "clientId": "#repairUnitInfo.CLIENT_ID",
+                "routeName": "#repairUnitInfo.ROUTE",
+                "contrId": "#repairUnitInfo.CONTRACT_ID",
+                "wcId": "#repairUnitInfo.WORKCENTER_ID",
+                "userName": "#userAccountInfo.PersonalDetails.USERID",
+                "itemId": "#repairUnitInfo.ITEM_ID"
+            }
+        },       
+        "responseDependents": {
+            "onSuccess": {
+                "actions": [                    
+                    {
+                      "type": "condition",
+                      "config": {
+                        "operation": "isValid",
+                        "lhs": "#getFFByWcRepairRespData",
+                        "lhsKeyName": "ffName",
+                        "lhsKeyValue": "REPAIR MARKS ON MB BEFORE RL REPAIR",
+                        "lhsSecondKeyName": "ffValue"
+                      },
+                      "responseDependents": {
+                        "onSuccess": {
+                          "actions": [
+                            {
+                              "type": "context",
+                              "config": {
+                                "requestMethod": "add",
+                                "key": "mbBeforeRepairValue",
+                                "data": "#lhsValue"
+                              }
+                            },
+                            {
+                              "type": "updateComponent",
+                              "config": {
+                                "key": "RepairmarksbeforeRldropdownLUUID",
+                                "fieldProperties": {
+                                  "reapirmarksbeforeRLDropdown": "#mbBeforeRepairValue"
+                                }
+                              }
+                            },
+                            {
+                              "type": "context",
+                              "config": {
+                                "requestMethod": "add",
+                                "key": "RepairmarskbeforeSelectedDropDown",
+                                "data": "#mbBeforeRepairValue"
+                              },
+                              "eventSource": "change"
+                            }
+                          ]
+                        },
+                        "onFailure": {
+                          "actions": []
+                        }
+                      }
+                    },
+                    {
+                        "type": "condition",
+                        "config": {
+                            "operation": "isValid",
+                            "lhs": "#getFFByWcRepairRespData",
+                            "lhsKeyName": "ffName",
+                            "lhsKeyValue": "MB CT number",
+                            "lhsSecondKeyName": "ffValue"
+                        },
+                        "responseDependents": {
+                            "onSuccess": {
+                                "actions": [
+                                  {
+                                    "type": "context",
+                                    "config": {
+                                        "requestMethod": "add",
+                                        "key": "mbCTNumberValue",
+                                        "data": "#lhsValue"
+                                    }
+                                  },
+                                  {
+                                    "type": "updateComponent",
+                                    "config": {
+                                      "key": "MBCTnoUUID",
+                                      "fieldProperties": {
+                                        "mbctnumber": "#mbCTNumberValue"
+                                      }
+                                    }
+                                  }
+                                ]
+                            },
+                            "onFailure": {
+                                "actions": []
+                            }
+                        }
+                    },
+                    {
+                      "type": "condition",
+                      "config": {
+                        "operation": "isValid",
+                        "lhs": "#getFFByWcRepairRespData",
+                        "lhsKeyName": "ffName",
+                        "lhsKeyValue": "MB PN",
+                        "lhsSecondKeyName": "ffValue"
+                      },
+                      "responseDependents": {
+                        "onSuccess": {
+                          "actions": [
+                            {
+                              "type": "context",
+                              "config": {
+                                "requestMethod": "add",
+                                "key": "mbPNDefaultValue",
+                                "data": "#lhsValue"
+                              }
+                            },
+                            {
+                              "type": "updateComponent",
+                              "config": {
+                                "key": "MBPartnoUUID",
+                                "fieldProperties": {
+                                  "mbpartumber": "#mbPNDefaultValue"
+                                }
+                              }
+                            }
+                          ]
+                        },
+                        "onFailure": {
+                          "actions": []
+                        }
+                      }
+                    },
+                    {
+                      "type": "condition",
+                      "config": {
+                        "operation": "isValid",
+                        "lhs": "#getFFByWcRepairRespData",
+                        "lhsKeyName": "ffName",
+                        "lhsKeyValue": "Repair marks on MB",
+                        "lhsSecondKeyName": "ffValue"
+                      },
+                      "responseDependents": {
+                        "onSuccess": {
+                          "actions": [
+                            {
+                              "type": "context",
+                              "config": {
+                                "requestMethod": "add",
+                                "key": "repairMarksMBValue",
+                                "data": "#lhsValue"
+                              }
+                            },
+                            {
+                              "type": "updateComponent",
+                              "config": {
+                                "key": "ReapirmarksonmbdropdownLUUID",
+                                "fieldProperties": {
+                                  "reapirmarksonMBDropdown": "#repairMarksMBValue"
+                                }
+                              }
+                            },
+                            {
+                              "type": "context",
+                              "config": {
+                                "requestMethod": "add",
+                                "key": "RepairmarskonmbSelectedDropDown",
+                                "data": "#repairMarksMBValue"
+                              }
+                            }
+                          ]
+                        },
+                        "onFailure": {
+                          "actions": []
+                        }
+                      }
+                    }
+                ]
+            },
+            "onFailure": {
+                "actions": [
+                    {
+                        "type": "context",
+                        "config": {
+                            "requestMethod": "add",
+                            "key": "errorResp",
+                            "data": "responseData"
+                        }
+                    },
+                    {
+                        "type": "updateComponent",
+                        "config": {
+                            "key": "errorTitleUUID",
+                            "properties": {
+                                "titleValue": "#errorResp",
+                                "isShown": true
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+      },
+      {
+        "type": "condition",
+        "hookType": "afterInit",
+        "config": {
+          "operation": "isValid",
+          "lhs": "#getActionCodeByDefect"
+        },
+        "eventSource": "change",
+        "responseDependents": {
+          "onSuccess": {
+            "actions": [
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "actionCodeDropdownUUID",
+                  "dropDownProperties": {
+                    "options": "#getActionCodeByDefect"
+                  }
+                }
+              }
+            ]
+          },
+          "onFailure": {
+            "actions": []
+          }
+        }
+      }
+     
+    ],
+    "validations": [],
+    "action": [],
+    "header": [
+      {
+        "ctype": "breadcrumb",
+        "breadcrumbs": [
+          {
+            "label": "#userSelectedLocationName"
+          },
+          {
+            "label": "#userSelectedClientName"
+          },
+          {
+            "label": "#userSelectedContractName"
+          }
+        ]
+      },
+      {
+        "ctype": "toolbar",
+        "toolbarClass": "pagecontent-header",
+        "items": [
+          {
+            "ctype": "title",
+            "uuid": "subProcessTitleUUID",
+            "titleValue": "MB Repair",
+            "titleClass": "section-title"
+          },
+          {
+            "ctype": "iconbutton",
+            "iconButtonClass": "headeropen-button",
+            "text": "",
+            "uuid": "pageopenUUID",
+            "visibility": true,
+            "disabled": false,
+            "hidden": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "icon": "menu_open",
+            "disableRipple": true,
+            "iconClass": "header-icon",
+            "actions": [
+              {
+                "type": "toggle",
+                "eventSource": "click",
+                "name": "subProcessRightNavref"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "openUUID",
+                  "properties": {
+                    "hidden": false
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "pageopenUUID",
+                  "properties": {
+                    "hidden": true
+                  }
+                },
+                "eventSource": "click"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "items": [
+      {
+        "ctype": "title",
+        "uuid": "successTitleUUID",
+        "titleClass": "success-title",
+        "isShown": false
+      },
+      {
+        "ctype": "title",
+        "uuid": "errorTitleUUID",
+        "containerId": "prebodysectionone",
+        "titleClass": "error-title",
+        "isShown": false
+      },
+      {
+        "ctype": "taskPanel",
+        "containerId": "prebodysectionone",
+        "header": {
+          "title": "Initial Assessment",
+          "icon": "description",
+          "statusIcon": "hourglass_empty",
+          "statusClass": "incomplete-status"
+        },
+        "expanded": true,
+        "hideToggle": true,
+        "uuid": "mbRepairAssessmentPanelUUID",
+        "visibility": false,
+        "disabled": false,
+        "hooks": [],
+        "validations": [],
+        "actions": [],
+        "items": [
+          {
+            "ctype": "disabled",
+            "uuid": "assesmentDisabledUUID",
+            "disabledClass": "disabledFalse"
+          },
+          {
+            "ctype": "title",
+            "uuid": "customerComplaintHeaderUUID",
+            "titleClass": "sidenav-title body2",
+            "title": "Customer Complaint",
+            "titleValue": ""
+          },
+          {
+            "ctype": "showMore",
+            "uuid": "customerComplaintTitleUUID",
+            "titleClass": "sidenav-title body2",
+            "text": "#getInitialDetailsAssessment.customerComplaints",
+            "isShown": true
+          },
+          {
+            "ctype": "title",
+            "uuid": "failCodeUUID",
+            "titleClass": "sidenav-title body2 os-field",
+            "title": "Fail Code:",
+            "titleValue": "#getInitialDetailsAssessment.failCode"
+          },
+          {
+            "ctype": "title",
+            "uuid": "osReinstallUUID",
+            "titleClass": "sidenav-title body2",
+            "title": "OS reinstall allowed:",
+            "titleValue": "#getInitialDetailsAssessment.osReinstallAllowed"
+          },
+          {
+            "ctype": "title",
+            "uuid": "bsodFieldUUID",
+            "titleClass": "sidenav-title body2",
+            "title": "BSOD Problem:",
+            "titleValue": "#getInitialDetailsAssessment.bsod"
+          },
+          {
+            "ctype": "title",
+            "uuid": "winPasswordUUID",
+            "titleClass": "sidenav-title body2",
+            "title": "Windows password:",
+            "titleValue": "#getInitialDetailsAssessment.windowsPassword"
+          },
+          {
+            "ctype": "title",
+            "uuid": "biosVersionTitleUUID",
+            "titleClass": "sidenav-title body2",
+            "title": "Expected Bios Version:",
+            "titleValue": "#getBiosAlertDetailsAssessment.0.bios"
+          },
+          {
+            "ctype": "title",
+            "uuid": "osLanguageUUID",
+            "titleClass": "sidenav-title body2",
+            "title": "OS Language:",
+            "titleValue": "#getInitialDetailsAssessment.osLanguage"
+          },
+          {
+            "ctype": "title",
+            "uuid": "softwareVersionTitleUUID",
+            "titleClass": "sidenav-title body2 os-field",
+            "title": "OS Version:",
+            "titleValue": "#getSoftwareAlertDetailsAssessment.0.software"
+          }
+        ],
+        "footer": [
+          {
+            "ctype": "button",
+            "color": "primary",
+            "text": "Complete",
+            "uuid": "mbRepairAssessmentSubmittedUUID",
+            "name": "mbRepairAssessmentButtonSubmit",
+            "visibility": true,
+            "disabled": false,
+            "submittable": true,
+            "type": "submit",
+            "tooltip": "Complete Initial Assessment",
+            "class": "primary-btn",
+            "hooks": [],
+            "validations": [],
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "initialAssessmentFormData",
+                  "data": "formData"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "mbRepairAssessmentPanelUUID",
+                  "properties": {
+                    "expanded": false,
+                    "disabled": false,
+                    "header": {
+                      "title": "Initial Assessment",
+                      "icon": "description",
+                      "statusIcon": "check_circle",
+                      "statusClass": "complete-status",
+                      "class": "complete-task",
+                      "iconClass": "complete-task"
+                    }
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "mbRepairAssessmentSubmittedUUID",
+                  "properties": {
+                    "disabled": true
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "repairdetailsTaskUUID",
+                  "properties": {
+                    "expanded": true,
+                    "disabled": false,
+                    "header": {
+                      "title": "Repair Details",
+                      "icon": "description",
+                      "class": "font-weight-700",
+                      "iconClass": "active-header"
+                    }
+                  }
+                },
+                "eventSource": "click"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "ctype": "taskPanel",
+        "title": "",
+        "header": {
+          "title": "Repair Details",
+          "icon": "description",
+          "class": "font-weight-700",
+          "iconClass": "active-header"
+        },
+        "expanded": false,
+        "hideToggle": "true",
+        "uuid": "repairdetailsTaskUUID",
+        "visibility": false,
+        "disabled": true,
+        "hooks": [],
+        "validations": [],
+        "actions": [],
+        "items": [
+          {
+            "ctype": "nativeDropdown",
+            "formGroupClass": "form-group-margin",
+            "dropdownClass": "dropdown-container condition-dropdwn body2",
+            "uuid": "RepairmarksbeforeRldropdownLUUID",
+            "name": "reapirmarksbeforeRLDropdown",
+            "dataSource": "",
+            "label": "Repair Marks On MB Before RL Repair",
+            "labelClass": "label-fault",
+            "hooks": [],
+            "code": "value",
+            "inLine": true,
+            "required": true,
+            "displayValue": "value",
+            "defaultValue": "",
+            "hidden": false,
+            "validations": [],
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "RepairmarskbeforeSelectedDropDown",
+                  "data": "elementControlName"
+                },
+                "eventSource": "change"
+              }
+            ]
+          },
+          {
+            "ctype": "textField",
+            "formGroupClass": "form-group-margin",
+            "uuid": "MBCTnoUUID",
+            "hooks": [],
+            "validations": [
+              {
+                "type": "regex",
+                "script": "^[a-zA-Z0-9]{0,14}"
+              }
+            ],
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                    "requestMethod": "add",
+                    "key": "mbCtNumberValue",
+                    "data": "elementControlValue"
+                },
+                "eventSource": "input"
+            },
+            {
+                "type": "condition",
+                "config": {
+                  "operation": "isValid",
+                  "lhs": "#mbCtNumberValue"
+                },
+                "eventSource": "keydown",
+                "responseDependents": {
+                    "onSuccess": {
+                        "actions": [
+                            {
+                                "type": "performOperation",
+                                "eventSource": "keydown",
+                                "config": {
+                                    "type": "slice",
+                                    "lhs": "#mbCtNumberValue",
+                                    "contextKey": "mbCtNumberAssembly"
+                                }
+                            },
+                            {
+                                "type": "microservice",
+                                "eventSource": "keydown",
+                                "config": {
+                                    "microserviceId": "getCTDecoderCode",
+                                    "requestMethod": "get",
+                                    "isLocal": false,
+                                    "LocalService": "assets/Responses/mockBGA.json",
+                                    "params": {
+                                        "locationId": "#repairUnitInfo.LOCATION_ID",
+                                        "clientId": "#repairUnitInfo.CLIENT_ID",
+                                        "contractId": "#repairUnitInfo.CONTRACT_ID",
+                                        "orderProcessTypeCode": "#repairUnitInfo.ROUTE",
+                                        "workCenterId": "#repairUnitInfo.WORKCENTER_ID",
+                                        "assemblyCode": "#mbCtNumberAssembly",
+                                        "username": "#userAccountInfo.PersonalDetails.USERID"
+                                    }
+                                },
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "tempMBPartNo",
+                                                    "data": "responseData"
+                                                }
+                                            },
+                                            {
+                                                "type": "multipleCondition",
+                                                "config": {
+                                                    "operation": "isValid",
+                                                    "lhs": "#tempMBPartNo"
+                                                },
+                                                "responseDependents": {
+                                                    "onSuccess": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "context",
+                                                                "config": {
+                                                                    "requestMethod": "add",
+                                                                    "key": "mbPartNoValue",
+                                                                    "data": "#tempMBPartNo.partNumber"
+                                                                }
+                                                            },
+                                                            {
+                                                                "type": "updateComponent",
+                                                                "config": {
+                                                                    "key": "MBPartnoUUID",
+                                                                    "fieldProperties": {
+                                                                        "mbpartumber": "#mbPartNoValue"
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    "onFailure": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "updateComponent",
+                                                                "config": {
+                                                                    "key": "MBPartnoUUID",
+                                                                    "fieldProperties": {
+                                                                        "mbpartumber": ""
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": [
+                                            {
+                                                "type": "handleCommonServices",
+                                                "config": {
+                                                    "type": "errorRenderTemplate",
+                                                    "contextKey": "errorMsg",
+                                                    "updateKey": "errorTitleUUID"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    "onFailure": {
+                        "actions": []
+                    }
+                }
+              }
+            ],
+            "type": "text",
+            "css": "width:30%;margin-left:153px;padding-top:9px;",
+            "required": true,
+            "placeholder": "Enter Description",
+            "submitable": true,
+            "isUpperCase": true,
+            "validateGroup": false,
+            "onlyEnterKeyPress": true,
+            "disableCompleteButtonEnterActions": true,
+            "label": "MB CT Number",
+            "labelPosition": "left",
+            "name": "mbctnumber",
+            "inputStyles": "width: 50%",
+            "value": ""
+          },
+          {
+            "ctype": "textField",
+            "formGroupClass": "form-group-margin",
+            "uuid": "MBPartnoUUID",
+            "hooks": [],
+            "validations": [
+              {
+                "type": "regex",
+                "script": ""
+              }
+            ],
+            "actions": [],
+            "type": "text",
+            "css": "width:30%;margin-left:205px;",
+            "required": true,
+            "placeholder": "Enter Description",
+            "submitable": true,
+            "label": "MB PN",
+            "labelPosition": "left",
+            "name": "mbpartumber",
+            "inputStyles": "width: 50%",
+            "value": ""
+          },
+          {
+            "ctype": "nativeDropdown",
+            "formGroupClass": "form-group-margin",
+            "dropdownClass": "dropdown-container condition-dropdwn body2",
+            "uuid": "ReapirmarksonmbdropdownLUUID",
+            "name": "reapirmarksonMBDropdown",
+            "dataSource": "",
+            "label": "Repair Marks On MB",
+            "labelClass": "label-onMB",
+            "hooks": [],
+            "code": "value",
+            "required": true,
+            "displayValue": "value",
+            "hidden": false,
+            "validations": [],
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "RepairmarskonmbSelectedDropDown",
+                  "data": "elementControlName"
+                },
+                "eventSource": "change"
+              }
+            ]
+          }
+        ],
+        "footer": [
+          {
+            "ctype": "button",
+            "color": "primary",
+            "text": "Complete",
+            "checkGroupValidity": true,
+            "uuid": "repairdetailsCompleteUUID",
+            "class": "primary-btn",
+            "visibility": true,
+            "disabled": true,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "actions": [
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "repairdetailsTaskUUID",
+                  "properties": {
+                    "expanded": false,
+                    "disabled": true,
+                    "header": {
+                      "title": "Repair Details",
+                      "icon": "description",
+                      "statusIcon": "check_circle",
+                      "statusClass": "complete-status",
+                      "class": "complete-task",
+                      "iconClass": "complete-task"
+                    }
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "repairresultUUID",
+                  "properties": {
+                    "expanded": true,
+                    "disabled": false
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "repairdeatilsdata",
+                  "data": "formData"
+                },
+                "eventSource": "click"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "ctype": "taskPanel",
+        "title": "",
+        "header": {
+          "title": "Repair Result",
+          "icon": "description",
+          "class": "font-weight-700",
+          "iconClass": "active-header"
+        },
+        "expanded": false,
+        "disabled": true,
+        "hideToggle": "true",
+        "uuid": "repairresultUUID",
+        "visibility": false,
+        "hooks": [],
+        "validations": [],
+        "bodyCss": "height:400px;",
+        "actions": [],
+        "items": [
+          {
+            "ctype": "dropdownWithSearch",
+            "formGroupClass": "flex-container-full-width form-group-margin",
+            "dropdownClass": "dropdown-container textfield-container searchResultUlHeight", 
+            "uuid": "defectCodeDropdownUUID",
+            "name": "DefectcodeDropdown",
+            "dataSource": "",
+            "label": "Defect Code",
+            "labelClass": "label-fault",
+            "hooks": [],
+            "code": "DEFECT_CODE",
+            "required": true,
+            "displayValue": "DEFECT_CODE",
+            "hidden": false,
+            "validations": [],
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "DefectcodeSelectedDropDown",
+                  "data": "elementControlName"
+                },
+                "eventSource": "change"
+              },
+              {
+                "type": "splitWord",
+                "config": {
+                  "key": "OriginalDefectCode",
+                  "source": "#DefectcodeSelectedDropDown",
+                  "splitWord": "-"
+                },
+                "eventSource": "change"
+              },
+              {
+                "type": "condition",
+                "config": {
+                  "operation": "isValid",
+                  "lhs": "#DefectcodeSelectedDropDown"
+                },
+                "eventSource": "change",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "microservice",
+                        "hookType": "afterInit",
+                        "config": {
+                          "microserviceId": "getActionCodeByDefect",
+                          "isLocal": false,
+                          "LocalService": "assets/Responses/mockBGA.json",
+                          "requestMethod": "get",
+                          "params": {
+                            "clientName": "#discrepancyUnitInfo.CLIENTNAME",
+                            "contrName": "#discrepancyUnitInfo.CONTRACTNAME",
+                            "userName": "#userAccountInfo.PersonalDetails.USERID",
+                            "geoName": "#discrepancyUnitInfo.GEONAME",
+                            "wcName": "#discrepancyUnitInfo.WORKCENTER",
+                            "defCode": "#OriginalDefectCode",
+                            "routeName": "#discrepancyUnitInfo.ROUTE"
+                          }
+                        },
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "actionCodeDropdownUUID",
+                                  "dropDownProperties": {
+                                    "options": "#getActionCodeByDefect"
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": [
+                              {
+                                "type": "context",
+                                "config": {
+                                  "requestMethod": "add",
+                                  "key": "errorMsg",
+                                  "data": "responseData"
+                                }
+                              },
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "errorTitleUUID",
+                                  "properties": {
+                                    "titleValue": "#errorMsg",
+                                    "isShown": true
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "errorMsg",
+                          "data": "responseData"
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "errorTitleUUID",
+                          "properties": {
+                            "titleValue": "#errorMsg",
+                            "isShown": true
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "ctype": "dropdownWithSearch",
+            "formGroupClass": "flex-container-full-width form-group-margin",
+            "dropdownClass": "dropdown-container textfield-container searchResultUlHeight",
+            "uuid": "actionCodeDropdownUUID",
+            "name": "actioncodeDropdown",
+            "dataSource": "",
+            "label": "Action Code",
+            "labelClass": "label-fault",
+            "hooks": [],
+            "code": "actionCode",
+            "required": true,
+            "displayValue": "actionCode",
+            "hidden": false,
+            "validations": [],
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "RepairmarskonmbSelectedDropDown",
+                  "data": "elementControlName"
+                },
+                "eventSource": "change"
+              },
+              {
+                "type": "splitWord",
+                "config": {
+                  "key": "OriginalActonCode",
+                  "source": "#RepairmarskonmbSelectedDropDown",
+                  "splitWord": "-"
+                },
+                "eventSource": "change"
+              }
+            ]
+          }
+        ],
+        "footer": [
+          {
+            "ctype": "iconbutton",
+            "text": "Reset Form",
+            "uuid": "RemoveresetUUID",
+            "visibility": true,
+            "disabled": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "icon": "not_interested",
+            "iconClass": "resetIcon",
+            "actions": [
+              {
+                "type": "updateComponent",
+                "eventSource": "click",
+                "config": {
+                  "key": "softwareDefectUUID",
+                  "properties": {
+                    "options": []
+                  }
+                }
+              },
+              {
+                "type": "resetData",
+                "eventSource": "click"
+              }
+            ]
+          },
+          {
+            "ctype": "button",
+            "color": "primary",
+            "text": "Done",
+            "uuid": "repairresultCompleteUUID",
+            "class": "primary-btn",
+            "visibility": true,
+            "disabled": true,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "repairresultdata",
+                  "data": "formData"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "microservice",
+                "eventSource": "click",
+                "config": {
+                  "microserviceId": "performFA",
+                  "requestMethod": "post",
+                  "body": {
+                    "updateFailureAnalysisRequest": {
+                      "bcn": "#discrepancyUnitInfo.ITEM_BCN",
+                      "actionCodeChangeList": {
+                        "actionCodeChange": [
+                          {
+                            "actionCode": "#OriginalActonCode",
+                            "operation": "Add",
+                            "defectCode": {
+                              "value": "#OriginalDefectCode"
+                            }
+                          }
+                        ]
+                      },
+                      "defectCodeChangeList": {
+                        "defectCodeChange": [
+                          {
+                            "defectCode": "#OriginalDefectCode",
+                            "operation": "Add"
+                          }
+                        ]
+                      }
+                    },
+                    "userPwd": {
+                      "username": "#loginUUID.username",
+                      "password": "#loginUUID.password"
+                    },
+                    "operationTypes": "ProcessImmediate",
+                    "ip": "::1",
+                    "callSource": "FrontEnd",
+                    "apiUsage_LocationName": "#discrepancyUnitInfo.GEONAME",
+                    "apiUsage_ClientName": "#discrepancyUnitInfo.CLIENTNAME"
+                  },
+                  "toBeStringified": true
+                },
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "microservice",
+                        "hookType": "afterInit",
+                        "config": {
+                          "microserviceId": "getResultCodes",
+                          "isLocal": false,
+                          "LocalService": "assets/Responses/mockBGA.json",
+                          "requestMethod": "get",
+                          "params": {
+                            "bcn": "#discrepancyUnitInfo.ITEM_BCN",
+                            "validateResult": 0
+                          }
+                        },
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "MbReapirResultCodesUUID",
+                                  "dropDownProperties": {
+                                    "options": "#getResultCodes"
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": [
+                              {
+                                "type": "context",
+                                "config": {
+                                  "requestMethod": "add",
+                                  "key": "errorMsg",
+                                  "data": "responseData"
+                                }
+                              },
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "errorTitleUUID",
+                                  "properties": {
+                                    "titleValue": "#errorMsg",
+                                    "isShown": true
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      },
+                      
+                      {
+                        "type": "enableComponent",
+                        "config": {
+                          "key": "MbReapirResultCodesUUID",
+                          "property": "ResultCodes"
+                        },
+                        "eventSource": "click"
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "MB_RepairTimeoutUUID",
+                          "properties": {
+                            "disabled": true
+                          }
+                        },
+                        "eventSource": "change"
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "performFAError",
+                          "data": "responseData"
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "errorTitleUUID",
+                          "properties": {
+                            "titleValue": "#performFAError",
+                            "isShown": true
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "repairresultUUID",
+                  "properties": {
+                    "expanded": false,
+                    "disabled": true,
+                    "header": {
+                      "title": "Repair Details",
+                      "icon": "description",
+                      "statusIcon": "check_circle",
+                      "statusClass": "complete-status",
+                      "class": "complete-task",
+                      "iconClass": "complete-task"
+                    }
+                  }
+                },
+                "eventSource": "click"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "footer": [
+      {
+        "ctype": "toolbar",
+        "toolbarClass": "pagecontent-footer",
+        "items": [
+          {
+            "ctype": "iconbutton",
+            "iconButtonClass": "footer-save body",
+            "text": "Exit",
+            "uuid": "discrepancySaveUUID",
+            "visibility": true,
+            "disabled": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "icon": "save",
+            "actions": [
+              {
+                "type": "renderTemplate",
+                "config": {
+                  "templateId": "dashboard.json",
+                  "mode": "local"
+                },
+                "eventSource": "click"
+              }
+            ]
+          },
+          {
+            "ctype": "iconbutton",
+            "iconButtonClass": "footer-save ml-1 body",
+            "text": " Exit",
+            "uuid": "exitUUID",
+            "visibility": true,
+            "disabled": false,
+            "type": "submit",
+            "icon": "close",
+            "actions": [
+              {
+                "type": "clearScreenData",
+                "eventSource": "click"
+              },
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "delete",
+                  "key": "currentWC"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "renderTemplate",
+                "config": {
+                  "templateId": "dashboard.json",
+                  "mode": "local"
+                },
+                "eventSource": "click"
+              }
+            ]
+          },
+          {
+            "ctype": "iconText",
+            "uuid": "discrepancyIconUUID",
+            "icon": "add_comment",
+            "text": "Add Note",
+            "textCss": "",
+            "iconPosition": "Before",
+            "iconTextClass": "footer-addNote body",
+            "actions": [
+              {
+                "type": "dialog",
+                "uuid": "addNoteDialogUUID",
+                "config": {
+                  "title": "Add Note",
+                  "items": [
+                    {
+                      "ctype": "textarea",
+                      "name": "addNote",
+                      "textareaClass": "note-class",
+                      "uuid": "addNoteUUID",
+                      "required": true,
+                      "value": "#mbrtimeoutNotes.addNote",
+                      "actions": [
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "doneaddnoteUUID",
+                            "properties": {
+                              "disabled": false
+                            }
+                          },
+                          "eventSource": "onLoad"
+                        }
+                      ]
+                    }
+                  ],
+                  "footer": [
+                    {
+                      "ctype": "button",
+                      "color": "primary",
+                      "text": "Cancel",
+                      "uuid": "cancelHoldUUID",
+                      "closeType": "close",
+                      "disableClose": true,
+                      "visibility": true,
+                      "dialogButton": true,
+                      "type": "",
+                      "hooks": [],
+                      "validations": [],
+                      "actions": []
+                    },
+                    {
+                      "ctype": "button",
+                      "color": "primary",
+                      "text": "Done",
+                      "uuid": "doneaddnoteUUID",
+                      "dialogButton": true,
+                      "visibility": true,
+                      "disabled": true,
+                      "type": "submit",
+                      "closeType": "success",
+                      "hooks": [],
+                      "validations": [],
+                      "actions": []
+                    }
+                  ]
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "key": "mbrtimeoutNotes",
+                          "data": "formData",
+                          "requestMethod": "add",
+                          "value": "addNote"
+                        },
+                        "eventSource": "click"
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": []
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "ctype": "spacer",
+            "uuid": "emptySpaceUUID",
+            "class": "empty-space"
+          },
+          {
+            "ctype": "iconbutton",
+            "uuid": "discrepancyPauseUUID",
+            "visibility": true,
+            "disabled": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "icon": "pause",
+            "iconClass": "",
+            "disableRipple": true,
+            "actions": [
+              {
+                "type": "dialog",
+                "uuid": "pauseDialogUUID",
+                "config": {
+                  "title": "Hold",
+                  "items": [
+                    {
+                      "ctype": "nativeDropdown",
+                      "formGroupClass": "discrepancy-holddrpdwn",
+                      "uuid": "holdTypeUUID",
+                      "label": "Hold Type",
+                      "name": "holdType",
+                      "required": true,
+                      "dataSource": "#holdCodesForDiscrepancy",
+                      "code": "storageHoldSubCode",
+                      "displayValue": "storageHoldSubCode",
+                      "defaultValue": "#storageHoldSubCode",
+                      "actions": [
+                        {
+                          "type": "context",
+                          "config": {
+                            "requestMethod": "add",
+                            "key": "storageHoldSubCode",
+                            "data": "elementControlValue"
+                          },
+                          "eventSource": "change"
+                        },
+                        {
+                          "type": "GetValueFromArray",
+                          "config": {
+                            "arrayData": "#holdCodesForDiscrepancy",
+                            "PullValue": "storageHoldCode"
+                          },
+                          "eventSource": "change"
+                        }
+                      ]
+                    },
+                    {
+                      "ctype": "textarea",
+                      "label": "Add note",
+                      "name": "holdAddNote",
+                      "textareaContainer": "timeout-class required-note",
+                      "uuid": "holdNodeUUID",
+                      "required": true,
+                      "submitable": true,
+                      "value": "#mbrtimeoutNotes.holdAddNote",
+                      "actions": []
+                    }
+                  ],
+                  "footer": [
+                    {
+                      "ctype": "button",
+                      "color": "primary",
+                      "text": "Cancel",
+                      "uuid": "cancelHoldUUID",
+                      "closeType": "close",
+                      "disableClose": true,
+                      "visibility": true,
+                      "dialogButton": true,
+                      "type": "",
+                      "hooks": [],
+                      "validations": [],
+                      "actions": []
+                    },
+                    {
+                      "ctype": "button",
+                      "color": "primary",
+                      "text": "Done",
+                      "uuid": "doneHoldUUID",
+                      "dialogButton": true,
+                      "visibility": true,
+                      "disabled": true,
+                      "type": "submit",
+                      "closeType": "success",
+                      "hooks": [],
+                      "validations": [],
+                      "actions": [
+                        {
+                          "type": "context",
+                          "config": {
+                            "key": "mbrtimeoutNotes",
+                            "data": "formData",
+                            "requestMethod": "add",
+                            "value": "holdAddNote"
+                          },
+                          "eventSource": "click"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "key": "holdDialogData",
+                          "data": "formData",
+                          "requestMethod": "add"
+                        },
+                        "eventSource": "click"
+                      },
+                      {
+                        "type": "microservice",
+                        "config": {
+                          "microserviceId": "addInfoCodes",
+                          "requestMethod": "post",
+                          "body": {
+                            "bcn": "#discrepancyUnitInfo.ITEM_BCN",
+                            "notes": "#holdDialogData.holdAddNote",
+                            "workCenter": "#discrepancyUnitInfo.WORKCENTER",
+                            "geography": "#discrepancyUnitInfo.GEONAME",
+                            "part": "#discrepancyUnitInfo.PART_NO",
+                            "woTimeLoggedInHours": "1",
+                            "userName": "#userAccountInfo.PersonalDetails.USERID",
+                            "password": "#loginUUID.password",
+                            "flexFields": [
+                              {
+                                "name": "REPAIR MARKS ON MB BEFORE RL REPAIR",
+                                "value": "#repairdeatilsdata.reapirmarksbeforeRLDropdown"
+                              },
+                              {
+                                "name": "MB CT number",
+                                "value": "#repairdeatilsdata.mbctnumber"
+                              },
+                              {
+                                "name": "MB PN",
+                                "value": "#repairdeatilsdata.mbpartumber"
+                              },
+                              {
+                                "name": "Repair marks on MB",
+                                "value": "#repairdeatilsdata.reapirmarksonMBDropdown"
+                              }
+                            ]
+                          },
+                          "toBeStringified": true,
+                          "spliceIfEmptyValueObject": [
+                            {
+                              "identifier": "flexFields",
+                              "valueField": "value",
+                              "keyToBeRemoved": "flexFields"
+                            }
+                          ]
+                        },
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "microservice",
+                                "config": {
+                                  "microserviceId": "getHPTMOCOMMDebug",
+                                  "isLocal": false,
+                                  "LocalService": "assets/Responses/performFA.json",
+                                  "toBeStringified": true,
+                                  "requestMethod": "post",
+                                  "body": {
+                                    "itemId": "#repairUnitInfo.ITEM_ID",
+                                    "workOrderId": "#repairUnitInfo.WORKORDER_ID",
+                                    "userName": "#userAccountInfo.PersonalDetails.USERID",
+                                    "flexFields": {
+                                      "flexFieldsList": [
+                                        {
+                                          "name": "Description Quality",
+                                          "value": "Correct"
+                                        },
+                                        {
+                                          "name": "NTF information useful",
+                                          "value": "abf"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "eventSource": "click"
+                                },
+                                "responseDependents": {
+                                  "onSuccess": {
+                                    "actions": [
+                                      {
+                                        "type": "microservice",
+                                        "config": {
+                                          "microserviceId": "getHPRLSCommonDebugTrigger",
+                                          "isLocal": false,
+                                          "LocalService": "assets/Responses/performFA.json",
+                                          "requestMethod": "get",
+                                          "params": {
+                                            "userName": "#userAccountInfo.PersonalDetails.USERID",
+                                            "triggerSubType": "RELEASE",
+                                            "storageHoldCode": "#storageHoldCode",
+                                            "notes": "#holdDialogData.holdAddNote"
+                                          }
+                                        },
+                                        "responseDependents": {
+                                          "onSuccess": {
+                                            "actions": [
+                                              {
+                                                "type": "microservice",
+                                                "config": {
+                                                  "microserviceId": "moveinventory",
+                                                  "isLocal": false,
+                                                  "LocalService": "assets/Responses/performFA.json",
+                                                  "requestMethod": "post",
+                                                  "body": {
+                                                    "apiUsageClientName": "#discrepancyUnitInfo.CLIENTNAME",
+                                                    "apiUsageLocationName": "#discrepancyUnitInfo.GEONAME",
+                                                    "callSource": "FrontEnd",
+                                                    "ip": "::1",
+                                                    "items": {
+                                                      "addtionalDetails": {
+                                                        "comments": "#holdDialogData.holdAddNote",
+                                                        "fixedAssetTag": "#discrepancyUnitInfo.FAT",
+                                                        "storageHoldCode": "#storageHoldCode",
+                                                        "storageHoldSubCode": "#storageHoldSubCode"
+                                                      },
+                                                      "destinationLocation": {
+                                                        "bin": "Default",
+                                                        "geography": "#discrepancyUnitInfo.GEONAME",
+                                                        "stockingLocation": "WUR DGI",
+                                                        "warehouse": "HP LAPTOP WUR"
+                                                      },
+                                                      "item": [
+                                                        {
+                                                          "bcn": "#discrepancyUnitInfo.ITEM_BCN",
+                                                          "owner": "#discrepancyUnitInfo.CLIENTNAME",
+                                                          "partNo": "#discrepancyUnitInfo.PART_NO",
+                                                          "quantity": "1",
+                                                          "serialNo": "#discrepancyUnitInfo.SERIAL_NO",
+                                                          "condition": "Defective"
+                                                        }
+                                                      ],
+                                                      "notes": "#holdDialogData.holdAddNote",
+                                                      "sourceLocation": {
+                                                        "bin": "Default",
+                                                        "geography": "#discrepancyUnitInfo.GEONAME",
+                                                        "stockingLocation": "WIP",
+                                                        "warehouse": "HP LAPTOP WUR"
+                                                      }
+                                                    },
+                                                    "usrPwd": {
+                                                      "userName": "#loginUUID.username",
+                                                      "password": "#loginUUID.password"
+                                                    }
+                                                  },
+                                                  "toBeStringified": true
+                                                },
+                                                "responseDependents": {
+                                                  "onSuccess": {
+                                                    "actions": [  
+                                                      {
+                                                        "type": "pauseScreenData"
+                                                    },                                                     
+                                                      {
+                                                        "type": "renderTemplate",
+                                                        "config": {
+                                                          "templateId": "dashboard.json",
+                                                          "mode": "local"
+                                                        }
+                                                      }
+                                                    ]
+                                                  },
+                                                  "onFailure": {
+                                                    "actions": [
+                                                      {
+                                                        "type": "context",
+                                                        "config": {
+                                                          "requestMethod": "add",
+                                                          "key": "moveinventoryForDiscrepancy",
+                                                          "data": "responseData"
+                                                        }
+                                                      },
+                                                      {
+                                                        "type": "updateComponent",
+                                                        "config": {
+                                                          "key": "discrepancyErrorTitleUUID",
+                                                          "properties": {
+                                                            "titleValue": "#moveinventoryForDiscrepancy",
+                                                            "isShown": true
+                                                          }
+                                                        }
+                                                      }
+                                                    ]
+                                                  }
+                                                },
+                                                "eventSource": "click"
+                                              }
+                                            ]
+                                          },
+                                          "onFailure": {
+                                            "actions": [
+                                              [
+                                                {
+                                                  "type": "context",
+                                                  "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "errorResp",
+                                                    "data": "responseData"
+                                                  }
+                                                },
+                                                {
+                                                  "type": "updateComponent",
+                                                  "config": {
+                                                    "key": "errorTitleUUID",
+                                                    "properties": {
+                                                      "titleValue": "#errorResp",
+                                                      "isShown": true
+                                                    }
+                                                  }
+                                                }
+                                              ]
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "onFailure": {
+                                    "actions": [
+                                      [
+                                        {
+                                          "type": "context",
+                                          "config": {
+                                            "requestMethod": "add",
+                                            "key": "errorResp",
+                                            "data": "responseData"
+                                          }
+                                        },
+                                        {
+                                          "type": "updateComponent",
+                                          "config": {
+                                            "key": "errorTitleUUID",
+                                            "properties": {
+                                              "titleValue": "#errorResp",
+                                              "isShown": true
+                                            }
+                                          }
+                                        }
+                                      ]
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": [
+                                {
+                                    "type": "context",
+                                    "config": {
+                                        "requestMethod": "add",
+                                        "key": "errorDisp",
+                                        "data": "responseData"
+                                    }
+                                },
+                                {
+                                    "type": "updateComponent",
+                                    "config": {
+                                        "key": "errorTitleUUID",
+                                        "properties": {
+                                            "titleValue": "#errorDisp",
+                                            "isShown": true
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {}
+                }
+              }
+            ]
+          },
+          {
+            "ctype": "nativeDropdown",
+            "dropdownClass": "footer-dropdown dropdown-container body2",
+            "uuid": "MbReapirResultCodesUUID",
+            "isDropdownNotSelected": true,
+            "name": "ResultCodes",
+            "dataSource": "",
+            "code": "resultCode",
+            "displayValue": "resultCode",
+            "disabled": true,
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "SelectedDescripencyResultcode",
+                  "data": "elementControlValue"
+                },
+                "eventSource": "change"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "MB_RepairTimeoutUUID",
+                  "properties": {
+                    "disabled": false
+                  }
+                },
+                "eventSource": "change"
+              }
+            ]
+          },
+          {
+            "ctype": "button",
+            "color": "primary",
+            "text": "Time Out",
+            "uuid": "MB_RepairTimeoutUUID",
+            "visibility": true,
+            "disabled": true,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "buttonClass": "footer-button primary-btn",
+            "class": "primary-btn",
+            "actions": [
+              {
+                "type": "dialog",
+                "uuid": "pauseDialogUUID",
+                "config": {
+                  "title": "Time Out",
+                  "items": [
+                    {
+                      "ctype": "textarea",
+                      "label": "Add note",
+                      "name": "addNote",
+                      "textareaClass": "note-class",
+                      "uuid": "timeoutAddNoteUUID",
+                      "required": true,
+                      "submitable": true,
+                      "value": "#mbrtimeoutNotes.addNote",
+                      "actions": [
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "doneTimeOutUUID",
+                            "properties": {
+                              "disabled": false
+                            }
+                          },
+                          "eventSource": "onLoad"
+                        }
+                      ]
+                    }
+                  ],
+                  "footer": [
+                    {
+                      "ctype": "button",
+                      "color": "primary",
+                      "text": "Cancel",
+                      "uuid": "cancelTimeOutUUID",
+                      "closeType": "close",
+                      "disableClose": true,
+                      "visibility": true,
+                      "dialogButton": true,
+                      "type": "",
+                      "hooks": [],
+                      "validations": [],
+                      "actions": []
+                    },
+                    {
+                      "ctype": "button",
+                      "color": "primary",
+                      "text": "Done",
+                      "uuid": "doneTimeOutUUID",
+                      "dialogButton": true,
+                      "visibility": true,
+                      "disabled": true,
+                      "type": "submit",
+                      "closeType": "success",
+                      "hooks": [],
+                      "validations": [],
+                      "actions": []
+                    }
+                  ]
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "key": "mbrtimeoutNotes",
+                          "data": "formData",
+                          "requestMethod": "add",
+                          "value": "addNote"
+                        },
+                        "eventSource": "click"
+                      },
+                      {
+                        "type": "microservice",
+                        "config": {
+                          "microserviceId": "getStopShipProcess",
+                          "requestMethod": "get",
+                          "params": {
+                            "locationId": "#repairUnitInfo.LOCATION_ID",
+                            "clientId": "#repairUnitInfo.CLIENT_ID",
+                            "contract": "#repairUnitInfo.CONTRACT_ID",
+                            "bcn": "#repairUnitInfo.ITEM_BCN",
+                            "serial": "#repairUnitInfo.SERIAL_NO",
+                            "fat": "#repairUnitInfo.FAT",
+                            "partNo": "#repairUnitInfo.PART_NO",
+                            "opt": "#repairUnitInfo.ROUTE",
+                            "wcid": "#repairUnitInfo.WORKCENTER_ID",
+                            "userName": "#userAccountInfo.PersonalDetails.USERID"
+                          }
+                        },
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "microservice",
+                                "config": {
+                                  "microserviceId": "performTimeOut",
+                                  "requestMethod": "post",
+                                  "body": {
+                                    "timeOutRequest": {
+                                      "location": "#repairUnitInfo.GEONAME",
+                                      "bcn": "#repairUnitInfo.ITEM_BCN",
+                                      "workCenter": "#repairUnitInfo.WORKCENTER",
+                                      "password": "#loginUUID.password",
+                                      "warrantyInd": "false",
+                                      "notes": "#mbrtimeoutNotes.addNote",
+                                      "resultCode": "#SelectedDescripencyResultcode",
+                                      "workCenterFlexFieldList": {
+                                        "flexField": [
+                                          {
+                                            "name": "REPAIR MARKS ON MB BEFORE RL REPAIR",
+                                            "value": "#repairdeatilsdata.reapirmarksbeforeRLDropdown"
+                                          },
+                                          {
+                                            "name": "MB CT number",
+                                            "value": "#repairdeatilsdata.mbctnumber"
+                                          },
+                                          {
+                                            "name": "MB PN",
+                                            "value": "#repairdeatilsdata.mbpartumber"
+                                          },
+                                          {
+                                            "name": "Repair marks on MB",
+                                            "value": "#repairdeatilsdata.reapirmarksonMBDropdown"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    "modifyWarranty": 0,
+                                    "timeOutType": "ProcessImmediate",
+                                    "clientName": "#repairUnitInfo.CLIENTNAME",
+                                    "contractName": "#repairUnitInfo.CONTRACTNAME",
+                                    "userName": "#loginUUID.username",
+                                    "userPass": "#loginUUID.password",
+                                    "ip": "::1",
+                                    "callSource": "FrontEnd",
+                                    "apiUsage_LocationName": "#repairUnitInfo.GEONAME",
+                                    "apiUsage_ClientName": "#repairUnitInfo.CLIENTNAME"
+                                  },
+                                  "toBeStringified": true,
+                                  "spliceIfEmptyValueObject": [
+                                    {
+                                      "identifier": "flexField",
+                                      "valueField": "value",
+                                      "keyToBeRemoved": "workCenterFlexFieldList"
+                                    }
+                                  ]
+                                },
+                                "responseDependents": {
+                                  "onSuccess": {
+                                    "actions": [
+                                      {
+                                        "type": "clearScreenData"
+                                    },
+                                      {
+                                        "type": "renderTemplate",
+                                        "config": {
+                                          "templateId": "dashboard.json",
+                                          "mode": "local"
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "onFailure": {
+                                    "actions": [
+                                      {
+                                        "type": "context",
+                                        "config": {
+                                          "requestMethod": "add",
+                                          "key": "performTimeouterrData",
+                                          "data": "responseData"
+                                        }
+                                      },
+                                      {
+                                        "type": "updateComponent",
+                                        "config": {
+                                          "key": "errorTitleUUID",
+                                          "properties": {
+                                            "titleValue": "#performTimeouterrData",
+                                            "isShown": true
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": [
+                              {
+                                "type": "context",
+                                "config": {
+                                  "requestMethod": "add",
+                                  "key": "getStopShipProcessData",
+                                  "data": "responseData"
+                                }
+                              },
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "errorTitleUUID",
+                                  "properties": {
+                                    "titleValue": "#getStopShipProcessData",
+                                    "isShown": true
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "Result": "SUCCESS"
+}

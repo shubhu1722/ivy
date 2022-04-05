@@ -1,0 +1,39 @@
+<div [class]= "parentClass">
+    <label *ngIf="label !== ''" [for]="name" [class]="labelClass">{{label}} </label>
+    <div [class]="inputClass" [formGroup]="group">
+        <mat-form-field>
+            <mat-select disableOptionCentering disableRipple panelClass="multiDropdownPanelClass" class="body" [class]="dropdownClass" (selectionChange)="selectionChange($event)" (click)="clickevent($event)"
+                [formControl]="toppingsControl" multiple>
+                <mat-select-trigger>
+                    <mat-chip-list>
+                        <mat-chip *ngFor="let topping of selectedList" [removable]="true" [class]="chipClasses"
+                            (removed)="onToppingRemoved(topping)">
+                            {{ topping }}
+                            <mat-icon [class]="chipCancelClasses" matChipRemove>cancel</mat-icon>
+                        </mat-chip>
+                    </mat-chip-list>
+                </mat-select-trigger>
+
+                <!-- <mat-option *ngFor="let topping of toppingList" [value]="topping">{{topping}}</mat-option> -->
+                <mat-optgroup>
+                    <mat-form-field [class]="optGrpFormFieldClass">
+                        <input #search autocomplete="off" matInput (input)="keyDown($event)"
+                            [formControl]="searchTextboxControl">
+                        <button [disableRipple]="true" *ngIf="!search.value" matSuffix mat-icon-button
+                            aria-label="Search" (click)="clearSearch($event)">
+                            <mat-icon class="text-dark" [style]="searchIconStyles">search</mat-icon>
+                        </button>
+                        <button [disableRipple]="true" *ngIf="search.value" matSuffix mat-icon-button aria-label="Clear"
+                            (click)="clearSearch($event)">
+                            <mat-icon class="text-dark" [style]="searchIconStyles">close</mat-icon>
+                        </button>
+                    </mat-form-field>
+                </mat-optgroup>
+                <mat-option *ngFor="let topping of options" [value]="topping.displayValue">
+                    {{topping.displayValue}}
+                </mat-option>
+
+            </mat-select>
+        </mat-form-field>
+    </div>
+</div>

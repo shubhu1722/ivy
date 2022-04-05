@@ -1,0 +1,532 @@
+{
+    "ResultData": {
+        "ctype": "page",
+        "uuid": "pageUUID",
+        "visibility": true,
+        "hooks": [
+            {
+                "type": "microservice",
+                "hookType": "afterInit",
+                "config": {
+                  "microserviceId": "getResultCodes",
+                  "isLocal": false,
+                  "LocalService": "assets/Responses/mockBGA.json",
+                  "requestMethod": "get",
+                  "params": {
+                    "bcn": "#UnitInfo.ITEM_BCN",
+                    "validateResult": 1
+                  }
+                },
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "getverifonePackingShipingNoAccessoriesResultcodes",
+                          "data": "responseData"
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "ResultCodeVerifonePackingShipNoAccessoryUUID",
+                          "dropDownProperties": {
+                            "options": "#getverifonePackingShipingNoAccessoriesResultcodes"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "errorDisp",
+                          "data": "responseData"
+                        }
+                      },
+                      {
+                        "type": "condition",
+                        "config": {
+                          "operation": "isEqualTo",
+                          "lhs": "#errorDisp",
+                          "rhs": "No Record Found"
+                        },
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "errorTitleUUID",
+                                  "properties": {
+                                    "titleValue": "#errorDisp",
+                                    "isShown": false
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": [
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "errorTitleUUID",
+                                  "properties": {
+                                    "titleValue": "#errorDisp",
+                                    "isShown": true
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+            }
+        ],
+        "header": [
+            {
+                "ctype": "breadcrumb",
+                "style": "padding-left: 4px;",
+                "breadcrumbs": [
+                    {
+                        "label": "#userSelectedLocationName"
+                    },
+                    {
+                        "label": "#userSelectedClientName"
+                    },
+                    {
+                        "label": "#userSelectedContractName"
+                    }
+                ]
+            },
+            {
+                "ctype": "toolbar",
+                "css": "padding-top: 35px;",
+                "toolbarClass": "pagecontent-header",
+                "items": [
+                    {
+                        "ctype": "title",
+                        "uuid": "PackingShipNoAccessoryHHeadertitleuuid",
+                        "titleValue": "Packing Shipping",
+                        "titleClass": "section-title",
+                        "css": "padding-bottom: 35px;padding-left: 4px;"
+                    },
+                    {
+                        "ctype": "spacer",
+                        "uuid": "emptySpaceUUID",
+                        "class": "empty-space"
+                    },
+                    {
+                        "ctype": "iconbutton",
+                        "iconButtonClass": "headeropen-button",
+                        "text": "",
+                        "uuid": "pageopenUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "hidden": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "icon": "menu_open",
+                        "disableRipple": true,
+                        "iconClass": "header-icon",
+                        "css": "padding-bottom: 35px;",
+                        "actions": [
+                            {
+                                "type": "toggle",
+                                "eventSource": "click",
+                                "name": "subProcessRightNavref"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "openUUID",
+                                    "properties": {
+                                        "hidden": false
+                                    }
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "pageopenUUID",
+                                    "properties": {
+                                        "hidden": true
+                                    }
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "items": [
+            {
+                "ctype": "title",
+                "uuid": "successTitleUUID",
+                "titleClass": "success-title",
+                "isShown": false,
+                "containerId": "prebodysectionone"
+            },
+            {
+                "ctype": "title",
+                "uuid": "errorTitleUUID",
+                "titleClass": "error-title",
+                "isShown": false,
+                "containerId": "prebodysectionone"
+            },
+            {
+                "ctype": "taskPanel",
+                "title": "",
+                "containerId": "prebodysectiontwo",
+                "header": {
+                  "title": "Shipping Details",
+                  "svgIcon": "description_icon",
+                  "iconClass": "active-header",
+                  "class": "greyish-black"
+                },
+                "expanded": true,
+                "disabled": false,
+                "hideToggle": true,
+                "isMandatory": false,
+                "taskPanelHeaderClass":"background-white",
+                "hidden": false,
+                "hooks": [],
+                "validations": [],
+                "actions": [],
+                "isblueBorder": true,
+                "uuid": "verifonePackingShipNoAccessorylastNoteTaskUUID",
+                "visibility": true,
+                "items": [
+                    {
+                        "ctype": "title",
+                        "uuid": "AccessoryBagTextUUID",
+                        "title": "Accessory Bag Number",
+                        "titleClass": "body text-secondary font-bold verifone-packing-shipping-label",
+                        "titleValue": "N/A",
+                        "titleValueClass": "body font-normal text-secondary verifone-packing-shipping-value-1"
+                        
+                    },
+                    {
+                        "ctype": "title",
+                        "uuid": "DestinationTextUUID",
+                        "title": "Destination",
+                        "titleClass": "body text-secondary font-bold verifone-packing-shipping-label",
+                        "titleValue": "Customer Owned Warehouse",
+                        "titleValueClass": "body font-normal text-secondary verifone-packing-shipping-value-2"
+                    },
+                    {
+                        "ctype": "title",
+                        "uuid": "PackingMethodTextUUID",
+                        "title": "Packing Method",
+                        "titleClass": "body text-secondary font-bold verifone-packing-shipping-label",
+                        "titleValue": "Bubble Bag",
+                        "titleValueClass": "body font-normal text-secondary verifone-packing-shipping-value-3"
+                    },
+                    {
+                        "ctype": "textField",
+                        "uuid": "scanPackingLabelScanUUID",
+                        "submitable": false,
+                        "disabled": false,
+                        "validations": [
+                        ],
+                        "inLine": true,
+                        "formGroupClass": "flex-container flex-container-half-width",
+                        "textfieldClass": "textfield-container-field",
+                        "hooks": [],
+                        "actions": [
+                        ],
+                        "name": "scanPackingLabelText",
+                        "label": "Scan Packing Label",
+                        "labelClass": "font-bold text-secondary",
+                        "labelPosition": "",
+                        "tooltip": "",
+                        "TooltipPosition": "",
+                        "isAutoComplete": "off",
+                        "defaultValue": "",
+                        "readonly": false,
+                        "type": "text",
+                        "required": true,
+                        "placeholder": "Scan #",
+                        "value": "",
+                        "prefix": false,
+                        "prefixIcon": "",
+                        "suffix": false,
+                        "suffixIcon": ""
+                    }
+                ]
+            }
+        ],
+        "footer": [
+            {
+                "ctype": "toolbar",
+                "toolbarClass": "pagecontent-footer",
+                "items": [
+                    {
+                        "ctype": "iconbutton",
+                        "iconButtonClass": "footer-save body primary-btn",
+                        "text": "Exit",
+                        "uuid": "saveUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "icon": "close",
+                        "actions": [
+                            {
+                                "type": "clearAllContext",
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "renderTemplate",
+                                "config": {
+                                    "templateId": "dashboard.json",
+                                    "mode": "local"
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "iconText",
+                        "uuid": "IconUUID",
+                        "iconTextClass": "footer-addNote body",
+                        "icon": "add_comment",
+                        "text": "Add Note",
+                        "iconPosition": "Before",
+                        "actions": [
+                            {
+                                "type": "dialog",
+                                "uuid": "addNoteDialogUUID",
+                                "config": {
+                                    "title": "Add Note",
+                                    "items": [
+                                        {
+                                            "ctype": "textarea",
+                                            "name": "addNote",
+                                            "textareaClass": "note-class",
+                                            "uuid": "addNoteUUID",
+                                            "value": "#LoadStationHNotes.addNote",
+                                            "actions": []
+                                        }
+                                    ],
+                                    "footer": [
+                                        {
+                                            "ctype": "button",
+                                            "color": "primary",
+                                            "text": "Close",
+                                            "uuid": "closeButtonUUID",
+                                            "closeType": "close",
+                                            "inputClass": "close-button",
+                                            "disableClose": true,
+                                            "visibility": true,
+                                            "dialogButton": true,
+                                            "type": "",
+                                            "hooks": [],
+                                            "validations": [],
+                                            "actions": []
+                                        },
+                                        {
+                                            "ctype": "button",
+                                            "color": "primary",
+                                            "text": "Done",
+                                            "uuid": "doneHoldUUID",
+                                            "dialogButton": true,
+                                            "visibility": true,
+                                            "type": "submit",
+                                            "closeType": "success",
+                                            "hooks": [],
+                                            "validations": [],
+                                            "actions": []
+                                        }
+                                    ]
+                                },
+                                "eventSource": "click",
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "PackingShipNoAccessoryNotes",
+                                                    "data": "formData"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "spacer",
+                        "uuid": "emptySpaceUUID",
+                        "class": "empty-space"
+                    },
+                    {
+                        "ctype": "iconbutton",
+                        "uuid": "discrepancyPauseUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "type": "submit",
+                        "icon": "pause",
+                        "iconClass": "",
+                        "disableRipple": true,
+                        "actions": [
+                          {
+                            "type":"showVerifoneOLEPausebuttonInScreen",
+                            "eventSource": "click"
+                          }
+                        ]
+                    },
+                    {
+                        "ctype": "nativeDropdown",
+                        "dropdownClass": "footer-dropdown dropdown-container body2",
+                        "uuid": "ResultCodeVerifonePackingShipNoAccessoryUUID",
+                        "isDropdownNotSelected": true,
+                        "hooks": [],
+                        "validations": [],
+                        "type": "text",
+                        "required": true,
+                        "submitable": true,
+                        "label": "",
+                        "labelPosition": "",
+                        "name": "identificatorTypeForUnit",
+                        "defaultValue": "",
+                        "code": "outcomeCodeId",
+                        "displayValue": "outcomeCodeValue",
+                        "disabled": true,
+                        "options": [],
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "SelectedResultcode",
+                                    "data": "elementControlName"
+                                },
+                                "eventSource": "change"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "PackingShipNoAccessoryTimeoutUUID",
+                                    "properties": {
+                                        "disabled": false
+                                    }
+                                },
+                                "eventSource": "change"
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "button",
+                        "color": "primary",
+                        "buttonClass": "footer-button",
+                        "text": "Time Out",
+                        "uuid": "PackingShipNoAccessoryTimeoutUUID",
+                        "visibility": true,
+                        "checkGroupValidity": false,
+                        "disabled": true,
+                        "hidden": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "actions": [
+                            {
+                                "type": "microservice",
+                                "eventSource": "click",
+                                "config": {
+                                  "microserviceId": "performTimeOut",
+                                  "requestMethod": "post",
+                                  "body": {
+                                    "timeOutRequest": {
+                                      "location": "#repairUnitInfo.GEONAME",
+                                      "bcn": "#repairUnitInfo.ITEM_BCN",
+                                      "workCenter": "#repairUnitInfo.WORKCENTER",
+                                      "password": "#loginUUID.password",
+                                      "warrantyInd": "false",
+                                      "notes": "#dellObaFailTimeoutNotes.addNote",
+                                      "resultCode": "#SelectedPackingShipingNoAccessoriesResultcode",
+                                      "workCenterFlexFieldList": {
+                                        "flexField": [
+                                          {
+                                            "name": "PackingShippingNoAccessories_Result",
+                                            "value": "#packingShipingNoAccessoriesTestResultDropdownData"
+                                          },
+                                          {
+                                            "name": "msgRead",
+                                            "value": "#packingShipingNoAccessoriesSubmitablemsgRead"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    "modifyWarranty": 0,
+                                    "timeOutType": "ProcessImmediate",
+                                    "clientName": "#repairUnitInfo.CLIENTNAME",
+                                    "contractName": "#repairUnitInfo.CONTRACTNAME",
+                                    "userName": "#loginUUID.username",
+                                    "userPass": "#loginUUID.password",
+                                    "ip": "::1",
+                                    "callSource": "FrontEnd",
+                                    "apiUsage_LocationName": "#repairUnitInfo.GEONAME",
+                                    "apiUsage_ClientName": "#repairUnitInfo.CLIENTNAME"
+                                  },
+                                  "toBeStringified": true
+                                },
+                                "responseDependents": {
+                                  "onSuccess": {
+                                    "actions":[
+                                          {
+                                            "type": "clearAllContext",
+                                            "eventSource": "click"
+                                          },
+                                          {
+                                            "type": "clearScreenData"
+                                          },
+                                          {
+                                            "type": "renderTemplate",
+                                            "config": {
+                                              "templateId": "dashboard.json",
+                                              "mode": "local"
+                                            },
+                                            "eventSource": "click"
+                                          }
+                                    ]
+                                  },
+                                  "onFailure": {
+                                    "actions": [
+                                      {
+                                        "type": "handleCommonServices",
+                                        "config": {
+                                          "type": "errorRenderTemplate",
+                                          "contextKey": "errorMsg",
+                                          "updateKey": "errorTitleUUID"
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                            }
+                        ]
+
+                    }
+                ]
+            }
+        ]
+    },
+    "Result": "SUCCESS"
+}

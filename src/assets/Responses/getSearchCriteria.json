@@ -1,0 +1,850 @@
+{
+  "ResultData": {
+    "ctype": "page",
+    "uuid": "pageUUID",
+    "css": "",
+    "visibility": true,
+    "hooks": [],
+    "validations": [],
+    "action": [],
+    "header": [
+      {
+        "ctype": "toolbar",
+        "uuid": "searchCriteriaWCTollbarUUID",
+        "toolbarClass": "searchCriteria-toolbar section-title",
+        "items": [
+          {
+            "ctype": "title",
+            "uuid": "searchCriteriaWCOperationsTitleUUID",
+            "title": "Work Center Operations"
+          }
+        ]
+      }
+    ],
+    "items": [
+      {
+        "ctype": "title",
+        "uuid": "searchCriteriaErrorTitleUUID",
+        "titleClass": "error-title",
+        "isShown": false
+      },
+      {
+        "ctype": "formPanel",
+        "title": "",
+        "header": "",
+        "uuid": "searchCriteriaFormUUID",
+        "formPanelClass": "searchCriteria-panel-full",
+        "visibility": true,
+        "hooks": [],
+        "validations": [],
+        "actions": [],
+        "items": [
+          {
+            "ctype": "textField",
+            "uuid": "discrepancyUnitValueUUID",
+            "isUpperCase": true,
+            "hooks": [],
+            "validations": [],
+            "textfieldClass": "searchcriteris-text-full",
+            "type": "text",
+            "required": true,
+            "placeholder": "Scan",
+            "submitable": true,
+            "label": "",
+            "labelPosition": "",
+            "name": "unitIdentificationValue",
+            "prefix": "true",
+            "prefixIcon": "qr_code_scanner",
+            "suffix": true,
+            "suffixIcon": "arrow_forward",
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "key": "dellSearchCriteriaData",
+                  "data": "formData",
+                  "requestMethod": "add"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "findIdentificatorType",
+                "eventSource": "click",
+                "config": {
+                  "key": "identificatorTypeValue",
+                  "unitIdentificationValue": "#dellSearchCriteriaData.unitIdentificationValue"
+                }
+              },
+              {
+                "type": "microservice",
+                "config": {
+                  "microserviceId": "getUnitInfo",
+                  "isLocal": false,
+                  "LocalService": "./assets/Responses/getUnitInfo.json",
+                  "requestMethod": "get",
+                  "params": {
+                    "unitIdentificationValue": "#dellSearchCriteriaData.unitIdentificationValue",
+                    "identificatorType": "#identificatorTypeValue",
+                    "locationId": "#userSelectedLocation",
+                    "clientId": "#userSelectedClient",
+                    "contractId": "#userSelectedContract"
+                  }
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "discrepancyUnitInfo",
+                          "data": "responseData"
+                        }
+                      },
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "repairUnitInfo",
+                          "data": "responseData"
+                        }
+                      },
+                      {
+                        "type": "condition",
+                        "config": {
+                          "operation": "isEqualTo",
+                          "lhs": "#discrepancyUnitInfo.ONHOLD",
+                          "rhs": "1"
+                        },
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "dialog",
+                                "uuid": "addNoteDialogUUID",
+                                "config": {
+                                  "title": "Release Popup",
+                                  "items": [
+                                    {
+                                      "ctype": "title",
+                                      "uuid": "searchCriteriaErrorTitleUUID",
+                                      "titleClass": "",
+                                      "title": "HOLDERROR: Unit can't be processed, as this is currently on hold, Storage IS NOT same as the one on the workorder."
+                                    },
+                                    {
+                                      "ctype": "title",
+                                      "uuid": "searchCriteriaErrorTitleUUID",
+                                      "titleClass": "",
+                                      "title": "Do you want to release the unit?"
+                                    }
+                                  ],
+                                  "footer": [
+                                    {
+                                      "ctype": "button",
+                                      "color": "primary",
+                                      "text": "No",
+                                      "uuid": "closeButtonUUID",
+                                      "closeType": "close",
+                                      "inputClass": "close-button",
+                                      "disableClose": true,
+                                      "visibility": true,
+                                      "dialogButton": true,
+                                      "type": "",
+                                      "hooks": [],
+                                      "validations": [],
+                                      "actions": []
+                                    },
+                                    {
+                                      "ctype": "button",
+                                      "color": "primary",
+                                      "text": "Yes",
+                                      "uuid": "doneHoldUUID",
+                                      "dialogButton": true,
+                                      "visibility": true,
+                                      "disabled": false,
+                                      "type": "submit",
+                                      "closeType": "success",
+                                      "hooks": [],
+                                      "validations": [],
+                                      "actions": []
+                                    }
+                                  ]
+                                },
+                                "eventSource": "click",
+                                "responseDependents": {
+                                  "onSuccess": {
+                                    "actions": [
+                                      {
+                                        "type": "microservice",
+                                        "config": {
+                                          "microserviceId": "getHoldReleaseDetailService",
+                                          "requestMethod": "get",
+                                          "params": {
+                                            "itemId": "#discrepancyUnitInfo.ITEM_ID",
+                                            "operationType": "RELEASE",
+                                            "userName": "#loginUUID.username"
+                                          }
+                                        },
+                                        "eventSource": "click",
+                                        "responseDependents": {
+                                          "onSuccess": {
+                                            "actions": [
+                                              {
+                                                "type": "context",
+                                                "config": {
+                                                  "requestMethod": "add",
+                                                  "key": "getHoldReleaseDetailResp",
+                                                  "data": "responseData"
+                                                }
+                                              },
+                                              {
+                                                "type": "microservice",
+                                                "config": {
+                                                  "microserviceId": "moveinventory",
+                                                  "requestMethod": "post",
+                                                  "body": {
+                                                    "apiUsageClientName": "#discrepancyUnitInfo.CLIENTNAME",
+                                                    "apiUsageLocationName": "#discrepancyUnitInfo.GEONAME",
+                                                    "callSource": "FrontEnd",
+                                                    "ip": "::1",
+                                                    "items": {
+                                                      "addtionalDetails": {
+                                                        "comments": "Unit released from Storage Hold",
+                                                        "fixedAssetTag": "#discrepancyUnitInfo.FAT",
+                                                        "storageHoldCode": "#getHoldReleaseDetailResp.storateHoldCode",
+                                                        "storageHoldSubCode": "#getHoldReleaseDetailResp.storateHoldSubCode"
+                                                      },
+                                                      "destinationLocation": {
+                                                        "bin": "#getHoldReleaseDetailResp.bin",
+                                                        "geography": "#discrepancyUnitInfo.GEONAME",
+                                                        "stockingLocation": "#getHoldReleaseDetailResp.destStkLocationName",
+                                                        "warehouse": "#getHoldReleaseDetailResp.wareHouseName"
+                                                      },
+                                                      "item": [
+                                                        {
+                                                          "bcn": "#discrepancyUnitInfo.ITEM_BCN",
+                                                          "owner": "#discrepancyUnitInfo.CLIENTNAME",
+                                                          "partNo": "#discrepancyUnitInfo.PART_NO",
+                                                          "quantity": "1",
+                                                          "serialNo": "#discrepancyUnitInfo.SERIAL_NO",
+                                                          "condition": "Defective"
+                                                        }
+                                                      ],
+                                                      "notes": "Unit released from Storage Hold",
+                                                      "sourceLocation": {
+                                                        "bin": "#getHoldReleaseDetailResp.bin",
+                                                        "geography": "#discrepancyUnitInfo.GEONAME",
+                                                        "stockingLocation": "#getHoldReleaseDetailResp.srcStkLocationName",
+                                                        "warehouse": "#getHoldReleaseDetailResp.wareHouseName"
+                                                      }
+                                                    },
+                                                    "usrPwd": {
+                                                      "userName": "#loginUUID.username",
+                                                      "password": "#loginUUID.password"
+                                                    }
+                                                  },
+                                                  "toBeStringified": true
+                                                },
+                                                "responseDependents": {
+                                                  "onSuccess": {
+                                                    "actions": [
+                                                      {
+                                                        "type": "condition",
+                                                        "config": {
+                                                          "operation": "isEqualTo",
+                                                          "lhs": "#discrepancyUnitInfo.STATUS",
+                                                          "rhs": "Time Out"
+                                                        },
+                                                        "responseDependents": {
+                                                          "onSuccess": {
+                                                            "actions": [
+                                                              {
+                                                                "type": "condition",
+                                                                "config": {
+                                                                  "operation": "isValid",
+                                                                  "lhs": "#discrepancyUnitInfo.DESTINATIONWC"
+                                                                },
+                                                                "responseDependents": {
+                                                                  "onSuccess": {
+                                                                    "actions": [
+                                                                      {
+                                                                        "type": "dellTimeInMicroServices",
+                                                                        "config": {
+                                                                          "DESTINATIONWC": "#discrepancyUnitInfo.DESTINATIONWC"
+                                                                        }
+                                                                      }
+                                                                    ]
+                                                                  },
+                                                                  "onFailure": {
+                                                                    "actions": [
+                                                                      {
+                                                                        "type": "errorPrepareAndRender",
+                                                                        "config": {
+                                                                          "key": "searchCriteriaErrorTitleUUID",
+                                                                          "properties": {
+                                                                            "titleValue": "Item- {0} Reached to it's Destination Workcenter: {1}",
+                                                                            "isShown": true
+                                                                          },
+                                                                          "valueArray": [
+                                                                            "#discrepancyUnitInfo.ITEM_BCN",
+                                                                            "#discrepancyUnitInfo.WORKCENTER"
+                                                                          ]
+                                                                        }
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                }
+                                                              }
+                                                            ]
+                                                          },
+                                                          "onFailure": {
+                                                            "actions": [
+                                                              {
+                                                                "type": "microservice",
+                                                                "eventSource": "click",
+                                                                "config": {
+                                                                  "microserviceId": "releaseFromHold",
+                                                                  "LocalService": "assets/Responses/performFA.json",
+                                                                  "isLocal": false,
+                                                                  "requestMethod": "post",
+                                                                  "body": {
+                                                                    "unitBCN": "#repairUnitInfo.ITEM_BCN",
+                                                                    "releaseNotes": "RELEASE",
+                                                                    "userPwd": {
+                                                                      "userName": "#userAccountInfo.PersonalDetails.USERID",
+                                                                      "password": "#loginUUID.password"
+                                                                    }
+                                                                  }
+                                                                },
+                                                                "responseDependents": {
+                                                                  "onSuccess": {
+                                                                    "actions": [
+                                                                      {
+                                                                        "type": "condition",
+                                                                        "config": {
+                                                                          "operation": "isValid",
+                                                                          "lhs": "#discrepancyUnitInfo.STATUS"
+                                                                        },
+                                                                        "responseDependents": {
+                                                                          "onSuccess": {
+                                                                            "actions": [
+                                                                              {
+                                                                                "type": "dellReleaseActions",
+                                                                                "config": {
+                                                                                  "discrepancyUnitInfo": "#discrepancyUnitInfo"
+                                                                                }
+                                                                              }
+                                                                            ]
+                                                                          },
+                                                                          "onFailure": {
+                                                                            "actions": [
+                                                                              {
+                                                                                "type": "condition",
+                                                                                "config": {
+                                                                                  "operation": "isValid",
+                                                                                  "lhs": "#discrepancyUnitInfo.DESTINATIONWC"
+                                                                                },
+                                                                                "responseDependents": {
+                                                                                  "onSuccess": {
+                                                                                    "actions": [
+                                                                                      {
+                                                                                        "type": "dellTimeInMicroServices",
+                                                                                        "config": {
+                                                                                          "DESTINATIONWC": "#discrepancyUnitInfo.DESTINATIONWC"
+                                                                                        }
+                                                                                      }
+                                                                                    ]
+                                                                                  },
+                                                                                  "onFailure": {
+                                                                                    "actions": [
+                                                                                      {
+                                                                                        "type": "errorPrepareAndRender",
+                                                                                        "config": {
+                                                                                          "key": "searchCriteriaErrorTitleUUID",
+                                                                                          "properties": {
+                                                                                            "titleValue": "Item- {0} Reached to it's Destination Workcenter: {1}",
+                                                                                            "isShown": true
+                                                                                          },
+                                                                                          "valueArray": [
+                                                                                            "#discrepancyUnitInfo.ITEM_BCN",
+                                                                                            "#discrepancyUnitInfo.WORKCENTER"
+                                                                                          ]
+                                                                                        }
+                                                                                      }
+                                                                                    ]
+                                                                                  }
+                                                                                }
+                                                                              }
+                                                                            ]
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    ]
+                                                                  },
+                                                                  "onFailure": {
+                                                                    "actions": [
+                                                                      {
+                                                                        "type": "context",
+                                                                        "config": {
+                                                                          "requestMethod": "add",
+                                                                          "key": "errorDisp",
+                                                                          "data": "responseData"
+                                                                        }
+                                                                      },
+                                                                      {
+                                                                        "type": "updateComponent",
+                                                                        "config": {
+                                                                          "key": "searchCriteriaErrorTitleUUID",
+                                                                          "properties": {
+                                                                            "titleValue": "#errorDisp",
+                                                                            "isShown": true
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                }
+                                                              }
+                                                            ]
+                                                          }
+                                                        }
+                                                      }
+                                                    ]
+                                                  },
+                                                  "onFailure": {
+                                                    "actions": [
+                                                      {
+                                                        "type": "context",
+                                                        "config": {
+                                                          "requestMethod": "add",
+                                                          "key": "errorDisp",
+                                                          "data": "responseData"
+                                                        }
+                                                      },
+                                                      {
+                                                        "type": "updateComponent",
+                                                        "config": {
+                                                          "key": "searchCriteriaErrorTitleUUID",
+                                                          "properties": {
+                                                            "titleValue": "#errorDisp",
+                                                            "isShown": true
+                                                          }
+                                                        }
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          "onFailure": {
+                                            "actions": [
+                                              {
+                                                "type": "context",
+                                                "config": {
+                                                  "requestMethod": "add",
+                                                  "key": "errorDisp",
+                                                  "data": "responseData"
+                                                }
+                                              },
+                                              {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                  "key": "searchCriteriaErrorTitleUUID",
+                                                  "properties": {
+                                                    "titleValue": "#errorDisp",
+                                                    "isShown": true
+                                                  }
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": [
+                              {
+                                "type": "condition",
+                                "config": {
+                                  "operation": "isEqualTo",
+                                  "lhs": "#discrepancyUnitInfo.STATUS",
+                                  "rhs": "Time Out"
+                                },
+                                "responseDependents": {
+                                  "onSuccess": {
+                                    "actions": [
+                                      {
+                                        "type": "condition",
+                                        "config": {
+                                          "operation": "isValid",
+                                          "lhs": "#discrepancyUnitInfo.DESTINATIONWC"
+                                        },
+                                        "responseDependents": {
+                                          "onSuccess": {
+                                            "actions": [
+                                              {
+                                                "type": "dellTimeInMicroServices",
+                                                "config": {
+                                                  "DESTINATIONWC": "#discrepancyUnitInfo.DESTINATIONWC"
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          "onFailure": {
+                                            "actions": [
+                                              {
+                                                "type": "errorPrepareAndRender",
+                                                "config": {
+                                                  "key": "searchCriteriaErrorTitleUUID",
+                                                  "properties": {
+                                                    "titleValue": "Item- {0} Reached to it's Destination Workcenter: {1}",
+                                                    "isShown": true
+                                                  },
+                                                  "valueArray": [
+                                                    "#discrepancyUnitInfo.ITEM_BCN",
+                                                    "#discrepancyUnitInfo.WORKCENTER"
+                                                  ]
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "onFailure": {
+                                    "actions": [
+                                      {
+                                        "type": "condition",
+                                        "config": {
+                                          "operation": "isValid",
+                                          "lhs": "#discrepancyUnitInfo.STATUS"
+                                        },
+                                        "responseDependents": {
+                                          "onSuccess": {
+                                            "actions": [
+                                              {
+                                                "type": "commonDellWCOperations",
+                                                "config": {
+                                                  "discrepancyUnitInfo": "#discrepancyUnitInfo"
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          "onFailure": {
+                                            "actions": [
+                                              {
+                                                "type": "condition",
+                                                "config": {
+                                                  "operation": "isValid",
+                                                  "lhs": "#discrepancyUnitInfo.DESTINATIONWC"
+                                                },
+                                                "responseDependents": {
+                                                  "onSuccess": {
+                                                    "actions": [
+                                                      {
+                                                        "type": "dellTimeInMicroServices",
+                                                        "config": {
+                                                          "DESTINATIONWC": "#discrepancyUnitInfo.DESTINATIONWC"
+                                                        }
+                                                      }
+                                                    ]
+                                                  },
+                                                  "onFailure": {
+                                                    "actions": [
+                                                      {
+                                                        "type": "errorPrepareAndRender",
+                                                        "config": {
+                                                          "key": "searchCriteriaErrorTitleUUID",
+                                                          "properties": {
+                                                            "titleValue": "Item- {0} Reached to it's Destination Workcenter: {1}",
+                                                            "isShown": true
+                                                          },
+                                                          "valueArray": [
+                                                            "#discrepancyUnitInfo.ITEM_BCN",
+                                                            "#discrepancyUnitInfo.WORKCENTER"
+                                                          ]
+                                                        }
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      },
+                      {
+                        "type": "microservice",
+                        "config": {
+                          "microserviceId": "getProcess",
+                          "isLocal": false,
+                          "LocalService": "assets/Responses/getProcessData.json",
+                          "requestMethod": "get",
+                          "parseJson": true,
+                          "params": {
+                            "locationId": "#userSelectedLocation",
+                            "clientId": "#userSelectedClient",
+                            "contractId": "#userSelectedContract",
+                            "btt": 1,
+                            "optId": "#discrepancyUnitInfo.ROUTE_ID",
+                            "whId": -1,
+                            "userId": "#userAccountInfo.PersonalDetails.USERID",
+                            "wcId": "#discrepancyUnitInfo.WORKCENTER_ID",
+                            "operationType": "#userSelectedSubProcessType",
+                            "workCenterName": ""
+                          }
+                        },
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "context",
+                                "config": {
+                                  "requestMethod": "add",
+                                  "key": "getProcessWCData",
+                                  "data": "responseData"
+                                }
+                              },
+                              {
+                                "type": "getLocationSpecificFFID",
+                                "config": {
+                                  "key": "locationDependentFFIDDetails",
+                                  "location": "#userSelectedLocationName",
+                                  "data": "#getProcessWCData.locationBasedFF"
+                                }
+                              },
+                              {
+                                "type": "microservice",
+                                "hookType": "afterInit",
+                                "config": {
+                                  "microserviceId": "getLastNote",
+                                  "requestMethod": "get",
+                                  "params": {
+                                    "username": "#loginUUID.username",
+                                    "workcenter-id": "#repairUnitInfo.WORKCENTER_ID",
+                                    "itemId": "#repairUnitInfo.ITEM_ID"
+                                  }
+                                },
+                                "responseDependents": {
+                                  "onSuccess": {
+                                    "actions": [
+                                    ]
+                                  },
+                                  "onFailure": {
+                                    "actions": []
+                                  }
+                                }
+                              },
+                              {
+                                "type": "microservice",
+                                "hookType": "afterInit",
+                                "config": {
+                                  "microserviceId": "getFFByWc",
+                                  "requestMethod": "get",
+                                  "params": {
+                                    "clientId": "#repairUnitInfo.CLIENT_ID",
+                                    "routeName": "#repairUnitInfo.ROUTE",
+                                    "contrId": "#repairUnitInfo.CONTRACT_ID",
+                                    "wcId": "#repairUnitInfo.WORKCENTER_ID",
+                                    "userName": "#userAccountInfo.PersonalDetails.USERID",
+                                    "itemId": "#repairUnitInfo.ITEM_ID"
+                                  }
+                                },
+                                "responseDependents": {
+                                  "onSuccess": {
+                                    "actions": []
+                                  },
+                                  "onFailure": {
+                                    "actions": []
+                                  }
+                                }
+                              },
+                              {
+                                "type": "microservice",
+                                "hookType": "afterInit",
+                                "config": {
+                                  "microserviceId": "stopProcessClientReceiving",
+                                  "isLocal": false,
+                                  "LocalService": "./assets/dell-motherboard_json/mocks/stop-process-client-receiving-response-mock.json",
+                                  "requestMethod": "post",
+                                  "body": {
+                                    "actionType": "PwcPerformTimeOut",
+                                    "subActionTypeName": "addBcnLabel",
+                                    "geoId": "#discrepancyUnitInfo.LOCATION_ID",
+                                    "partNumber": "#discrepancyUnitInfo.PART_NO",
+                                    "userLoginId": "#userAccountInfo.PersonalDetails.USERID",
+                                    "locationId": "#discrepancyUnitInfo.LOCATION_ID",
+                                    "clientId": "#userSelectedClient",
+                                    "contractId": "#userSelectedContract",
+                                    "orderProcessType": "#repairUnitInfo.ROUTE",
+                                    "clientName": "#repairUnitInfo.CLIENTNAME",
+                                    "serialNo": "#repairUnitInfo.SERIAL_NO",
+                                    "contractName": "#repairUnitInfo.CONTRACTNAME",
+                                    "revisionLevel": "",
+                                    "selectedResultCode": "[ALL]",
+                                    "workCenter": "#discrepancyUnitInfo.WORKCENTER",
+                                    "timeOutTab": "",
+                                    "geographyNumber": "#userSelectedLocationName",
+                                    "loaderName": "BRA_DELLAIO_STOP_PROCESS",
+                                    "pwcXml": {
+                                      "timeOutTab": {
+                                        "selectedResultCode": "[ALL]"
+                                      },
+                                      "flexFieldDefinitionList": [
+                                        {
+                                          "ffName": "msgRead",
+                                          "ffId": "#locationDependentFFIDDetails.msgRead",
+                                          "ffValue": "No"
+                                        }
+                                      ],
+                                      "ffvalueList": [
+                                        {
+                                          "ffName": "msgRead",
+                                          "ffId": "#locationDependentFFIDDetails.msgRead",
+                                          "ffValue": "No"
+                                        }
+                                      ]
+                                    },
+                                    "referenceOrderNumber": "#refId",
+                                    "outboundOrderId": "",
+                                    "bcn": "#discrepancyUnitInfo.ITEM_BCN",
+                                    "workOrderId": "#repairUnitInfo.WORKORDER_ID",
+                                    "itemId": "#repairUnitInfo.ITEM_ID",
+                                    "flexFieldList": [
+                                      {
+                                        "ffId": "#locationDependentFFIDDetails.msgRead",
+                                        "ffName": "msgRead",
+                                        "ffValue": "No"
+                                      }
+                                    ],
+                                    "wcOperation": "WC Operation"
+                                  },
+                                  "toBeStringified": true
+                                },
+                                "responseDependents": {
+                                  "onSuccess": {
+                                    "actions": [
+                                      {
+                                        "type": "context",
+                                        "config": {
+                                          "requestMethod": "add",
+                                          "key": "specialMessageData",
+                                          "data": "responseData"
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "onFailure": {
+                                    "actions": [
+                                      {
+                                        "type": "context",
+                                        "config": {
+                                          "requestMethod": "add",
+                                          "key": "stopErrorMsg",
+                                          "data": "responseData"
+                                        }
+                                      },
+                                      {
+                                        "type": "handleCommonServices",
+                                        "config": {
+                                          "type": "errorRenderTemplate",
+                                          "contextKey": "stopErrorMsg",
+                                          "updateKey": "searchCriteriaErrorTitleUUID"
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": []
+                          }
+                        }
+                      },
+                      {
+                        "type": "microservice",
+                        "config": {
+                          "microserviceId": "getPartGroupAttributes",
+                          "requestMethod": "get",
+                          "params": {
+                            "itemId": "#repairUnitInfo.ITEM_ID",
+                            "userName": "#loginUUID.username"
+                          }
+                        },
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "getTestPlatformValue",
+                                "config": {
+                                  "key": "testPlatformValue",
+                                  "data": "#getPartGroupAttributes"
+                                }
+                              },
+                              {
+                                "type": "getPlatformNameValue",
+                                "config": {
+                                  "key": "platformNameValue",
+                                  "data": "#getPartGroupAttributes"
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": []
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "errorDisp",
+                          "data": "responseData"
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "searchCriteriaErrorTitleUUID",
+                          "properties": {
+                            "titleValue": "#errorDisp",
+                            "isShown": true
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "footer": []
+  },
+  "Result": "SUCCESS"
+}

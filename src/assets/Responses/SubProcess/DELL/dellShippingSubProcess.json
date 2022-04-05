@@ -1,0 +1,2691 @@
+{
+    "ResultData": {
+      "ctype": "page",
+      "uuid": "pageUUID",
+      "css": "",
+      "visibility": true,
+      "hooks": [
+        {
+          "type": "condition",
+          "hookType": "afterInit",
+          "config": {
+            "operation": "isValid",
+            "lhs": "#boxShipping"
+          },
+          "responseDependents": {
+            "onSuccess": {
+              "actions": [
+                {
+                  "type": "context",
+                  "config": {
+                    "requestMethod": "add",
+                    "key": "orderProcessTypeCode",
+                    "data": "OSTK"
+                  }
+                },
+                {
+                  "type": "updateComponent",
+                  "config": {
+                    "key": "BCNTitle",
+                    "properties": {
+                      "title": "RO: ",
+                      "titleValue": "#shippingReferenceOrderId",
+                      "titleClass": "heading1 sidenav-header"
+                    }
+                  }
+                },
+                {
+                  "type": "updateComponent",
+                  "config": {
+                    "key": "DueUUID",
+                    "properties": {
+                      "visibility": false,
+                      "titleValue": ""
+                    }
+                  }
+                },
+                {
+                  "type": "updateComponent",
+                  "config": {
+                    "key": "SerialUUID",
+                    "properties": {
+                      "titleValue": "--"
+                    }
+                  }
+                },
+                {
+                  "type": "updateComponent",
+                  "config": {
+                    "key": "EliteUUID",
+                    "properties": {
+                      "visibility": true,
+                      "titleValue": "#shippingPartNo"
+                    }
+                  }
+                },
+                {
+                  "type": "updateComponent",
+                  "config": {
+                    "key": "FamilyUUID",
+                    "properties": {
+                      "visibility": true,
+                      "titleValue": "#shippingPartDesc"
+                    }
+                  }
+                },
+                {
+                  "type": "updateComponent",
+                  "config": {
+                    "key": "WarrantyUUID",
+                    "properties": {
+                      "titleValue": "--"
+                    }
+                  }
+                },
+                {
+                  "type": "context",
+                  "hookType": "afterInit",
+                  "config": {
+                    "requestMethod": "add",
+                    "key": "shippingItemBcn",
+                    "data": ""
+                  }
+                },
+                {
+                  "type": "context",
+                  "hookType": "afterInit",
+                  "config": {
+                    "requestMethod": "add",
+                    "key": "shippingSerialNo",
+                    "data": ""
+                  }
+                },
+                {
+                  "type": "updateComponent",
+                  "eventSource": "click",
+                  "config": {
+                    "key": "etravellerShippingUUID",
+                    "properties": {
+                      "disabled": true
+                    }
+                  }
+                },
+                {
+                  "type": "context",
+                  "config": {
+                    "requestMethod": "add",
+                    "key": "true",
+                    "data": "true"
+                  }
+                }
+              ]
+            },
+            "onFailure": {
+              "actions": [
+                {
+                  "type": "context",
+                  "config": {
+                    "requestMethod": "add",
+                    "key": "orderProcessTypeCode",
+                    "data": "ORET"
+                  }
+                },
+                {
+                  "type": "updateComponent",
+                  "config": {
+                    "key": "BCNTitle",
+                    "properties": {
+                      "titleValue": "#shippingItemBcn"
+                    }
+                  }
+                },
+                {
+                  "type": "updateComponent",
+                  "config": {
+                    "key": "SerialUUID",
+                    "properties": {
+                      "titleValue": "#shippingSerialNo"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "microservice",
+          "config": {
+            "microserviceId": "getStAbbrevCode",
+            "requestMethod": "get",
+            "params": {
+              "outBoundOrderId": "#shippingOutBoundOrderId",
+              "userName": "#userAccountInfo.PersonalDetails.USERID"
+            }
+          },
+          "hookType": "afterInit",
+          "responseDependents": {
+            "onSuccess": {
+              "actions": [
+                {
+                  "type": "context",
+                  "config": {
+                    "requestMethod": "add",
+                    "key": "getStAbbrevCode",
+                    "data": "responseData"
+                  }
+                },
+                {
+                  "type": "microservice",
+                  "config": {
+                    "microserviceId": "getShippingTermsDetails",
+                    "requestMethod": "get",
+                    "params": {
+                      "outBoundOrderId": "#shippingOutBoundOrderId",
+                      "tradingPartnerId": "#shippingTradingPartnerId",
+                      "abbrevCode": "#getStAbbrevCode.abbrevCode",
+                      "userName": "#userAccountInfo.PersonalDetails.USERID"
+                    }
+                  },
+                  "eventSource": "click",
+                  "responseDependents": {
+                    "onSuccess": {
+                      "actions": [
+                        {
+                          "type": "context",
+                          "config": {
+                            "requestMethod": "add",
+                            "key": "getShippingTermsDetails",
+                            "data": "responseArray"
+                          }
+                        },
+                        {
+                          "type": "microservice",
+                          "hookType": "afterInit",
+                          "config": {
+                            "microserviceId": "getCarrierCode",
+                            "requestMethod": "get",
+                            "params": {
+                              "userName": "#userAccountInfo.PersonalDetails.USERID"
+                            }
+                          },
+                          "responseDependents": {
+                            "onSuccess": {
+                              "actions": [
+                                {
+                                  "type": "context",
+                                  "config": {
+                                    "requestMethod": "add",
+                                    "key": "getCarrierCode",
+                                    "data": "responseData"
+                                  }
+                                },
+                                {
+                                  "type": "updateComponent",
+                                  "config": {
+                                    "key": "dellShippingCarrierUUID",
+                                    "dropDownProperties": {
+                                      "options": "#getCarrierCode"
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "setDefaultValue",
+                                  "config": {
+                                    "key": "dellShippingCarrierUUID",
+                                    "defaultValue": "#getShippingTermsDetails.carrierName"
+                                  }
+                                },
+                                {
+                                  "type" : "getidBasedOnName",
+                                  "config":{
+                                    "reqData" : "getCarrierCode",
+                                    "selectedValue" : "getShippingTermsDetails",
+                                    "key" : "initialCarrierId"
+                                  }
+                                },
+                                {
+                                  "type": "microservice",
+                                  "hookType": "afterInit",
+                                  "config": {
+                                    "microserviceId": "getCarrierType",
+                                    "requestMethod": "get",
+                                    "params": {
+                                      "userName": "#userAccountInfo.PersonalDetails.USERID",
+                                      "carrierCodeId": "#initialCarrierId"
+                                    }
+                                  },
+                                  "responseDependents": {
+                                    "onSuccess": {
+                                      "actions": [
+                                        {
+                                          "type": "context",
+                                          "config": {
+                                            "requestMethod": "add",
+                                            "key": "getCarrierType",
+                                            "data": "responseData"
+                                          }
+                                        },
+                                        {
+                                          "type": "updateComponent",
+                                          "config": {
+                                            "key": "dellShippingCTUUID",
+                                            "dropDownProperties": {
+                                              "options": "#getCarrierType"   
+                                            }
+                                          }
+                                        },
+                                        {
+                                          "type": "setDefaultValue",
+                                          "config": {
+                                            "key": "dellShippingCTUUID",
+                                            "defaultValue": "#getShippingTermsDetails.carrierTypeCode"
+                                          }
+                                        },
+                                        {
+                                          "type" : "getidBasedOnName",
+                                          "config":{
+                                            "reqData" : "getCarrierType",
+                                            "selectedValue" : "getShippingTermsDetails",
+                                            "carrierTypeName" : true,
+                                            "key" : "initialCarrierTypeId"
+                                          }
+                                        },
+                                        {
+                                          "type": "microservice",
+                                          "hookType": "afterInit",
+                                          "config": {
+                                            "microserviceId": "getCarrierServiceType",
+                                            "requestMethod": "get",
+                                            "params": {
+                                              "userName": "#userAccountInfo.PersonalDetails.USERID",
+                                              "carrierTypeId": "#initialCarrierTypeId"
+                                            }
+                                          },
+                                          "responseDependents": {
+                                            "onSuccess": {
+                                              "actions": [
+                                                {
+                                                  "type": "context",
+                                                  "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "getCarrierServiceType",
+                                                    "data": "responseData"
+                                                  }
+                                                },
+                                                {
+                                                  "type": "updateComponent",
+                                                  "config": {
+                                                    "key": "dellShippingSTUUID",
+                                                    "dropDownProperties": {
+                                                      "options": "#getCarrierServiceType"   
+                                                    }
+                                                  }
+                                                },
+                                                {
+                                                  "type": "setDefaultValue",
+                                                  "config": {
+                                                    "key": "dellShippingSTUUID",
+                                                    "defaultValue": "#getShippingTermsDetails.serviceTypeCode"
+                                                  }
+                                                }
+                                              ]
+                                            },
+                                            "onFailure": {
+                                              "actions": [
+                                                {
+                                                  "type": "context",
+                                                  "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "errorMsg",
+                                                    "data": "responseData"
+                                                  }
+                                                },
+                                                {
+                                                  "type": "updateComponent",
+                                                  "config": {
+                                                    "key": "errorTitleUUID",
+                                                    "properties": {
+                                                      "titleValue": "#errorMsg",
+                                                      "isShown": true
+                                                    }
+                                                  }
+                                                },
+                                                {
+                                                  "type": "updateComponent",
+                                                  "config": {
+                                                    "key": "shippingExitUUID",
+                                                    "properties": {
+                                                      "disabled": false,
+                                                      "iconButtonClass": "footer-save body"
+                                                    }
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "onFailure": {
+                                      "actions": [
+                                        {
+                                          "type": "context",
+                                          "config": {
+                                            "requestMethod": "add",
+                                            "key": "errorMsg",
+                                            "data": "responseData"
+                                          }
+                                        },
+                                        {
+                                          "type": "updateComponent",
+                                          "config": {
+                                            "key": "errorTitleUUID",
+                                            "properties": {
+                                              "titleValue": "#errorMsg",
+                                              "isShown": true
+                                            }
+                                          }
+                                        },
+                                        {
+                                          "type": "updateComponent",
+                                          "config": {
+                                            "key": "shippingExitUUID",
+                                            "properties": {
+                                              "disabled": false,
+                                              "iconButtonClass": "footer-save body"
+                                            }
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  }
+                                }
+                              ]
+                            },
+                            "onFailure": {
+                              "actions": [
+                                {
+                                  "type": "context",
+                                  "config": {
+                                    "requestMethod": "add",
+                                    "key": "errorMsg",
+                                    "data": "responseData"
+                                  }
+                                },
+                                {
+                                  "type": "updateComponent",
+                                  "config": {
+                                    "key": "errorTitleUUID",
+                                    "properties": {
+                                      "titleValue": "#errorMsg",
+                                      "isShown": true
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "updateComponent",
+                                  "config": {
+                                    "key": "shippingExitUUID",
+                                    "properties": {
+                                      "disabled": false,
+                                      "iconButtonClass": "footer-save body"
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    "onFailure": {
+                      "actions": [
+                        {
+                          "type": "context",
+                          "config": {
+                            "requestMethod": "add",
+                            "key": "errorMsg",
+                            "data": "responseData"
+                          }
+                        },
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "errorTitleUUID",
+                            "properties": {
+                              "titleValue": "#errorMsg",
+                              "isShown": true
+                            }
+                          }
+                        },
+                        {
+                          "type": "microservice",
+                          "hookType": "afterInit",
+                          "config": {
+                            "microserviceId": "getCarrierCode",
+                            "requestMethod": "get",
+                            "params": {
+                              "userName": "#userAccountInfo.PersonalDetails.USERID"
+                            }
+                          },
+                          "responseDependents": {
+                            "onSuccess": {
+                              "actions": [
+                                {
+                                  "type": "context",
+                                  "config": {
+                                    "requestMethod": "add",
+                                    "key": "getCarrierCode",
+                                    "data": "responseData"
+                                  }
+                                },
+                                {
+                                  "type": "updateComponent",
+                                  "config": {
+                                    "key": "dellShippingCarrierUUID",
+                                    "dropDownProperties": {
+                                      "options": "#getCarrierCode"
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "setDefaultValue",
+                                  "config": {
+                                    "key": "dellShippingCarrierUUID",
+                                    "defaultValue": "#getShippingTermsDetails.carrierName"
+                                  }
+                                },
+                                {
+                                  "type" : "getidBasedOnName",
+                                  "config":{
+                                    "reqData" : "getCarrierCode",
+                                    "selectedValue" : "getShippingTermsDetails",
+                                    "key" : "initialCarrierId"
+                                  }
+                                }
+                              ]
+                            },
+                            "onFailure": {
+                              "actions": [
+                                {
+                                  "type": "context",
+                                  "config": {
+                                    "requestMethod": "add",
+                                    "key": "errorMsg",
+                                    "data": "responseData"
+                                  }
+                                },
+                                {
+                                  "type": "updateComponent",
+                                  "config": {
+                                    "key": "errorTitleUUID",
+                                    "properties": {
+                                      "titleValue": "#errorMsg",
+                                      "isShown": true
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "updateComponent",
+                                  "config": {
+                                    "key": "shippingExitUUID",
+                                    "properties": {
+                                      "disabled": false,
+                                      "iconButtonClass": "footer-save body"
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        },
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "shippingExitUUID",
+                            "properties": {
+                              "disabled": false,
+                              "iconButtonClass": "footer-save body"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            },
+            "onFailure": {
+              "actions": [
+                {
+                  "type": "context",
+                  "config": {
+                    "requestMethod": "add",
+                    "key": "errorMsg",
+                    "data": "responseData"
+                  }
+                },
+                {
+                  "type": "updateComponent",
+                  "config": {
+                    "key": "errorTitleUUID",
+                    "properties": {
+                      "titleValue": "#errorMsg",
+                      "isShown": true
+                    }
+                  }
+                },
+                {
+                  "type": "updateComponent",
+                  "config": {
+                    "key": "shippingExitUUID",
+                    "properties": {
+                      "disabled": false,
+                      "iconButtonClass": "footer-save body"
+                    }
+                  }
+                },
+                {
+                  "type": "microservice",
+                  "hookType": "afterInit",
+                  "config": {
+                    "microserviceId": "getCarrierCode",
+                    "requestMethod": "get",
+                    "params": {
+                      "userName": "#userAccountInfo.PersonalDetails.USERID"
+                    }
+                  },
+                  "responseDependents": {
+                    "onSuccess": {
+                      "actions": [
+                        {
+                          "type": "context",
+                          "config": {
+                            "requestMethod": "add",
+                            "key": "getCarrierCode",
+                            "data": "responseData"
+                          }
+                        },
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "dellShippingCarrierUUID",
+                            "dropDownProperties": {
+                              "options": "#getCarrierCode"
+                            }
+                          }
+                        },
+                        {
+                          "type": "setDefaultValue",
+                          "config": {
+                            "key": "dellShippingCarrierUUID",
+                            "defaultValue": "#getShippingTermsDetails.carrierName"
+                          }
+                        },
+                        {
+                          "type" : "getidBasedOnName",
+                          "config":{
+                            "reqData" : "getCarrierCode",
+                            "selectedValue" : "getShippingTermsDetails",
+                            "key" : "initialCarrierId"
+                          }
+                        }
+                      ]
+                    },
+                    "onFailure": {
+                      "actions": [
+                        {
+                          "type": "context",
+                          "config": {
+                            "requestMethod": "add",
+                            "key": "errorMsg",
+                            "data": "responseData"
+                          }
+                        },
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "errorTitleUUID",
+                            "properties": {
+                              "titleValue": "#errorMsg",
+                              "isShown": true
+                            }
+                          }
+                        },
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "shippingExitUUID",
+                            "properties": {
+                              "disabled": false,
+                              "iconButtonClass": "footer-save body"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "microservice",
+          "eventSource": "click",
+          "hookType" : "afterInit",
+          "config": {
+            "microserviceId": "getRecipientCountryCode",
+            "requestMethod": "get",
+            "params": {
+              "outBoundOrderId": "#shippingOutBoundOrderId",
+              "userName": "#loginUUID.username"
+            }
+          },
+          "responseDependents": {
+            "onSuccess": {
+              "actions": [
+                {
+                  "type": "context",
+                  "config": {
+                    "requestMethod": "add",
+                    "key": "shippingRecipientCountryCode",
+                    "data": "responseData"
+                  }
+                },
+                {
+                  "type": "updateComponent",
+                  "config": {
+                    "key": "countryNameUUID",
+                    "properties": {
+                      "visibility": true,
+                      "titleValue": "#shippingRecipientCountryCode.countryName"
+                    }
+                  }
+                },
+                {
+                  "type": "updateComponent",
+                  "config": {
+                    "key": "cityNameUUID",
+                    "properties": {
+                      "visibility": true,
+                      "titleValue": "#shippingRecipientCountryCode.cityName"
+                    }
+                  }
+                },
+                {
+                  "type": "updateComponent",
+                  "config": {
+                    "key": "postalCodeUUID",
+                    "properties": {
+                      "visibility": true,
+                      "titleValue": "#shippingRecipientCountryCode.postalCode"
+                    }
+                  }
+                },
+                {
+                  "type": "updateComponent",
+                  "config": {
+                    "key": "stateCodeUUID",
+                    "properties": {
+                      "visibility": true,
+                      "titleValue": "#shippingRecipientCountryCode.state"
+                    }
+                  }
+                }
+              ]
+            },
+            "onFailure": {
+              "actions": [
+                {
+                  "type": "context",
+                  "config": {
+                    "requestMethod": "add",
+                    "key": "errorMsg",
+                    "data": "responseData"
+                  }
+                },
+                {
+                  "type": "updateComponent",
+                  "config": {
+                    "key": "errorTitleUUID",
+                    "properties": {
+                      "titleValue": "#errorMsg",
+                      "isShown": true
+                    }
+                  }
+                },
+                {
+                  "type": "updateComponent",
+                  "config": {
+                    "key": "shippingExitUUID",
+                    "properties": {
+                      "disabled": false,
+                      "iconButtonClass": "footer-save body"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "condition",
+          "config": {
+            "operation": "isEqualTo",
+            "lhs": "#boxShipping",
+            "rhs": true
+          },
+          "hookType": "afterInit",
+          "responseDependents": {
+            "onSuccess": {
+              "actions": [
+                {
+                  "type": "condition",
+                  "config": {
+                    "operation": "isEqualTo",
+                    "lhs": "#shippingCondition",
+                    "rhs": "New"
+                  },
+                  "eventSource": "click",
+                  "responseDependents": {
+                    "onSuccess": {
+                      "actions": [
+                        {
+                          "type": "updateComponent",
+                          "eventSource": "click",
+                          "config": {
+                            "key": "dellPartNameUUID",
+                            "properties": {
+                              "required": true,
+                              "hidden" : false,
+                              "value" : "#shippingPartNo"
+                            }
+                          }
+                        },
+                        {
+                          "type": "updateComponent",
+                          "eventSource": "click",
+                          "config": {
+                            "key": "dellShipCompleteUUID",
+                            "properties": {
+                              "disabled": false
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    "onFailure": {
+                      "actions": [
+                        {
+                          "type": "condition",
+                          "config": {
+                            "operation": "isEqualTo",
+                            "lhs": "#shippingCondition",
+                            "rhs": "Defective"
+                          },
+                          "responseDependents": {
+                            "onSuccess": {
+                              "actions": [
+                                {
+                                  "type": "updateComponent",
+                                  "eventSource": "click",
+                                  "config": {
+                                    "key": "shippingBCNUUID",
+                                    "properties": {
+                                      "required": true,
+                                      "hidden" : false
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "updateComponent",
+                                  "eventSource": "click",
+                                  "config": {
+                                    "key": "shippingSerialNoUUID",
+                                    "properties": {
+                                      "required": true,
+                                      "hidden" : false
+                                    }
+                                  }
+                                }
+                              ]
+                            },
+                            "onFailure": {
+                              "actions": [
+                                {
+                                  "type": "updateComponent",
+                                  "eventSource": "click",
+                                  "config": {
+                                    "key": "shipCompleteLabelUUID",
+                                    "properties": {
+                                      "hidden": false
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            },
+            "onFailure": {
+              "actions": [ 
+              {
+                  "type": "updateComponent",
+                  "eventSource": "click",
+                  "config": {
+                      "key": "shipCompleteLabelUUID",
+                      "properties": {
+                      "hidden": false
+                      }
+                  }
+                },             
+                {
+                  "type": "updateComponent",
+                  "eventSource": "click",
+                  "config": {
+                    "key": "dellShipCompleteUUID",
+                    "properties": {
+                      "disabled": false
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "condition",
+          "hookType": "afterInit",
+          "config": {
+            "operation": "isValid",
+            "lhs": "#shippingShipManifestStatus.shipmentId"
+          },
+          "responseDependents": {
+            "onSuccess": {
+              "actions": [
+                {
+                  "type": "updateComponent",
+                  "eventSource": "click",
+                  "config": {
+                    "key": "dellShipCompleteUUID",
+                    "properties": {
+                      "disabled": true
+                    }
+                  }
+                },
+                {
+                  "type": "updateComponent",
+                  "config": {
+                    "key": "dellShipTaskUUID",
+                    "properties": {
+                      "expanded": false,
+                      "disabled": false,
+                      "header": {
+                        "title": "Ship",
+                        "icon": "description",
+                        "statusIcon": "check_circle",
+                        "statusClass": "complete-status",
+                        "class": "complete-task ",
+                        "iconClass": "complete-task"
+                      }
+                    }
+                  },
+                  "eventSource": "click"
+                },
+                {
+                    "type": "microservice",
+                    "config": {
+                        "microserviceId": "getPrinterNameByHostName",
+                        "requestMethod": "get",
+                        "params": {
+                            "hostName": "#getHostNameResponse.hostName",
+                            "userName": "#userAccountInfo.PersonalDetails.USERID"
+                        }
+                    },
+                    "responseDependents": {
+                        "onSuccess": {
+                            "actions": [
+                                {
+                                    "type": "context",
+                                    "config": {
+                                        "requestMethod": "add",
+                                        "key": "shippingPrinterNameByHostName",
+                                        "data": "responseData"
+                                    }
+                                },
+                                {
+                                    "type": "updateComponent",
+                                    "config": {
+                                        "key": "dellShippingManifestPanelUUID",
+                                        "fieldProperties": {
+                                            "dellShippingPrinter": "#shippingPrinterNameByHostName.printerName"
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        "onFailure": {
+                            "actions": [
+                                {
+                                    "type": "context",
+                                    "config": {
+                                        "requestMethod": "add",
+                                        "key": "errorMsg",
+                                        "data": "responseData"
+                                    }
+                                },
+                                {
+                                    "type": "updateComponent",
+                                    "config": {
+                                        "key": "errorTitleUUID",
+                                        "properties": {
+                                            "titleValue": "#errorMsg",
+                                            "isShown": true
+                                        }
+                                    }
+                                },
+                                {
+                                  "type": "updateComponent",
+                                  "config": {
+                                    "key": "shippingExitUUID",
+                                    "properties": {
+                                      "disabled": false,
+                                      "iconButtonClass": "footer-save body"
+                                    }
+                                  }
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                  "type": "updateComponent",
+                  "config": {
+                    "key": "dellShippingManifestPanelUUID",
+                    "properties": {
+                      "expanded": true,
+                      "disabled": false,
+                      "header": {
+                        "title": "Manifest",
+                        "icon": "description",
+                        "iconClass": "active-header",
+                        "statusIcon": "hourglass_empty",
+                        "statusClass": "incomplete-status",
+                        "class": "active-header "
+                      }
+                    }
+                  },
+                  "eventSource": "click"
+                },
+                {
+                  "type": "updateComponent",
+                  "eventSource": "click",
+                  "config": {
+                    "key": "dellPartNameUUID",
+                    "properties": {
+                      "disabled" : true,
+                      "value" : "#shippingPartNo"
+                    }
+                  }
+                },
+                {
+                  "type": "updateComponent",
+                  "eventSource": "click",
+                  "config": {
+                    "key": "shippingBCNUUID",
+                    "properties": {
+                      "disabled" : true,
+                      "value" : "#shippingItemBcn"
+                    }
+                  }
+                },
+                {
+                  "type": "updateComponent",
+                  "eventSource": "click",
+                  "config": {
+                    "key": "shippingSerialNoUUID",
+                    "properties": {
+                      "disabled" : true,
+                      "value" : "#shippingSerialNo"
+                    }
+                  }
+                }
+              ]
+            },
+            "onFailure": {
+              "actions": [
+              ]
+            }
+          }
+        },
+        {
+          "type": "condition",
+          "config": {
+            "operation": "isEqualTo",
+            "lhs": "#boxShipping",
+            "rhs": true
+          },
+          "hookType": "afterInit",
+          "responseDependents": {
+            "onSuccess": {
+              "actions": [
+                {
+                  "type": "condition",
+                  "config": {
+                    "operation": "isEqualTo",
+                    "lhs": "#shippingCondition",
+                    "rhs": "New"
+                  },
+                  "eventSource": "click",
+                  "responseDependents": {
+                    "onSuccess": {
+                      "actions": [
+                        {
+                          "type": "context",
+                          "config": {
+                            "requestMethod": "add",
+                            "key": "shipWeightTrax",
+                            "data":"1"
+                          }
+                        }
+                      ]
+                    },
+                    "onFailure": {
+                      "actions": [
+                        {
+                          "type": "condition",
+                          "config": {
+                            "operation": "isEqualTo",
+                            "lhs": "#shippingCondition",
+                            "rhs": "Defective"
+                          },
+                          "responseDependents": {
+                            "onSuccess": {
+                              "actions": [
+                                {
+                                  "type": "context",
+                                  "config": {
+                                    "requestMethod": "add",
+                                    "key": "shipWeightTrax",
+                                    "data":"1"
+                                  }
+                                }
+                              ]
+                            },
+                            "onFailure": {
+                              "actions": [
+                                {
+                                  "type": "context",
+                                  "config": {
+                                    "requestMethod": "add",
+                                    "key": "shipWeightTrax",
+                                    "data":"10"
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            },
+            "onFailure": {
+              "actions": [
+                {
+                  "type": "context",
+                  "config": {
+                    "requestMethod": "add",
+                    "key": "shipWeightTrax",
+                    "data":"10"
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "validations": [],
+      "action": [],
+      "header": [
+        {
+          "ctype": "breadcrumb",
+          "breadcrumbs": [
+            {
+              "label": "#userSelectedLocationName"
+            },
+            {
+              "label": "#userSelectedClientName"
+            },
+            {
+              "label": "#userSelectedContractName"
+            }
+          ]
+        },
+        {
+          "ctype": "toolbar",
+          "toolbarClass": "pagecontent-header",
+          "items": [
+            {
+              "ctype": "title",
+              "uuid": "subProcessTitleUUID",
+              "titleValue": "Shipping",
+              "titleClass": "section-title"
+            },
+            {
+              "ctype": "iconbutton",
+              "iconButtonClass": "headeropen-button",
+              "text": "",
+              "uuid": "pageopenUUID",
+              "visibility": true,
+              "disabled": false,
+              "hidden": false,
+              "type": "submit",
+              "hooks": [],
+              "validations": [],
+              "icon": "menu_open",
+              "disableRipple": true,
+              "iconClass": "header-icon",
+              "actions": [
+                {
+                  "type": "toggle",
+                  "eventSource": "click",
+                  "name": "subProcessRightNavref"
+                },
+                {
+                  "type": "updateComponent",
+                  "config": {
+                    "key": "openUUID",
+                    "properties": {
+                      "hidden": false
+                    }
+                  },
+                  "eventSource": "click"
+                },
+                {
+                  "type": "updateComponent",
+                  "config": {
+                    "key": "pageopenUUID",
+                    "properties": {
+                      "hidden": true
+                    }
+                  },
+                  "eventSource": "click"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "items": [
+        {
+          "ctype": "title",
+          "uuid": "successTitleUUID",
+          "titleClass": "success-title",
+          "isShown": false
+        },
+        {
+          "ctype": "title",
+          "uuid": "errorTitleUUID",
+          "containerId": "prebodysectionone",
+          "titleClass": "error-title",
+          "isShown": false
+        },
+        {
+          "ctype": "taskPanel",
+          "isblueBorder": true,
+          "uuid": "dellShipTaskUUID",
+          "title": "",
+          "header": {
+            "title": "Ship",
+            "iconClass": "active-header",
+            "class": "greyish-black",
+            "statusIcon": "hourglass_empty",
+            "statusClass": "incomplete-status",
+            "icon": "description"
+          },
+          "expanded": true,
+          "disabled": false,
+          "hideToggle": true,
+          "isMandatory": false,
+          "taskPanelHeaderClass": "background-white",
+          "panelClass": "margin-top-10",
+          "hidden": false,
+          "hooks": [],
+          "validations": [],
+          "actions": [],
+          "items": [
+            {
+              "ctype": "textField",
+              "uuid": "dellPartNameUUID",
+              "submitable": false,
+              "disabled": false,
+              "inLine": true,
+              "formGroupClass": "flex-container flex-container-half-width",
+              "textfieldClass": "textfield-container-small-width",
+              "hooks": [],
+              "validations": [],
+              "actions": [],
+              "name": "partName",
+              "label": "Part Number",
+              "labelClass": "body2 dell-greyish-black",
+              "labelPosition": "left",
+              "tooltip": "",
+              "TooltipPosition": "",
+              "defaultValue": "",
+              "readonly": false,
+              "type": "text",
+              "required": false,
+              "placeholder": "Scan #",
+              "value": "",
+              "prefix": false,
+              "prefixIcon": "",
+              "suffix": false,
+              "suffixIcon": "",
+              "hidden" : true
+            },
+            {
+              "ctype": "textField",
+              "uuid": "shippingBCNUUID",
+              "submitable": false,
+              "disabled": false,
+              "inLine": true,
+              "formGroupClass": "flex-container flex-container-half-width",
+              "textfieldClass": "textfield-container-small-width",
+              "hooks": [],
+              "validations": [],
+              "validateGroup": false,
+              "actions": [
+                {
+                  "type": "context",
+                  "config": {
+                    "requestMethod": "add",
+                    "key": "bcnShipping",
+                    "data": "elementControlValue"
+                  },
+                  "eventSource": "input"
+                },
+                {
+                  "type": "microservice",
+                  "eventSource": "blur",
+                  "config": {
+                    "microserviceId": "getBCNinfo",
+                    "requestMethod": "get",
+                    "LocalService": "assets/Responses/getRequisitionStatus.json",
+                    "isLocal": false,
+                    "params": {
+                      "indicatorValue": "#bcnShipping",
+                      "indicatorType": "BCN",
+                      "userName": "#loginUUID.username"
+                    }
+                  },
+                  "responseDependents": {
+                    "onSuccess": {
+                      "actions": [
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "shippingExitUUID",
+                            "properties": {
+                              "disabled": true,
+                              "iconButtonClass": "body primary-btn"
+                            }
+                          }
+                        },
+                        {
+                          "type": "context",
+                          "config": {
+                            "requestMethod": "add",
+                            "key": "bcnInfo",
+                            "data": "responseData"    
+                          }
+                        },
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "dellShipTaskUUID",
+                            "fieldProperties": {
+                              "shippingSerialNo":  "#bcnInfo.0.serialNo"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    "onFailure": {
+                      "actions": [
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "shippingExitUUID",
+                            "properties": {
+                              "disabled": false,
+                              "iconButtonClass": "footer-save body"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              ],
+              "name": "shippingBCN",
+              "label": "BCN",
+              "labelClass": "body2 dell-greyish-black",
+              "labelPosition": "left",
+              "tooltip": "",
+              "TooltipPosition": "",
+              "defaultValue": "",
+              "readonly": false,
+              "type": "text",
+              "required": false,
+              "placeholder": "Scan #",
+              "value": "",
+              "prefix": false,
+              "prefixIcon": "",
+              "suffix": false,
+              "suffixIcon": "",
+              "hidden" : true
+            },
+            {
+              "ctype": "textField",
+              "uuid": "shippingSerialNoUUID",
+              "submitable": false,
+              "disabled": false,
+              "inLine": true,
+              "formGroupClass": "flex-container flex-container-half-width",
+              "textfieldClass": "textfield-container-small-width",
+              "hooks": [],
+              "validations": [],
+              "validateGroup": false,
+              "actions": [
+                {
+                  "type": "context",
+                  "config": {
+                    "requestMethod": "add",
+                    "key": "serialNoShipping",
+                    "data": "elementControlValue"
+                  },
+                  "eventSource": "input"
+                },
+                {
+                  "type": "microservice",
+                  "eventSource": "blur",
+                  "config": {
+                    "microserviceId": "getBCNinfo",
+                    "requestMethod": "get",
+                    "LocalService": "assets/Responses/getRequisitionStatus.json",
+                    "isLocal": false,
+                    "params": {
+                      "indicatorValue": "#serialNoShipping",
+                      "indicatorType": "SerialNumber",
+                      "userName": "#loginUUID.username"
+                    }
+                  },
+                  "responseDependents": {
+                    "onSuccess": {
+                      "actions": [
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "shippingExitUUID",
+                            "properties": {
+                              "disabled": true,
+                              "iconButtonClass": "body primary-btn"
+                            }
+                          }
+                        },
+                        {
+                          "type": "context",
+                          "config": {
+                            "requestMethod": "add",
+                            "key": "snInfo",
+                            "data": "responseData"
+                          }
+                        },
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "dellShipTaskUUID",
+                            "fieldProperties": {
+                              "shippingBCN":  "#snInfo.0.itemBcn"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    "onFailure": {
+                      "actions": [{
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "shippingExitUUID",
+                          "properties": {
+                            "disabled": false,
+                            "iconButtonClass": "footer-save body"
+                          }
+                        }
+                      }]
+                    }
+                  }
+                }
+              ],
+              "name": "shippingSerialNo",
+              "label": "Serial No.",
+              "labelClass": "body2 dell-greyish-black",
+              "labelPosition": "left",
+              "tooltip": "",
+              "TooltipPosition": "",
+              "defaultValue": "",
+              "readonly": false,
+              "type": "text",
+              "required": false,
+              "placeholder": "Scan #",
+              "value": "",
+              "prefix": false,
+              "prefixIcon": "",
+              "suffix": false,
+              "suffixIcon": "",
+              "hidden" : true
+            }
+          ],
+          "footer": [
+            {
+              "ctype": "label",
+              "text": "Complete task to ship",
+              "labelClass": "shippingContent",
+              "uuid": "shipCompleteLabelUUID",
+              "hidden" : true,
+              "value": ""
+            },
+            {
+              "ctype": "button",
+              "color": "primary",
+              "text": "Complete",
+              "uuid": "dellShipCompleteUUID",
+              "class": "primary-btn",
+              "visibility": true,
+              "disabled": true,
+              "type": "submit",
+              "hooks": [],
+              "validations": [],
+              "actions": [
+                {
+                  "type": "context",
+                  "config": {
+                    "requestMethod": "add",
+                    "key": "dellShipData",
+                    "data": "rawFormData"
+                  },
+                  "eventSource": "click"
+                },
+                {
+                  "type": "updateComponent",
+                  "eventSource": "click",
+                  "config": {
+                    "key": "errorTitleUUID",
+                    "properties": {
+                      "titleValue": "",
+                      "isShown": false
+                    }
+                  }
+                },
+                {
+                  "type": "condition",
+                  "config": {
+                    "operation": "isValid",
+                    "lhs": "#dellShipData.partName"  
+                  },
+                  "eventSource": "click",
+                  "responseDependents": {
+                    "onSuccess": {
+                      "actions": [
+                        {
+                          "type": "context",
+                          "config": {
+                            "requestMethod": "add",
+                            "key": "shippingPartNo",
+                            "data": "#dellShipData.partName"
+                          },
+                          "eventSource": "click"
+                        }
+                      ]
+                    },
+                    "onFailure": {
+                      "actions": [
+                      ]
+                    }
+                  }
+                },
+                {
+                  "type": "condition",
+                  "config": {
+                    "operation": "isValid",
+                    "lhs": "#dellShipData.shippingBCN"
+                  },
+                  "eventSource": "click",
+                  "responseDependents": {
+                    "onSuccess": {
+                      "actions": [
+                        {
+                          "type": "context",
+                          "config": {
+                            "requestMethod": "add",
+                            "key": "shippingItemBcn",
+                            "data": "#dellShipData.shippingBCN"
+                          },
+                          "eventSource": "click"
+                        }
+                      ]
+                    },
+                    "onFailure": {
+                      "actions": [
+                      ]
+                    }
+                  }
+                },
+                {
+                  "type": "condition",
+                  "config": {
+                    "operation": "isValid",
+                    "lhs": "#dellShipData.shippingSerialNo"
+                  },
+                  "eventSource": "click",
+                  "responseDependents": {
+                    "onSuccess": {
+                      "actions": [
+                        {
+                          "type": "context",
+                          "config": {
+                            "requestMethod": "add",
+                            "key": "shippingSerialNo",
+                            "data": "#dellShipData.shippingSerialNo"
+                          }
+                        }
+                      ]
+                    },
+                    "onFailure": {
+                      "actions": [
+                      ]
+                    }
+                  }
+                },
+                {
+                  "type": "microservice",
+                  "config": {
+                    "microserviceId": "performShipment",
+                    "requestMethod": "post",
+                    "body": {
+                      "apiUsageClientName": "#discrepancyUnitInfo.CLIENTNAME",
+                      "apiUsageLocationName": "#userSelectedLocationName",
+                      "callSource": "FrontEnd",
+                      "ip": "::1",
+                      "shipments": {
+                        "outboundOrderId": "#shippingOutBoundOrderId",
+                        "shipmentBoxes": [
+                          {
+                            "boxNo": "001",
+                            "shipmentItems": [
+                              {
+                                "bcn": "#shippingItemBcn",
+                                "lineNo": "1",
+                                "partNo": "#shippingPartNo",
+                                "privatesourceBin": "#shippmentSourceBinName",
+                                "quantity": "1",
+                                "serialNo": "#shippingSerialNo",
+                                "shipmentBoxNo": "001"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      "userPass": {
+                        "userName": "#userAccountInfo.PersonalDetails.USERID",
+                        "password": "#loginUUID.password"
+                      }
+                    },
+                    "toBeStringified": true,
+                    "spliceIfEmptyValueObject": [
+                      {
+                        "identifier": "shipmentItems",
+                        "valueField": "privatesourceBin"
+                      }
+                    ],
+                    "removeUndefinedFields": [
+                      {
+                        "KeyName": "bcn",
+                        "KeyValue": "#shippingItemBcn"
+                      },
+                      {
+                        "KeyName": "serialNo",
+                        "KeyValue": "#shippingSerialNo"
+                      },
+                      {
+                        "KeyName": "partNo",
+                        "KeyValue": "#shippingPartNo"
+                      }
+                    ]
+                  },
+                  "eventSource": "click",
+                  "responseDependents": {
+                    "onSuccess": {
+                      "actions": [
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "shippingExitUUID",
+                            "properties": {
+                              "disabled": true,
+                              "iconButtonClass": "body primary-btn"
+                            }
+                          }
+                        },
+                        {
+                          "type": "context",
+                          "config": {
+                            "requestMethod": "add",
+                            "key": "shippingPerformShipment",
+                            "data": "responseData"
+                          }
+                        },
+                        {
+                          "type": "context",
+                          "config": {
+                            "requestMethod": "add",
+                            "key": "shippingShipmentID",
+                            "data": "#shippingPerformShipment.shipmentId"
+                          }
+                        },
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "dellShipTaskUUID",
+                            "properties": {
+                              "expanded": false,
+                              "disabled": false,
+                              "header": {
+                                "title": "Ship",
+                                "icon": "description",
+                                "statusIcon": "check_circle",
+                                "statusClass": "complete-status",
+                                "class": "complete-task ",
+                                "iconClass": "complete-task"
+                              }
+                            }
+                          }
+                        },
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "dellPartNameUUID",
+                            "properties": {
+                              "disabled": true
+                            }
+                          }
+                        },
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "shippingBCNUUID",
+                            "properties": {
+                              "disabled": true
+                            }
+                          }
+                        },
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "shippingSerialNoUUID",
+                            "properties": {
+                              "disabled": true
+                            }
+                          }
+                        },
+                        {
+                          "type": "updateComponent",
+                          "eventSource": "click",
+                          "config": {
+                            "key": "dellShipCompleteUUID",
+                            "properties": {
+                              "disabled": true
+                            }
+                          }
+                        },
+                        {
+                            "type": "microservice",
+                            "config": {
+                                "microserviceId": "getPrinterNameByHostName",
+                                "requestMethod": "get",
+                                "params": {
+                                    "hostName": "#getHostNameResponse.hostName",
+                                    "userName": "#userAccountInfo.PersonalDetails.USERID"
+                                }
+                            },
+                            "responseDependents": {
+                                "onSuccess": {
+                                    "actions": [
+                                        {
+                                          "type": "updateComponent",
+                                          "config": {
+                                            "key": "shippingExitUUID",
+                                            "properties": {
+                                              "disabled": true,
+                                              "iconButtonClass": "body primary-btn"
+                                            }
+                                          }
+                                        },
+                                        {
+                                            "type": "context",
+                                            "config": {
+                                                "requestMethod": "add",
+                                                "key": "shippingPrinterNameByHostName",
+                                                "data": "responseData"
+                                            }
+                                        },
+                                        {
+                                            "type": "updateComponent",
+                                            "config": {
+                                                "key": "dellShippingManifestPanelUUID",
+                                                "fieldProperties": {
+                                                    "dellShippingPrinter": "#shippingPrinterNameByHostName.printerName"
+                                                }
+                                            }
+                                        }
+                                    ]
+                                },
+                                "onFailure": {
+                                    "actions": [
+                                        {
+                                            "type": "context",
+                                            "config": {
+                                                "requestMethod": "add",
+                                                "key": "errorMsg",
+                                                "data": "responseData"
+                                            }
+                                        },
+                                        {
+                                            "type": "updateComponent",
+                                            "config": {
+                                                "key": "errorTitleUUID",
+                                                "properties": {
+                                                    "titleValue": "#errorMsg",
+                                                    "isShown": true
+                                                }
+                                            }
+                                        },
+                                        {
+                                          "type": "updateComponent",
+                                          "config": {
+                                            "key": "shippingExitUUID",
+                                            "properties": {
+                                              "disabled": false,
+                                              "iconButtonClass": "footer-save body"
+                                            }
+                                          }
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "dellShippingManifestPanelUUID",
+                            "properties": {
+                              "expanded": true,
+                              "disabled": false
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    "onFailure": {
+                      "actions": [
+                        {
+                          "type": "context",
+                          "config": {
+                            "requestMethod": "add",
+                            "key": "errorMsg",
+                            "data": "responseData"
+                          }
+                        },
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "errorTitleUUID",
+                            "properties": {
+                              "titleValue": "#errorMsg",
+                              "isShown": true
+                            }
+                          }
+                        },
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "shippingExitUUID",
+                            "properties": {
+                              "disabled": false,
+                              "iconButtonClass": "footer-save body"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ctype": "taskPanel",
+          "title": "",
+          "header": {
+            "title": "Manifest",
+            "iconClass": "active-header",
+            "class": "greyish-black",
+            "statusIcon": "hourglass_empty",
+            "statusClass": "incomplete-status",
+            "icon": "description"
+          },
+          "expanded": false,
+          "disabled": true,
+          "isEditable": true,
+          "isMandatory": true,
+          "hideToggle": true,
+          "hidden": false,
+          "uuid": "dellShippingManifestPanelUUID",
+          "hooks": [],
+          "validations": [],
+          "actions": [],
+          "items": [
+            {
+              "ctype": "label",
+              "text": "Complete task to manifest",
+              "labelClass": "dell-shippingContent",
+              "value": ""
+            },
+            {
+              "ctype": "textField",
+              "uuid": "dellPrinterNumber3UUID",
+              "submitable": false,
+              "disabled": false,
+              "inLine": true,
+              "formGroupClass": "flex-container flex-container-half-width size-red",
+              "textfieldClass": "textfield-container-small-width left-side-shipping",
+              "hooks": [],
+              "actions": [],
+              "name": "dellShippingPrinter",
+              "label": "Printer:",
+              "labelClass": "body2 dell-greyish-black",
+              "labelPosition": "left",
+              "validations": [],
+              "tooltip": "",
+              "TooltipPosition": "",
+              "defaultValue": "",
+              "readonly": false,
+              "type": "text",
+              "required": true,
+              "placeholder": "",
+              "value": "",
+              "prefix": false,
+              "prefixIcon": "",
+              "suffix": false,
+              "suffixIcon": "",
+              "isDisableNotReq": true
+            },
+            {
+              "ctype": "nativeDropdown",
+              "formGroupClass": "flex-container flex-container-half-width form-group",
+              "dropdownClass": "dropdown-container condition-dropdwn body2",
+              "labelClass": "body2 dell-greyish-black",
+              "uuid": "dellShippingCarrierUUID",
+              "label": "Carrier",
+              "labelPosition": "left",
+              "name": "dellShippingCarrier",
+              "options": [],
+              "code": "carrierCodeName",
+              "displayValue": "carrierCodeName",
+              "required": true,
+              "hooks": [],
+              "actions": [
+                {
+                  "type": "context",
+                  "config": {
+                    "requestMethod": "add",
+                    "key": "carrierName",
+                    "data": "elementControlValue"
+                  },
+                  "eventSource": "change"
+                },
+                {
+                  "type": "resetControl",
+                  "config": {
+                    "key": "dellShippingCT"
+                  },
+                  "eventSource": "change"
+                },
+                {
+                  "type": "resetControl",
+                  "config": {
+                    "key": "dellShippingST"
+                  },
+                  "eventSource": "change"
+                },
+                {
+                  "type": "updateComponent",
+                  "config": {
+                    "key": "dellShippingSTUUID",
+                    "dropDownProperties": {
+                      "options": []   
+                    }
+                  },
+                  "eventSource": "change"
+                },
+                {
+                  "type" : "getidBasedOnName",
+                  "config":{
+                    "reqData" : "getCarrierCode",
+                    "selectedValue" : "carrierName",
+                    "key" : "initialCarrierId"
+                  },
+                  "eventSource": "change"
+                },
+                {
+                  "type": "microservice",
+                  "eventSource": "change",
+                  "config": {
+                    "microserviceId": "getCarrierType",
+                    "requestMethod": "get",
+                    "params": {
+                      "userName": "#userAccountInfo.PersonalDetails.USERID",
+                      "carrierCodeId": "#initialCarrierId"
+                    }
+                  },
+                  "responseDependents": {
+                    "onSuccess": {
+                      "actions": [
+                        {
+                          "type": "context",
+                          "config": {
+                            "requestMethod": "add",
+                            "key": "getCarrierType",
+                            "data": "responseData"
+                          }
+                        },
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "dellShippingCTUUID",
+                            "dropDownProperties": {
+                              "options": "#getCarrierType"   
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    "onFailure": {
+                      "actions": [{
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "shippingExitUUID",
+                          "properties": {
+                            "disabled": false,
+                            "iconButtonClass": "footer-save body"
+                          }
+                        }
+                      }]
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "ctype": "nativeDropdown",
+              "formGroupClass": "flex-container flex-container-half-width form-group",
+              "dropdownClass": "dropdown-container condition-dropdwn body2",
+              "labelClass": "body2 dell-greyish-black",
+              "uuid": "dellShippingCTUUID",
+              "label": "Carrier Type",
+              "labelPosition": "left",
+              "name": "dellShippingCT",
+              "code": "carrierTypeCode",
+              "displayValue": "carrierTypeCode",
+              "dataSource": "",
+              "required": true,
+              "hooks": [],
+              "actions": [
+                {
+                  "type": "context",
+                  "config": {
+                    "requestMethod": "add",
+                    "key": "carrierTypeName",
+                    "data": "elementControlValue"
+                  },
+                  "eventSource": "change"
+                },
+                {
+                  "type": "resetControl",
+                  "config": {
+                    "key": "dellShippingST"
+                  },
+                  "eventSource": "change"
+                },
+                {
+                  "type" : "getidBasedOnName",
+                  "config":{
+                    "reqData" : "getCarrierType",
+                    "selectedValue" : "carrierTypeName",
+                    "carrierTypeName" : true,
+                    "key" : "initialCarrierTypeId"
+                  },
+                  "eventSource": "change"
+                },
+                {
+                  "type": "microservice",
+                  "eventSource": "change",
+                  "config": {
+                    "microserviceId": "getCarrierServiceType",
+                    "requestMethod": "get",
+                    "params": {
+                      "userName": "#userAccountInfo.PersonalDetails.USERID",
+                      "carrierTypeId": "#initialCarrierTypeId"
+                    }
+                  },
+                  "responseDependents": {
+                    "onSuccess": {
+                      "actions": [
+                        {
+                          "type": "context",
+                          "config": {
+                            "requestMethod": "add",
+                            "key": "getCarrierServiceType",
+                            "data": "responseData"
+                          }
+                        },
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "dellShippingSTUUID",
+                            "dropDownProperties": {
+                              "options": "#getCarrierServiceType"   
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    "onFailure": {
+                      "actions": [{
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "shippingExitUUID",
+                          "properties": {
+                            "disabled": false,
+                            "iconButtonClass": "footer-save body"
+                          }
+                        }
+                      }]
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "ctype": "nativeDropdown",
+              "formGroupClass": "flex-container flex-container-half-width form-group",
+              "dropdownClass": "dropdown-container condition-dropdwn body2",
+              "labelClass": "body2 dell-greyish-black",
+              "uuid": "dellShippingSTUUID",
+              "label": "Service Type",
+              "labelPosition": "left",
+              "name": "dellShippingST",
+              "code": "serviceTypeCode",
+              "displayValue": "serviceTypeName",
+              "dataSource": "",
+              "required": true,
+              "hooks": [],
+              "actions": [
+                {
+                  "type": "context",
+                  "config": {
+                    "requestMethod": "add",
+                    "key": "serviceTypeName",
+                    "data": "elementControlValue"
+                  },
+                  "eventSource": "change"
+                }
+              ]
+            }
+          ],
+          "footer": [
+            {
+              "ctype": "button",
+              "color": "primary",
+              "text": "Complete",
+              "uuid": "dellManifestCompleteUUID",
+              "class": "primary-btn",
+              "visibility": true,
+              "disabled": true,
+              "type": "submit",
+              "hooks": [],
+              "validations": [],
+              "actions": [
+                {
+                  "type": "context",
+                  "config": {
+                    "requestMethod": "add",
+                    "key": "manifestStorage",
+                    "data": "formData"
+                  },
+                  "eventSource": "click"
+                },
+                {
+                  "type": "microservice",
+                  "config": {
+                    "microserviceId": "manifestTrax",
+                    "requestMethod": "post",
+                    "body": {
+                      "actionType": "carrierShipment",
+                      "processType": "ship",
+                      "boxNo": "001",
+                      "boxContent": {
+                        "boxCount": "1",
+                        "box": [
+                          {
+                            "trackingNo": "#manifestStorage.dellShippingPrinter",
+                            "boxNo": "001",
+                            "item": "#shippingItemBcn",
+                            "weight": "#shipWeightTrax",
+                            "weightUomCode": "LBS"
+                          }
+                        ]
+                      },
+                      "carrierTypeCode": "#manifestStorage.dellShippingCT",
+                      "packingListNo": "#shippingShipmentID",
+                      "outboundOrderId": "#shippingOutBoundOrderId",
+                      "locationName": "#userSelectedLocationName",
+                      "clientName": "DELL",
+                      "contractName": "#userSelectedContractName",
+                      "carrierName": "#manifestStorage.dellShippingCarrier",
+                      "serviceTypeCode": "#manifestStorage.dellShippingST",
+                      "serviceTypeId": "#shippingTermsDetails.dellShippingST",
+                      "xelusFlexFieldList": [
+                        {
+                          "contextAttributeName": "detailFF502",
+                          "FlexFieldID": "",
+                          "FlexFieldName": "",
+                          "FlexFieldValue": ""
+                        },
+                        {
+                          "contextAttributeName": "detailFF5081",
+                          "FlexFieldID": "",
+                          "FlexFieldName": "",
+                          "FlexFieldValue": ""
+                        },
+                        {
+                          "contextAttributeName": "detailFF81",
+                          "FlexFieldID": "",
+                          "FlexFieldName": "",
+                          "FlexFieldValue": ""
+                        }
+                      ]
+                    },
+                    "removeUndefinedFields": [
+                      {
+                        "KeyName": "item",
+                        "KeyValue": "#shippingItemBcn"
+                      }
+                    ],
+                    "toBeStringified": true
+                  },
+                  "eventSource": "click",
+                  "responseDependents": {
+                    "onSuccess": {
+                      "actions": [
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "shippingExitUUID",
+                            "properties": {
+                              "disabled": true,
+                              "iconButtonClass": "body primary-btn"
+                            }
+                          }
+                        },
+                        {
+                          "type": "context",
+                          "config": {
+                            "requestMethod": "add",
+                            "key": "shippingManifestTraxData",
+                            "data": "responseData"
+                          }
+                        },
+                        {
+                          "type": "condition",
+                          "hookType": "afterInit",
+                          "config": {
+                            "operation": "isValid",
+                            "lhs": "#shippingManifestTraxData.boxContent.box[0].weight"
+                          },
+                          "responseDependents": {
+                            "onSuccess": {
+                              "actions": [
+                                {
+                                  "type": "context",
+                                  "config": {
+                                    "requestMethod": "add",
+                                    "key": "shipWeight",
+                                    "data":"#shippingManifestTraxData.boxContent.box[0].weight"
+                                  }
+                                }
+                              ]
+                            },
+                            "onFailure": {
+                              "actions": [
+                                {
+                                  "type": "condition",
+                                  "config": {
+                                    "operation": "isEqualTo",
+                                    "lhs": "#boxShipping",
+                                    "rhs": true
+                                  },
+                                  "hookType": "afterInit",
+                                  "responseDependents": {
+                                    "onSuccess": {
+                                      "actions": [
+                                        {
+                                          "type": "condition",
+                                          "config": {
+                                            "operation": "isEqualTo",
+                                            "lhs": "#shippingCondition",
+                                            "rhs": "New"
+                                          },
+                                          "eventSource": "click",
+                                          "responseDependents": {
+                                            "onSuccess": {
+                                              "actions": [
+                                                {
+                                                  "type": "context",
+                                                  "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "shipWeight",
+                                                    "data":"1"
+                                                  }
+                                                }
+                                              ]
+                                            },
+                                            "onFailure": {
+                                              "actions": [
+                                                {
+                                                  "type": "condition",
+                                                  "config": {
+                                                    "operation": "isEqualTo",
+                                                    "lhs": "#shippingCondition",
+                                                    "rhs": "Defective"
+                                                  },
+                                                  "responseDependents": {
+                                                    "onSuccess": {
+                                                      "actions": [
+                                                        {
+                                                          "type": "context",
+                                                          "config": {
+                                                            "requestMethod": "add",
+                                                            "key": "shipWeight",
+                                                            "data":"1"
+                                                          }
+                                                        }
+                                                      ]
+                                                    },
+                                                    "onFailure": {
+                                                      "actions": [
+                                                        {
+                                                          "type": "context",
+                                                          "config": {
+                                                            "requestMethod": "add",
+                                                            "key": "shipWeight",
+                                                            "data":"10"
+                                                          }
+                                                        }
+                                                      ]
+                                                    }
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "onFailure": {
+                                      "actions": [
+                                        {
+                                          "type": "context",
+                                          "config": {
+                                            "requestMethod": "add",
+                                            "key": "shipWeight",
+                                            "data":"10"
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        },
+                        {
+                          "type": "condition",
+                          "config": {
+                            "operation": "isValid",
+                            "lhs": "#shippingManifestTraxData.boxContent.box[0].weightUomCode"
+                          },
+                          "responseDependents": {
+                            "onSuccess": {
+                              "actions": [
+                                {
+                                  "type": "context",
+                                  "config": {
+                                    "requestMethod": "add",
+                                    "key": "shipWeightUnit",
+                                    "data":"#shippingManifestTraxData.boxContent.box[0].weightUomCode"
+                                  }
+                                }
+                              ]
+                            },
+                            "onFailure": {
+                              "actions": [
+                                {
+                                  "type": "context",
+                                  "config": {
+                                    "requestMethod": "add",
+                                    "key": "shipWeightUnit",
+                                    "data":"LBS"
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        },
+                        {
+                          "type": "microservice",
+                          "config": {
+                            "microserviceId": "performManifest",
+                            "requestMethod": "post",
+                            "body": {
+                              "apiUsageClientName": "DELL",
+                              "apiUsageLocationName": "#userSelectedLocationName",
+                              "callSource": "FrontEnd",
+                              "carrier": "#manifestStorage.dellShippingCarrier",
+                              "carrierServiceType": "#manifestStorage.dellShippingST",
+                              "carrierType": "#manifestStorage.dellShippingCT",
+                              "ip": "::1",
+                              "manifestBoxList": [
+                                {
+                                  "shipmentBoxNumber": "001",
+                                  "trackingNumber": "#shippingManifestTraxData.boxContent.box[0].trackingNo",
+                                  "returnAirBill": "#shippingManifestTraxData.boxContent.box[0].returnAirbill",
+                                  "shippedWeight": "#shipWeight",
+                                  "weightUom": "#shipWeightUnit"
+                                }
+                              ],
+                              "manifestedBy": "#userAccountInfo.PersonalDetails.USERID",
+                              "shipmentId": "#shippingShipmentID",
+                              "userPass": {
+                                "password": "#loginUUID.password",
+                                "userName": "#userAccountInfo.PersonalDetails.USERID"
+                              }
+                            },
+                            "removeUndefinedFields": [
+                              {
+                                "KeyName": "returnAirBill",
+                                "KeyValue": "#shippingManifestTraxData.boxContent.box[0].returnAirbill"
+                              }
+                            ],
+                            "toBeStringified": true
+                          },
+                          "eventSource": "click",
+                          "responseDependents": {
+                            "onSuccess": {
+                              "actions": [
+                                {
+                                  "type": "updateComponent",
+                                  "config": {
+                                    "key": "shippingExitUUID",
+                                    "properties": {
+                                      "disabled": true,
+                                      "iconButtonClass": "body primary-btn"
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "context",
+                                  "config": {
+                                    "requestMethod": "add",
+                                    "key": "shippingPerformManifestData",
+                                    "data": "responseData"
+                                  }
+                                },
+                                {
+                                    "type": "updateComponent",
+                                    "config": {
+                                        "key": "dellShippingManifestPanelUUID",
+                                        "properties": {
+                                            "expanded": false,
+                                            "disabled": true,
+                                            "header": {
+                                                "title": "Manifest",
+                                                "icon": "description",
+                                                "iconClass": "complete-task",
+                                                "statusIcon": "check_circle",
+                                                "statusClass": "complete-status",
+                                                "class": "complete-task"
+                                            }
+                                        }
+                                    },
+                                    "eventSource": "click"
+                                },
+                                {
+                                  "type": "updateComponent",
+                                  "config": {
+                                    "key": "dellManifestCompleteUUID",
+                                    "properties": {
+                                      "disabled": true
+                                    }
+                                  },
+                                  "eventSource": "click"
+                                },
+                                {
+                                  "type": "renderTemplate",
+                                  "config": {
+                                    "templateId": "dashboard.json",
+                                    "mode": "local"
+                                  },
+                                  "eventSource": "click"
+                                }
+                              ]
+                            },
+                            "onFailure": {
+                              "actions": [
+                                {
+                                  "type": "context",
+                                  "config": {
+                                    "requestMethod": "add",
+                                    "key": "errorMsg",
+                                    "data": "responseData"
+                                  }
+                                },
+                                {
+                                  "type": "updateComponent",
+                                  "config": {
+                                    "key": "errorTitleUUID",
+                                    "properties": {
+                                      "titleValue": "#errorMsg",
+                                      "isShown": true
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "updateComponent",
+                                  "config": {
+                                    "key": "shippingExitUUID",
+                                    "properties": {
+                                      "disabled": false,
+                                      "iconButtonClass": "footer-save body"
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    "onFailure": {
+                      "actions": [
+                        {
+                          "type": "context",
+                          "config": {
+                            "requestMethod": "add",
+                            "key": "errorMsg",
+                            "data": "responseData"
+                          }
+                        },
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "errorTitleUUID",
+                            "properties": {
+                              "titleValue": "#errorMsg",
+                              "isShown": true
+                            }
+                          }
+                        },
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "shippingExitUUID",
+                            "properties": {
+                              "disabled": false,
+                              "iconButtonClass": "footer-save body"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "footer": [
+        {
+          "ctype": "toolbar",
+          "toolbarClass": "pagecontent-footer",
+          "uuid": "pageFooterUUID",
+          "items": [
+            {
+              "ctype": "iconbutton",
+              "iconButtonClass": "body primary-btn",
+              "text": "Exit",
+              "uuid": "shippingExitUUID",
+              "visibility": true,
+              "disabled": true,
+              "type": "submit",
+              "hooks": [],
+              "validations": [],
+              "icon": "close",
+              "actions": [{
+                  "type": "renderTemplate",
+                  "config": {
+                    "templateId": "dashboard.json",
+                    "mode": "local"
+                  },
+                  "eventSource": "click"
+                }
+              ]
+            },
+            {
+              "ctype": "iconText",
+              "uuid": "addNoteLabelUUID",
+              "icon": "add_comment",
+              "text": "Add Note",
+              "disabled": true,
+              "textCss": "",
+              "iconPosition": "Before",
+              "iconTextClass": "footer-shipping-addNote body",
+              "actions": []
+            },
+            {
+              "ctype": "iconbutton",
+              "uuid": "holdResumeUUID",
+              "visibility": true,
+              "disabled": true,
+              "type": "submit",
+              "hooks": [],
+              "validations": [],
+              "icon": "play_arrow",
+              "iconClass": "",
+              "hidden": true,
+              "disableRipple": true
+            },
+            {
+              "ctype": "spacer",
+              "uuid": "emptySpaceUUID",
+              "class": "empty-space"
+            },
+            {
+              "ctype": "iconbutton",
+              "uuid": "dellShippingResultUUID",
+              "visibility": true,
+              "disabled": true,
+              "type": "submit",
+              "hooks": [],
+              "validations": [],
+              "icon": "pause",
+              "iconClass": "footer-btnas",
+              "disableRipple": true,
+              "actions": []
+            },
+            {
+              "ctype": "nativeDropdown",
+              "dropdownClass": "footer-dropdown dropdown-container body2",
+              "uuid": "dellShippingResultCodesUUID",
+              "name": "ResultCodes",
+              "dataSource": "#getResultCodeForDiscrepancy",
+              "code": "resultCode",
+              "displayValue": "resultCode",
+              "inputStyles": "margin-right:10px;",
+              "disabled": true,
+              "actions": []
+            },
+            {
+              "ctype": "button",
+              "color": "primary",
+              "text": "Time Out",
+              "uuid": "dellFinalTestTimeOutUUID",
+              "visibility": true,
+              "checkGroupValidity": false,
+              "disabled": true,
+              "hidden": false,
+              "type": "submit",
+              "hooks": [],
+              "validations": [],
+              "buttonClass": "footer-button primary-btn",
+              "class": "primary-btn",
+              "actions": []
+            }
+          ]
+        }
+      ]
+    },
+    "Result": "SUCCESS"
+  }

@@ -1,0 +1,2561 @@
+{
+  "ResultData": {
+    "ctype": "page",
+    "uuid": "pageUUID",
+    "css": "",
+    "visibility": true,
+    "onLoadActions": [
+      {
+        "type": "condition",
+        "config": {
+          "operation": "isEqualTo",
+          "lhs": "#userSelectedLocation",
+          "rhs": "1807"
+        },
+        "responseDependents": {
+          "onSuccess": {
+            "actions": [
+              {
+                "type": "microservice",
+                "hookType": "afterInit",
+                "config": {
+                  "microserviceId": "getPreviousWCFAHistory",
+                  "requestMethod": "get",
+                  "isDisplayErrorMessage": false,
+                  "params": {
+                    "itemId": "#repairUnitInfo.ITEM_ID",
+                    "username": "#loginUUID.username",
+                    "workCenterId": "#discrepancyUnitInfo.WORKCENTER_ID"
+                  },
+                  "isLocal": false,
+                  "LocalService": "assets/Responses/dellreworkdynamictaskdata.json"
+                },
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": []
+                  },
+                  "onFailure": {
+                    "actions": []
+                  }
+                }
+              },
+              {
+                "type": "microservice",
+                "hookType": "afterInit",
+                "config": {
+                  "microserviceId": "getAccessoriesFfFromRcv",
+                  "requestMethod": "post",
+                  "isLocal": false,
+                  "LocalService": "assets/Responses/ConfirmAccessoriesDummy.json",
+                  "body": {
+                    "itemId": "#repairUnitInfo.ITEM_ID",
+                    "clientId": "#repairUnitInfo.CLIENT_ID",
+                    "contractId": "#repairUnitInfo.CONTRACT_ID",
+                    "opt": "IRMA",
+                    "prcvAccFfNames": "Accesory 1,PPID-Comments 1,Accesory 2,PPID-Comments 2,Accesory 3,PPID-Comments 3,Accesory 4,PPID-Comments 4",
+                    "userName": "#loginUUID.username"
+                  },
+                  "toBeStringified": true
+                },
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "onFailure": {
+            "actions": []
+          }
+        }
+      }
+    ],
+    "hooks": [
+      {
+        "type": "EditFuncDrawbackSol",
+        "hookType": "afterInit",
+        "config":{
+          "addHookAtLast": true,
+          "resultcodeUUID": "dellObaResultCodesUUID",
+          "timeoutUUID": "dellObaTimeoutUUID"
+        }
+      },
+      {
+        "type": "microservice",
+        "hookType": "afterInit",
+        "config": {
+          "microserviceId": "getCurrPrevRODetailsBySN",
+          "requestMethod": "get",
+          "isLocal": false,
+          "LocalService": "assets/getCurrPrevRODetailsBySN.json",
+          "params": {
+            "serialNo": "#repairUnitInfo.SERIAL_NO",
+            "locationId": "#userSelectedLocation",
+            "clientId": "#userSelectedClient",
+            "contractId": "#userSelectedContract",
+            "userName": "#loginUUID.username"
+          }
+        },
+        "responseDependents": {
+          "onSuccess": {
+            "actions": [
+              {
+                "type": "condition",
+                "config": {
+                  "operation": "isValid",
+                  "lhs": "#getCurrPrevRODetailsBySN.lastNote"
+                },
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellObaLastNoteTaskUUID",
+                          "properties": {
+                            "expanded": false,
+                            "hidden": false
+                          }
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellObaLastNoteTextUUID",
+                          "properties": {
+                            "title": "#getCurrPrevRODetailsBySN.lastNote"
+                          }
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellObaRepairInformationTaskUUID",
+                          "properties": {
+                            "expanded": true
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellObaLastNoteTaskUUID",
+                          "properties": {
+                            "hidden": true
+                          }
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellObaRepairInformationTaskUUID",
+                          "properties": {
+                            "expanded": true
+                          }
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellObaLastNoteTextUUID",
+                          "properties": {
+                            "title": ""
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "dellObaRepairInformationTextUUID",
+                  "properties": {
+                    "title": "#getCurrPrevRODetailsBySN.repairInformation"
+                  }
+                }
+              },
+              {
+                "type": "condition",
+                "config": {
+                  "operation": "isValid",
+                  "lhs": "#specialMessageData.moreInfo"
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellObaRepairInformationSMUUID",
+                          "properties": {
+                            "title": "#specialMessageData.moreInfo",
+                            "isShown": true
+                          }
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellObaRepairInformationSMSpacerUUID",
+                          "properties": {
+                            "isShown": true
+                          }
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellObaRepairInformationSMHeadingUUID",
+                          "properties": {
+                            "isShown": true
+                          }
+                        }
+                      },
+                      {
+                        "type": "condition",
+                        "hookType": "afterInit",
+                        "config": {
+                          "operation": "isEqualTo",
+                          "lhs": "#userSelectedLocation",
+                          "rhs": "1807"
+                        },
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "context",
+                                "config": {
+                                  "requestMethod": "add",
+                                  "key": "checkAccFFData",
+                                  "data": "#getAccessoriesFfFromRcv"
+                                }
+                              },
+                              {
+                                "type": "handleCheckAccActions",
+                                "methodType": "checkForIssuedParts",
+                                "config": {
+                                  "data": "getPreviousWCFAHistory",
+                                  "taskPanelUUID": "dellObaCheckAccTaskPanelUUID",
+                                  "textFieldUUID": "dellObaCheckAccTextFieldUUID",
+                                  "accessoryNameUUID": "dellObaCheckAccNameUUID",
+                                  "completeUUID": "dellObaCheckAccCompleteBtnUUID",
+                                  "resultCodeUUID": "dellObaResultCodesUUID",
+                                  "timeOutUUID": "dellObaTimeoutUUID",
+                                  "resetUUID": "dellObaCheckAccResetBtnUUID",
+                                  "nextTaskPanelUUID": "dellObaCheckListTaskUUID",
+                                  "nextTaskPanelTitle": "OBA Check list",
+                                  "errorTitleUUID": "dellOBAErrorTitleUUID",
+                                  "expanded": false,
+                                  "disabled": true
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": []
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellObaRepairInformationTaskUUID",
+                          "properties": {
+                            "expanded": false,
+                            "disabled": true,
+                            "taskPanelHeaderClass": "background-white",
+                            "header": {
+                              "title": "Repair Information",
+                              "svgIcon": "description_icon",
+                              "statusIcon": "check_circle",
+                              "statusClass": "complete-status",
+                              "class": "complete-task ",
+                              "iconClass": "complete-task"
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "type": "condition",
+                        "hookType": "afterInit",
+                        "config": {
+                          "operation": "isEqualTo",
+                          "lhs": "#userSelectedLocation",
+                          "rhs": "1807"
+                        },
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "context",
+                                "config": {
+                                  "requestMethod": "add",
+                                  "key": "checkAccFFData",
+                                  "data": "#getAccessoriesFfFromRcv"
+                                }
+                              },
+                              {
+                                "type": "handleCheckAccActions",
+                                "methodType": "checkForIssuedParts",
+                                "config": {
+                                  "data": "getPreviousWCFAHistory",
+                                  "taskPanelUUID": "dellObaCheckAccTaskPanelUUID",
+                                  "textFieldUUID": "dellObaCheckAccTextFieldUUID",
+                                  "accessoryNameUUID": "dellObaCheckAccNameUUID",
+                                  "completeUUID": "dellObaCheckAccCompleteBtnUUID",
+                                  "resultCodeUUID": "dellObaResultCodesUUID",
+                                  "timeOutUUID": "dellObaTimeoutUUID",
+                                  "resetUUID": "dellObaCheckAccResetBtnUUID",
+                                  "nextTaskPanelUUID": "dellObaCheckListTaskUUID",
+                                  "nextTaskPanelTitle": "OBA Check list",
+                                  "errorTitleUUID": "dellOBAErrorTitleUUID",
+                                  "expanded": true,
+                                  "disabled": false
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": [
+                              {
+                                "eventSource": "click",
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "dellObaCheckListTaskUUID",
+                                  "properties": {
+                                    "expanded": true,
+                                    "disabled": false,
+                                    "taskPanelHeaderClass": "background-white",
+                                    "header": {
+                                      "title": "OBA Check list",
+                                      "svgIcon": "description_icon",
+                                      "iconClass": "active-header",
+                                      "statusIcon": "hourglass_empty",
+                                      "statusClass": "incomplete-status",
+                                      "class": "greyish-black"
+                                    }
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellObaReadMessageCheckboxUUID",
+                          "properties": {
+                            "checkVisibility": false
+                          }
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellObaMessageButtonCompleteUUID",
+                          "properties": {
+                            "hidden": true
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "onFailure": {
+            "actions": [
+              {
+                "type": "handleCommonServices",
+                "config": {
+                  "type": "errorRenderTemplate",
+                  "contextKey": "dellOBAErrorMsg",
+                  "updateKey": "dellOBAErrorTitleUUID"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "type": "microservice",
+        "hookType": "afterInit",
+        "config": {
+          "microserviceId": "getFFByWc",
+          "isLocal": false,
+          "LocalService": "assets/Responses/repairMockRamResponse.json",
+          "requestMethod": "get",
+          "params": {
+            "clientId": "#discrepancyUnitInfo.CLIENT_ID",
+            "routeName": "#discrepancyUnitInfo.ROUTE",
+            "contrId": "#discrepancyUnitInfo.CONTRACT_ID",
+            "wcId": "#discrepancyUnitInfo.WORKCENTER_ID",
+            "itemId": "#discrepancyUnitInfo.ITEM_ID",
+            "userName": "#loginUUID.username"
+          }
+        },
+        "responseDependents": {
+          "onSuccess": {
+            "actions": [
+              {
+                "type": "extractValueBasedOnKey",
+                "config": {
+                  "data": "getFFByWc",
+                  "reqKey": "ffName",
+                  "reqValue": "OBA_Result",
+                  "key": "dellOBA_ResultObj"
+                }
+              },
+              {
+                "type": "microservice",
+                "hookType": "afterInit",
+                "config": {
+                  "microserviceId": "getFFValue",
+                  "isLocal": false,
+                  "LocalService": "assets/Responses/repairMockRamResponse.json",
+                  "requestMethod": "get",
+                  "params": {
+                    "ffId": "#dellOBA_ResultObj.ffId",
+                    "userName": "#loginUUID.username"
+                  }
+                },
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellObaTestResultDropdownUUID",
+                          "dropDownProperties": {
+                            "options": "#getFFValue"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "handleCommonServices",
+                        "config": {
+                          "type": "errorRenderTemplate",
+                          "contextKey": "dellOBAErrorMsg",
+                          "updateKey": "dellOBAErrorTitleUUID"
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "onFailure": {}
+        }
+      },
+      {
+        "type": "arraySetMethod",
+        "config": {
+          "data": "#holdCodesForDiscrepancy",
+          "contextKey": "filteredHoldTypes"
+        },
+        "hookType": "afterInit"
+      }
+
+    ],
+    "validations": [],
+    "action": [],
+    "header": [
+      {
+        "ctype": "breadcrumb",
+        "breadcrumbs": [
+          {
+            "label": "#userSelectedLocationName"
+          },
+          {
+            "label": "#userSelectedClientName"
+          },
+          {
+            "label": "#userSelectedContractName"
+          }
+        ]
+      },
+      {
+        "ctype": "toolbar",
+        "toolbarClass": "pagecontent-header",
+        "items": [
+          {
+            "ctype": "title",
+            "uuid": "dellObaTitleUUID",
+            "titleValue": "OBA"
+          },
+          {
+            "ctype": "iconbutton",
+            "iconButtonClass": "headeropen-button",
+            "text": "",
+            "uuid": "pageopenUUID",
+            "visibility": true,
+            "disabled": false,
+            "hidden": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "icon": "menu_open",
+            "disableRipple": true,
+            "iconClass": "header-icon",
+            "actions": [
+              {
+                "type": "toggle",
+                "eventSource": "click",
+                "name": "subProcessRightNavref"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "openUUID",
+                  "properties": {
+                    "hidden": false
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "pageopenUUID",
+                  "properties": {
+                    "hidden": true
+                  }
+                },
+                "eventSource": "click"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "items": [
+      {
+        "ctype": "title",
+        "uuid": "successTitleUUID",
+        "containerId": "prebodysectionone",
+        "titleClass": "success-title",
+        "isShown": false
+      },
+      {
+        "ctype": "title",
+        "uuid": "dellOBAErrorTitleUUID",
+        "containerId": "prebodysectionone",
+        "titleClass": "error-title",
+        "isShown": false
+      },
+      {
+        "ctype": "taskPanel",
+        "taskPanelHeaderClass": "background-white",
+        "containerId": "prebodysectionone",
+        "header": {
+          "title": "Last note",
+          "svgIcon": "description_icon",
+          "class": "greyish-black",
+          "iconClass": "active-header"
+        },
+        "expanded": false,
+        "disabled": false,
+        "hideToggle": true,
+        "hidden": true,
+        "hooks": [],
+        "validations": [],
+        "isMandatory": false,
+        "actions": [],
+        "isblueBorder": true,
+        "uuid": "dellObaLastNoteTaskUUID",
+        "items": [
+          {
+            "ctype": "title",
+            "uuid": "dellObaLastNoteTextUUID",
+            "titleClass": "greyish-black body-italic assessment-alert",
+            "title": ""
+          }
+        ]
+      },
+      {
+        "ctype": "taskPanel",
+        "containerId": "prebodysectionone",
+        "header": {
+          "title": "Repair Information",
+          "svgIcon": "description_icon",
+          "iconClass": "active-header",
+          "statusIcon": "hourglass_empty",
+          "statusClass": "incomplete-status",
+          "class": "greyish-black"
+        },
+        "actions": [],
+        "expanded": false,
+        "hideToggle": true,
+        "isblueBorder": true,
+        "isEditable": true,
+        "isMandatory": true,
+        "uuid": "dellObaRepairInformationTaskUUID",
+        "visibility": true,
+        "items": [
+          {
+            "ctype": "title",
+            "uuid": "dellObaRepairInformationCCHeadingUUID",
+            "titleClass": "greyish-black heading2",
+            "isShown": false,
+            "title": "Customer Complaint 2020-07-22. 12.02"
+          },
+          {
+            "ctype": "title",
+            "uuid": "dellObaRepairInformationTextUUID",
+            "titleClass": "greyish-black body-italic assessment-alert",
+            "title": ""
+          },
+          {
+            "ctype": "title",
+            "uuid": "dellObaRepairInformationSMSpacerUUID",
+            "titleClass": "greyish-black body-italic assessment-alert",
+            "isShown": false,
+            "title": ""
+          },
+          {
+            "ctype": "title",
+            "uuid": "dellObaRepairInformationSMHeadingUUID",
+            "titleClass": "greyish-black heading2",
+            "isShown": false,
+            "title": "Special Message"
+          },
+          {
+            "ctype": "title",
+            "uuid": "dellObaRepairInformationSMUUID",
+            "titleClass": "greyish-black body-italic",
+            "isShown": false,
+            "title": ""
+          },
+          {
+            "ctype": "checkbox",
+            "name": "dellObaReadMessageCheckbox",
+            "uuid": "dellObaReadMessageCheckboxUUID",
+            "hooks": [],
+            "required": false,
+            "submittable": true,
+            "isDisableNotReq": true,
+            "label": "I have read this message",
+            "labelPosition": "after",
+            "checkboxContainer": "label-init",
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "dellObaRepairInformation",
+                  "data": "formData"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "condition",
+                "config": {
+                  "operation": "isValid",
+                  "lhs": "#dellObaRepairInformation.dellObaReadMessageCheckbox"
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellObaMessageButtonCompleteUUID",
+                          "properties": {
+                            "disabled": false
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellObaMessageButtonCompleteUUID",
+                          "properties": {
+                            "disabled": true
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "footer": [
+          {
+            "ctype": "button",
+            "color": "primary",
+            "text": "Complete",
+            "class": "primary-btn",
+            "uuid": "dellObaMessageButtonCompleteUUID",
+            "visibility": true,
+            "disabled": true,
+            "isDisableNotReq": true,
+            "type": "submit",
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "dellObaReadMessageCheckboxUUID",
+                  "data": "formData"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "condition",
+                "config": {
+                  "operation": "isValid",
+                  "lhs": "#dellObaReadMessageCheckboxUUID.dellObaReadMessageCheckbox"
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellObaMessageButtonCompleteUUID",
+                          "properties": {
+                            "disabled": false
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellObaMessageButtonCompleteUUID",
+                          "properties": {
+                            "disabled": true
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "type": "microservice",
+                "config": {
+                  "microserviceId": "stopProcessClientReceiving",
+                  "requestMethod": "post",
+                  "eventSource": "click",
+                  "body": {
+                    "actionType": "PwcPerformTimeOut",
+                    "subActionTypeName": "addBcnLabel",
+                    "geoId": "#discrepancyUnitInfo.LOCATION_ID",
+                    "partNumber": "#discrepancyUnitInfo.PART_NO",
+                    "userLoginId": "#userAccountInfo.PersonalDetails.USERID",
+                    "locationId": "#discrepancyUnitInfo.LOCATION_ID",
+                    "clientId": "#userSelectedClient",
+                    "contractId": "#userSelectedContract",
+                    "orderProcessType": "#repairUnitInfo.ROUTE",
+                    "clientName": "#repairUnitInfo.CLIENTNAME",
+                    "serialNo": "#repairUnitInfo.SERIAL_NO",
+                    "contractName": "#repairUnitInfo.CONTRACTNAME",
+                    "revisionLevel": "",
+                    "selectedResultCode": "[ALL]",
+                    "workCenter": "#discrepancyUnitInfo.WORKCENTER",
+                    "timeOutTab": "",
+                    "geographyNumber": "#userSelectedLocationName",
+                    "loaderName": "#locationDependentFFIDDetails.loaderName",
+                    "pwcXml": {
+                      "timeOutTab": {
+                        "selectedResultCode": "[ALL]"
+                      },
+                      "flexFieldDefinitionList": [
+                        {
+                          "ffName": "msgRead",
+                          "ffId": "#locationDependentFFIDDetails.msgRead",
+                          "ffValue": "#submitablemsgRead"
+                        }
+                      ],
+                      "ffvalueList": [
+                        {
+                          "ffId": "#locationDependentFFIDDetails.msgRead",
+                          "ffValue": "#submitablemsgRead"
+                        }
+                      ]
+                    },
+                    "referenceOrderNumber": "#refId",
+                    "outboundOrderId": "",
+                    "bcn": "#discrepancyUnitInfo.ITEM_BCN",
+                    "workOrderId": "#repairUnitInfo.WORKORDER_ID",
+                    "itemId": "#repairUnitInfo.ITEM_ID",
+                    "flexFieldList": [
+                      {
+                        "ffId": "#locationDependentFFIDDetails.msgRead",
+                        "ffName": "msgRead",
+                        "ffValue": "#submitablemsgRead"
+                      }
+                    ],
+                    "wcOperation": "WC Operation"
+                  },
+                  "toBeStringified": true
+                },
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellObaMessageButtonCompleteUUID",
+                          "properties": {
+                            "disabled": true
+                          }
+                        },
+                        "eventSource": "click"
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellObaRepairInformationTaskUUID",
+                          "properties": {
+                            "expanded": false,
+                            "disabled": true,
+                            "taskPanelHeaderClass": "background-white",
+                            "header": {
+                              "title": "Repair Information",
+                              "svgIcon": "description_icon",
+                              "statusIcon": "check_circle",
+                              "statusClass": "complete-status",
+                              "class": "complete-task ",
+                              "iconClass": "complete-task"
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "type": "condition",
+                        "config": {
+                          "operation": "isEqualTo",
+                          "lhs": "#userSelectedLocation",
+                          "rhs": "1807"
+                        },
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "dellObaCheckAccTaskPanelUUID",
+                                  "properties": {
+                                    "disabled": false,
+                                    "expanded": true
+                                  }
+                                },
+                                "eventSource": "click"
+                              },
+                              {
+                                "type": "condition",
+                                "config": {
+                                  "operation": "isValid",
+                                  "lhs": "#checkAccFFData"
+                                },
+                                "eventSource": "click",
+                                "responseDependents": {
+                                  "onSuccess": {
+                                    "actions": [
+                                      {
+                                        "type": "setFocus",
+                                        "config": {
+                                          "targetId": "dellObaCheckAccTextFieldUUID0"
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "onFailure": {
+                                    "actions": []
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": [
+                              {
+                                "eventSource": "click",
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "dellObaCheckListTaskUUID",
+                                  "properties": {
+                                    "expanded": true,
+                                    "disabled": false,
+                                    "taskPanelHeaderClass": "background-white",
+                                    "header": {
+                                      "title": "OBA Check list",
+                                      "svgIcon": "description_icon",
+                                      "iconClass": "active-header",
+                                      "statusIcon": "hourglass_empty",
+                                      "statusClass": "incomplete-status",
+                                      "class": "greyish-black"
+                                    }
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "handleCommonServices",
+                        "config": {
+                          "type": "errorRenderTemplate",
+                          "contextKey": "dellOBAErrorMsg",
+                          "updateKey": "dellOBAErrorTitleUUID"
+                        }
+                      }
+                    ]
+                  }
+                },
+                "eventSource": "click"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "ctype": "taskPanel",
+        "containerId": "prebodysectiontwo",
+        "isblueBorder": true,
+        "header": {
+          "title": "OBA Check list",
+          "svgIcon": "description_icon",
+          "iconClass": "active-header",
+          "statusIcon": "hourglass_empty",
+          "statusClass": "incomplete-status",
+          "class": "greyish-black"
+        },
+        "expanded": false,
+        "hideToggle": true,
+        "visibility": false,
+        "disabled": true,
+        "isEditable": true,
+        "isMandatory": true,
+        "uuid": "dellObaCheckListTaskUUID",
+        "items": [
+          {
+            "ctype": "obaChecklist",
+            "uuid": "OBAchecklistComponentUUID"
+          }
+        ],
+        "footer": [
+          {
+            "ctype": "button",
+            "color": "primary",
+            "text": "Complete",
+            "class": "primary-btn",
+            "uuid": "dellChecklistButtonUUID",
+            "name": "dellChecklistName",
+            "visibility": true,
+            "disabled": false,
+            "type": "submit",
+            "hooks": [],
+            "actions": [
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "dellChecklistButtonUUID",
+                  "properties": {
+                    "disabled": true
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "eventSource": "click",
+                "type": "updateComponent",
+                "config": {
+                  "key": "dellObaCheckListTaskUUID",
+                  "properties": {
+                    "expanded": false,
+                    "disabled": false,
+                    "taskPanelHeaderClass": "background-white",
+                    "header": {
+                      "title": "OBA Check list",
+                      "svgIcon": "description_icon",
+                      "statusIcon": "check_circle",
+                      "statusClass": "complete-status",
+                      "class": "complete-task ",
+                      "iconClass": "complete-task"
+                    }
+                  }
+                }
+              },
+              {
+                "eventSource": "click",
+                "type": "updateComponent",
+                "config": {
+                  "key": "dellObaTestResultTaskUUID",
+                  "properties": {
+                    "expanded": true,
+                    "disabled": false,
+                    "header": {
+                      "title": "OBA Test Result",
+                      "svgIcon": "description_icon",
+                      "iconClass": "active-header",
+                      "statusIcon": "hourglass_empty",
+                      "statusClass": "incomplete-status"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "ctype": "taskPanel",
+        "containerId": "prebodysectiontwo",
+        "isblueBorder": true,
+        "header": {
+          "title": "OBA Test Result",
+          "svgIcon": "description_icon",
+          "iconClass": "active-header",
+          "statusIcon": "hourglass_empty",
+          "statusClass": "incomplete-status",
+          "class": "greyish-black"
+        },
+        "expanded": false,
+        "hideToggle": true,
+        "visibility": false,
+        "disabled": true,
+        "isEditable": true,
+        "isMandatory": true,
+        "uuid": "dellObaTestResultTaskUUID",
+        "items": [
+          {
+            "ctype": "label",
+            "text": "Record the OBA test result",
+            "labelClass": "label-body2 body-italic"
+          },
+          {
+            "ctype": "nativeDropdown",
+            "uuid": "dellObaTestResultDropdownUUID",
+            "dropdownClass": "footer-dropdown dropdown-container body2 ml-5",
+            "hooks": [],
+            "submitable": true,
+            "visibility": true,
+            "label": "OBA Test Result",
+            "labelClass": "greyish-black heading2",
+            "labelPosition": "left",
+            "name": "obaTestResultName",
+            "required": true,
+            "code": "value",
+            "displayValue": "value",
+            "dataSource": "",
+            "isDisableNotReq": true,
+            "disabled": false,
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "obaTestResultDropdownData",
+                  "data": "elementControlValue"
+                },
+                "eventSource": "change"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "dellObaTestResultButtonUUID",
+                  "properties": {
+                    "disabled": false
+                  }
+                },
+                "eventSource": "change"
+              }
+            ]
+          }
+        ],
+        "footer": [
+          {
+            "ctype": "button",
+            "color": "primary",
+            "text": "Complete",
+            "class": "primary-btn",
+            "uuid": "dellObaTestResultButtonUUID",
+            "name": "dellObaTestResultName",
+            "visibility": true,
+            "disabled": true,
+            "type": "submit",
+            "isDisableNotReq": true,
+            "hooks": [],
+            "actions": [
+              {
+                  "type": "context",
+                  "config": {
+                      "requestMethod": "add",
+                      "key": "dellObaTestResultDropdownUUID",
+                      "data": "rawFormData"
+                  },
+                  "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "dellObaTestResultButtonUUID",
+                  "properties": {
+                    "disabled": true
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "eventSource": "click",
+                "type": "updateComponent",
+                "config": {
+                  "key": "dellObaTestResultTaskUUID",
+                  "properties": {
+                    "expanded": false,
+                    "taskPanelHeaderClass": "background-white",
+                    "header": {
+                      "title": "OBA Test Result",
+                      "svgIcon": "description_icon",
+                      "statusIcon": "check_circle",
+                      "statusClass": "complete-status",
+                      "class": "complete-task ",
+                      "iconClass": "complete-task"
+                    },
+                    "disabled": false
+                  }
+                }
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "dellObaResultCodesUUID",
+                  "properties": {
+                    "disabled": false
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "condition",
+                "config": {
+                  "operation": "isEqualTo",
+                  "lhs": "#dellObaReadMessageCheckboxUUID.dellObaReadMessageCheckbox",
+                  "rhs": true
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "obasubmitablemsgRead",
+                          "data": "Yes"
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "obasubmitablemsgRead",
+                          "data": "No"
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "footer": [
+      {
+        "ctype": "toolbar",
+        "toolbarClass": "pagecontent-footer",
+        "items": [
+          {
+            "ctype": "iconbutton",
+            "iconButtonClass": "footer-save body",
+            "text": "Exit",
+            "uuid": "dellObaExitUUID",
+            "visibility": true,
+            "disabled": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "icon": "save",
+            "actions": [
+              {
+                "type": "renderTemplate",
+                "config": {
+                  "templateId": "dashboard.json",
+                  "mode": "local"
+                },
+                "eventSource": "click"
+              }
+            ]
+          },
+          {
+            "ctype": "iconText",
+            "uuid": "dellObaAddNoteUUID",
+            "icon": "add_comment",
+            "disabled": false,
+            "text": "Add Note",
+            "textCss": "",
+            "iconPosition": "Before",
+            "iconTextClass": "footer-addNote body",
+            "actions": [
+              {
+                "type": "dialog",
+                "uuid": "dellObaAddNoteDialogUUID",
+                "config": {
+                  "title": "Add Note",
+                  "items": [
+                    {
+                      "ctype": "textarea",
+                      "name": "addNote",
+                      "textareaClass": "note-class",
+                      "uuid": "dellObaAddNoteUUID",
+                      "required": true,
+                      "disabled": false,
+                      "value": "#dellObaFailTimeoutNotes.addNote",
+                      "actions": []
+                    }
+                  ],
+                  "footer": [
+                    {
+                      "ctype": "button",
+                      "color": "primary",
+                      "text": "Cancel",
+                      "uuid": "dellObaCancelAddNoteUUID",
+                      "closeType": "close",
+                      "disableClose": true,
+                      "visibility": true,
+                      "disabled": false,
+                      "dialogButton": true,
+                      "type": "",
+                      "hooks": [],
+                      "validations": [],
+                      "actions": []
+                    },
+                    {
+                      "ctype": "button",
+                      "color": "primary",
+                      "text": "Done",
+                      "uuid": "dellObaDoneAddNoteUUID",
+                      "dialogButton": true,
+                      "visibility": true,
+                      "disabled": true,
+                      "type": "submit",
+                      "closeType": "success",
+                      "hooks": [],
+                      "validations": [],
+                      "actions": []
+                    }
+                  ]
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "key": "dellObaFailTimeoutNotes",
+                          "data": "formData",
+                          "requestMethod": "add",
+                          "value": "addNote"
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": []
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "ctype": "spacer",
+            "uuid": "dellObaEmptySpaceUUID",
+            "class": "empty-space"
+          },
+          {
+            "ctype": "iconbutton",
+            "uuid": "dellObaPauseUUID",
+            "visibility": true,
+            "disabled": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "icon": "pause",
+            "iconClass": "footer-btnas",
+            "disableRipple": true,
+            "actions": [
+              {
+                "type": "dialogwithmessage",
+                "uuid": "dellObaPauseDialogUUID",
+                "config": {
+                  "title": "Hold",
+                  "disableClose": true,
+                  "items": [
+                    {
+                      "ctype": "title",
+                      "uuid": "holdBinErrorUUID",
+                      "titleClass": "error-title-holdbin",
+                      "isShown": false
+                    },
+                    {
+                      "ctype": "nativeDropdown",
+                      "formGroupClass": "discrepancy-holddrpdwn",
+                      "uuid": "dellObaHoldTypeUUID",
+                      "label": "Hold Type",
+                      "name": "dellObaHoldType",
+                      "dataSource": "#filteredHoldTypes",
+                      "code": "storageHoldCode",
+                      "displayValue": "storageHoldCode",
+                      "defaultValue": "",
+                      "required": true,
+                      "actions": [
+                        {
+                          "type": "context",
+                          "config": {
+                            "requestMethod": "add",
+                            "key": "storageHoldCode",
+                            "data": "elementControlValue"
+                          },
+                          "eventSource": "change"
+                        },
+                        {
+                          "type": "condition",
+                          "eventSource": "change",
+                          "config": {
+                            "operation": "isEqualTo",
+                            "lhs": "#storageHoldCode",
+                            "rhs": "Awaiting Part"
+                          },
+                          "responseDependents": {
+                            "onSuccess": {
+                              "actions": [
+                                {
+                                  "type": "updateComponent",
+                                  "config": {
+                                    "key": "dellObaHoldPartUUID",
+                                    "properties": {
+                                      "hidden": false,
+                                      "required": true
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "updateComponent",
+                                  "config": {
+                                    "key": "holdCodeUUID",
+                                    "properties": {
+                                      "hidden": true,
+                                      "required": false
+                                    }
+                                  }
+                                }
+                              ]
+                            },
+                            "onFailure": {
+                              "actions": [
+                                {
+                                  "type": "updateComponent",
+                                  "config": {
+                                    "key": "dellObaHoldPartUUID",
+                                    "properties": {
+                                      "hidden": true,
+                                      "required": false
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "updateComponent",
+                                  "config": {
+                                    "key": "holdCodeUUID",
+                                    "properties": {
+                                      "hidden": false,
+                                      "required": true
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        },
+                        {
+                          "type": "conditionalFilterData",
+                          "config": {
+                            "data": "#holdCodesForDiscrepancy",
+                            "targetContextKey": "holdSubCodeData",
+                            "keyName": "#storageHoldCode",
+                            "filterRefValue": "storageHoldCode",
+                            "targetUUID": "holdCodeUUID",
+                            "name": "holdCodes"
+                          },
+                          "eventSource": "change"
+                        }
+                      ]
+                    },
+                    {
+                      "ctype": "nativeDropdown",
+                      "formGroupClass": "discrepancy-holddrpdwn",
+                      "uuid": "holdCodeUUID",
+                      "label": "Hold Code",
+                      "name": "holdCodes",
+                      "dataSource": "#holdSubCodeData",
+                      "code": "storageHoldSubCode",
+                      "displayValue": "storageHoldSubCode",
+                      "defaultValue": "",
+                      "required": true,
+                      "actions": [
+                        {
+                          "type": "context",
+                          "config": {
+                            "requestMethod": "add",
+                            "key": "storageHoldCode",
+                            "data": "elementControlValue"
+                          },
+                          "eventSource": "change"
+                        }
+                      ]
+                    },
+                    {
+                      "ctype": "textField",
+                      "uuid": "dellObaHoldPartUUID",
+                      "submitable": false,
+                      "disabled": false,
+                      "validations": [],
+                      "hidden": true,
+                      "inLine": true,
+                      "formGroupClass": "flex-container",
+                      "textfieldClass": "hold-textfield-container",
+                      "labelClass": "hold-tf-label",
+                      "hooks": [],
+                      "name": "storageHoldSubCodeValue",
+                      "label": "Part Number(s)",
+                      "labelPosition": "left",
+                      "tooltip": "",
+                      "TooltipPosition": "",
+                      "defaultValue": "",
+                      "readonly": false,
+                      "type": "text",
+                      "required": false,
+                      "placeholder": "Enter Value",
+                      "value": "",
+                      "prefix": false,
+                      "prefixIcon": "",
+                      "suffix": false,
+                      "suffixIcon": "",
+                      "actions": []
+                    },
+                    {
+                      "ctype": "textField",
+                      "uuid": "dellObaBinUUID",
+                      "submitable": false,
+                      "disabled": false,
+                      "validations": [],
+                      "hidden": false,
+                      "inLine": true,
+                      "formGroupClass": "flex-container required-note",
+                      "textfieldClass": "hold-textfield-container",
+                      "labelClass": "hold-tf-label",
+                      "hooks": [],
+                      "name": "storageBin",
+                      "label": "Hold Bin",
+                      "labelPosition": "left",
+                      "tooltip": "",
+                      "TooltipPosition": "",
+                      "defaultValue": "",
+                      "readonly": false,
+                      "type": "text",
+                      "required": true,
+                      "placeholder": "Enter Value",
+                      "value": "",
+                      "prefix": false,
+                      "prefixIcon": "",
+                      "suffix": false,
+                      "suffixIcon": "",
+                      "actions": []
+                    },
+                    {
+                      "ctype": "textarea",
+                      "label": "Add note",
+                      "name": "dellObaHoldAddNote",
+                      "value": "",
+                      "textareaContainer": "timeout-class required-note",
+                      "uuid": "dellObaHoldNodeUUID",
+                      "required": true,
+                      "submitable": true,
+                      "actions": []
+                    }
+                  ],
+                  "footer": [
+                    {
+                      "ctype": "button",
+                      "color": "primary",
+                      "text": "Cancel",
+                      "uuid": "dellObaCancelHoldUUID",
+                      "closeType": "close",
+                      "disableClose": true,
+                      "visibility": true,
+                      "dialogButton": true,
+                      "type": "",
+                      "hooks": [],
+                      "validations": [],
+                      "actions": []
+                    },
+                    {
+                      "ctype": "button",
+                      "color": "primary",
+                      "text": "Done",
+                      "uuid": "dellObaDoneHoldUUID",
+                      "dialogButton": true,
+                      "dialogBoxHoldBinErrorMessage": true,
+                      "visibility": true,
+                      "disabled": true,
+                      "type": "submit",
+                      "closeType": "success",
+                      "hooks": [],
+                      "validations": [],
+                      "actions": [
+                        {
+                          "type": "context",
+                          "config": {
+                            "key": "dellObaTimeoutNotes",
+                            "data": "formData",
+                            "requestMethod": "add",
+                            "value": "dellObaHoldAddNote"
+                          },
+                          "eventSource": "click"
+                        },
+                        {
+                          "eventSource": "click",
+                          "responseDependents": {
+                            "onSuccess": {
+                              "actions": [
+                                {
+                                  "type": "context",
+                                  "config": {
+                                    "key": "holdDialogData",
+                                    "data": "formData",
+                                    "requestMethod": "add"
+                                  },
+                                  "eventSource": "click"
+                                },
+                                {
+                                  "type": "condition",
+                                  "config": {
+                                    "operation": "isValid",
+                                    "lhs": "#holdDialogData.holdCodes"
+                                  },
+                                  "eventSource": "click",
+                                  "responseDependents": {
+                                    "onSuccess": {
+                                      "actions": [
+                                        {
+                                          "type": "context",
+                                          "config": {
+                                            "requestMethod": "add",
+                                            "key": "subHoldCode",
+                                            "data": "#holdDialogData.holdCodes"
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "onFailure": {
+                                      "actions": [
+                                        {
+                                          "type": "context",
+                                          "config": {
+                                            "requestMethod": "add",
+                                            "key": "subHoldCode",
+                                            "data": "#holdDialogData.holdCode"
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "microservice",
+                                  "config": {
+                                    "microserviceId": "validateBin",
+                                    "requestMethod": "get",
+                                    "params": {
+                                      "locationId": "#repairUnitInfo.LOCATION_ID",
+                                      "wareHouseId": "#repairUnitInfo.WAREHOUSE_ID",
+                                      "binName": "#holdDialogData.storageBin",
+                                      "userName": "#loginUUID.username"
+                                    },
+                                    "toBeStringified": true,
+                                    "isLocal": false,
+                                    "LocalService": "assets/Responses/mockHoldSubCode.json"
+                                  },
+                                  "responseDependents": {
+                                    "onSuccess": {
+                                      "actions": [
+                                        {
+                                          "type": "microservice",
+                                          "config": {
+                                            "microserviceId": "moveinventory",
+                                            "requestMethod": "post",
+                                            "body": {
+                                              "apiUsageClientName": "#discrepancyUnitInfo.CLIENTNAME",
+                                              "apiUsageLocationName": "#discrepancyUnitInfo.GEONAME",
+                                              "callSource": "FrontEnd",
+                                              "ip": "::1",
+                                              "items": {
+                                                "addtionalDetails": {
+                                                  "comments": "#holdDialogData.dellObaHoldAddNote",
+                                                  "fixedAssetTag": "#discrepancyUnitInfo.FAT",
+                                                  "storageHoldCode": "#holdDialogData.dellObaHoldType",
+                                                  "storageHoldSubCode": "#subHoldCode"
+                                                },
+                                                "destinationLocation": {
+                                                  "bin": "#holdDialogData.storageBin",
+                                                  "geography": "#discrepancyUnitInfo.GEONAME",
+                                                  "stockingLocation": "DELL_AIO_DMR",
+                                                  "warehouse": "#discrepancyUnitInfo.WAREHOUSE_NAME"
+                                                },
+                                                "item": [
+                                                  {
+                                                    "bcn": "#discrepancyUnitInfo.ITEM_BCN",
+                                                    "owner": "#discrepancyUnitInfo.CLIENTNAME",
+                                                    "partNo": "#discrepancyUnitInfo.PART_NO",
+                                                    "quantity": "1",
+                                                    "serialNo": "#discrepancyUnitInfo.SERIAL_NO",
+                                                    "condition": "Defective"
+                                                  }
+                                                ],
+                                                "notes": "#holdDialogData.dellObaHoldAddNote",
+                                                "sourceLocation": {
+                                                  "bin": "#holdDialogData.storageBin",
+                                                  "geography": "#discrepancyUnitInfo.GEONAME",
+                                                  "stockingLocation": "DELL_AIO_WIP",
+                                                  "warehouse": "#discrepancyUnitInfo.WAREHOUSE_NAME"
+                                                }
+                                              },
+                                              "usrPwd": {
+                                                "userName": "#loginUUID.username",
+                                                "password": "#loginUUID.password"
+                                              }
+                                            },
+                                            "toBeStringified": true
+                                          },
+                                          "responseDependents": {
+                                            "onSuccess": {
+                                              "actions": [
+                                                {
+                                                  "type": "pauseScreenData"
+                                                },
+                                                {
+                                                  "type": "renderTemplate",
+                                                  "config": {
+                                                    "templateId": "dashboard.json",
+                                                    "mode": "local"
+                                                  }
+                                                }
+                                              ]
+                                            },
+                                            "onFailure": {
+                                              "actions": [
+                                                {
+                                                  "type": "context",
+                                                  "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "moveinventoryForDiscrepancy",
+                                                    "data": "responseData"
+                                                  }
+                                                },
+                                                {
+                                                  "type": "updateComponent",
+                                                  "config": {
+                                                    "key": "dellOBAErrorTitleUUID",
+                                                    "properties": {
+                                                      "titleValue": "#moveinventoryForDiscrepancy",
+                                                      "isShown": true
+                                                    }
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          "eventSource": "click"
+                                        },
+                                        {
+                                          "type": "closeAllDialogs"
+                                        }
+                                      ]
+                                    },
+                                    "onFailure": {
+                                      "actions": [
+                                        {
+                                          "type": "context",
+                                          "config": {
+                                            "requestMethod": "add",
+                                            "key": "moveinventoryForDiscrepancy",
+                                            "data": "responseData"
+                                          }
+                                        },
+                                        {
+                                          "type": "updateComponent",
+                                          "config": {
+                                            "key": "holdBinErrorUUID",
+                                            "properties": {
+                                              "titleValue": "#moveinventoryForDiscrepancy",
+                                              "isShown": true
+                                            }
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "eventSource": "click"
+                                }
+                              ]
+                            },
+                            "onFailure": {}
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "holdSubCodeData",
+                  "data": ""
+                },
+                "eventSource": "click"
+              }
+            ]
+          },
+          {
+            "ctype": "nativeDropdown",
+            "dropdownClass": "footer-dropdown dropdown-container body2",
+            "uuid": "dellObaResultCodesUUID",
+            "name": "ResultCodes",
+            "dataSource": "#getResultCodeForDiscrepancy",
+            "code": "resultCode",
+            "displayValue": "resultCode",
+            "disabled": true,
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "SelectedDescripencyResultcode",
+                  "data": "elementControlValue"
+                },
+                "eventSource": "change"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "dellObaTimeoutUUID",
+                  "properties": {
+                    "disabled": false
+                  }
+                },
+                "eventSource": "change"
+              }
+            ]
+          },
+          {
+            "ctype": "button",
+            "color": "primary",
+            "text": "Time out",
+            "uuid": "dellObaTimeoutUUID",
+            "visibility": true,
+            "disabled": true,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "buttonClass": "footer-button primary-btn",
+            "class": "primary-btn",
+            "actions": [
+              {
+                "type": "condition",
+                "config": {
+                  "operation": "isEqualTo",
+                  "lhs": "#SelectedDescripencyResultcode",
+                  "rhs": "FAILQA"
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "dialog",
+                        "uuid": "dellObaPauseDialogUUID",
+                        "config": {
+                          "title": "Time Out",
+                          "items": [
+                            {
+                              "ctype": "textarea",
+                              "label": "Add note",
+                              "name": "addNote",
+                              "textareaClass": "note-class",
+                              "uuid": "dellObaTimeoutAddNoteUUID",
+                              "required": true,
+                              "submitable": true,
+                              "value": "#dellObaFailTimeoutNotes.addNote",
+                              "actions": [
+                                {
+                                  "type": "updateComponent",
+                                  "config": {
+                                    "key": "dellObaDoneTimeOutUUID",
+                                    "properties": {
+                                      "disabled": false
+                                    }
+                                  },
+                                  "eventSource": "onLoad"
+                                }
+                              ]
+                            }
+                          ],
+                          "footer": [
+                            {
+                              "ctype": "button",
+                              "color": "primary",
+                              "text": "Cancel",
+                              "uuid": "dellObaCancelTimeOutUUID",
+                              "closeType": "close",
+                              "disableClose": true,
+                              "visibility": true,
+                              "dialogButton": true,
+                              "type": "",
+                              "hooks": [],
+                              "validations": [],
+                              "actions": []
+                            },
+                            {
+                              "ctype": "button",
+                              "color": "primary",
+                              "text": "Done",
+                              "uuid": "dellObaDoneTimeOutUUID",
+                              "dialogButton": true,
+                              "visibility": true,
+                              "disabled": true,
+                              "type": "submit",
+                              "closeType": "success",
+                              "hooks": [],
+                              "validations": [],
+                              "actions": []
+                            }
+                          ]
+                        },
+                        "eventSource": "click",
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "context",
+                                "config": {
+                                  "key": "dellObaSuccessTimeoutNotes",
+                                  "data": "formData",
+                                  "requestMethod": "add",
+                                  "value": "addNote"
+                                },
+                                "eventSource": "click"
+                              },
+                              {
+                                "type": "condition",
+                                "config": {
+                                  "operation": "isEqualTo",
+                                  "lhs": "#userSelectedLocation",
+                                  "rhs": "1807"
+                                },
+                                "responseDependents": {
+                                  "onSuccess": {
+                                    "actions": [
+                                      {
+                                        "type": "microservice",
+                                        "eventSource": "click",
+                                        "config": {
+                                          "microserviceId": "pwcPerformTimeOutTrigger",
+                                          "requestMethod": "post",
+                                          "body": {
+                                            "actionType": "PwcPerformTimeOut",
+                                            "geography": "#discrepancyUnitInfo.GEONAME",
+                                            "client": "#repairUnitInfo.CLIENTNAME",
+                                            "contact": "#repairUnitInfo.CONTRACTNAME",
+                                            "workCenter": "#repairUnitInfo.WORKCENTER",
+                                            "pwxXml": {
+                                              "timeOutTab": {
+                                                "selectedResultCode": "#SelectedDescripencyResultcode"
+                                              },
+                                              "bcnDetail": {
+                                                "bcn": "#repairUnitInfo.ITEM_BCN",
+                                                "PartNumber": "#discrepancyUnitInfo.PART_NO",
+                                                "loginID": "#userAccountInfo.PersonalDetails.USERID",
+                                                "workOrderID": "#repairUnitInfo.WORKORDER_ID",
+                                                "itemID": "#repairUnitInfo.ITEM_ID",
+                                                "serialNumber": "#repairUnitInfo.SERIAL_NO"
+                                              },
+                                              "flexFieldDefinitionList": {
+                                                "flexFieldList": "#checkAccflexfeildsItems"
+                                              },
+                                              "flexFieldValueList": {
+                                                "flexFieldList": "#checkAccFFdValueListArr"
+                                              }
+                                            }
+                                          },
+                                          "toBeStringified": true
+                                        },
+                                        "responseDependents": {
+                                          "onSuccess": {
+                                            "actions": [
+                                              {
+                                                "type": "microservice",
+                                                "config": {
+                                                  "microserviceId": "performTimeOut",
+                                                  "requestMethod": "post",
+                                                  "body": {
+                                                    "timeOutRequest": {
+                                                      "location": "#repairUnitInfo.GEONAME",
+                                                      "bcn": "#repairUnitInfo.ITEM_BCN",
+                                                      "workCenter": "#repairUnitInfo.WORKCENTER",
+                                                      "password": "#loginUUID.password",
+                                                      "warrantyInd": "false",
+                                                      "notes": "#dellObaSuccessTimeoutNotes.addNote",
+                                                      "resultCode": "#SelectedDescripencyResultcode",
+                                                      "workCenterFlexFieldList": {
+                                                        "flexField": [
+                                                          {
+                                                            "name": "OBA_Result",
+                                                            "value": "#obaTestResultDropdownData"
+                                                          },
+                                                          {
+                                                            "name": "msgRead",
+                                                            "value": "#obasubmitablemsgRead"
+                                                          }
+                                                        ]
+                                                      }
+                                                    },
+                                                    "modifyWarranty": 0,
+                                                    "timeOutType": "ProcessImmediate",
+                                                    "clientName": "#repairUnitInfo.CLIENTNAME",
+                                                    "contractName": "#repairUnitInfo.CONTRACTNAME",
+                                                    "userName": "#loginUUID.username",
+                                                    "userPass": "#loginUUID.password",
+                                                    "ip": "::1",
+                                                    "callSource": "FrontEnd",
+                                                    "apiUsage_LocationName": "#repairUnitInfo.GEONAME",
+                                                    "apiUsage_ClientName": "#repairUnitInfo.CLIENTNAME"
+                                                  },
+                                                  "toBeStringified": true
+                                                },
+                                                "responseDependents": {
+                                                  "onSuccess": {
+                                                    "actions": [
+                                                      {
+                                                        "type": "clearScreenData"
+                                                      },
+                                                      {
+                                                        "type": "renderTemplate",
+                                                        "config": {
+                                                          "templateId": "dashboard.json",
+                                                          "mode": "local"
+                                                        }
+                                                      }
+                                                    ]
+                                                  },
+                                                  "onFailure": {
+                                                    "actions": [
+                                                      {
+                                                        "type": "handleCommonServices",
+                                                        "config": {
+                                                          "type": "errorRenderTemplate",
+                                                          "contextKey": "dellOBAErrorMsg",
+                                                          "updateKey": "dellOBAErrorTitleUUID"
+                                                        }
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          "onFailure": {
+                                            "actions": [
+                                              {
+                                                "type": "handleCommonServices",
+                                                "config": {
+                                                  "type": "errorRenderTemplate",
+                                                  "contextKey": "dellOBAErrorMsg",
+                                                  "updateKey": "dellOBAErrorTitleUUID"
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "onFailure": {
+                                    "actions": [
+                                      {
+                                        "type": "microservice",
+                                        "config": {
+                                          "microserviceId": "performTimeOut",
+                                          "requestMethod": "post",
+                                          "body": {
+                                            "timeOutRequest": {
+                                              "location": "#repairUnitInfo.GEONAME",
+                                              "bcn": "#repairUnitInfo.ITEM_BCN",
+                                              "workCenter": "#repairUnitInfo.WORKCENTER",
+                                              "password": "#loginUUID.password",
+                                              "warrantyInd": "false",
+                                              "notes": "#dellObaSuccessTimeoutNotes.addNote",
+                                              "resultCode": "#SelectedDescripencyResultcode",
+                                              "workCenterFlexFieldList": {
+                                                "flexField": [
+                                                  {
+                                                    "name": "OBA_Result",
+                                                    "value": "#obaTestResultDropdownData"
+                                                  },
+                                                  {
+                                                    "name": "msgRead",
+                                                    "value": "#obasubmitablemsgRead"
+                                                  }
+                                                ]
+                                              }
+                                            },
+                                            "modifyWarranty": 0,
+                                            "timeOutType": "ProcessImmediate",
+                                            "clientName": "#repairUnitInfo.CLIENTNAME",
+                                            "contractName": "#repairUnitInfo.CONTRACTNAME",
+                                            "userName": "#loginUUID.username",
+                                            "userPass": "#loginUUID.password",
+                                            "ip": "::1",
+                                            "callSource": "FrontEnd",
+                                            "apiUsage_LocationName": "#repairUnitInfo.GEONAME",
+                                            "apiUsage_ClientName": "#repairUnitInfo.CLIENTNAME"
+                                          },
+                                          "toBeStringified": true
+                                        },
+                                        "responseDependents": {
+                                          "onSuccess": {
+                                            "actions": [
+                                              {
+                                                "type": "clearScreenData"
+                                              },
+                                              {
+                                                "type": "renderTemplate",
+                                                "config": {
+                                                  "templateId": "dashboard.json",
+                                                  "mode": "local"
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          "onFailure": {
+                                            "actions": [
+                                              {
+                                                "type": "handleCommonServices",
+                                                "config": {
+                                                  "type": "errorRenderTemplate",
+                                                  "contextKey": "dellOBAErrorMsg",
+                                                  "updateKey": "dellOBAErrorTitleUUID"
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {}
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "condition",
+                        "config": {
+                          "operation": "isEqualTo",
+                          "lhs": "#userSelectedLocation",
+                          "rhs": "1807"
+                        },
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "microservice",
+                                "eventSource": "click",
+                                "config": {
+                                  "microserviceId": "pwcPerformTimeOutTrigger",
+                                  "requestMethod": "post",
+                                  "body": {
+                                    "actionType": "PwcPerformTimeOut",
+                                    "geography": "#discrepancyUnitInfo.GEONAME",
+                                    "client": "#repairUnitInfo.CLIENTNAME",
+                                    "contact": "#repairUnitInfo.CONTRACTNAME",
+                                    "workCenter": "#repairUnitInfo.WORKCENTER",
+                                    "pwxXml": {
+                                      "timeOutTab": {
+                                        "selectedResultCode": "#SelectedDescripencyResultcode"
+                                      },
+                                      "bcnDetail": {
+                                        "bcn": "#repairUnitInfo.ITEM_BCN",
+                                        "PartNumber": "#discrepancyUnitInfo.PART_NO",
+                                        "loginID": "#userAccountInfo.PersonalDetails.USERID",
+                                        "workOrderID": "#repairUnitInfo.WORKORDER_ID",
+                                        "itemID": "#repairUnitInfo.ITEM_ID",
+                                        "serialNumber": "#repairUnitInfo.SERIAL_NO"
+                                      },
+                                      "flexFieldDefinitionList": {
+                                        "flexFieldList": "#checkAccflexfeildsItems"
+                                      },
+                                      "flexFieldValueList": {
+                                        "flexFieldList": "#checkAccFFdValueListArr"
+                                      }
+                                    }
+                                  },
+                                  "toBeStringified": true
+                                },
+                                "responseDependents": {
+                                  "onSuccess": {
+                                    "actions": [
+                                      {
+                                        "type": "microservice",
+                                        "config": {
+                                          "microserviceId": "performTimeOut",
+                                          "requestMethod": "post",
+                                          "body": {
+                                            "timeOutRequest": {
+                                              "location": "#repairUnitInfo.GEONAME",
+                                              "bcn": "#repairUnitInfo.ITEM_BCN",
+                                              "workCenter": "#repairUnitInfo.WORKCENTER",
+                                              "password": "#loginUUID.password",
+                                              "warrantyInd": "false",
+                                              "notes": "#dellObaFailTimeoutNotes.addNote",
+                                              "resultCode": "#SelectedDescripencyResultcode",
+                                              "workCenterFlexFieldList": {
+                                                "flexField": [
+                                                  {
+                                                    "name": "OBA_Result",
+                                                    "value": "#obaTestResultDropdownData"
+                                                  },
+                                                  {
+                                                    "name": "msgRead",
+                                                    "value": "#obasubmitablemsgRead"
+                                                  }
+                                                ]
+                                              }
+                                            },
+                                            "modifyWarranty": 0,
+                                            "timeOutType": "ProcessImmediate",
+                                            "clientName": "#repairUnitInfo.CLIENTNAME",
+                                            "contractName": "#repairUnitInfo.CONTRACTNAME",
+                                            "userName": "#loginUUID.username",
+                                            "userPass": "#loginUUID.password",
+                                            "ip": "::1",
+                                            "callSource": "FrontEnd",
+                                            "apiUsage_LocationName": "#repairUnitInfo.GEONAME",
+                                            "apiUsage_ClientName": "#repairUnitInfo.CLIENTNAME"
+                                          },
+                                          "toBeStringified": true
+                                        },
+                                        "responseDependents": {
+                                          "onSuccess": {
+                                            "actions": [
+                                              {
+                                                "type": "condition",
+                                                "eventSource": "click",
+                                                "config": {
+                                                  "operation": "isEqualTo",
+                                                  "lhs": "#repairUnitInfo.ROUTE",
+                                                  "rhs": "WRP"
+                                                },
+                                                "hookType": "afterInit",
+                                                "responseDependents": {
+                                                  "onSuccess": {
+                                                    "actions": [
+                                                      {
+                                                        "type": "microservice",
+                                                        "config": {
+                                                          "microserviceId": "onePrintDellRework",
+                                                          "requestMethod": "post",
+                                                          "body": {
+                                                            "locationId": "#userSelectedLocation",
+                                                            "clientId": "#userSelectedClient",
+                                                            "contractId": "#userSelectedContract",
+                                                            "warehouseId": "#repairUnitInfo.WAREHOUSE_ID",
+                                                            "routeCode": "#repairUnitInfo.ROUTE",
+                                                            "workCenterId": "#repairUnitInfo.WORKCENTER_ID",
+                                                            "eventName": "#locationDependentFFIDDetails.ObaPrint",
+                                                            "hostName": "#getHostNameResponse.hostName",
+                                                            "ip": "#getHostNameResponse.ip",
+                                                            "userName": "#userAccountInfo.PersonalDetails.USERID",
+                                                            "params": {
+                                                              "ITEM_ID": "#repairUnitInfo.ITEM_ID"
+                                                            }
+                                                          },
+                                                          "toBeStringified": true
+                                                        },
+                                                        "responseDependents": {
+                                                          "onSuccess": {
+                                                            "actions": [
+                                                              {
+                                                                "type": "clearAllContext",
+                                                                "eventSource": "click"
+                                                              },
+                                                              {
+                                                                "type": "clearScreenData"
+                                                              },
+                                                              {
+                                                                "type": "renderTemplate",
+                                                                "config": {
+                                                                  "templateId": "dashboard.json",
+                                                                  "mode": "local"
+                                                                },
+                                                                "eventSource": "click"
+                                                              }
+                                                            ]
+                                                          },
+                                                          "onFailure": {
+                                                            "actions": [
+                                                              {
+                                                                "type": "context",
+                                                                "config": {
+                                                                  "requestMethod": "add",
+                                                                  "key": "onePrintResponse",
+                                                                  "data": "responseData"
+                                                                }
+                                                              },
+                                                              {
+                                                                "type": "updateComponent",
+                                                                "config": {
+                                                                  "key": "dellOBAErrorTitleUUID",
+                                                                  "properties": {
+                                                                    "titleValue": "#onePrintResponse",
+                                                                    "isShown": true
+                                                                  }
+                                                                }
+                                                              },
+                                                              {
+                                                                "type": "clearAllContext",
+                                                                "eventSource": "click"
+                                                              },
+                                                              {
+                                                                "type": "clearScreenData"
+                                                              },
+                                                              {
+                                                                "type": "context",
+                                                                "config": {
+                                                                  "requestMethod": "addToGlobalContext",
+                                                                  "key": "isOnePrintAPIFailed",
+                                                                  "data": true
+                                                                }
+                                                              }
+                                                            ]
+                                                          }
+                                                        }
+                                                      }
+                                                    ]
+                                                  },
+                                                  "onFailure": {
+                                                    "actions": [
+                                                      {
+                                                        "type": "clearAllContext",
+                                                        "eventSource": "click"
+                                                      },
+                                                      {
+                                                        "type": "clearScreenData"
+                                                      },
+                                                      {
+                                                        "type": "renderTemplate",
+                                                        "config": {
+                                                          "templateId": "dashboard.json",
+                                                          "mode": "local"
+                                                        },
+                                                        "eventSource": "click"
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          "onFailure": {
+                                            "actions": [
+                                              {
+                                                "type": "handleCommonServices",
+                                                "config": {
+                                                  "type": "errorRenderTemplate",
+                                                  "contextKey": "dellOBAErrorMsg",
+                                                  "updateKey": "dellOBAErrorTitleUUID"
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "onFailure": {
+                                    "actions": [
+                                      {
+                                        "type": "handleCommonServices",
+                                        "config": {
+                                          "type": "errorRenderTemplate",
+                                          "contextKey": "dellOBAErrorMsg",
+                                          "updateKey": "dellOBAErrorTitleUUID"
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": [
+                              {
+                                "type": "microservice",
+                                "config": {
+                                  "microserviceId": "performTimeOut",
+                                  "requestMethod": "post",
+                                  "body": {
+                                    "timeOutRequest": {
+                                      "location": "#repairUnitInfo.GEONAME",
+                                      "bcn": "#repairUnitInfo.ITEM_BCN",
+                                      "workCenter": "#repairUnitInfo.WORKCENTER",
+                                      "password": "#loginUUID.password",
+                                      "warrantyInd": "false",
+                                      "notes": "#dellObaFailTimeoutNotes.addNote",
+                                      "resultCode": "#SelectedDescripencyResultcode",
+                                      "workCenterFlexFieldList": {
+                                        "flexField": [
+                                          {
+                                            "name": "OBA_Result",
+                                            "value": "#obaTestResultDropdownData"
+                                          },
+                                          {
+                                            "name": "msgRead",
+                                            "value": "#obasubmitablemsgRead"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    "modifyWarranty": 0,
+                                    "timeOutType": "ProcessImmediate",
+                                    "clientName": "#repairUnitInfo.CLIENTNAME",
+                                    "contractName": "#repairUnitInfo.CONTRACTNAME",
+                                    "userName": "#loginUUID.username",
+                                    "userPass": "#loginUUID.password",
+                                    "ip": "::1",
+                                    "callSource": "FrontEnd",
+                                    "apiUsage_LocationName": "#repairUnitInfo.GEONAME",
+                                    "apiUsage_ClientName": "#repairUnitInfo.CLIENTNAME"
+                                  },
+                                  "toBeStringified": true
+                                },
+                                "responseDependents": {
+                                  "onSuccess": {
+                                    "actions": [
+                                      {
+                                        "type": "condition",
+                                        "eventSource": "click",
+                                        "config": {
+                                          "operation": "isEqualTo",
+                                          "lhs": "#repairUnitInfo.ROUTE",
+                                          "rhs": "WRP"
+                                        },
+                                        "hookType": "afterInit",
+                                        "responseDependents": {
+                                          "onSuccess": {
+                                            "actions": [
+                                              {
+                                                "type": "microservice",
+                                                "config": {
+                                                  "microserviceId": "onePrintDellRework",
+                                                  "requestMethod": "post",
+                                                  "body": {
+                                                    "locationId": "#userSelectedLocation",
+                                                    "clientId": "#userSelectedClient",
+                                                    "contractId": "#userSelectedContract",
+                                                    "warehouseId": "#repairUnitInfo.WAREHOUSE_ID",
+                                                    "routeCode": "#repairUnitInfo.ROUTE",
+                                                    "workCenterId": "#repairUnitInfo.WORKCENTER_ID",
+                                                    "eventName": "#locationDependentFFIDDetails.ObaPrint",
+                                                    "hostName": "#getHostNameResponse.hostName",
+                                                    "ip": "#getHostNameResponse.ip",
+                                                    "userName": "#userAccountInfo.PersonalDetails.USERID",
+                                                    "params": {
+                                                      "ITEM_ID": "#repairUnitInfo.ITEM_ID"
+                                                    }
+                                                  },
+                                                  "toBeStringified": true
+                                                },
+                                                "responseDependents": {
+                                                  "onSuccess": {
+                                                    "actions": [
+                                                      {
+                                                        "type": "clearAllContext",
+                                                        "eventSource": "click"
+                                                      },
+                                                      {
+                                                        "type": "clearScreenData"
+                                                      },
+                                                      {
+                                                        "type": "renderTemplate",
+                                                        "config": {
+                                                          "templateId": "dashboard.json",
+                                                          "mode": "local"
+                                                        },
+                                                        "eventSource": "click"
+                                                      }
+                                                    ]
+                                                  },
+                                                  "onFailure": {
+                                                    "actions": [
+                                                      {
+                                                        "type": "context",
+                                                        "config": {
+                                                          "requestMethod": "add",
+                                                          "key": "onePrintResponse",
+                                                          "data": "responseData"
+                                                        }
+                                                      },
+                                                      {
+                                                        "type": "updateComponent",
+                                                        "config": {
+                                                          "key": "dellOBAErrorTitleUUID",
+                                                          "properties": {
+                                                            "titleValue": "#onePrintResponse",
+                                                            "isShown": true
+                                                          }
+                                                        }
+                                                      },
+                                                      {
+                                                        "type": "clearAllContext",
+                                                        "eventSource": "click"
+                                                      },
+                                                      {
+                                                        "type": "clearScreenData"
+                                                      },
+                                                      {
+                                                        "type": "context",
+                                                        "config": {
+                                                          "requestMethod": "addToGlobalContext",
+                                                          "key": "isOnePrintAPIFailed",
+                                                          "data": true
+                                                        }
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          "onFailure": {
+                                            "actions": [
+                                              {
+                                                "type": "clearAllContext",
+                                                "eventSource": "click"
+                                              },
+                                              {
+                                                "type": "clearScreenData"
+                                              },
+                                              {
+                                                "type": "renderTemplate",
+                                                "config": {
+                                                  "templateId": "dashboard.json",
+                                                  "mode": "local"
+                                                },
+                                                "eventSource": "click"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "onFailure": {
+                                    "actions": [
+                                      {
+                                        "type": "handleCommonServices",
+                                        "config": {
+                                          "type": "errorRenderTemplate",
+                                          "contextKey": "dellOBAErrorMsg",
+                                          "updateKey": "dellOBAErrorTitleUUID"
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "Result": "SUCCESS"
+}

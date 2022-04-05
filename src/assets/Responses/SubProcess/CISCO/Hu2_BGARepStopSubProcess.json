@@ -1,0 +1,942 @@
+{
+  "ResultData": {
+    "ctype": "page",
+    "uuid": "pageUUID",
+    "visibility": true,
+    "hooks": [
+      {
+        "type": "microservice",
+        "hookType": "afterInit",
+        "config": {
+          "microserviceId": "getResultCodes",
+          "isLocal": false,
+          "LocalService": "assets/Responses/mockBGA-RepStop.json",
+          "requestMethod": "get",
+          "params": {
+            "bcn": "#UnitInfo.ITEM_BCN",
+            "validateResult": 1
+          }
+        },
+        "responseDependents": {
+          "onSuccess": {
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "getBgaRepStopResultcodes",
+                  "data": "responseData"
+                }
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "ResultCodeBgaRepUUID",
+                  "dropDownProperties": {
+                    "options": "#getBgaRepStopResultcodes"
+                  }
+                }
+              }
+            ]
+          },
+          "onFailure": {
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "errorMsg",
+                  "data": "responseData"
+                }
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "errorTitleUUID",
+                  "properties": {
+                    "titleValue": "#errorMsg",
+                    "isShown": true
+                  }
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "type": "microservice",
+        "hookType": "afterInit",
+        "config": {
+          "microserviceId": "getPreWorkcenterResultCode",
+          "isLocal": false,
+          "LocalService": "assets/Responses/getPreselectedResultCode.json",
+          "requestMethod": "get",
+          "params": {
+            "bcn": "#UnitInfo.ITEM_BCN"
+          }
+        },
+        "responseDependents": {
+          "onSuccess": {
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "SelectedBgaRepResultCode",
+                  "data": "responseData"
+                }
+              },
+              {
+                "type": "condition",
+                "config": {
+                  "operation": "isEqualcompareArr",
+                  "lhs": "#SelectedBgaRepResultCode",
+                  "rhs": "#getBgaRepStopResultcodes"
+                },
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "ResultCodeBgaRepUUID",
+                          "fieldProperties": {
+                            "ResultCodes": "#SelectedBgaRepResultCode"
+                          }
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "RepBgaStoptimeoutUUID",
+                          "properties": {
+                            "disabled": false
+                          }
+                        },
+                        "eventSource": "click"
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "RepBgaStoptimeoutUUID",
+                          "properties": {
+                            "disabled": true
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "onFailure": {
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "errorMsg",
+                  "data": "responseData"
+                }
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "errorTitleUUID",
+                  "properties": {
+                    "titleValue": "#errorMsg",
+                    "isShown": true
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "header": [
+      {
+        "ctype": "breadcrumb",
+        "breadcrumbs": [
+          {
+            "label": "#userSelectedLocationName"
+          },
+          {
+            "label": "#UnitInfo.CLIENTNAME"
+          },
+          {
+            "label": "#userSelectedContractName"
+          }
+        ]
+      },
+      {
+        "ctype": "toolbar",
+        "toolbarClass": "pagecontent-header header-toolbar-padding",
+        "items": [
+          {
+            "ctype": "title",
+            "uuid": "bgaRepStopHeadertitleuuid",
+            "titleValue": "BGA Rep Stop",
+            "titleClass": "section-title"
+          },
+          {
+            "ctype": "iconbutton",
+            "iconButtonClass": "headeropen-button",
+            "text": "",
+            "uuid": "pageopenUUID",
+            "visibility": true,
+            "disabled": false,
+            "hidden": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "icon": "menu_open",
+            "disableRipple": true,
+            "iconClass": "header-icon",
+            "actions": [
+              {
+                "type": "toggle",
+                "eventSource": "click",
+                "name": "subProcessRightNavref"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "openUUID",
+                  "properties": {
+                    "hidden": false
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "pageopenUUID",
+                  "properties": {
+                    "hidden": true
+                  }
+                },
+                "eventSource": "click"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "items": [
+      {
+        "ctype": "title",
+        "uuid": "errorTitleUUID",
+        "titleClass": "error-title",
+        "isShown": false
+      }
+    ],
+    "footer": [
+      {
+        "ctype": "toolbar",
+        "toolbarClass": "pagecontent-footer",
+        "items": [
+          {
+            "ctype": "iconbutton",
+            "iconButtonClass": "footer-save body primary-btn",
+            "text": "Exit",
+            "uuid": "saveUUID",
+            "visibility": true,
+            "disabled": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "icon": "save",
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "BgaRepStopNotes",
+                  "data": ""
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "renderTemplate",
+                "config": {
+                  "templateId": "dashboard.json",
+                  "mode": "local"
+                },
+                "eventSource": "click"
+              }             
+            ]
+          },
+          {
+            "ctype": "iconText",
+            "uuid": "IconUUID",
+            "iconTextClass": "footer-addNote addNoteCls body",
+            "icon": "add_comment",
+            "text": "Add Note",
+            "iconPosition": "Before",
+            "actions": [
+              {
+                "type": "dialog",
+                "uuid": "addNoteDialogUUID",
+                "config": {
+                  "title": "Add Note",
+                  "items": [
+                    {
+                      "ctype": "textarea",
+                      "name": "addNote",
+                      "textareaClass": "note-class",
+                      "uuid": "addNoteUUID",
+                      "value": "#BgaRepStopNotes.addNote",
+                      "actions": []
+                    }
+                  ],
+                  "footer": [
+                    {
+                      "ctype": "button",
+                      "color": "primary",
+                      "text": "Close",
+                      "uuid": "closeButtonUUID",
+                      "closeType": "close",
+                      "inputClass": "close-button",
+                      "disableClose": true,
+                      "visibility": true,
+                      "dialogButton": true,
+                      "type": "",
+                      "hooks": [],
+                      "validations": [],
+                      "actions": []
+                    },
+                    {
+                      "ctype": "button",
+                      "color": "primary",
+                      "text": "Done",
+                      "uuid": "doneHoldUUID",
+                      "dialogButton": true,
+                      "visibility": true,
+                      "type": "submit",
+                      "closeType": "success",
+                      "hooks": [],
+                      "validations": [],
+                      "actions": []
+                    }
+                  ]
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "BgaRepStopNotes",
+                          "data": "formData"
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "ctype": "spacer",
+            "uuid": "emptySpaceUUID",
+            "class": "empty-space"
+          },
+          {
+            "ctype": "iconbutton",
+            "uuid": "unitPausebtnUUID",
+            "visibility": true,
+            "disabled": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "icon": "pause",
+            "iconClass": "footer-btnas",
+            "disableRipple": true,
+            "actions": [
+              {
+                "type":"showOLEPausebuttonInScreen",
+                "eventSource": "click"
+              }
+            ]
+          },
+          {
+            "ctype": "nativeDropdown",
+            "dropdownClass": "footer-dropdown dropdown-container body2",
+            "uuid": "ResultCodeBgaRepUUID",
+            "isDropdownNotSelected": true,
+            "name": "ResultCodes",
+            "dataSource": "",
+            "code": "resultCode",
+            "displayValue": "resultCode",
+            "disabled": false,
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "SelectedBgaRepResultCode",
+                  "data": "elementControlName"
+                },
+                "eventSource": "change"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "RepBgaStoptimeoutUUID",
+                  "properties": {
+                    "disabled": false
+                  }
+                },
+                "eventSource": "change"
+              }
+            ]
+          },
+          {
+            "ctype": "button",
+            "color": "primary",
+            "buttonClass": "footer-button",
+            "text": "Time Out",
+            "uuid": "RepBgaStoptimeoutUUID",
+            "visibility": true,
+            "checkGroupValidity": false,
+            "disabled": true,
+            "hidden": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "actions": [
+              {
+                "type": "updateComponent",
+                "eventSource": "click",
+                "config": {
+                  "key": "errorTitleUUID",
+                  "properties": {
+                    "titleValue": "",
+                    "isShown": false
+                  }
+                }
+              },
+              {
+                "type": "condition",
+                "config": {
+                  "operation": "isValid",
+                  "lhs": "#SelectedBgaRepResultCode"
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "dialog",
+                        "uuid": "addNoteDialogUUID2",
+                        "config": {
+                          "title": "Time Out",
+                          "items": [
+                            {
+                              "ctype": "textarea",
+                              "label": "Add note",
+                              "name": "addNote",
+                              "textareaContainer": "timeout-class",
+                              "uuid": "addNoteTimeoutUUID2",
+                              "required": false,
+                              "value": "#BgaRepStopNotes.addNote",
+                              "actions": []
+                            }
+                          ],
+                          "footer": [
+                            {
+                              "ctype": "button",
+                              "color": "primary",
+                              "text": "Close",
+                              "uuid": "closeButtonUUID2",
+                              "closeType": "close",
+                              "inputClass": "close-button",
+                              "disableClose": true,
+                              "visibility": true,
+                              "dialogButton": true,
+                              "type": "",
+                              "hooks": [],
+                              "validations": [],
+                              "actions": []
+                            },
+                            {
+                              "ctype": "button",
+                              "color": "primary",
+                              "text": "Done",
+                              "uuid": "doneHoldUUID2",
+                              "dialogButton": true,
+                              "visibility": true,
+                              "disableClose": false,
+                              "type": "submit",
+                              "closeType": "success",
+                              "hooks": [],
+                              "validations": [],
+                              "actions": []
+                            }
+                          ]
+                        },
+                        "eventSource": "click",
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "context",
+                                "config": {
+                                  "requestMethod": "add",
+                                  "key": "BgaRepStopNotes",
+                                  "data": "formData"
+                                }
+                              },
+                              {
+                                "type": "condition",
+                                "config": {
+                                  "operation": "isContains",
+                                  "lhs": "#SelectedBgaRepResultCode",
+                                  "rhs": "Fail"
+                                },
+                                "eventSource": "click",
+                                "responseDependents": {
+                                  "onSuccess": {
+                                    "actions": [
+                                      {
+                                        "type": "condition",
+                                        "config": {
+                                          "operation": "isValid",
+                                          "lhs": "#BgaRepStopNotes.addNote"
+                                        },
+                                        "responseDependents": {
+                                          "onSuccess": {
+                                            "actions": [
+                                              {
+                                                "type": "microservice",
+                                                "config": {
+                                                  "microserviceId": "performTimeOut",
+                                                  "requestMethod": "post",
+                                                  "body": {
+                                                    "timeOutRequest": {
+                                                      "location": "#UnitInfo.GEONAME",
+                                                      "bcn": "#UnitInfo.ITEM_BCN",
+                                                      "workCenter": "#UnitInfo.WORKCENTER",
+                                                      "password": "#loginUUID.password",
+                                                      "warrantyInd": "false",
+                                                      "notes": "#BgaRepStopNotes.addNote",
+                                                      "resultCode": "#SelectedBgaRepResultCode"
+                                                    },
+                                                    "modifyWarranty": 0,
+                                                    "timeOutType": "ProcessImmediate",
+                                                    "clientName": "#UnitInfo.CLIENTNAME",
+                                                    "contractName": "#UnitInfo.CONTRACTNAME",
+                                                    "userName": "#loginUUID.username",
+                                                    "userPass": "#loginUUID.password",
+                                                    "ip": "::1",
+                                                    "callSource": "FrontEnd",
+                                                    "apiUsage_LocationName": "#UnitInfo.GEONAME",
+                                                    "apiUsage_ClientName": "#UnitInfo.CLIENTNAME"
+                                                  },
+                                                  "toBeStringified": true,
+                                                  "removeUndefinedFields": [
+                                                    {
+                                                      "KeyName": "notes",
+                                                      "KeyValue": "#BgaRepStopNotes.addNote"
+                                                    }
+                                                  ]
+                                                },
+                                                "responseDependents": {
+                                                  "onSuccess": {
+                                                    "actions": [
+                                                      {
+                                                        "type": "context",
+                                                        "config": {
+                                                          "requestMethod": "add",
+                                                          "key": "BgaRepStopNotes",
+                                                          "data": ""
+                                                        }
+                                                      },
+                                                      {
+                                                        "type": "clearScreenData"
+                                                      },                                                      
+                                                      {
+                                                        "type": "context",
+                                                        "config": {
+                                                          "requestMethod": "delete",
+                                                          "key": "currentWC"
+                                                        },
+                                                        "eventSource": "click"
+                                                      },
+                                                      {
+                                                        "type": "renderTemplate",
+                                                        "config": {
+                                                          "templateId": "dashboard.json",
+                                                          "mode": "local"
+                                                        },
+                                                        "eventSource": "click"
+                                                      }                                                     
+                                                    ]
+                                                  },
+                                                  "onFailure": {
+                                                    "actions": [
+                                                      {
+                                                        "type": "context",
+                                                        "config": {
+                                                          "requestMethod": "add",
+                                                          "key": "errorMsg",
+                                                          "data": "responseData"
+                                                        }
+                                                      },
+                                                      {
+                                                        "type": "updateComponent",
+                                                        "config": {
+                                                          "key": "errorTitleUUID",
+                                                          "properties": {
+                                                            "titleValue": "#errorMsg",
+                                                            "isShown": true
+                                                          }
+                                                        }
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          "onFailure": {
+                                            "actions": [
+                                              {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                  "key": "errorTitleUUID",
+                                                  "properties": {
+                                                    "titleValue": "Notes are mandatory for Result Code which starts with Fail",
+                                                    "isShown": true
+                                                  }
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "onFailure": {
+                                    "actions": [
+                                      {
+                                        "type": "condition",
+                                        "config": {
+                                          "operation": "isEqualTo",
+                                          "lhs": "#SelectedBgaRepResultCode", 
+                                          "rhs": "PassPkg"
+                                        },
+                                        "eventSource": "change",
+                                        "responseDependents": {
+                                          "onSuccess": {
+                                            "actions": [
+                                              {
+                                                "type": "microservice",
+                                                "config": {
+                                                  "microserviceId": "getprocessffbycountry",
+                                                  "requestMethod": "get",
+                                                  "params": {
+                                                    "itemId": "#UnitInfo.ITEM_ID",
+                                                    "resultCode": "#SelectedBgaRepResultCode"    
+                                                  }
+                                                },
+                                                "responseDependents": {
+                                                  "onSuccess": {
+                                                    "actions": [
+                                                      {
+                                                        "type": "context",
+                                                        "config": {
+                                                          "requestMethod": "add",
+                                                          "key": "getBGARepStopprocffbycountry",  
+                                                          "data": "responseData"
+                                                        }
+                                                      },
+                                                      {
+                                                        "type": "condition",
+                                                        "config": {
+                                                          "operation": "isEqualTo",
+                                                          "lhs": "#getBGARepStopprocffbycountry.flexFieldName",  
+                                                          "rhs": "Country of Origin"
+                                                        },
+                                                        "eventSource": "change",
+                                                        "responseDependents": {
+                                                          "onSuccess": {
+                                                            "actions": [
+                                                              {
+                                                                "type": "microservice",
+                                                                "config": {
+                                                                  "microserviceId": "performTimeOut",
+                                                                  "requestMethod": "post",
+                                                                  "body": {
+                                                                    "timeOutRequest": {
+                                                                      "location": "#UnitInfo.GEONAME",
+                                                                      "bcn": "#UnitInfo.ITEM_BCN",
+                                                                      "workCenter": "#UnitInfo.WORKCENTER",
+                                                                      "password": "#loginUUID.password",
+                                                                      "warrantyInd": "false",
+                                                                      "notes": "#BgaRepStopNotes.addNote",
+                                                                      "resultCode": "#SelectedBgaRepResultCode"
+                                                                    },
+                                                                    "modifyWarranty": 0,
+                                                                    "timeOutType": "ProcessImmediate",
+                                                                    "clientName": "#UnitInfo.CLIENTNAME",
+                                                                    "contractName": "#UnitInfo.CONTRACTNAME",
+                                                                    "userName": "#loginUUID.username",
+                                                                    "userPass": "#loginUUID.password",
+                                                                    "ip": "::1",
+                                                                    "callSource": "FrontEnd",
+                                                                    "apiUsage_LocationName": "#UnitInfo.GEONAME",
+                                                                    "apiUsage_ClientName": "#UnitInfo.CLIENTNAME"
+                                                                  },
+                                                                  "toBeStringified": true,
+                                                                  "removeUndefinedFields": [
+                                                                    {
+                                                                      "KeyName": "notes",
+                                                                      "KeyValue": "#BgaRepStopNotes.addNote"
+                                                                    }
+                                                                  ]
+                                                                },
+                                                                "responseDependents": {
+                                                                  "onSuccess": {
+                                                                    "actions": [
+                                                                      {
+                                                                        "type": "context",
+                                                                        "config": {
+                                                                          "requestMethod": "add",
+                                                                          "key": "BgaRepStopNotes",
+                                                                          "data": ""
+                                                                        }
+                                                                      },
+                                                                      {
+                                                                        "type": "clearScreenData"
+                                                                      },                                                      
+                                                                      {
+                                                                        "type": "context",
+                                                                        "config": {
+                                                                          "requestMethod": "delete",
+                                                                          "key": "currentWC"
+                                                                        },
+                                                                        "eventSource": "click"
+                                                                      },
+                                                                      {
+                                                                        "type": "renderTemplate",
+                                                                        "config": {
+                                                                          "templateId": "dashboard.json",
+                                                                          "mode": "local"
+                                                                        },
+                                                                        "eventSource": "click"
+                                                                      }                                             
+                                                                    ]
+                                                                  },
+                                                                  "onFailure": {
+                                                                    "actions": [
+                                                                      {
+                                                                        "type": "context",
+                                                                        "config": {
+                                                                          "requestMethod": "add",
+                                                                          "key": "errorMsg",
+                                                                          "data": "responseData"
+                                                                        }
+                                                                      },
+                                                                      {
+                                                                        "type": "updateComponent",
+                                                                        "config": {
+                                                                          "key": "errorTitleUUID",
+                                                                          "properties": {
+                                                                            "titleValue": "#errorMsg",
+                                                                            "isShown": true
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                }
+                                                              }
+                                                            ]
+                                                          },
+                                                          "onFailure": {
+                                                            "actions": [
+                                                              {
+                                                                "type": "updateComponent",
+                                                                "config": {
+                                                                  "key": "errorTitleUUID",
+                                                                  "properties": {
+                                                                    "titleValue": "Unit has no process flex field 'Country of Origin'",
+                                                                    "isShown": true
+                                                                  }
+                                                                }
+                                                              }
+                                                            ]
+                                                          }
+                                                        }
+                                                      }
+                                                    ]
+                                                  },
+                                                  "onFailure": {
+                                                    "actions": [
+                                                      {
+                                                        "type": "context",
+                                                        "config": {
+                                                          "requestMethod": "add",
+                                                          "key": "errorMsg",
+                                                          "data": "responseData"
+                                                        }
+                                                      },
+                                                      {
+                                                        "type": "updateComponent",
+                                                        "config": {
+                                                          "key": "errorTitleUUID",
+                                                          "properties": {
+                                                            "titleValue": "#errorMsg",
+                                                            "isShown": true
+                                                          }
+                                                        }
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          "onFailure": {
+                                            "actions": [
+                                              {
+                                                "type": "microservice",
+                                                "config": {
+                                                  "microserviceId": "performTimeOut",
+                                                  "requestMethod": "post",
+                                                  "body": {
+                                                    "timeOutRequest": {
+                                                      "location": "#UnitInfo.GEONAME",
+                                                      "bcn": "#UnitInfo.ITEM_BCN",
+                                                      "workCenter": "#UnitInfo.WORKCENTER",
+                                                      "password": "#loginUUID.password",
+                                                      "warrantyInd": "false",
+                                                      "notes": "#BgaRepStopNotes.addNote",
+                                                      "resultCode": "#SelectedBgaRepResultCode"
+                                                    },
+                                                    "modifyWarranty": 0,
+                                                    "timeOutType": "ProcessImmediate",
+                                                    "clientName": "#UnitInfo.CLIENTNAME",
+                                                    "contractName": "#UnitInfo.CONTRACTNAME",
+                                                    "userName": "#loginUUID.username",
+                                                    "userPass": "#loginUUID.password",
+                                                    "ip": "::1",
+                                                    "callSource": "FrontEnd",
+                                                    "apiUsage_LocationName": "#UnitInfo.GEONAME",
+                                                    "apiUsage_ClientName": "#UnitInfo.CLIENTNAME"
+                                                  },
+                                                  "toBeStringified": true,
+                                                  "removeUndefinedFields": [
+                                                    {
+                                                      "KeyName": "notes",
+                                                      "KeyValue": "#BgaRepStopNotes.addNote"
+                                                    }
+                                                  ]
+                                                },
+                                                "responseDependents": {
+                                                  "onSuccess": {
+                                                    "actions": [
+                                                      {
+                                                        "type": "context",
+                                                        "config": {
+                                                          "requestMethod": "add",
+                                                          "key": "BgaRepStopNotes",
+                                                          "data": ""
+                                                        }
+                                                      },
+                                                      {
+                                                        "type": "clearScreenData"
+                                                      },                                                      
+                                                      {
+                                                        "type": "context",
+                                                        "config": {
+                                                          "requestMethod": "delete",
+                                                          "key": "currentWC"
+                                                        },
+                                                        "eventSource": "click"
+                                                      },
+                                                      {
+                                                        "type": "renderTemplate",
+                                                        "config": {
+                                                          "templateId": "dashboard.json",
+                                                          "mode": "local"
+                                                        },
+                                                        "eventSource": "click"
+                                                      }                                             
+                                                    ]
+                                                  },
+                                                  "onFailure": {
+                                                    "actions": [
+                                                      {
+                                                        "type": "context",
+                                                        "config": {
+                                                          "requestMethod": "add",
+                                                          "key": "errorMsg",
+                                                          "data": "responseData"
+                                                        }
+                                                      },
+                                                      {
+                                                        "type": "updateComponent",
+                                                        "config": {
+                                                          "key": "errorTitleUUID",
+                                                          "properties": {
+                                                            "titleValue": "#errorMsg",
+                                                            "isShown": true
+                                                          }
+                                                        }
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": [
+                              {
+                                "type": "updateComponent",
+                                "eventSource": "click",
+                                "config": {
+                                  "key": "errorTitleUUID",
+                                  "properties": {
+                                    "titleValue": "Data is not valid"
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": []
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "Result": "SUCCESS"
+}

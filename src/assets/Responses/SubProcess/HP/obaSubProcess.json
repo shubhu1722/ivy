@@ -1,0 +1,3506 @@
+{
+  "ResultData": {
+    "ctype": "page",
+    "uuid": "pageUUID",
+    "visibility": true,
+    "hooks": [
+      {
+        "type": "microservice",
+        "hookType": "afterInit",
+        "config": {
+          "microserviceId": "getBiosAlertDetailsAssessment",
+          "isLocal": false,
+          "LocalService": "assets/Responses/repairMockBIOSResponse.json",
+          "requestMethod": "get",
+          "params": {
+            "customInstructionType": "BIOS",
+            "sourceType": "#getReferenceDataKeys.sourceType",
+            "serialNumber": "",
+            "partNumber": "",
+            "productPlatform": "#discrepancyPartAndWarrantyDetails.PRODUCT_PLATFORM",
+            "secondSource": "",
+            "username": "#userAccountInfo.PersonalDetails.USERID",
+            "locationId": "#userSelectedLocation",
+            "clientId": "#userSelectedClient",
+            "contractId": "#userSelectedContract"
+          }
+        },        
+        "responseDependents": {
+          "onSuccess": {
+            "actions": [              
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "biosVersionTitleUUID",
+                  "properties": {
+                    "titleValue": "#getBiosAlertDetailsAssessment.0.bios"
+                  }
+                }
+              }
+            ]
+          },
+          "onFailure": {
+            "actions": []
+        }
+        }
+      },
+      {
+        "type": "microservice",
+        "hookType": "afterInit",
+        "config": {
+          "microserviceId": "getSoftwareAlertDetailsAssessment",
+          "isLocal": false,
+          "LocalService": "assets/Responses/repairMockEcoResponse.json",
+          "requestMethod": "get",
+          "params": {
+            "customInstructionType": "SOFTWARE",
+            "sourceType": "PARTNO",
+            "serialNumber": "",
+            "partNumber": "#discrepancyUnitInfo.PART_NO",
+            "productPlatform": "",
+            "secondSource": "",
+            "username": "#userAccountInfo.PersonalDetails.USERID",
+            "locationId": "#userSelectedLocation",
+            "clientId": "#userSelectedClient",
+            "contractId": "#userSelectedContract"
+          }
+        },        
+        "responseDependents": {
+          "onSuccess": {
+            "actions": [              
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "softwareVersionTitleUUID",
+                  "properties": {
+                    "titleValue": "#getSoftwareAlertDetailsAssessment.0.software"
+                  }
+                }
+              }
+            ]
+          },
+          "onFailure": {
+            "actions": []
+        }
+        }
+      },
+      {
+        "type": "microservice",
+        "hookType": "afterInit",
+        "config": {
+          "microserviceId": "getInitialDetailsAssessment",
+          "requestMethod": "get",
+          "LocalService": "assets/Responses/repairAssessementResponse.json",
+          "isLocal": false,
+          "params": {
+            "itemBcn": "#discrepancyUnitInfo.ITEM_BCN",
+            "roHeaderFFIds": "#getReferenceDataKeys.roheaderffIds",
+            "roLineFFIds": "#getReferenceDataKeys.rolineffIds",
+            "workCenterFFIds": "#getReferenceDataKeys.workcenterffIds",
+            "itemId": "#discrepancyUnitInfo.ITEM_ID",
+            "userName": "#userAccountInfo.PersonalDetails.USERID"
+          }
+        },
+        "responseDependents": {
+          "onSuccess": {
+            "actions": [              
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "failCodeUUID",
+                  "properties": {
+                    "titleValue": "#getInitialDetailsAssessment.failCode"
+                  }
+                }
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "osReinstallUUID",
+                  "properties": {
+                    "titleValue": "#getInitialDetailsAssessment.osReinstallAllowed"
+                  }
+                }
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "winPasswordUUID",
+                  "properties": {
+                    "titleValue": "#getInitialDetailsAssessment.windowsPassword"
+                  }
+                }
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "biosPasswordUUID",
+                  "properties": {
+                    "titleValue": "#getInitialDetailsAssessment.biosPassword"
+                  }
+                }
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "expectedBiosUUID",
+                  "properties": {
+                    "titleValue": "#getInitialDetailsAssessment.expectedBiosVersion"
+                  }
+                }
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "osLanguageUUID",
+                  "properties": {
+                    "titleValue": "#getInitialDetailsAssessment.osLanguage"
+                  }
+                }
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "bsodFieldUUID",
+                  "properties": {
+                    "titleValue": "#getInitialDetailsAssessment.bsod"
+                  }
+                }
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "customerComplaintTitleUUID",
+                  "properties": {
+                    "text": "#getInitialDetailsAssessment.customerComplaints"
+                  }
+                }
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "obaAssessmentPanelUUID",
+                  "properties": {
+                    "disabled": false
+                  }
+                },
+                "eventSource": "click"
+              }
+            ]
+          },
+          "onFailure": {
+            "actions": [
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "errorTitleUUID",
+                  "properties": {
+                    "titleValue": "No Data in Initial Assessment",
+                    "isShown": true
+                  }
+                }
+              }
+            ]
+        }
+        }
+      },
+      {
+        "type": "microservice",
+        "hookType": "afterInit",
+        "config": {
+          "microserviceId": "getFFByWc",
+          "isLocal": false,
+          "LocalService": "assets/Responses/repairMockEcoResponse.json",
+          "requestMethod": "get",
+          "params": {
+            "clientId": "#repairUnitInfo.CLIENT_ID",
+            "routeName": "#repairUnitInfo.ROUTE",
+            "contrId": "#repairUnitInfo.CONTRACT_ID",
+            "wcId": "#getReferenceDataKeys.obawcID",
+            "userName": "#userAccountInfo.PersonalDetails.USERID",
+            "itemId": "#repairUnitInfo.ITEM_ID"
+          }
+        },
+        "responseDependents": {
+          "onSuccess": {
+            "actions": [              
+              {
+                "type": "condition",
+                "config": {
+                  "operation": "isValid",
+                  "lhs": "#getFFByWc",
+                  "lhsKeyName": "ffName",
+                  "lhsKeyValue": "Testing method",
+                  "lhsSecondKeyName": "ffValue"
+                },
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "testIconUUID",
+                          "properties": {
+                            "disabled": true
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": []
+                  }
+                }
+              },
+              {
+                "type": "filterAndGetIndex",
+                "config": {
+                  "data": "#getFFByWc",
+                  "objectKey": "ffName",
+                  "getValueBy": "ARCToolPicture",
+                  "contextKey": "viewImageUrlObject",
+                  "operation": "getIndex"
+                }
+              }
+            ]
+          },
+          "onFailure": {
+            "actions": []
+        }
+        }
+      },
+      {
+        "type": "microservice",
+        "hookType": "afterInit",
+        "config": {
+          "microserviceId": "getFFCTValue",
+          "isLocal": false,
+          "LocalService": "assets/Responses/repairMockRamResponse.json",
+          "requestMethod": "get",
+          "params": {
+            "ffId": "#getReferenceDataKeys.ftffId",
+            "userName": "#userAccountInfo.PersonalDetails.USERID"
+          }
+        },
+        "responseDependents": {
+          "onSuccess": {
+            "actions": [              
+              {
+                "type": "addValuesToRadioGroup",
+                "config": {
+                  "key": "radioButtonOptions",
+                  "properties": {
+                    "dataSource": "#getFFCTValue"
+                  }
+                }
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "radioButtonGroupUUID",
+                  "properties": {
+                    "radioButtonOptions": "#radioButtonOptions"
+                  }
+                }
+              },
+              {
+                "type": "microservice",
+                "hookType": "afterInit",
+                "config": {
+                  "microserviceId": "getFFByreworkwcIDWc",
+                  "isLocal": false,
+                  "LocalService": "assets/Responses/repairMockEcoResponse.json",
+                  "requestMethod": "get",
+                  "params": {
+                    "clientId": "#repairUnitInfo.CLIENT_ID",
+                    "routeName": "#repairUnitInfo.ROUTE",
+                    "contrId": "#repairUnitInfo.CONTRACT_ID",
+                    "wcId": "#repairUnitInfo.WORKCENTER_ID",
+                    "userName": "#userAccountInfo.PersonalDetails.USERID",
+                    "itemId": "#repairUnitInfo.ITEM_ID"
+                  }
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "condition",
+                        "config": {
+                          "operation": "isValid",
+                          "lhs": "#getFFByreworkwcIDWc",
+                          "lhsKeyName": "ffName",
+                          "lhsKeyValue": "Unit Damage",
+                          "lhsSecondKeyName": "ffValue"
+                        },
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "context",
+                                "config": {
+                                  "requestMethod": "add",
+                                  "key": "unitDamageDeafultValue",
+                                  "data": "#lhsValue"
+                                }
+                              },
+                              {
+                                "type": "updateComponent",
+                                "eventSource": "change",
+                                "config": {
+                                  "key": "AdditionalUnitDamageUUID",
+                                  "fieldProperties": {
+                                    "AdditionalUnitDamage": "#unitDamageDeafultValue"
+                                  }
+                                }
+                              },
+                              {
+                                "type": "context",
+                                "config": {
+                                  "requestMethod": "add",
+                                  "key": "AdditionalUnitDamagedata",
+                                  "data": "#unitDamageDeafultValue"
+                                },
+                                "eventSource": "change"
+                              },
+                              {
+                                "type": "condition",
+                                "config": {
+                                  "operation": "isEqualTo",
+                                  "lhs": "#AdditionalUnitDamagedata",
+                                  "rhs": "Yes"
+                                },
+                                "eventSource": "change",
+                                "responseDependents": {
+                                  "onSuccess": {
+                                    "actions": [
+                                      {
+                                        "type": "enableComponent",
+                                        "config": {
+                                          "key": "DamageDescriptionUUID",
+                                          "property": "DamageDescription"
+                                        },
+                                        "eventSource": "change"
+                                      },
+                                      {
+                                        "type": "updateComponent",
+                                        "config": {
+                                          "key": "CheckDamageSubmittedUUID",
+                                          "properties": {
+                                            "disabled": true
+                                          }
+                                        },
+                                        "eventSource": "change"
+                                      }
+                                    ]
+                                  },
+                                  "onFailure": {
+                                    "actions": [
+                                      {
+                                        "type": "disableComponent",
+                                        "config": {
+                                          "key": "DamageDescriptionUUID",
+                                          "property": "DamageDescription",
+                                          "isNotReset": true
+                                        },
+                                        "eventSource": "change"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": []
+                          }
+                        }
+                      },
+                      {
+                        "type": "condition",
+                        "config": {
+                          "operation": "isValid",
+                          "lhs": "#getFFByreworkwcIDWc",
+                          "lhsKeyName": "ffName",
+                          "lhsKeyValue": "FAULT_TYPE",
+                          "lhsSecondKeyName": "ffValue"
+                        },
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "context",
+                                "config": {
+                                  "requestMethod": "add",
+                                  "key": "faultTypeDeafultValue",
+                                  "data": "#lhsValue"
+                                }
+                              },
+                              {
+                                "type": "updateComponent",
+                                "eventSource": "change",
+                                "config": {
+                                  "key": "radioButtonGroupUUID",
+                                  "fieldProperties": {
+                                    "defectradiobutton": "#faultTypeDeafultValue"
+                                  }
+                                }
+                              },
+                              {
+                                "type": "condition",
+                                "config": {
+                                  "operation": "isEqualTo",
+                                  "lhs": "#faultTypeDeafultValue",
+                                  "rhs": "MAJOR"
+                                },
+                                "eventSource": "change",
+                                "responseDependents": {
+                                  "onSuccess": {
+                                    "actions": [
+                                      {
+                                        "type": "enableComponent",
+                                        "config": {
+                                          "key": "DefectDescriptionUUID",
+                                          "property": "DefectDescription"
+                                        }
+                                      },
+                                      {
+                                        "type": "updateComponent",
+                                        "config": {
+                                          "key": "DefectSubmittedUUID",
+                                          "properties": {
+                                            "disabled": true
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "onFailure": {
+                                    "actions": [
+                                      {
+                                        "type": "condition",
+                                        "config": {
+                                          "operation": "isEqualTo",
+                                          "lhs": "#faultTypeDeafultValue",
+                                          "rhs": "MINOR"
+                                        },
+                                        "eventSource": "change",
+                                        "responseDependents": {
+                                          "onSuccess": {
+                                            "actions": [
+                                              {
+                                                "type": "enableComponent",
+                                                "config": {
+                                                  "key": "DefectDescriptionUUID",
+                                                  "property": "DefectDescription"
+                                                }
+                                              },
+                                              {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                  "key": "DefectSubmittedUUID",
+                                                  "properties": {
+                                                    "disabled": true
+                                                  }
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          "onFailure": {
+                                            "actions": [
+                                              {
+                                                "type": "disableComponent",
+                                                "config": {
+                                                  "key": "DefectDescriptionUUID",
+                                                  "property": "DefectDescription"
+                                                }
+                                              },
+                                              {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                  "key": "DefectSubmittedUUID",
+                                                  "properties": {
+                                                    "disabled": false
+                                                  }
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": []
+                          }
+                        }
+                      },
+                      {
+                        "type": "condition",
+                        "config": {
+                          "operation": "isValid",
+                          "lhs": "#getFFByreworkwcIDWc",
+                          "lhsKeyName": "ffName",
+                          "lhsKeyValue": "Testing method",
+                          "lhsSecondKeyName": "ffValue"
+                        },
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "context",
+                                "config": {
+                                  "requestMethod": "add",
+                                  "key": "testingMethodDeafultValue",
+                                  "data": "#lhsValue"
+                                }
+                              },
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "testdropdownUUID",
+                                  "fieldProperties": {
+                                    "testdatopdown": "#testingMethodDeafultValue"
+                                  }
+                                }
+                              },
+                              {
+                                "type": "context",
+                                "config": {
+                                  "requestMethod": "add",
+                                  "key": "Testdropdowndata",
+                                  "data": "#testingMethodDeafultValue"
+                                },
+                                "eventSource": "change"
+                              },
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "TestUUID",
+                                  "properties": {
+                                    "header": {
+                                      "title": "#Testdropdowndata",
+                                      "svgIcon": "calender"
+                                    }
+                                  }
+                                },
+                                "eventSource": "change"
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": []
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "errorTitleUUID",
+                          "properties": {
+                            "titleValue": "No data in radiobutton",
+                            "isShown": true
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "onFailure": {
+            "actions": []
+          }
+        }
+      },
+      {
+        "type": "microservice",
+        "hookType": "afterInit",
+        "config": {
+          "microserviceId": "getFFUDValue",
+          "isLocal": false,
+          "LocalService": "assets/Responses/repairMockRamResponse.json",
+          "requestMethod": "get",
+          "params": {
+            "ffId": "#getReferenceDataKeys.udffId",
+            "userName": "#userAccountInfo.PersonalDetails.USERID"
+          }
+        },        
+        "responseDependents": {
+          "onSuccess": {
+            "actions": [              
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "AdditionalUnitDamageUUID",
+                  "dropDownProperties": {
+                    "options": "#getFFUDValue"
+                  }
+                }
+              },
+              
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "AdditionalUnitDamagedata",
+                  "data": "No"
+                },
+                "eventSource": "change"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "AdditionalUnitDamageUUID",
+                  "fieldProperties": {
+                    "AdditionalUnitDamage": "#AdditionalUnitDamagedata"
+                  }
+                }
+              }
+            ]
+          },
+          "onFailure": {
+            "actions": [
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "errorTitleUUID",
+                  "properties": {
+                    "titleValue": "No Data in Additonal Damage Dropdown",
+                    "isShown": true
+                  }
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "type": "context",
+        "hookType": "afterInit",
+        "config": {
+          "requestMethod": "add",
+          "key": "confirmAccessoriesFlexFieldsData",
+          "data": ""
+        }
+      },
+      {
+        "type": "microservice",
+        "hookType": "afterInit",
+        "eventSource": "click",
+        "config": {
+          "microserviceId": "getaccessfffromrec",
+          "requestMethod": "get",
+          "params": {
+            "pitemId": "#repairUnitInfo.ITEM_ID",
+            "pclientId": "#repairUnitInfo.CLIENT_ID",
+            "pcontractId": "#repairUnitInfo.CONTRACT_ID",
+            "pOpt": "IRMA",
+            "puserName": "#loginUUID.username"
+          }
+        },
+        "responseDependents": {
+          "onSuccess": {
+            "actions": [
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "confirmAccessoriesUUID",
+                  "properties": {
+                    "hidden": false
+                  }
+                }
+              },
+              {
+                "type": "context",
+                "config": {
+                    "requestMethod": "add",
+                    "key": "confirmAccessoriesFlexFieldsData",
+                    "data": "responseData"
+                }
+            },              
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "confirmAccessoriesListUUID",
+                  "properties": {
+                    "flexCount": "#confirmAccessoriesFlexFieldsData",
+                    "label": ""
+                  }
+                },
+                "eventSource": "click"
+              }
+            ]
+          },
+          "onFailure": {
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "confirmAccessoriesFFData",
+                  "data": "noData"
+                }
+              },
+              {
+                "type": "context",
+                "config": {
+                    "requestMethod": "add",
+                    "key": "confirmAccessoriesFlexFieldsData",
+                    "data": []
+                }
+              },
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "errorResp",
+                  "data": "responseData"
+                }
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "errorTitleUUID",
+                  "properties": {
+                    "titleValue": "#errorResp",
+                    "isShown": true
+                  }
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "type": "microservice",
+        "hookType": "afterInit",
+        "config": {
+          "microserviceId": "getFFTMValue",
+          "isLocal": false,
+          "LocalService": "assets/Responses/repairMockRamResponse.json",
+          "requestMethod": "get",
+          "params": {
+            "ffId": "#getReferenceDataKeys.tmffID",
+            "userName": "#userAccountInfo.PersonalDetails.USERID"
+          }
+        },       
+        "responseDependents": {
+          "onSuccess": {
+            "actions": [              
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "testdropdownUUID",
+                  "dropDownProperties": {
+                    "options": "#getFFTMValue"
+                  }
+                }
+              }
+            ]
+          },
+          "onFailure": {
+            "actions": [
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "errorTitleUUID",
+                  "properties": {
+                    "titleValue": "No Data in Test Dropdown",
+                    "isShown": true
+                  }
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "type": "context",
+        "config": {
+          "requestMethod": "add",
+          "key": "testHeader",
+          "data": "Test"
+        },
+        "hookType": "afterInit"
+      }
+      
+    ],
+    "header": [
+      {
+        "ctype": "breadcrumb",
+        "breadcrumbs": [
+          {
+            "label": "#userSelectedLocationName"
+          },
+          {
+            "label": "#userSelectedClientName"
+          },
+          {
+            "label": "#userSelectedContractName"
+          }
+        ]
+      },
+      {
+        "ctype": "toolbar",
+        "toolbarClass": "pagecontent-header",
+        "items": [
+          {
+            "ctype": "title",
+            "uuid": "OBATitleUUID",
+            "titleValue": "OBA",
+            "titleClass": "section-title"
+          },
+          {
+            "ctype": "iconbutton",
+            "iconButtonClass": "headeropen-button",
+            "text": "",
+            "uuid": "pageopenUUID",
+            "visibility": true,
+            "disabled": false,
+            "hidden": false,
+            "type": "submit",
+            "icon": "menu_open",
+            "disableRipple": true,
+            "iconClass": "header-icon",
+            "actions": [
+              {
+                "type": "toggle",
+                "eventSource": "click",
+                "name": "subProcessRightNavref"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "openUUID",
+                  "properties": {
+                    "hidden": false
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "pageopenUUID",
+                  "properties": {
+                    "hidden": true
+                  }
+                },
+                "eventSource": "click"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "items": [
+      {
+        "ctype": "title",
+        "uuid": "successTitleUUID",
+        "titleClass": "success-title",
+        "isShown": false
+      },
+      {
+        "ctype": "title",
+        "uuid": "errorTitleUUID",
+        "titleClass": "error-title",
+        "isShown": false
+      },
+      {
+        "ctype": "taskPanel",
+        "header": {
+          "title": "Initial Assessment",
+          "icon": "description",
+          "statusIcon": "hourglass_empty",
+          "statusClass": "incomplete-status"
+        },
+        "expanded": true,
+        "hideToggle": true,
+        "uuid": "obaAssessmentPanelUUID",
+        "visibility": false,
+        "disabled": false,
+        "items": [
+          {
+            "ctype": "disabled",
+            "uuid": "assesmentDisabledUUID",
+            "disabledClass": "disabledFalse"
+          },
+          {
+            "ctype": "title",
+            "uuid": "customerComplaintHeaderUUID",
+            "titleClass": "sidenav-title body2",
+            "title": "Customer Complaint",
+            "titleValue": ""
+          },
+          {
+            "ctype": "showMore",
+            "uuid": "customerComplaintTitleUUID",
+            "titleClass": "sidenav-title body2",
+            "text": "#getInitialDetailsAssessment.customerComplaints",
+            "isShown": true
+          },
+          {
+            "ctype": "title",
+            "uuid": "failCodeUUID",
+            "titleClass": "sidenav-title body2 os-field",
+            "title": "Fail Code:",
+            "titleValue": "#getInitialDetailsAssessment.failCode"
+          },
+          {
+            "ctype": "title",
+            "uuid": "osReinstallUUID",
+            "titleClass": "sidenav-title body2",
+            "title": "OS reinstall allowed:",
+            "titleValue": "#getInitialDetailsAssessment.osReinstallAllowed"
+          },
+          {
+            "ctype": "title",
+            "uuid": "bsodFieldUUID",
+            "titleClass": "sidenav-title body2",
+            "title": "BSOD Problem:",
+            "titleValue": "#getInitialDetailsAssessment.bsod"
+          },
+          {
+            "ctype": "title",
+            "uuid": "winPasswordUUID",
+            "titleClass": "sidenav-title body2",
+            "title": "Windows password:",
+            "titleValue": "#getInitialDetailsAssessment.windowsPassword"
+          },
+          {
+            "ctype": "title",
+            "uuid": "biosVersionTitleUUID",
+            "titleClass": "sidenav-title body2",
+            "title": "Expected Bios Version:",
+            "titleValue": "#getBiosAlertDetailsAssessment.0.bios"
+          },
+          {
+            "ctype": "title",
+            "uuid": "osLanguageUUID",
+            "titleClass": "sidenav-title body2",
+            "title": "OS Language:",
+            "titleValue": "#getInitialDetailsAssessment.osLanguage"
+          },
+          {
+            "ctype": "title",
+            "uuid": "softwareVersionTitleUUID",
+            "titleClass": "sidenav-title body2 os-field",
+            "title": "OS Version:",
+            "titleValue": "#getSoftwareAlertDetailsAssessment.0.software"
+          }
+        ],
+        "footer": [
+          {
+            "ctype": "button",
+            "color": "primary",
+            "text": "Complete",
+            "uuid": "obaAssessmentSubmittedUUID",
+            "name": "obaAssessmentButtonSubmit",
+            "visibility": true,
+            "disabled": false,
+            "submittable": true,
+            "type": "submit",
+            "tooltip": "Complete Initial Assessment",
+            "class": "primary-btn",
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "initialAssessmentFormData",
+                  "data": "formData"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "obaAssessmentPanelUUID",
+                  "properties": {
+                    "expanded": false,
+                    "disabled": false,
+                    "header": {
+                      "title": "Initial Assessment",
+                      "icon": "description",
+                      "statusIcon": "check_circle",
+                      "statusClass": "complete-status",
+                      "class": "complete-task",
+                      "iconClass": "complete-task"
+                    }
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "obaAssessmentSubmittedUUID",
+                  "properties": {
+                    "disabled": true
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "CheckDamageUUID",
+                  "properties": {
+                    "expanded": true,
+                    "disabled": false,
+                    "header": {
+                      "title": "Check Damage",
+                      "icon": "description",
+                      "statusIcon": "hourglass_empty",
+                      "statusClass": "incomplete-status"
+                    }
+                  }
+                },
+                "eventSource": "click"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "ctype": "taskPanel",
+        "header": {
+          "title": "Check Damage",
+          "icon": "description",
+          "statusIcon": "hourglass_empty",
+          "statusClass": "incomplete-status"
+        },
+        "expanded": false,
+        "hideToggle": true,
+        "uuid": "CheckDamageUUID",
+        "visibility": false,
+        "disabled": true,
+        "items": [
+          {
+            "ctype": "nativeDropdown",
+            "dropdownClass": "dropdown-container condition-dropdwn body2 display-inline",
+            "uuid": "AdditionalUnitDamageUUID",
+            "name": "AdditionalUnitDamage",
+            "dataSource": "",
+            "defaultValue": "",
+            "inputStyles": "margin-left:27px",
+            "formGroupStyles": "margin-bottom: 20px;",
+            "label": "Additional Unit Damage",
+            "inLine": true,
+            "required": true,
+            "code": "value",
+            "displayValue": "value",
+            "hidden": false,
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "AdditionalUnitDamagedata",
+                  "data": "elementControlValue"
+                },
+                "eventSource": "change"
+              },
+              {
+                "type": "condition",
+                "config": {
+                  "operation": "isEqualTo",
+                  "lhs": "#AdditionalUnitDamagedata",
+                  "rhs": "Yes"
+                },
+                "eventSource": "change",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "enableComponent",
+                        "config": {
+                          "key": "DamageDescriptionUUID",
+                          "property": "DamageDescription"
+                        },
+                        "eventSource": "change"
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "CheckDamageSubmittedUUID",
+                          "properties": {
+                            "disabled": true
+                          }
+                        },
+                        "eventSource": "change"
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "disableComponent",
+                        "config": {
+                          "key": "DamageDescriptionUUID",
+                          "property": "DamageDescription",
+                          "isNotReset": true
+                        },
+                        "eventSource": "change"
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "DamageDescriptionUUID",
+                          "properties": {
+                            "disabled": true
+                          }
+                        },
+                        "eventSource": "change"
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "ctype": "imageGrid",
+            "name": "viewImage",
+            "uuid": "viewImageUUID",
+            "imgUrlParam": "#viewImageUrlObject.ffValue",
+            "text": "View Images",
+            "class": "body text-primary display-inline view-image p-l-1",
+            "modelTitle": "#discrepancyUnitInfo.SERIAL_NO"
+          },
+          {
+            "ctype": "textField",
+            "uuid": "DamageDescriptionUUID",
+            "submitable": false,
+            "disabled": true,
+            "visibility": true,
+            "textfieldClass": "textfield-container ml-5",
+            "css": "width:62%",
+            "inputStyles": "height: 19px;",
+            "name": "DamageDescription",
+            "label": "Damage Description",
+            "type": "text",
+            "required": false,
+            "placeholder": "Enter Description",
+            "value": "",
+            "actions": [
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "CheckDamageSubmittedUUID",
+                  "properties": {
+                    "disabled": false
+                  }
+                },
+                "eventSource": "input"
+              }
+            ]
+          }
+        ],
+        "footer": [
+          {
+            "ctype": "button",
+            "color": "primary",
+            "text": "Complete",
+            "uuid": "CheckDamageSubmittedUUID",
+            "name": "CheckDamageButtonSubmit",
+            "visibility": true,
+            "disabled": true,
+            "submittable": true,
+            "type": "submit",
+            "tooltip": "Complete Initial Assessment",
+            "class": "primary-btn",
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "damagedescdata",
+                  "data": "formData"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "CheckDamageUUID",
+                  "properties": {
+                    "expanded": false,
+                    "disabled": false,
+                    "header": {
+                      "title": "Check Damage",
+                      "icon": "description",
+                      "statusIcon": "check_circle",
+                      "statusClass": "complete-status",
+                      "class": "complete-task",
+                      "iconClass": "complete-task"
+                    }
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "disableComponent",
+                "config": {
+                  "key": "DamageDescriptionUUID",
+                  "property": "DamageDescription",
+                  "isNotReset": true
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "disableComponent",
+                "config": {
+                  "key": "AdditionalUnitDamageUUID",
+                  "property": "AdditionalUnitDamage",
+                  "isNotReset": true
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "CheckDamageSubmittedUUID",
+                  "properties": {
+                    "disabled": true
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "condition",
+                "config": {
+                  "operation": "isEqualTo",
+                  "lhs": "#AdditionalUnitDamagedata",
+                  "rhs": "Yes"
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "confirmAccessoriesUUID",
+                          "properties": {
+                            "disabled": true,
+                            "header": {
+                              "title": "Confirm Accessories (required for VFT)",
+                              "icon": "description"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "condition",
+                        "config": {
+                          "operation": "isEqualTo",
+                          "lhs": "#AdditionalUnitDamagedata",
+                          "rhs": ""
+                        },
+                        "eventSource": "click",
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "confirmAccessoriesUUID",
+                                  "properties": {
+                                    "disabled": false,
+                                    "expanded": false
+                                  }
+                                },
+                                "eventSource": "click"
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": [
+                              {
+                                "type": "condition",
+                                "config": {
+                                  "operation": "isEqualTo",
+                                  "lhs": "#AdditionalUnitDamagedata",
+                                  "rhs": "No"
+                                },
+                                "eventSource": "click",
+                                "responseDependents": {
+                                  "onSuccess": {
+                                    "actions": [
+                                      {
+                                        "type": "updateComponent",
+                                        "config": {
+                                          "key": "confirmAccessoriesUUID",
+                                          "properties": {
+                                            "disabled": false,
+                                            "expanded": false
+                                          }
+                                        },
+                                        "eventSource": "click"
+                                      }
+                                    ]
+                                  },
+                                  "onFailure": {
+                                    "actions": []
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "confirmAccessoriesUUID",
+                          "properties": {
+                            "disabled": false,
+                            "expanded": false
+                          }
+                        },
+                        "eventSource": "click"
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "type": "updateComponent",
+                "eventSource": "click",
+                "config": {
+                  "key": "DefectPanelUUID",
+                  "properties": {
+                    "disabled": false,
+                    "expanded": true
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "ctype": "taskPanel",
+        "header": {
+          "title": "Defect",
+          "icon": "description",
+          "statusIcon": "hourglass_empty",
+          "statusClass": "incomplete-status"
+        },
+        "expanded": false,
+        "hideToggle": true,
+        "uuid": "DefectPanelUUID",
+        "visibility": false,
+        "disabled": true,
+        "items": [
+          {
+            "ctype": "label",
+            "text": "Record defect type",
+            "css": " font-style: italic",
+            "uuid": "DefectlabelUUID"
+          },
+          {
+            "ctype": "radioButtonGroup",
+            "uuid": "radioButtonGroupUUID",
+            "name": "defectradiobutton",
+            "required": true,
+            "label": "",
+            "dataSource": "#radiobtnvalue",
+            "value": "defectradiobutton",
+            "radioButtonOptions": "",
+            "code": "value",
+            "displayValue": "",
+            "defaultvalue":"#radiogroupdata.defectradiobutton",
+            "groupClass": "stack-vertical",
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "radiogroupdata",
+                  "data": "formData"
+                },
+                "eventSource": "change"
+              },
+              {
+                "type": "condition",
+                "config": {
+                  "operation": "isEqualTo",
+                  "lhs": "#radiogroupdata.defectradiobutton",
+                  "rhs": "MAJOR"
+                },
+                "eventSource": "change",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "enableComponent",
+                        "config": {
+                          "key": "DefectDescriptionUUID",
+                          "property": "DefectDescription"
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "DefectSubmittedUUID",
+                          "properties": {
+                            "disabled": true
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "condition",
+                        "config": {
+                          "operation": "isEqualTo",
+                          "lhs": "#radiogroupdata.defectradiobutton",
+                          "rhs": "MINOR"
+                        },
+                        "eventSource": "change",
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "enableComponent",
+                                "config": {
+                                  "key": "DefectDescriptionUUID",
+                                  "property": "DefectDescription"
+                                }
+                              },
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "DefectSubmittedUUID",
+                                  "properties": {
+                                    "disabled": true
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": [
+                              {
+                                "type": "disableComponent",
+                                "config": {
+                                  "key": "DefectDescriptionUUID",
+                                  "property": "DefectDescription"
+                                }
+                              },
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "DefectSubmittedUUID",
+                                  "properties": {
+                                    "disabled": false
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "ctype": "textField",
+            "uuid": "DefectDescriptionUUID",
+            "submitable": false,
+            "disabled": true,
+            "visibility": true,
+            "textfieldClass": "textfield-container ml-5",
+            "css": "width:62%",
+            "inputStyles": "height: 19px;",
+            "name": "DefectDescription",
+            "label": "Defect Description",
+            "defaultvalue": "",
+            "type": "text",
+            "required": false,
+            "placeholder": "Enter Description",
+            "value": "",
+            "actions": [
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "DefectSubmittedUUID",
+                  "properties": {
+                    "disabled": false
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "footer": [
+          {
+            "ctype": "button",
+            "color": "primary",
+            "text": "Complete",
+            "uuid": "DefectSubmittedUUID",
+            "name": "defectButtonSubmit",
+            "visibility": true,
+            "disabled": true,
+            "submittable": true,
+            "type": "submit",
+            "tooltip": "Complete Initial Assessment",
+            "class": "primary-btn",
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "defectdescdata",
+                  "data": "formData"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "currentTaskPanelUUID",
+                  "data": "TestUUID"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "currentTaskPanelPropertiesUUID",
+                  "data": {
+                    "expanded":false,
+                    "disabled": false,
+                    "hidden":true
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "condition",
+                "config": {
+                  "operation": "isValid",
+                  "lhs": "#radiogroupdata"
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "faultTypeDeafultValue",
+                          "data": "#radiogroupdata.defectradiobutton"
+                        },
+                        "eventSource": "click"
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": []
+                  }
+                }
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "DefectPanelUUID",
+                  "properties": {
+                    "expanded": false,
+                    "disabled": false,
+                    "header": {
+                      "title": "Defect",
+                      "icon": "description",
+                      "statusIcon": "check_circle",
+                      "statusClass": "complete-status",
+                      "class": "complete-task",
+                      "iconClass": "complete-task"
+                    }
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "testIconUUID",
+                  "properties": {
+                    "disabled": false,
+                    "expanded": false
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "disableComponent",
+                "config": {
+                  "key": "DefectDescriptionUUID",
+                  "property": "DefectDescription",
+                  "isNotReset": true
+                },
+                "eventSource": "click"
+              },
+                {
+                  "type": "updateComponent",
+                  "config": {
+                    "key": "radioButtonGroupUUID",
+                    "properties": {
+                      "disabled": true
+                    }
+                  },
+                  "eventSource": "click"
+                },
+                {
+                  "type": "updateComponent",
+                  "config": {
+                    "key": "DefectSubmittedUUID",
+                    "properties": {
+                      "disabled": true
+                    }
+                  },
+                  "eventSource": "click"
+                }
+            ]
+          }
+        ]
+      },
+      {
+        "ctype": "taskPanel",
+        "title": "",
+        "header": {
+          "title": "Confirm Accessories (required for VFT)",
+          "icon": "description",
+          "iconClass": "active-header",
+          "statusIcon": "hourglass_empty",
+          "statusClass": "incomplete-status"
+        },
+        "disabled": true,
+        "hidden":true,
+        "expanded": false,
+        "hideToggle": true,
+        "panelClass": "margin-top-10",
+        "uuid": "confirmAccessoriesUUID",
+        "isBasedOnResultCode":true,
+        "items": [
+          {
+            "ctype": "compoList",
+            "uuid": "confirmAccessoriesListUUID",
+            "flexCount": 0,
+            "dataGrid": [
+              {
+                "ctype": "textField",
+                "readonly": false,
+                "uuid": "newNoUUID",
+                "type": "text",
+                "placeholder": "Scan #",
+                "recursiveItemDisabled": true,
+                "isAccessoryFlexFiled":true,
+                "hidden": false,
+                "formGroupClass": "content-container display-inline",
+                "textfieldClass": "body2",
+                "name": "partNumber",
+                "value": "revisionLeveloutbound",
+                "label": "",
+                "rightLabel": "",
+                "rightLabelClass": "body2 relative-margin25px bold-font",
+                "bindLabel": true,
+                "labelKey": "revisionLevelInbound"
+              },
+              {
+                "ctype": "iconText",
+                "text": "Missing Accessory ?",
+                "iconPosition": "Before",
+                "iconTextClass": "body missing-accessory",
+                "uuid": "missingAccessoryUUID",
+                "isAccessoryFlexFiled":true,
+                "inLine": true,
+                "name": "Missing Accessory ?",
+                "hidden": false,
+                "actions": [
+                  {
+                    "type": "populateEmailSubject",
+                    "config": {
+                      "key": "confirmAccessoriesFlexFieldsData",
+                      "properties": {}
+                    },
+                    "eventSource": "click"
+                  },
+                  {
+                    "type": "populateMissingAccessoriesNamesInTextFields",
+                    "config": {
+                      "key": "populateMissingAccessoriesNamesInTextFields",
+                      "properties": {}
+                    },
+                    "eventSource": "click"
+                  },
+                  {
+                    "type": "dialog",
+                    "uuid": "missingAccessoryEmailDialogUUID",
+                    "config": {
+                      "title": "Opisz w skrócie, na czym polega problem",
+                      "items": [
+                        {
+                          "ctype": "textField",
+                          "readonly": false,
+                          "uuid": "emailToAddressUUID",
+                          "type": "text",
+                          "placeholder": "Email To",
+                          "recursiveItemDisabled": true,
+                          "formGroupClass": "content-container display-inline",
+                          "textfieldClass": "body2  width-85",
+                          "name": "emailToAddress",
+                          "defaultValue": "radoslaw.andrzejewski@ivytech.com, tomasz.konczol@ivytech.com, hanna.kowalewska@ivytech.com",
+                          "value": "emailToAddressValue",
+                          "label": "Send to",
+                          "labelClass": "label-fault",
+                          "bindLabel": true,
+                          "required": true,
+                          "labelKey": "revisionLevelInbound"
+                        },
+                        {
+                          "ctype": "textField",
+                          "readonly": false,
+                          "targetuuid": "emailSubjectUUID",
+                          "type": "text",
+                          "placeholder": "Subject",
+                          "recursiveItemDisabled": true,
+                          "formGroupClass": "content-container display-inline",
+                          "textfieldClass": "body2 width-85",
+                          "name": "emailSubject",
+                          "defaultValue": "#emailSubjectString",
+                          "label": "Subject",
+                          "labelClass": "label-fault",
+                          "bindLabel": true,
+                          "required": true,
+                          "labelKey": "revisionLevelInbound"
+                        },
+                        {
+                          "ctype": "textarea",
+                          "label": "Body",
+                          "name": "emailBodyNote",
+                          "value": "#userAccountInfo.PersonalDetails.USERID",
+                          "textareaContainer": "timeout-class required-note",
+                          "uuid": "emailBodyUUID",
+                          "labelPosition": "width-18",
+                          "required": true,
+                          "submitable": true
+                        }
+                      ],
+                      "footer": [
+                        {
+                          "ctype": "button",
+                          "color": "primary",
+                          "text": "Cancel",
+                          "uuid": "cancelHoldUUID",
+                          "closeType": "close",
+                          "disableClose": true,
+                          "visibility": true,
+                          "dialogButton": true,
+                          "type": ""
+                        },
+                        {
+                          "ctype": "button",
+                          "color": "primary",
+                          "text": "Send",
+                          "uuid": "sendEmailButtonUUID",
+                          "dialogButton": true,
+                          "visibility": true,
+                          "disabled": true,
+                          "type": "submit",
+                          "closeType": "success"
+                        }
+                      ]
+                    },
+                    "eventSource": "click",
+                    "responseDependents": {
+                      "onSuccess": {
+                        "actions": [
+                          {
+                            "type": "context",
+                            "config": {
+                              "key": "emailBody",
+                              "data": "formData",
+                              "requestMethod": "add",
+                              "value": "emailBodyNote"
+                            },
+                            "eventSource": "click"
+                          },
+                          {
+                            "type": "context",
+                            "config": {
+                              "key": "emailBody",
+                              "data": "formData",
+                              "requestMethod": "add",
+                              "value": "emailSubject"
+                            },
+                            "eventSource": "click"
+                          },
+                          {
+                            "type": "context",
+                            "config": {
+                              "key": "emailBody",
+                              "data": "formData",
+                              "requestMethod": "add",
+                              "value": "emailToAddress"
+                            },
+                            "eventSource": "click"
+                          },
+                          {
+                            "type": "microservice",
+                            "config": {
+                              "microserviceId": "missingaccessMail",
+                              "isLocal": false,
+                              "LocalService": "assets/Responses/performFA.json",
+                              "toBeStringified": true,
+                              "requestMethod": "get",
+                              "params": {
+                                "to": "#emailBody.emailToAddress",
+                                "from": "donotreply@ivytech.com",
+                                "subject": "#emailBody.emailSubject",
+                                "body": "#emailBody.emailBodyNote"
+                              }
+                            },
+                            "eventSource": "click",
+                            "responseDependents": {
+                              "onSuccess": {
+                                "actions": [
+                                  {}
+                                ]
+                              },
+                              "onFailure": {
+                                "actions": []
+                            }
+                            }
+                          }
+                        ]
+                      },
+                      "onFailure": {}
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "footer": [
+          {
+            "ctype": "iconbutton",
+            "text": "Reset Form",
+            "uuid": "resetConfirmAccessoriesUUID",
+            "visibility": true,
+            "checkGroupValidity": false,
+            "disabled": false,
+            "icon": "not_interested",
+            "iconClass": "resetIcon",
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "missingAccessoriesList",
+                  "data": ""
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "numOfValidatedFieldsInCA",
+                  "data": 0
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "confirmAccessoriesCompleteUUID",
+                  "properties": {
+                    "disabled": true
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "clearFlexFieldAccessories",
+                "eventSource": "click"
+              }
+            ]
+          },
+          {
+            "ctype": "button",
+            "color": "primary",
+            "text": "Complete",
+            "uuid": "confirmAccessoriesCompleteUUID",
+            "class": "primary-btn",
+            "visibility": true,
+            "disabled": true,
+            "type": "submit",
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "isConfirmAccessoriessValid",
+                  "data": "true"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "confirmAccessoriesUUID",
+                  "properties": {
+                    "expanded": false,
+                    "disabled": false,
+                    "header": {
+                      "title": "Confirm Accessories",
+                      "icon": "description",
+                      "statusIcon": "check_circle",
+                      "statusClass": "complete-status",
+                      "class": "complete-task",
+                      "iconClass": "complete-task"
+                    }
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "confirmAccessoriesCompleteUUID",
+                  "properties": {
+                    "disabled": true
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "resetConfirmAccessoriesUUID",
+                  "properties": {
+                    "disabled": true
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "condition",
+                "config": {
+                  "operation": "isEqualTo",
+                  "lhs": "#isTestTaskValid",
+                  "rhs": "true"
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "condition",
+                        "config": {
+                          "operation": "isEqualTo",
+                          "lhs": "#isResultCodeValid",
+                          "rhs": "true"
+                        },
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "debugTimeoutUUID",
+                                  "properties": {
+                                    "disabled": false
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": []
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": []
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "ctype": "taskPanel",
+        "header": {
+          "title": "#testHeader",
+          "svgIcon": "calender",
+          "statusIcon": "hourglass_empty",
+          "statusClass": "incomplete-status"
+        },
+        "expanded": false,
+        "isHeaderUpdate":true,
+        "hideToggle": true,
+        "uuid": "TestUUID",
+        "visibility": false,
+        "hidden": true,
+        "disabled": false,
+        "items": [
+          {
+            "ctype": "nativeDropdown",
+            "dropdownClass": "dropdown-container condition-dropdwn body2 display-inline",
+            "uuid": "testdropdownUUID",
+            "name": "testdatopdown",
+            "dataSource": "",
+            "inputStyles": "margin-left:27px",
+            "formGroupStyles": "margin-bottom: 20px;",
+            "label": "Test Type",
+            "isDropdownNotSelected": true,
+            "defaultValue": "#Testdropdowndata",
+            "inLine": true,
+            "required": true,
+            "code": "value",
+            "displayValue": "value",
+            "hidden": false,
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "Testdropdowndata",
+                  "data": "elementControlName"
+                },
+                "eventSource": "change"
+              },
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "testHeader",
+                  "data": "#Testdropdowndata"
+                },
+                "eventSource": "change"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "TestUUID",
+                  "properties": {
+                    "header": {
+                      "title": "#Testdropdowndata",
+                      "svgIcon": "calender",
+                      "statusIcon": "hourglass_empty",
+                      "statusClass": "incomplete-status"
+                    }
+                  }
+                },
+                "eventSource": "change"
+              }
+            ]
+          }
+        ],
+        "footer": [
+          {
+            "ctype": "iconbutton",
+            "text": "Reset Form",
+            "uuid": "resetTestUUID",
+            "visibility": true,
+            "checkGroupValidity": false,
+            "disabled": false,
+            "icon": "not_interested",
+            "iconClass": "resetIcon",
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "Testdropdowndata",
+                  "data": ""
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "testHeader",
+                  "data": "Test"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "TestUUID",
+                  "properties": {
+                    "header": {
+                      "title": "#testHeader",
+                      "svgIcon": "calender",
+                      "statusIcon": "hourglass_empty",
+                      "statusClass": "incomplete-status"
+                    }
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "resetData",
+                "eventSource": "click"
+              }
+            ]
+          },
+          {
+            "ctype": "button",
+            "color": "primary",
+            "text": "Done",
+            "uuid": "completeTestUUID",
+            "class": "primary-btn",
+            "visibility": true,
+            "disabled": true,
+            "type": "submit",
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "testData",
+                  "data": "formData"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "isTestTaskValid",
+                  "data": "true"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "TestUUID",
+                  "properties": {
+                    "expanded": false,
+                    "disabled": false,
+                    "hidden": false,
+                    "header": {
+                      "title": "#Testdropdowndata",
+                      "svgIcon": "calender",
+                      "statusIcon": "check_circle",
+                      "statusClass": "complete-status",
+                      "class": "complete-task",
+                      "iconClass": "complete-task"
+                    }
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "completeTestUUID",
+                  "properties": {
+                    "disabled": true
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "resetTestUUID",
+                  "properties": {
+                    "disabled": true
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "testIconUUID",
+                  "properties": {
+                    "disabled": true
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "enableComponent",
+                "config": {
+                  "key": "obaResultCodesUUID",
+                  "property": "ResultCodes",
+                  "isNotReset": true
+                  
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "disableComponent",
+                "config": {
+                  "key": "testdropdownUUID",
+                  "property": "testdatopdown",
+                  "isNotReset": true
+                },
+                "eventSource": "click"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "ctype": "toolbar",
+        "toolbarClass": "creatorTask-Toolbar",
+        "items": [
+          {
+            "ctype": "iconText",
+            "svgIcon": "calender",
+            "text": "Test",
+            "iconTextClass": "creatorTask-Icontext",
+            "uuid": "testIconUUID",
+            "disabled": true,
+            "textClass": "heading3-regular greyish-black",
+            "iconPosition": "top",
+            "actions": [
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "TestUUID",
+                  "properties": {
+                    "hidden": false,
+                    "expanded": true,
+                    "header": {
+                      "title": "#testHeader",
+                      "svgIcon": "calender",
+                      "statusIcon": "hourglass_empty",
+                      "statusClass": "incomplete-status"
+                    }
+                  }
+                },
+                "eventSource": "click"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "footer": [
+      {
+        "ctype": "toolbar",
+        "toolbarClass": "pagecontent-footer",
+        "items": [
+          {
+            "ctype": "iconbutton",
+            "iconButtonClass": "footer-save body",
+            "text": "Exit",
+            "uuid": "discrepancySaveUUID",
+            "visibility": true,
+            "disabled": false,
+            "type": "submit",
+            "icon": "save",
+            "actions": [
+              {
+                "type": "renderTemplate",
+                "config": {
+                  "templateId": "dashboard.json",
+                  "mode": "local"
+                },
+                "eventSource": "click"
+              }
+            ]
+          },
+          {
+            "ctype": "iconbutton",
+            "iconButtonClass": "footer-save body",
+            "text": " Exit",
+            "uuid": "exitUUID",
+            "visibility": true,
+            "disabled": false,
+            "type": "submit",
+            "icon": "close",
+            "actions": [
+              {
+                "type": "clearScreenData",
+                "eventSource": "click"
+              },
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "delete",
+                  "key": "currentWC"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "renderTemplate",
+                "config": {
+                  "templateId": "dashboard.json",
+                  "mode": "local"
+                },
+                "eventSource": "click"
+              }
+            ]
+          },
+          {
+            "ctype": "iconText",
+            "uuid": "discrepancyIconUUID",
+            "icon": "add_comment",
+            "text": "Add Note",
+            "disabled": false,
+            "iconPosition": "Before",
+            "iconTextClass": "footer-addNote body",
+            "actions": [
+              {
+                "type": "dialog",
+                "uuid": "addNoteDialogUUID",
+                "config": {
+                  "title": "Add Note",
+                  "items": [
+                    {
+                      "ctype": "textarea",
+                      "name": "addNote",
+                      "textareaClass": "note-class",
+                      "uuid": "addNoteUUID",
+                      "required": true,
+                      "value": "#obatimeoutNotes.addNote",
+                      "actions": [
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "doneaddnoteUUID",
+                            "properties": {
+                              "disabled": false
+                            }
+                          },
+                          "eventSource": "onLoad"
+                        }
+                      ]
+                    }
+                  ],
+                  "footer": [
+                    {
+                      "ctype": "button",
+                      "color": "primary",
+                      "text": "Cancel",
+                      "uuid": "cancelHoldUUID",
+                      "closeType": "close",
+                      "disableClose": true,
+                      "visibility": true,
+                      "dialogButton": true,
+                      "type": ""
+                    },
+                    {
+                      "ctype": "button",
+                      "color": "primary",
+                      "text": "Done",
+                      "uuid": "doneaddnoteUUID",
+                      "dialogButton": true,
+                      "visibility": true,
+                      "disabled": true,
+                      "type": "submit",
+                      "closeType": "success"
+                    }
+                  ]
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "key": "obatimeoutNotes",
+                          "data": "formData",
+                          "requestMethod": "add",
+                          "value": "addNote"
+                        },
+                        "eventSource": "click"
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": []
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "ctype": "iconbutton",
+            "uuid": "discrepancyResumeUUID",
+            "visibility": true,
+            "disabled": false,
+            "type": "submit",
+            "icon": "play_arrow",
+            "iconClass": "",
+            "hidden": true,
+            "disableRipple": true
+          },
+          {
+            "ctype": "spacer",
+            "uuid": "emptySpaceUUID",
+            "class": "empty-space"
+          },
+          {
+            "ctype": "iconbutton",
+            "uuid": "discrepancyPauseUUID",
+            "visibility": true,
+            "disabled": false,
+            "type": "submit",
+            "icon": "pause",
+            "iconClass": "",
+            "disableRipple": true,
+            "actions": [
+              {
+                "type": "dialog",
+                "uuid": "pauseDialogUUID",
+                "config": {
+                  "title": "Hold",
+                  "items": [
+                    {
+                      "ctype": "nativeDropdown",
+                      "formGroupClass": "discrepancy-holddrpdwn",
+                      "uuid": "holdTypeUUID",
+                      "label": "Hold Type",
+                      "name": "holdType",
+                      "dataSource": "#holdCodesForDiscrepancy",
+                      "code": "storageHoldSubCode",
+                      "displayValue": "storageHoldSubCode",
+                      "defaultValue": "#storageHoldSubCode",
+                      "actions": [
+                        {
+                          "type": "context",
+                          "config": {
+                            "requestMethod": "add",
+                            "key": "storageHoldSubCode",
+                            "data": "elementControlValue"
+                          },
+                          "eventSource": "change"
+                        },
+                        {
+                          "type": "GetValueFromArray",
+                          "config": {
+                            "arrayData": "#holdCodesForDiscrepancy",
+                            "PullValue": "storageHoldCode"
+                          },
+                          "eventSource": "change"
+                        }
+                      ]
+                    },
+                    {
+                      "ctype": "textarea",
+                      "label": "Add note",
+                      "name": "holdAddNote",
+                      "textareaContainer": "timeout-class required-note",
+                      "uuid": "holdNodeUUID",
+                      "required": true,
+                      "submitable": true,
+                      "value": "#obatimeoutNotes.holdNodeUUID",
+                      "actions": []
+                    }
+                  ],
+                  "footer": [
+                    {
+                      "ctype": "button",
+                      "color": "primary",
+                      "text": "Cancel",
+                      "uuid": "cancelHoldUUID",
+                      "closeType": "close",
+                      "disableClose": true,
+                      "visibility": true,
+                      "dialogButton": true,
+                      "type": "",
+                      "hooks": [],
+                      "validations": [],
+                      "actions": []
+                    },
+                    {
+                      "ctype": "button",
+                      "color": "primary",
+                      "text": "Done",
+                      "uuid": "doneHoldUUID",
+                      "dialogButton": true,
+                      "visibility": true,
+                      "disabled": true,
+                      "type": "submit",
+                      "closeType": "success",
+                      "hooks": [],
+                      "validations": [],
+                      "actions": [
+                        {
+                          "type": "context",
+                          "config": {
+                            "key": "obatimeoutNotes",
+                            "data": "formData",
+                            "requestMethod": "add",
+                            "value": "holdAddNote"
+                          },
+                          "eventSource": "click"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "key": "holdDialogData",
+                          "data": "formData",
+                          "requestMethod": "add"
+                        },
+                        "eventSource": "click"
+                      },
+                      {
+                        "type": "microservice",
+                        "config": {
+                          "microserviceId": "addInfoCodes",
+                          "isLocal": false,
+                          "LocalService": "assets/Responses/performFA.json",
+                          "requestMethod": "post",
+                          "body": {
+                            "bcn": "#discrepancyUnitInfo.ITEM_BCN",
+                            "notes": "#holdDialogData.holdAddNote",
+                            "workCenter": "#discrepancyUnitInfo.WORKCENTER",
+                            "geography": "#discrepancyUnitInfo.GEONAME",
+                            "part": "#discrepancyUnitInfo.PART_NO",
+                            "woTimeLoggedInHours": "1",
+                            "userName": "#userAccountInfo.PersonalDetails.USERID",
+                            "password": "#loginUUID.password",
+                            "flexFields": [
+                              {
+                                "name": "Unit Damage",
+                                "value": "#AdditionalUnitDamagedata"
+                              },
+                              {
+                                "name": "FAULT_TYPE",
+                                "value": "#faultTypeDeafultValue"
+                              },
+                              {
+                                "name": "Testing method",
+                                "value": "#Testdropdowndata"
+                              }
+                            ]
+                          },
+                          "toBeStringified": true,
+                          "spliceIfEmptyValueObject": [
+                            {
+                              "identifier": "flexFields",
+                              "valueField": "value",
+                              "keyToBeRemoved": "flexFields"
+                            }
+                          ]
+                        },
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "context",
+                                "config": {
+                                  "requestMethod": "add",
+                                  "key": "addInfoRespData",
+                                  "data": "responseData"
+                                }
+                              },
+                              {
+                                "type": "microservice",
+                                "config": {
+                                  "microserviceId": "getHPTMOCOMMDebug",
+                                  "toBeStringified": true,
+                                  "requestMethod": "post",
+                                  "body": {
+                                    "itemId": "#repairUnitInfo.ITEM_ID",
+                                    "workOrderId": "#repairUnitInfo.WORKORDER_ID",
+                                    "userName": "#userAccountInfo.PersonalDetails.USERID",
+                                    "flexFields": {
+                                      "flexFieldsList": [
+                                        {
+                                          "name": "Unit Damage",
+                                          "value": "#AdditionalUnitDamagedata"
+                                        },
+                                        {
+                                          "name": "ARCToolPicture",
+                                          "value": ""
+                                        },
+                                        {
+                                          "name": "FAULT_TYPE",
+                                          "value": "#faultTypeDeafultValue"
+                                        },
+                                        {
+                                          "name": "Testing method",
+                                          "value": "#Testdropdowndata"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "eventSource": "click"
+                                },
+                                "responseDependents": {
+                                  "onSuccess": {
+                                    "actions": [
+                                      {
+                                        "type": "microservice",
+                                        "config": {
+                                          "microserviceId": "getHPRLSCommonDebugTrigger",
+                                          "requestMethod": "get",
+                                          "params": {
+                                            "userName": "#userAccountInfo.PersonalDetails.USERID",
+                                            "triggerSubType": "RELEASE",
+                                            "storageHoldCode": "#storageHoldCode",
+                                            "notes": "#holdDialogData.holdAddNote"
+                                          }
+                                        },
+                                        "responseDependents": {
+                                          "onSuccess": {
+                                            "actions": [
+                                              {
+                                                "type": "microservice",
+                                                "config": {
+                                                  "microserviceId": "moveinventory",
+                                                  "requestMethod": "post",
+                                                  "body": {
+                                                    "apiUsageClientName": "#discrepancyUnitInfo.CLIENTNAME",
+                                                    "apiUsageLocationName": "#discrepancyUnitInfo.GEONAME",
+                                                    "callSource": "FrontEnd",
+                                                    "ip": "::1",
+                                                    "items": {
+                                                      "addtionalDetails": {
+                                                        "comments": "#holdDialogData.holdAddNote",
+                                                        "fixedAssetTag": "#discrepancyUnitInfo.FAT",
+                                                        "storageHoldCode": "#storageHoldCode",
+                                                        "storageHoldSubCode": "#storageHoldSubCode"
+                                                      },
+                                                      "destinationLocation": {
+                                                        "bin": "Default",
+                                                        "geography": "#discrepancyUnitInfo.GEONAME",
+                                                        "stockingLocation": "WUR DGI",
+                                                        "warehouse": "HP LAPTOP WUR"
+                                                      },
+                                                      "item": [
+                                                        {
+                                                          "bcn": "#discrepancyUnitInfo.ITEM_BCN",
+                                                          "owner": "#discrepancyUnitInfo.CLIENTNAME",
+                                                          "partNo": "#discrepancyUnitInfo.PART_NO",
+                                                          "quantity": "1",
+                                                          "serialNo": "#discrepancyUnitInfo.SERIAL_NO",
+                                                          "condition": "Defective"
+                                                        }
+                                                      ],
+                                                      "notes": "#holdDialogData.holdAddNote",
+                                                      "sourceLocation": {
+                                                        "bin": "Default",
+                                                        "geography": "#discrepancyUnitInfo.GEONAME",
+                                                        "stockingLocation": "WIP",
+                                                        "warehouse": "HP LAPTOP WUR"
+                                                      }
+                                                    },
+                                                    "usrPwd": {
+                                                      "userName": "#loginUUID.username",
+                                                      "password": "#loginUUID.password"
+                                                    }
+                                                  },
+                                                  "toBeStringified": true
+                                                },
+                                                "responseDependents": {
+                                                  "onSuccess": {
+                                                    "actions": [
+                                                      {
+                                                        "type": "pauseScreenData"
+                                                    },
+                                                      {
+                                                        "type": "renderTemplate",
+                                                        "config": {
+                                                          "templateId": "dashboard.json",
+                                                          "mode": "local"
+                                                        }
+                                                      }
+                                                    ]
+                                                  },
+                                                  "onFailure": {
+                                                    "actions": [
+                                                      {
+                                                        "type": "context",
+                                                        "config": {
+                                                          "requestMethod": "add",
+                                                          "key": "moveinventoryForDiscrepancy",
+                                                          "data": "responseData"
+                                                        }
+                                                      },
+                                                      {
+                                                        "type": "updateComponent",
+                                                        "config": {
+                                                          "key": "discrepancyErrorTitleUUID",
+                                                          "properties": {
+                                                            "titleValue": "#moveinventoryForDiscrepancy",
+                                                            "isShown": true
+                                                          }
+                                                        }
+                                                      }
+                                                    ]
+                                                  }
+                                                },
+                                                "eventSource": "click"
+                                              }
+                                            ]
+                                          },
+                                          "onFailure": {
+                                            "actions": [
+                                              [
+                                                {
+                                                  "type": "context",
+                                                  "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "errorResp",
+                                                    "data": "responseData"
+                                                  }
+                                                },
+                                                {
+                                                  "type": "updateComponent",
+                                                  "config": {
+                                                    "key": "errorTitleUUID",
+                                                    "properties": {
+                                                      "titleValue": "#errorResp",
+                                                      "isShown": true
+                                                    }
+                                                  }
+                                                }
+                                              ]
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "onFailure": {
+                                    "actions": [
+                                      [
+                                        {
+                                          "type": "context",
+                                          "config": {
+                                            "requestMethod": "add",
+                                            "key": "errorResp",
+                                            "data": "responseData"
+                                          }
+                                        },
+                                        {
+                                          "type": "updateComponent",
+                                          "config": {
+                                            "key": "errorTitleUUID",
+                                            "properties": {
+                                              "titleValue": "#errorResp",
+                                              "isShown": true
+                                            }
+                                          }
+                                        }
+                                      ]
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": [
+                              {
+                                "type": "context",
+                                "config": {
+                                  "requestMethod": "add",
+                                  "key": "addInfoError",
+                                  "data": "responseData"
+                                }
+                              },
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "errorTitleUUID",
+                                  "properties": {
+                                    "titleValue": "#addInfoError",
+                                    "isShown": true
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        "eventSource": "click"
+                      }
+                    ]
+                  },
+                  "onFailure": {}
+                }
+              }
+            ]
+          },
+          {
+            "ctype": "nativeDropdown",
+            "dropdownClass": "footer-dropdown dropdown-container body2",
+            "uuid": "obaResultCodesUUID",
+            "name": "ResultCodes",
+            "dataSource": "#resultCodesForDiscrepancy",
+            "code": "resultCode",
+            "displayValue": "resultCode",
+            "disabled": true,
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "SelectedDescripencyResultcode",
+                  "data": "elementControlValue"
+                },
+                "eventSource": "change"
+              },
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "isResultCodeValid",
+                  "data": "true"
+                },
+                "eventSource": "change"
+              },
+              {
+                "type": "condition",
+                "config": {
+                  "operation": "isEqualTo",
+                  "lhs": "#confirmAccessoriesFFData",
+                  "rhs": "noData"
+                },
+                "eventSource": "change",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "debugTimeoutUUID",
+                          "properties": {
+                            "disabled": false
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "condition",
+                        "config": {
+                          "operation": "isEqualTo",
+                          "lhs": "#SelectedDescripencyResultcode",
+                          "rhs": "PASS"
+                        },
+                        "eventSource": "change",
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "condition",
+                                "config": {
+                                  "operation": "isEqualTo",
+                                  "lhs": "#AdditionalUnitDamagedata",
+                                  "rhs": "No"
+                                },
+                                "responseDependents": {
+                                  "onSuccess": {
+                                    "actions": [
+                                      {
+                                        "type": "condition",
+                                        "config": {
+                                          "operation": "isEqualTo",
+                                          "lhs": "#isConfirmAccessoriessValid",
+                                          "rhs": "false"
+                                        },
+                                        "eventSource": "click",
+                                        "responseDependents": {
+                                          "onSuccess": {
+                                            "actions": [
+                                              {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                  "key": "confirmAccessoriesUUID",
+                                                  "properties": {
+                                                    "disabled": false,
+                                                    "expanded": true
+                                                  }
+                                                }
+                                              },
+                                              {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                  "key": "debugTimeoutUUID",
+                                                  "properties": {
+                                                    "disabled": true
+                                                  }
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          "onFailure": {
+                                            "actions": [
+                                              {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                  "key": "debugTimeoutUUID",
+                                                  "properties": {
+                                                    "disabled": false
+                                                  }
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "onFailure": {
+                                    "actions": [
+                                      {
+                                        "type": "updateComponent",
+                                        "config": {
+                                          "key": "debugTimeoutUUID",
+                                          "properties": {
+                                            "disabled": false
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": [
+                              {
+                                "type": "condition",
+                                "config": {
+                                  "operation": "isEqualTo",
+                                  "lhs": "#SelectedDescripencyResultcode",
+                                  "rhs": "PASS_PAC"
+                                },
+                                "eventSource": "click",
+                                "responseDependents": {
+                                  "onSuccess": {
+                                    "actions": [
+                                      {
+                                        "type": "condition",
+                                        "config": {
+                                          "operation": "isEqualTo",
+                                          "lhs": "#AdditionalUnitDamagedata",
+                                          "rhs": "No"
+                                        },
+                                        "eventSource": "click",
+                                        "responseDependents": {
+                                          "onSuccess": {
+                                            "actions": [
+                                              {
+                                                "type": "condition",
+                                                "config": {
+                                                  "operation": "isEqualTo",
+                                                  "lhs": "#isConfirmAccessoriessValid",
+                                                  "rhs": "false"
+                                                },
+                                                "eventSource": "click",
+                                                "responseDependents": {
+                                                  "onSuccess": {
+                                                    "actions": [
+                                                      {
+                                                        "type": "updateComponent",
+                                                        "config": {
+                                                          "key": "confirmAccessoriesUUID",
+                                                          "properties": {
+                                                            "disabled": false,
+                                                            "expanded": true
+                                                          }
+                                                        }
+                                                      },
+                                                      {
+                                                        "type": "updateComponent",
+                                                        "config": {
+                                                          "key": "debugTimeoutUUID",
+                                                          "properties": {
+                                                            "disabled": true
+                                                          }
+                                                        }
+                                                      }
+                                                    ]
+                                                  },
+                                                  "onFailure": {
+                                                    "actions": [
+                                                      {
+                                                        "type": "updateComponent",
+                                                        "config": {
+                                                          "key": "debugTimeoutUUID",
+                                                          "properties": {
+                                                            "disabled": false
+                                                          }
+                                                        }
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          "onFailure": {
+                                            "actions": [
+                                              {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                  "key": "debugTimeoutUUID",
+                                                  "properties": {
+                                                    "disabled": false
+                                                  }
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "onFailure": {
+                                    "actions": [
+                                      {
+                                        "type": "updateComponent",
+                                        "config": {
+                                          "key": "debugTimeoutUUID",
+                                          "properties": {
+                                            "disabled": false
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "ctype": "button",
+            "color": "primary",
+            "text": "Time Out",
+            "uuid": "debugTimeoutUUID",
+            "visibility": true,
+            "disabled": true,
+            "type": "submit",
+            "buttonClass": "footer-button primary-btn",
+            "class": "primary-btn",
+            "actions": [
+              {
+                "type": "multipleCondition",
+                "config": {
+                  "operation": "isEqualTo",
+                  "lhs": "Yes",
+                  "rhs": "#damagedescdata.AdditionalUnitDamage"
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "condition",
+                        "config": {
+                          "operation": "isEqualTo",
+                          "lhs": "#radiogroupdata.defectradiobutton",
+                          "rhs": "MAJOR"
+                        },
+                        "eventSource": "click",
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "concatContexts",
+                                "config": {
+                                  "contextKey": "finalNotes",
+                                  "contexts": [
+                                    "#damagedescdata.DamageDescription",
+                                    "#defectdescdata.DefectDescription"
+                                  ]
+                                },
+                                "eventSource": "click"
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": [
+                              {
+                                "type": "condition",
+                                "config": {
+                                  "operation": "isEqualTo",
+                                  "lhs": "#radiogroupdata.defectradiobutton",
+                                  "rhs": "MINOR"
+                                },
+                                "eventSource": "click",
+                                "responseDependents": {
+                                  "onSuccess": {
+                                    "actions": [
+                                      {
+                                        "type": "concatContexts",
+                                        "config": {
+                                          "contextKey": "finalNotes",
+                                          "contexts": [
+                                            "#damagedescdata.DamageDescription",
+                                            "#defectdescdata.DefectDescription"
+                                          ]
+                                        },
+                                        "eventSource": "click"
+                                      }
+                                    ]
+                                  },
+                                  "onFailure": {
+                                    "actions": []
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "condition",
+                        "config": {
+                          "operation": "isEqualTo",
+                          "lhs": "#radiogroupdata.defectradiobutton",
+                          "rhs": "MAJOR"
+                        },
+                        "eventSource": "click",
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "context",
+                                "config": {
+                                  "requestMethod": "add",
+                                  "key": "finalNotes",
+                                  "data": "#defectdescdata.DefectDescription"
+                                },
+                                "eventSource": "click"
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": [
+                              {
+                                "type": "condition",
+                                "config": {
+                                  "operation": "isEqualTo",
+                                  "lhs": "#radiogroupdata.defectradiobutton",
+                                  "rhs": "MINOR"
+                                },
+                                "eventSource": "click",
+                                "responseDependents": {
+                                  "onSuccess": {
+                                    "actions": [
+                                      {
+                                        "type": "context",
+                                        "config": {
+                                          "requestMethod": "add",
+                                          "key": "finalNotes",
+                                          "data": "#defectdescdata.DefectDescription"
+                                        },
+                                        "eventSource": "click"
+                                      }
+                                    ]
+                                  },
+                                  "onFailure": {
+                                    "actions": []
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "type": "condition",
+                "config": {
+                  "operation": "isEqualTo",
+                  "lhs": "#obatimeoutNotes.addNote",
+                  "rhs": ""
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "mainNotes",
+                          "data": "#finalNotes"
+                        },
+                        "eventSource": "click"
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "concatContexts",
+                        "config": {
+                          "contextKey": "mainNotes",
+                          "contexts": [
+                            "#finalNotes",
+                            "#obatimeoutNotes.addNote"
+                          ]
+                        },
+                        "eventSource": "click"
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "type": "microservice",
+                "config": {
+                  "microserviceId": "getStopShipProcess",
+                  "requestMethod": "get",
+                  "params": {
+                    "locationId": "#repairUnitInfo.LOCATION_ID",
+                    "clientId": "#repairUnitInfo.CLIENT_ID",
+                    "contract": "#repairUnitInfo.CONTRACT_ID",
+                    "bcn": "#repairUnitInfo.ITEM_BCN",
+                    "serial": "#repairUnitInfo.SERIAL_NO",
+                    "fat": "#repairUnitInfo.FAT",
+                    "partNo": "#repairUnitInfo.PART_NO",
+                    "opt": "#repairUnitInfo.ROUTE",
+                    "wcid": "#repairUnitInfo.WORKCENTER_ID",
+                    "userName": "#userAccountInfo.PersonalDetails.USERID"
+                  }
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "microservice",
+                        "config": {
+                          "microserviceId": "getHPAccessory",
+                          "requestMethod": "post",
+                          "body": {
+                            "userName": "#userAccountInfo.PersonalDetails.USERID",
+                            "processType": "",
+                            "workCenterId": "#repairUnitInfo.WORKCENTER_ID",
+                            "clientId": "#repairUnitInfo.CLIENT_ID",
+                            "contractId": "#repairUnitInfo.CONTRACT_ID",
+                            "locationId": "#repairUnitInfo.LOCATION_ID",
+                            "resultCode": "#SelectedDescripencyResultcode",
+                            "initialResultCode": "",
+                            "itemId": "#repairUnitInfo.ITEM_ID",
+                            "workCenterName": "#repairUnitInfo.WORKCENTER",
+                            "flexFields": {
+                              "flexFieldsList": "#confirmAccessoriesFlexFieldsData"
+                            }
+                          },
+                          "toBeStringified": true
+                        },
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "microservice",
+                                "config": {
+                                  "microserviceId": "performTimeOut",
+                                  "requestMethod": "post",
+                                  "body": {
+                                    "timeOutRequest": {
+                                      "location": "#repairUnitInfo.GEONAME",
+                                      "bcn": "#repairUnitInfo.ITEM_BCN",
+                                      "workCenter": "#repairUnitInfo.WORKCENTER",
+                                      "password": "#loginUUID.password",
+                                      "warrantyInd": "false",
+                                      "notes": "#mainNotes",
+                                      "resultCode": "#SelectedDescripencyResultcode",
+                                      "workCenterFlexFieldList": {
+                                        "flexField": [
+                                          {
+                                            "name": "Unit Damage",
+                                            "value": "#AdditionalUnitDamagedata"
+                                          },
+                                          {
+                                            "name": "FAULT_TYPE",
+                                            "value": "#faultTypeDeafultValue"
+                                          },
+                                          {
+                                            "name": "Testing method",
+                                            "value": "#Testdropdowndata"
+                                          }
+                                        ]
+                                      },
+                                      "infoCodeList": {}
+                                    },
+                                    "modifyWarranty": 0,
+                                    "timeOutType": "ProcessImmediate",
+                                    "clientName": "#repairUnitInfo.CLIENTNAME",
+                                    "contractName": "#repairUnitInfo.CONTRACTNAME",
+                                    "userName": "#loginUUID.username",
+                                    "userPass": "#loginUUID.password",
+                                    "ip": "::1",
+                                    "callSource": "FrontEnd",
+                                    "apiUsage_LocationName": "#repairUnitInfo.GEONAME",
+                                    "apiUsage_ClientName": "#repairUnitInfo.CLIENTNAME"
+                                  },
+                                  "toBeStringified": true,
+                                  "removeUndefinedFields": [
+                                    {
+                                      "KeyName": "notes",
+                                      "KeyValue": "#mainNotes"
+                                    }
+                                  ],
+                                  "spliceIfEmptyValueObject": [
+                                    {
+                                      "identifier": "flexField",
+                                      "valueField": "value"
+                                    }
+                                  ]
+                                },
+                                "responseDependents": {
+                                  "onSuccess": {
+                                    "actions": [
+                                      {
+                                        "type": "clearScreenData"
+                                    },
+                                      {
+                                        "type": "renderTemplate",
+                                        "config": {
+                                          "templateId": "dashboard.json",
+                                          "mode": "local"
+                                        }
+                                      }
+                                      
+                                    ]
+                                  },
+                                  "onFailure": {
+                                    "actions": [
+                                      {
+                                        "type": "context",
+                                        "config": {
+                                          "requestMethod": "add",
+                                          "key": "performTimeoutData",
+                                          "data": "responseData"
+                                        }
+                                      },
+                                      {
+                                        "type": "updateComponent",
+                                        "config": {
+                                          "key": "errorTitleUUID",
+                                          "properties": {
+                                            "titleValue": "#performTimeoutData",
+                                            "isShown": true
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": [
+                              {
+                                "type": "context",
+                                "config": {
+                                  "requestMethod": "add",
+                                  "key": "getHPAccessoryData",
+                                  "data": "responseData"
+                                }
+                              },
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "errorTitleUUID",
+                                  "properties": {
+                                    "titleValue": "#getHPAccessoryData",
+                                    "isShown": true
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "getStopShipProcessData",
+                          "data": "responseData"
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "errorTitleUUID",
+                          "properties": {
+                            "titleValue": "#getStopShipProcessData",
+                            "isShown": true
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "Result": "SUCCESS"
+}

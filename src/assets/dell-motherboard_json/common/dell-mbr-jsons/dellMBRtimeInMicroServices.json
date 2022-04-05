@@ -1,0 +1,118 @@
+{
+  "type": "microservice",
+  "config": {
+    "microserviceId": "performTimeIn",
+    "requestMethod": "post",
+    "body": {
+      "timeInRequest": {
+        "workCenter": "#discrepancyUnitInfo.DESTINATIONWC",
+        "location": "#discrepancyUnitInfo.GEONAME",
+        "part": "#discrepancyUnitInfo.PART_NO",
+        "bcn": "#discrepancyUnitInfo.ITEM_BCN",
+        "serialNumber": "#discrepancyUnitInfo.SERIAL_NO",
+        "password": "#loginUUID.password"
+      },
+      "SesCustomer": 1,
+      "userName": "#loginUUID.username",
+      "userPass": "#loginUUID.password",
+      "ip": "::1",
+      "callSource": "FrontEnd",
+      "apiUsage_LocationName": "#discrepancyUnitInfo.GEONAME",
+      "apiUsage_ClientName": "#discrepancyUnitInfo.CLIENTNAME"
+    },
+    "toBeStringified": true
+  },
+  "responseDependents": {
+    "onSuccess": {
+      "actions": [
+        {
+          "type": "microservice",
+          "config": {
+            "microserviceId": "getUnitInfo",
+            "requestMethod": "get",
+            "params": {
+              "unitIdentificationValue": "#dellSearchCriteriaData.unitIdentificationValue",
+              "identificatorType": "#dellSearchCriteriaData.identificatorTypeForUnit",
+              "locationId": "#userSelectedLocation",
+              "clientId": "#userSelectedClient",
+              "contractId": "#userSelectedContract"
+            }
+          },
+          "eventSource": "click",
+          "responseDependents": {
+            "onSuccess": {
+              "actions": [
+                {
+                  "type": "context",
+                  "config": {
+                    "requestMethod": "add",
+                    "key": "discrepancyUnitInfo",
+                    "data": "responseData"
+                  }
+                },
+                {
+                  "type": "context",
+                  "config": {
+                    "requestMethod": "add",
+                    "key": "repairUnitInfo",
+                    "data": "responseData"
+                  }
+                },
+                {
+                  "type": "dellMBRcommonAction",
+                  "config": {
+                    "discrepancyUnitInfo": "#discrepancyUnitInfo"
+                  }
+                }
+              ]
+            },
+            "onFailure": {
+              "actions": [
+                {
+                  "type": "context",
+                  "config": {
+                    "requestMethod": "add",
+                    "key": "titleError",
+                    "data": "responseData"
+                  }
+                },
+                {
+                  "type": "updateComponent",
+                  "config": {
+                    "key": "searchCriteriaErrorTitleUUID",
+                    "properties": {
+                      "titleValue": "#titleError",
+                      "isShown": true
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "onFailure": {
+      "actions": [
+        {
+          "type": "context",
+          "config": {
+            "requestMethod": "add",
+            "key": "timeinError",
+            "data": "responseData"
+          }
+        },
+        {
+          "type": "updateComponent",
+          "config": {
+            "key": "searchCriteriaErrorTitleUUID",
+            "properties": {
+              "titleValue": "#timeinError",
+              "isShown": true
+            }
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,28 @@
+<div [class]="tableDivCalss">
+  <table mat-table [dataSource]="datasource" class="mat-elevation-z8 " matSort>
+    <div *ngFor="let column of displayedColumns;">
+      <ng-container matColumnDef="{{column}}">
+        <th mat-header-cell *matHeaderCellDef [class]="tableHeaderClass">
+          <div class="sortIconsDiv">
+            <span *ngIf="iconList[column].showText">{{column | translate}}</span>
+            <span *ngIf="iconList[column].enableSort" class="icons-wrapper">
+              <i (click)="onSort('asc', column)" class="fas fa-sort-up"></i>
+              <i (click)="onSort('desc', column)" class="fas fa-sort-down"></i>
+            </span>
+          </div>
+        </th>
+        <td mat-cell *matCellDef="let element" [class]="tableDataClass">
+          <!-- Icon before of display value -->
+          <mat-icon *ngIf="iconList[column].iconBeforeText" [class]="iconList[column].iconClass">
+            {{iconList[column].icon}}</mat-icon>
+          <span *ngIf="iconList[column].showText">{{element[column] | translate}}</span>
+          <!-- Icon after of display value -->
+          <mat-icon *ngIf="iconList[column].iconAfterText" [class]="iconList[column].iconClass">
+            {{iconList[column].icon}}</mat-icon>
+        </td>
+      </ng-container>
+    </div>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="onClickOfRow(row)"></tr>
+  </table>
+</div>

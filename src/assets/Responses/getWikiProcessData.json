@@ -1,0 +1,17 @@
+ {  
+    "wikiFeature" : {
+      "adminPendingWikiInstructions": 1,
+      "adminSubmitedWikiInstructions": 2,
+      "adminDraftWikiInstructions": 3,
+      "adminWikiInstructions": 4,
+      "adminAddWiki":5,
+      "approvedWikiList":6
+  },
+  "rbacList": [
+      {"Glb_Wiki_technician" :[2,3,6]},
+      {"Glb_Wiki_SME" : [1,2,3,4,5,6]},
+      {"Glb_Wiki_engineer" : [1,2,3,4,5,6]},
+      {"GLB_VIEWER" :[4]},
+      {"Glb_Wiki_View" : [4]}
+    ]  
+  }

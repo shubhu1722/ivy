@@ -1,0 +1,1295 @@
+{
+    "ResultData": {
+        "ctype": "page",
+        "uuid": "pageUUID",
+        "visibility": true,
+        "hooks": [
+            {
+                "type": "microservice",
+                "hookType": "afterInit",
+                "config": {
+                    "microserviceId": "getPreviousWCNote",
+                    "requestMethod": "get",
+                    "params": {
+                        "itemId": "#UnitInfo.ITEM_ID"
+                    }
+                },
+                "responseDependents": {
+                    "onSuccess": {
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "lastNoteData",
+                                    "data": "responseData"
+                                }
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "verifoneVMIPhotoLastNoteTextUUID",
+                                    "properties": {
+                                        "titleValue": "#lastNoteData.timeOutNote"
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    "onFailure": {
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "errorDisp",
+                                    "data": "responseData"
+                                }
+                            },
+                            {
+                                "type": "condition",
+                                "config": {
+                                    "operation": "isEqualTo",
+                                    "lhs": "#errorDisp",
+                                    "rhs": "No Record Found"
+                                },
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "errorTitleUUID",
+                                                    "properties": {
+                                                        "titleValue": "#errorDisp",
+                                                        "isShown": false
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": [
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "errorTitleUUID",
+                                                    "properties": {
+                                                        "titleValue": "#errorDisp",
+                                                        "isShown": true
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+        ],
+        "header": [
+            {
+                "ctype": "breadcrumb",
+                "style": "padding-left: 4px;",
+                "breadcrumbs": [
+                    {
+                        "label": "#userSelectedLocationName"
+                    },
+                    {
+                        "label": "#userSelectedClientName"
+                    },
+                    {
+                        "label": "#userSelectedContractName"
+                    }
+                ]
+            },
+            {
+                "ctype": "toolbar",
+                "css": "padding-top: 35px;",
+                "toolbarClass": "pagecontent-header",
+                "items": [
+                    {
+                        "ctype": "title",
+                        "uuid": "VMIPhotoHHeadertitleuuid",
+                        "titleValue": "VMI Photo",
+                        "titleClass": "section-title",
+                        "css": "padding-bottom: 35px;padding-left: 4px;"
+                    },
+                    {
+                        "ctype": "spacer",
+                        "uuid": "emptySpaceUUID",
+                        "class": "empty-space"
+                    },
+                    {
+                        "ctype": "iconbutton",
+                        "iconButtonClass": "headeropen-button",
+                        "text": "",
+                        "uuid": "pageopenUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "hidden": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "icon": "menu_open",
+                        "disableRipple": true,
+                        "iconClass": "header-icon",
+                        "css": "padding-bottom: 35px;",
+                        "actions": [
+                            {
+                                "type": "toggle",
+                                "eventSource": "click",
+                                "name": "subProcessRightNavref"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "openUUID",
+                                    "properties": {
+                                        "hidden": false
+                                    }
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "pageopenUUID",
+                                    "properties": {
+                                        "hidden": true
+                                    }
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "items": [
+            {
+                "ctype": "title",
+                "uuid": "successTitleUUID",
+                "titleClass": "success-title",
+                "isShown": false,
+                "containerId": "prebodysectionone"
+            },
+            {
+                "ctype": "title",
+                "uuid": "errorTitleUUID",
+                "titleClass": "error-title",
+                "isShown": false,
+                "containerId": "prebodysectionone"
+            },
+            {
+                "ctype": "taskPanel",
+                "title": "",
+                "containerId": "prebodysectiontwo",
+                "header": {
+                  "title": "Last note",
+                  "svgIcon": "description_icon",
+                  "iconClass": "active-header",
+                  "class": "greyish-black"
+                },
+                "expanded": false,
+                "disabled": false,
+                "hideToggle": true,
+                "isMandatory": false,
+                "taskPanelHeaderClass":"background-white",
+                "hidden": false,
+                "hooks": [],
+                "validations": [],
+                "actions": [],
+                "isblueBorder": true,
+                "uuid": "verifoneVMIPhotolastNoteTaskUUID",
+                "visibility": true,
+                "items": [
+                  {
+                    "ctype": "title",
+                    "uuid": "verifoneVMIPhotoLastNoteTextUUID",
+                    "titleClass": "greyish-black body-italic assessment-alert",
+                    "title": ""
+                  }
+                ]
+            },
+            {
+            "ctype": "taskPanel",
+            "title": "",
+            "isblueBorder": true,
+            "containerId": "prebodysectiontwo",
+            "header": {
+                "title": "Repair Information",
+                "svgIcon": "description_icon",
+                "iconClass": "active-header",
+                "statusIcon": "hourglass_empty",
+                "statusClass": "incomplete-status",
+                "class": "greyish-black"
+            },
+            "uuid": "verifoneVMIPhotoRepairInformationTaskUUID",
+            "expanded": true,
+            "hideToggle": true,
+            "disabled": false,
+            "visibility": true,
+            "isEditable": true,
+            "isMandatory": false,
+            "hooks": [],
+            "validations": [],
+            "actions": [],
+            "items": [
+                {
+                "ctype": "title",
+                "uuid": "verifoneVMIPhotoRepairInformationTextUUID",
+                "titleClass": "greyish-black body-italic assessment-alert",
+                "title": ""
+                },
+                {
+                    "ctype": "title",
+                    "uuid": "verifoneVMIPhotoRepairInformationSMSpacerUUID",
+                    "titleClass": "greyish-black body-italic assessment-alert",
+                    "isShown": false,
+                    "title": ""
+                },
+                {
+                    "ctype": "title",
+                    "uuid": "verifoneVMIPhotoRepairInformationSMHeadingUUID",
+                    "titleClass": "greyish-black heading2",
+                    "isShown": false,
+                    "title": "Special Message"
+                },
+                {
+                    "ctype": "title",
+                    "uuid": "verifoneVMIPhotoRepairInformationSMUUID",
+                    "titleClass": "greyish-black body-italic",
+                    "isShown": false,
+                    "title": ""
+                },
+                {
+                "ctype": "checkbox",
+                "name": "verifoneVMIPhotoReadMessageCheckbox",
+                "uuid": "verifoneVMIPhotoReadMessageUUID",
+                "hooks": [],
+                "validations": [],
+                "required": true,
+                "disabled": false,
+                "label": "I have read this message",
+                "labelPosition": "after",
+                "submitable": true,
+                "isDisableNotReq": true,
+                "checkboxContainer": "label-init",
+                "actions": [
+                    {
+                    "type": "context",
+                    "config": {
+                        "requestMethod": "add",
+                        "key": "verifoneVMIPhotoCheckboxValue",
+                        "data": "formData"
+                    },
+                    "eventSource": "click"
+                    },
+                    {
+                    "type": "condition",
+                    "config": {
+                        "operation": "isValid",
+                        "lhs": "#verifoneVMIPhotoCheckboxValue.verifoneVMIPhotoReadMessageCheckbox"
+                    },
+                    "eventSource": "click",
+                    "responseDependents": {
+                        "onSuccess": {
+                        "actions": [
+                            {
+                            "type": "updateComponent",
+                            "config": {
+                                "key": "verifoneVMIPhotoCompleteeButtonUUID",
+                                "properties": {
+                                "disabled": false
+                                }
+                            }
+                            }
+                        ]
+                        },
+                        "onFailure": {
+                        "actions": [
+                            {
+                            "type": "updateComponent",
+                            "config": {
+                                "key": "verifoneVMIPhotoCompleteeButtonUUID",
+                                "properties": {
+                                "disabled": true
+                                }
+                            }
+                            }
+                        ]
+                        }
+                    }
+                    }
+                ]
+                }
+            ],
+            "footer": [
+                {
+                "ctype": "button",
+                "color": "primary",
+                "text": "Complete",
+                "class": "primary-btn",
+                "name":"verifoneVMIPhotoRepairInfoCompleteName",
+                "isDisableNotReq": true,
+                "uuid": "verifoneVMIPhotoCompleteeButtonUUID",
+                "disabled": true,
+                "hidden": false,
+                "visibility": true,
+                "type": "submit",
+                "hooks": [],
+                "validations": [],
+                "actions": [
+                    {
+                        "type": "context",
+                        "config": {
+                            "requestMethod": "add",
+                            "key": "repairInfoEstimateData",
+                            "data": "rawFormData"
+                        },
+                        "eventSource": "click"
+                    },
+                    {
+                    "type": "enableComponent",
+                    "config": {
+                        "key": "verifoneVMIPhotoResultCodesUUID",
+                        "property": "ResultCodes"
+                    },
+                    "eventSource": "click"
+                },
+                {
+                    "type": "updateComponent",
+                    "config": {
+                    "key": "verifoneVMIPhotoRepairInformationTaskUUID",
+                    "properties": {
+                        "expanded": false,
+                        "disabled": false,
+                        "header": {
+                        "title": "Repair Information",
+                        "svgIcon": "description_icon",
+                        "statusIcon": "check_circle",
+                        "statusClass": "complete-status",
+                        "class": "complete-task ",
+                        "iconClass": "complete-task"
+                        }
+                    }
+                    },
+                    "eventSource": "click"
+                },
+                    {
+                        "type": "condition",
+                        "config": {
+                            "operation": "isEqualTo",
+                            "lhs": "#repairInfoEstimateData.verifoneVMIPhotoReadMessageCheckbox",
+                            "rhs": true
+                        },
+                        "eventSource": "click",
+                        "responseDependents": {
+                            "onSuccess": {
+                                "actions": [
+                                    {
+                                        "type": "context",
+                                        "config": {
+                                            "requestMethod": "add",
+                                            "key": "submitablemsgRead",
+                                            "data": "Yes"
+                                        }
+                                    }
+                                ]
+                            },
+                            "onFailure": {
+                                "actions": [
+                                    {
+                                        "type": "context",
+                                        "config": {
+                                            "requestMethod": "add",
+                                            "key": "submitablemsgRead",
+                                            "data": "No"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    {
+                    "type": "updateComponent",
+                    "config": {
+                        "key": "verifoneVMIPhotoCDInfoUUID",
+                        "properties": {
+                        "expanded": true,
+                        "disabled": false,
+                        "header": {
+                            "title": "CD Info",
+                            "svgIcon": "description_icon",
+                            "iconClass": "complete-task",
+                            "statusIcon": "hourglass_empty",
+                            "statusClass": "incomplete-status",
+                            "class": "greyish-black"
+                        }
+                        }
+                    },
+                    "eventSource": "click"
+                    }
+                ]
+                }
+            ]
+            },
+            {
+                "ctype": "taskPanel",
+                "containerId": "prebodysectiontwo",
+                "header": {
+                    "title": "CD Info",
+                    "svgIcon": "description_icon",
+                    "iconClass": "active-header",
+                    "statusIcon": "hourglass_empty",
+                    "statusClass": "incomplete-status",
+                    "class": "greyish-black"
+                },
+                "expanded": false,
+                "hideToggle": true,
+                "uuid": "verifoneVMIPhotoCDInfoUUID",
+                "visibility": false,
+                "disabled": true,
+                "hooks": [],
+                "validations": [],
+                "actions": [],
+                "items": [
+                    {
+                        "ctype": "title",
+                        "uuid": "verifoneVMIPhotoCDInfoTextUUID",
+                        "titleValue": "Follow the direction below",
+                        "titleValueClass": "body-italic text-secondary"
+                    },
+                    {
+                        "ctype": "title",
+                        "uuid": "verifoneVMIPhotoCDInfoTextUUID",
+                        "titleValue": "Cosmetic Damage Message Full CD",
+                        "titleValueClass": "text-secondary"
+                    },
+                    {
+                        "ctype": "actionToggle",
+                        "formGroupClass": "body2 d-flex justify-content-between  mb-2 verifone-receiving-toggle",
+                        "parentUUID": "verifoneVMIPhotoCDInfoUUID",
+                        "labelPosition": "before",
+                        "label": "Liquid spiled ?",
+                        "labelClass": "dell-greyish-black pt-2",
+                        "required": false,
+                        "submitable": true,
+                        "selectedVal": "True",
+                        "name": "IsLiquidSplied",
+                        "sublabel": "",
+                        "options": [                            
+                            {
+                                "bgcolor": "light-blue",
+                                "color": "white",
+                                "text": "No",
+                                "value": "False"
+                            },
+                            {
+                                "bgcolor": "light-blue",
+                                "color": "white",
+                                "text": "Yes",
+                                "value": "True"
+                            }
+                        ],
+                        "validations": [],
+                        "uuid": "IsLiquidSpliedUUID",
+                        "hooks": [
+                            
+                        ],
+                        "actions": [
+                            {
+                                "type": "context",
+                                "eventSource": "change",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "IsLiquidSpliedData",
+                                    "data": "elementControlValue"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "divider",
+                        "css": "width:100%;"
+                    },
+                    {
+                        "ctype": "actionToggle",
+                        "formGroupClass": "body2 d-flex justify-content-between  mb-2 mt-2 verifone-receiving-toggle",
+                        "parentUUID": "verifoneVMIPhotoCDInfoUUID",
+                        "labelPosition": "before",
+                        "label": "Customer Invoiced ?",
+                        "labelClass": "dell-greyish-black pt-2",
+                        "required": false,
+                        "submitable": true,
+                        "selectedVal": "True",
+                        "name": "IsCustomerInvoiced",
+                        "sublabel": "",
+                        "options": [                            
+                            {
+                                "bgcolor": "light-blue",
+                                "color": "white",
+                                "text": "No",
+                                "value": "False"
+                            },
+                            {
+                                "bgcolor": "light-blue",
+                                "color": "white",
+                                "text": "Yes",
+                                "value": "True"
+                            }
+                        ],
+                        "validations": [],
+                        "uuid": "IsCustomerInvoicedUUID",
+                        "hooks": [
+                            
+                        ],
+                        "actions": [
+                            {
+                                "type": "context",
+                                "eventSource": "change",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "IsCustomerInvoiceddata",
+                                    "data": "elementControlValue"
+                                }
+                            }
+                        ]
+                    }
+                ],
+                "footer": [
+                    {
+                        "ctype": "button",
+                        "color": "primary",
+                        "text": "Complete",
+                        "class": "primary-btn",
+                        "uuid": "CDInfoSubmitUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "actions": [
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "verifoneVMIPhotoCDInfoUUID",
+                                    "properties": {
+                                        "expanded": false,
+                                        "disabled": false,
+                                        "header": {
+                                            "title": "CD Info",
+                                            "svgIcon": "description_icon",
+                                            "iconClass": "active-header",
+                                            "statusIcon": "check_circle",
+                                            "statusClass": "complete-status",
+                                            "class": "disable-text"
+                                        }
+                                    }
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key" : "verifoneVMIPhotoPhotoCaptureUUID",
+                                    "properties": {
+                                        "expanded" : true,
+                                        "disabled": false
+                                    }
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "ctype": "taskPanel",
+                "containerId": "prebodysectiontwo",
+                "header": {
+                    "title": "Photo Capture",
+                    "svgIcon": "description_icon",
+                    "iconClass": "active-header",
+                    "statusIcon": "hourglass_empty",
+                    "statusClass": "incomplete-status",
+                    "class": "greyish-black"
+                },
+                "expanded": false,
+                "hideToggle": true,
+                "uuid": "verifoneVMIPhotoPhotoCaptureUUID",
+                "visibility": false,
+                "disabled": true,
+                "hooks": [],
+                "validations": [],
+                "actions": [],
+                "items": [
+                ],
+                "footer": [
+                    {
+                        "ctype": "button",
+                        "color": "primary",
+                        "text": "Capture",
+                        "class": "primary-btn",
+                        "uuid": "verifoneVMIPhotoPhotoCaptureSubmitUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "actions": [
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "verifoneVMIPhotoPhotoCaptureUUID",
+                                    "properties": {
+                                        "expanded": false,
+                                        "disabled": false,
+                                        "header": {
+                                            "title": "Photo Capture",
+                                            "svgIcon": "description_icon",
+                                            "iconClass": "active-header",
+                                            "statusIcon": "check_circle",
+                                            "statusClass": "complete-status",
+                                            "class": "disable-text"
+                                        }
+                                    }
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key" : "verifoneVMIPhotoImageEditingUUID",
+                                    "properties": {
+                                        "expanded" : true,
+                                        "disabled": false,
+                                        "hidden" : false
+                                    }
+                                },
+                                "eventSource": "click"
+                            }                            
+                        ]
+                    }
+                ]
+            },
+            {
+                "ctype": "taskPanel",
+                "containerId": "prebodysectiontwo",
+                "header": {
+                    "title": "Image Editing",
+                    "svgIcon": "description_icon",
+                    "iconClass": "active-header",
+                    "statusIcon": "hourglass_empty",
+                    "statusClass": "incomplete-status",
+                    "class": "greyish-black"
+                },
+                "expanded": false,
+                "hideToggle": true,
+                "uuid": "verifoneVMIPhotoImageEditingUUID",
+                "visibility": false,
+                "hidden": true,
+                "disabled": true,
+                "hooks": [],
+                "validations": [],
+                "actions": [],
+                "items": [
+                    {
+                        "ctype": "imageEditorGrid",
+                        "name": "viewImage",
+                        "uuid": "viewImageUUID",
+                        "imageData": "",
+                        "modelTitle": ""
+                    }
+                ],
+                "footer": [
+                    {
+                        "ctype": "button",
+                        "color": "primary",
+                        "text": "Complete",
+                        "class": "primary-btn",
+                        "uuid": "verifoneVMIPhotoImageEditingSubmitUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "actions": [
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "verifoneVMIPhotoImageEditingUUID",
+                                    "properties": {
+                                        "expanded": false,
+                                        "disabled": false,
+                                        "header": {
+                                            "title": "Image Editing",
+                                            "svgIcon": "description_icon",
+                                            "iconClass": "active-header",
+                                            "statusIcon": "check_circle",
+                                            "statusClass": "complete-status",
+                                            "class": "disable-text"
+                                        }
+                                    }
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "verifoneVMIPhotoRecordHoldBinUUID",
+                                    "properties": {
+                                        "disabled": false,
+                                        "expanded": true,
+                                        "hidden" : false
+                                    }
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "ctype": "taskPanel",
+                "containerId": "prebodysectiontwo",
+                "header": {
+                    "title": "Record Hold Bin",
+                    "svgIcon": "description_icon",
+                    "iconClass": "active-header",
+                    "statusIcon": "hourglass_empty",
+                    "statusClass": "incomplete-status",
+                    "class": "greyish-black"
+                },
+                "expanded": false,
+                "hideToggle": true,
+                "uuid": "verifoneVMIPhotoRecordHoldBinUUID",
+                "visibility": false,
+                "disabled": true,
+                "hidden":true,
+                "hooks": [],
+                "validations": [],
+                "actions": [],
+                "items": [
+                    {
+                        "ctype": "title",
+                        "uuid": "RecordHoldBinTextUUID",
+                        "titleValue": "Place the unit in a bin and record the Bin ID",
+                        "titleValueClass": "body-italic text-secondary"
+                    },
+                    {
+                        "ctype": "textField",
+                        "uuid": "BinIDScanUUID",
+                        "submitable": false,
+                        "disabled": false,
+                        "validations": [
+                        ],
+                        "inLine": true,
+                        "formGroupClass": "flex-container flex-container-half-width",
+                        "textfieldClass": "textfield-container-field",
+                        "hooks": [],
+                        "actions": [
+                        ],
+                        "name": "BinIDText",
+                        "label": "Bin ID",
+                        "labelClass": "font-bold",
+                        "placeholer": "Scan #",
+                        "labelPosition": "",
+                        "tooltip": "",
+                        "TooltipPosition": "",
+                        "isAutoComplete": "off",
+                        "defaultValue": "",
+                        "readonly": false,
+                        "type": "text",
+                        "required": true,
+                        "placeholder": "Scan #",
+                        "value": "",
+                        "prefix": false,
+                        "prefixIcon": "",
+                        "suffix": false,
+                        "suffixIcon": ""
+                    }
+                ],
+                "footer": [
+                    {
+                        "ctype": "button",
+                        "color": "primary",
+                        "text": "Complete",
+                        "class": "primary-btn",
+                        "uuid": "verifoneVMIPhotoRecordHoldBinSubmitUUID",
+                        "visibility": true,
+                        "disabled": true,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "actions": [
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "verifoneVMIPhotoRecordHoldBinUUID",
+                                    "properties": {
+                                        "expanded": false,
+                                        "disabled": false,
+                                        "header": {
+                                            "title": "Record Hold Bin",
+                                            "svgIcon": "description_icon",
+                                            "iconClass": "active-header",
+                                            "statusIcon": "check_circle",
+                                            "statusClass": "complete-status",
+                                            "class": "disable-text"
+                                        }
+                                    }
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "ResultCodeVerifoneVMIPhotoUUID",
+                                    "properties": {
+                                        "disabled": false
+                                    }
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "ctype": "taskPanel",
+                "containerId": "prebodysectiontwo",
+                "uuid": "verifoneVMIPDFReportDetailsUUID",
+                "header": {
+                    "title": "PDF Report Details",
+                    "svgIcon": "description_icon",
+                    "iconClass": "active-header",
+                    "statusIcon": "hourglass_empty",
+                    "statusClass": "incomplete-status",
+                    "class": "greyish-black"
+                },
+                "expanded": false,
+                "hideToggle": true,
+                "visibility": true,
+                "disabled": false,
+                "hooks": [],
+                "validations": [],
+                "actions": [],
+                "items": [
+                    {
+                        "ctype": "title",
+                        "uuid": "verifoneVMIPDFReportTextUUID",
+                        "titleValue": "Preview the PDF of photos before sending to customer.",
+                        "titleValueClass": "body-italic text-secondary"
+                    },
+                    {
+                        "ctype": "nativeDropdown",
+                        "uuid": "damageCodedropdownUUID",
+                        "name": "damageCode",
+                        "label": "Damage Code",
+                        "visibility": true,
+                        "formGroupClass": "flex-container-Ftest-width form-group-margin",
+                        "dropdownClass": "dropdown-container textfield-container",
+                        "labelClass": "subtitle1-align-self greyish-black",
+                        "labelPosition": "left",
+                        "required": true,
+                        "disabled": false,
+                        "isDisableNotReq": true,
+                        "selectDisabled": false,
+                        "code": "value",
+                        "displayValue": "value",
+                        "dataSource": "",
+                        "hooks": [],
+                        "options": [
+                            {
+                                "code": "Liquid Damage",
+                                "displayValue": "Liquid Damage"
+                            },
+                            {
+                                "code": "Scratches",
+                                "displayValue": "Scratches"
+                            }
+                        ],
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "verifoneVMIDamageCode",
+                                    "data": "elementControlName"
+                                },
+                                "eventSource": "change"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "eventSource": "change",
+                                "config": {
+                                    "key": "pdfReportDetailsCompleteUUID",
+                                    "properties": {
+                                        "disabled": false
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "actionToggle",
+                        "formGroupClass": "body2 d-flex justify-content-between mb-3 verifone-receiving-toggle",
+                        "uuid": "pdfProcessUUID",
+                        "parentUUID": "verifoneVMIPDFReportDetailsUUID",
+                        "label": "Process",
+                        "name": "pdfProcess",
+                        "labelPosition": "before",
+                        "labelClass": "dell-greyish-black pt-2",
+                        "required": false,
+                        "submitable": true,
+                        "selectedVal": "",
+                        "sublabel": "",
+                        "hooks": [],
+                        "options": [
+                            {
+                                "bgcolor": "light-blue",
+                                "color": "white",
+                                "text": "CD",
+                                "value": "CD"
+                            },
+                            {
+                                "bgcolor": "light-blue",
+                                "color": "white",
+                                "text": "LQ",
+                                "value": "LQ"
+                            }
+                        ],
+                        "validations": [],
+                        "actions": [
+                            {
+                                "type": "context",
+                                "eventSource": "change",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "pdfProcessData",
+                                    "data": "elementControlValue"
+                                }
+                            },
+                            {
+                                "type": "condition",
+                                "config": {
+                                    "operation": "isEqualTo",
+                                    "lhs": "#pdfProcessData",
+                                    "rhs": "CD"
+                                },
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "pdfDetailsPrefixUUID",
+                                                    "properties": {
+                                                        "disabled": true,
+                                                        "selectedVal": ""
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": [
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "pdfDetailsPrefixUUID",
+                                                    "properties": {
+                                                        "disabled": false
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "divider",
+                        "css": "width:100%;"
+                    },
+                    {
+                        "ctype": "actionToggle",
+                        "uuid": "pdfDetailsPrefixUUID",
+                        "parentUUID": "verifoneVMIPDFReportDetailsUUID",
+                        "formGroupClass": "body2 d-flex justify-content-between mb-3 mt-3 verifone-receiving-toggle",
+                        "labelPosition": "before",
+                        "label": "Prefix",
+                        "name": "pdfDetailsPrefix",
+                        "labelClass": "dell-greyish-black pt-2",
+                        "required": false,
+                        "submitable": true,
+                        "selectedVal": "",
+                        "sublabel": "",
+                        "validations": [],
+                        "hooks": [],
+                        "options": [
+                            {
+                                "bgcolor": "light-blue",
+                                "color": "white",
+                                "text": "CD",
+                                "value": "CD"
+                            },
+                            {
+                                "bgcolor": "light-blue",
+                                "color": "white",
+                                "text": "LQ",
+                                "value": "LQ"
+                            },
+                            {
+                                "bgcolor": "light-blue",
+                                "color": "white",
+                                "text": "WQ",
+                                "value": "WQ"
+                            }
+                        ],
+                        "actions": [
+                            {
+                                "type": "context",
+                                "eventSource": "change",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "pdfDetailsPrefixData",
+                                    "data": "elementControlValue"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "divider",
+                        "css": "width:100%;"
+                    }
+                ],
+                "footer": [
+                    {
+                        "ctype": "button",
+                        "color": "primary",
+                        "text": "Complete",
+                        "class": "primary-btn",
+                        "uuid": "pdfReportDetailsCompleteUUID",
+                        "visibility": true,
+                        "disabled": true,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "actions": [
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "verifoneVMIPDFReportDetailsUUID",
+                                    "properties": {
+                                        "expanded": false,
+                                        "disabled": false,
+                                        "header": {
+                                            "title": "PDF Report Details",
+                                            "svgIcon": "description_icon",
+                                            "iconClass": "active-header",
+                                            "statusIcon": "check_circle",
+                                            "statusClass": "complete-status",
+                                            "class": "disable-text"
+                                        }
+                                    }
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "footer": [
+            {
+                "ctype": "toolbar",
+                "toolbarClass": "pagecontent-footer",
+                "items": [
+                    {
+                        "ctype": "iconbutton",
+                        "iconButtonClass": "footer-save body primary-btn",
+                        "text": "Exit",
+                        "uuid": "saveUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "icon": "close",
+                        "actions": [
+                            {
+                                "type": "clearAllContext",
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "renderTemplate",
+                                "config": {
+                                    "templateId": "dashboard.json",
+                                    "mode": "local"
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "iconText",
+                        "uuid": "IconUUID",
+                        "iconTextClass": "footer-addNote body",
+                        "icon": "add_comment",
+                        "text": "Add Note",
+                        "iconPosition": "Before",
+                        "actions": [
+                            {
+                                "type": "dialog",
+                                "uuid": "addNoteDialogUUID",
+                                "config": {
+                                    "title": "Add Note",
+                                    "items": [
+                                        {
+                                            "ctype": "textarea",
+                                            "name": "addNote",
+                                            "textareaClass": "note-class",
+                                            "uuid": "addNoteUUID",
+                                            "value": "#LoadStationHNotes.addNote",
+                                            "actions": []
+                                        }
+                                    ],
+                                    "footer": [
+                                        {
+                                            "ctype": "button",
+                                            "color": "primary",
+                                            "text": "Close",
+                                            "uuid": "closeButtonUUID",
+                                            "closeType": "close",
+                                            "inputClass": "close-button",
+                                            "disableClose": true,
+                                            "visibility": true,
+                                            "dialogButton": true,
+                                            "type": "",
+                                            "hooks": [],
+                                            "validations": [],
+                                            "actions": []
+                                        },
+                                        {
+                                            "ctype": "button",
+                                            "color": "primary",
+                                            "text": "Done",
+                                            "uuid": "doneHoldUUID",
+                                            "dialogButton": true,
+                                            "visibility": true,
+                                            "type": "submit",
+                                            "closeType": "success",
+                                            "hooks": [],
+                                            "validations": [],
+                                            "actions": []
+                                        }
+                                    ]
+                                },
+                                "eventSource": "click",
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "VMIPhotoNotes",
+                                                    "data": "formData"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "spacer",
+                        "uuid": "emptySpaceUUID",
+                        "class": "empty-space"
+                    },
+                    {
+                        "ctype": "iconbutton",
+                        "uuid": "discrepancyPauseUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "type": "submit",
+                        "icon": "pause",
+                        "iconClass": "",
+                        "disableRipple": true,
+                        "actions": [
+                            {
+                                "type":"showVerifoneOLEPausebuttonInScreen",
+                                "eventSource": "click"
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "nativeDropdown",
+                        "dropdownClass": "footer-dropdown dropdown-container body2",
+                        "uuid": "ResultCodeVerifoneVMIPhotoUUID",
+                        "isDropdownNotSelected": true,
+                        "hooks": [],
+                        "validations": [],
+                        "type": "text",
+                        "required": true,
+                        "submitable": true,
+                        "label": "",
+                        "labelPosition": "",
+                        "name": "identificatorTypeForUnit",
+                        "defaultValue": "",
+                        "code": "outcomeCodeId",
+                        "displayValue": "outcomeCodeValue",
+                        "disabled": true,
+                        "options": [],
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "SelectedResultcode",
+                                    "data": "elementControlName"
+                                },
+                                "eventSource": "change"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "VMIPhotoTimeoutUUID",
+                                    "properties": {
+                                        "disabled": false
+                                    }
+                                },
+                                "eventSource": "change"
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "button",
+                        "color": "primary",
+                        "buttonClass": "footer-button",
+                        "text": "Time Out",
+                        "uuid": "VMIPhotoTimeoutUUID",
+                        "visibility": true,
+                        "checkGroupValidity": false,
+                        "disabled": true,
+                        "hidden": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "actions": [
+                        ]
+
+                    }
+                ]
+            }
+        ]
+    },
+    "Result": "SUCCESS"
+}

@@ -1,0 +1,14 @@
+<mat-expansion-panel #matExpPanel [class]="titleClass" [disabled]="disabled" [expanded]="expanded" [hideToggle]="hideToggle" [togglePosition]="togglePosition">
+  <mat-expansion-panel-header [collapsedHeight]="collapsedHeight" [expandedHeight]="expandedHeight">
+    <mat-panel-title>
+      <label *ngIf="header.title" [class]="header.titleClass">{{header.title}}</label>
+      <!-- <span [class]="header.titleClass">{{header.title}}</span> -->
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+  <!-- expansionpanel content -->
+  <ng-container #expansionpanelcontent></ng-container>
+  <mat-action-row>
+    <ng-container #expansionpanelfooter></ng-container>
+  </mat-action-row>
+</mat-expansion-panel>
+

@@ -1,0 +1,4640 @@
+{
+  "ResultData": {
+    "ctype": "page",
+    "uuid": "pageUUID",
+    "css": "",
+    "visibility": true,
+    "onLoadActions": [
+      {
+        "type": "microservice",
+        "hookType": "afterInit",
+        "config": {
+          "microserviceId": "getDellCARCustomDetails",
+          "requestMethod": "get",
+          "isLocal": false,
+          "LocalService": "assets/Responses/last-note.json",
+          "params": {
+            "identificatorType": "INTERMITTENT_ALERT",
+            "userName": "#loginUUID.username"
+          }
+        },
+        "responseDependents": {
+          "onSuccess": {
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "key": "getDellCARCustomDetails",
+                  "data": "responseData",
+                  "requestMethod": "add"
+                }
+              }
+            ]
+          },
+          "onFailure": {
+            "actions": []
+          }
+        }
+      },
+      {
+        "type": "microservice",
+        "hookType": "afterInit",
+        "config": {
+          "microserviceId": "trigger4thSeq",
+          "requestMethod": "get",
+          "isLocal": false,
+          "LocalService": "assets/Responses/last-note.json",
+          "params": {
+            "itemId": "#discrepancyUnitInfo.ITEM_ID",
+            "userName": "#userAccountInfo.PersonalDetails.USERID",
+            "mailFrom": "#getProcess.4thSeq.mailFrom",
+            "mailTo": "#getProcess.4thSeq.mailTo",
+            "subject": "#getProcess.4thSeq.subject",
+            "body": "#getProcess.4thSeq.body"
+          }
+        },
+        "responseDependents": {
+          "onSuccess": {
+            "actions": []
+          },
+          "onFailure": {
+            "actions": [
+              {
+                "type": "handleCommonServices",
+                "config": {
+                  "type": "errorRenderTemplate",
+                  "contextKey": "errorMsg",
+                  "updateKey": "errorTitleUUID"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "type": "microservice",
+        "hookType": "afterInit",
+        "config": {
+          "microserviceId": "getPreviouseWc",
+          "requestMethod": "get",
+          "isLocal": false,
+          "LocalService": "assets/Responses/dellCarAssessmentMockData.json",
+          "params": {
+            "clientId": "#userSelectedClient",
+            "routeName": "#discrepancyUnitInfo.ROUTE",
+            "contractId": "#userSelectedContract",
+            "itemId": "#discrepancyUnitInfo.ITEM_ID",
+            "userName": "#userAccountInfo.PersonalDetails.USERID",
+            "locationId": "#userSelectedLocation"
+          }
+        },
+        "responseDependents": {
+          "onSuccess": {
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "key": "getPreviouseWc",
+                  "data": "responseData",
+                  "requestMethod": "add"
+                }
+              }
+            ]
+          },
+          "onFailure": {
+            "actions": []
+          }
+        }
+      }
+    ],
+    "hooks": [
+      {
+        "type": "microservice",
+        "hookType": "afterInit",
+        "config": {
+          "microserviceId": "lastNote",
+          "requestMethod": "get",
+          "isLocal": false,
+          "LocalService": "assets/Responses/last-note.json",
+          "params": {
+            "workcenter-id": "#discrepancyUnitInfo.WORKCENTER_ID",
+            "username": "#userAccountInfo.PersonalDetails.USERID"
+          }
+        },
+        "responseDependents": {
+          "onSuccess": {
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "getLastNoteRespData",
+                  "data": "responseData"
+                }
+              },
+              {
+                "type": "condition",
+                "config": {
+                  "operation": "isValid",
+                  "lhs": "#trigger4thSeq"
+                },
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellCar4thSeqTaskPanelUUID",
+                          "properties": {
+                            "expanded": true,
+                            "hidden": false,
+                            "taskPanelHeaderClass": "background-white",
+                            "header": {
+                              "title": "4th Sequence",
+                              "svgIcon": "description_icon",
+                              "iconClass": "active-header",
+                              "class": "greyish-black subtitle1 font-weight-700"
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellCarD4thSeqTaskPanelTextUUID",
+                          "properties": {
+                            "titleValue": "#trigger4thSeq"
+                          }
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellCarRepairInformationUUID",
+                          "properties": {
+                            "expanded": false,
+                            "disabled": true,
+                            "forceDisabled": true
+                          }
+                        }
+                      },
+                      {
+                        "type": "condition",
+                        "config": {
+                          "operation": "isValid",
+                          "lhs": "#getLastNoteRespData"
+                        },
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "dellCarLastNoteTaskUUID",
+                                  "properties": {
+                                    "expanded": false,
+                                    "hidden": false,
+                                    "taskPanelHeaderClass": "background-white",
+                                    "header": {
+                                      "title": "Last note",
+                                      "svgIcon": "description_icon",
+                                      "iconClass": "active-header",
+                                      "class": "greyish-black subtitle1 font-weight-700"
+                                    }
+                                  }
+                                }
+                              },
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "dellCarRepairLastNoteTextUUID",
+                                  "properties": {
+                                    "title": "#getLastNoteRespData"
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": [
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "dellCarLastNoteTaskUUID",
+                                  "properties": {
+                                    "hidden": true
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellCar4thSeqTaskPanelUUID",
+                          "properties": {
+                            "hidden": true
+                          }
+                        }
+                      },
+                      {
+                        "type": "condition",
+                        "config": {
+                          "operation": "isValid",
+                          "lhs": "#getLastNoteRespData"
+                        },
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "dellCarLastNoteTaskUUID",
+                                  "properties": {
+                                    "expanded": true,
+                                    "hidden": false,
+                                    "taskPanelHeaderClass": "background-white",
+                                    "header": {
+                                      "title": "Last note",
+                                      "svgIcon": "description_icon",
+                                      "iconClass": "active-header",
+                                      "class": "greyish-black subtitle1 font-weight-700"
+                                    }
+                                  }
+                                }
+                              },
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "dellCarRepairLastNoteTextUUID",
+                                  "properties": {
+                                    "title": "#getLastNoteRespData"
+                                  }
+                                }
+                              },
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "dellCarRepairInformationUUID",
+                                  "properties": {
+                                    "disabled": false,
+                                    "forceDisabled": false
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": [
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "dellCarLastNoteTaskUUID",
+                                  "properties": {
+                                    "hidden": true
+                                  }
+                                }
+                              },
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "dellCarRepairInformationUUID",
+                                  "properties": {
+                                    "expanded": true,
+                                    "disabled": false,
+                                    "forceDisabled": false
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "onFailure": {
+            "actions": [
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "dellCarLastNoteTaskUUID",
+                  "properties": {
+                    "hidden": true
+                  }
+                }
+              },
+              {
+                "type": "condition",
+                "config": {
+                  "operation": "isValid",
+                  "lhs": "#trigger4thSeq"
+                },
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellCar4thSeqTaskPanelUUID",
+                          "properties": {
+                            "expanded": true,
+                            "hidden": false,
+                            "taskPanelHeaderClass": "background-white",
+                            "header": {
+                              "title": "4th Sequence",
+                              "svgIcon": "description_icon",
+                              "iconClass": "active-header",
+                              "class": "greyish-black subtitle1 font-weight-700"
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellCarD4thSeqTaskPanelTextUUID",
+                          "properties": {
+                            "titleValue": "#trigger4thSeq"
+                          }
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellCarRepairInformationUUID",
+                          "properties": {
+                            "expanded": false,
+                            "disabled": true,
+                            "forceDisabled": true
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellCar4thSeqTaskPanelUUID",
+                          "properties": {
+                            "hidden": true
+                          }
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellCarRepairInformationUUID",
+                          "properties": {
+                            "expanded": true,
+                            "disabled": false,
+                            "forceDisabled": false
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "type": "microservice",
+        "config": {
+          "microserviceId": "getCurrPrevRODetailsBySN",
+          "requestMethod": "get",
+          "isLocal": false,
+          "LocalService": "assets/getCurrPrevRODetailsBySN.json",
+          "params": {
+            "serialNo": "#repairUnitInfo.SERIAL_NO",
+            "locationId": "#userSelectedLocation",
+            "clientId": "#userSelectedClient",
+            "contractId": "#userSelectedContract",
+            "userName": "#loginUUID.username"
+          }
+        },
+        "hookType": "afterInit",
+        "responseDependents": {
+          "onSuccess": {
+            "actions": [
+              {
+                "type": "handelDellCarAssessmentAction",
+                "methodType": "getLeftSideDetailsForDellCar"
+              },
+              {
+                "type": "condition",
+                "config": {
+                  "operation": "isValid",
+                  "lhs": "#getCurrPrevRODetailsBySN.repairInformation"
+                },
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "getRepairInformationData",
+                          "data": "#getCurrPrevRODetailsBySN.repairInformation"
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellCarRepairAssessmentInformationTextUUID",
+                          "properties": {
+                            "title": "#getRepairInformationData"
+                          }
+                        }
+                      },
+                      {
+                        "type": "concatContexts",
+                        "config": {
+                          "contextKey": "dellCarRepairInformationCustmor",
+                          "contexts": [
+                            "Customer Complaint",
+                            " ",
+                            "#getCurrPrevRODetailsBySN.roCreatedDate"
+                          ]
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellCarRepairInformationHeadingUUID",
+                          "properties": {
+                            "titleValue": "#dellCarRepairInformationCustmor"
+                          }
+                        }
+                      },
+                      {
+                        "type": "condition",
+                        "config": {
+                          "operation": "isMatched",
+                          "lhs": "#getCurrPrevRODetailsBySN.repairInformation",
+                          "rhs": "#getDellCARCustomDetails"
+                        },
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "dellCarRepairAssessmentBannerUUID",
+                                  "properties": {
+                                    "hidden": false
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": []
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "microservice",
+                        "config": {
+                          "microserviceId": "getROHFFValueByRODetails",
+                          "LocalService": "assets/Responses/performFA.json",
+                          "isLocal": false,
+                          "requestMethod": "get",
+                          "params": {
+                            "referanceOrderId": "#getCurrPrevRODetailsBySN.referenceOrderId",
+                            "clientId": "#userSelectedClient",
+                            "contractId": "#userSelectedContract",
+                            "businessTransactionType": "#getCurrPrevRODetailsBySN.bussinessTrxTypeId",
+                            "ffName": "customer_notes",
+                            "userName": "#loginUUID.username"
+                          }
+                        },
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "context",
+                                "config": {
+                                  "requestMethod": "add",
+                                  "key": "getRepairInformationData",
+                                  "data": "responseData"
+                                }
+                              },
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "dellCarRepairAssessmentInformationTextUUID",
+                                  "properties": {
+                                    "titleValue": "#getRepairInformationData"
+                                  }
+                                }
+                              },
+                              {
+                                "type": "condition",
+                                "config": {
+                                  "operation": "isMatched",
+                                  "lhs": "#getRepairInformationData",
+                                  "rhs": "#getDellCARCustomDetails"
+                                },
+                                "responseDependents": {
+                                  "onSuccess": {
+                                    "actions": [
+                                      {
+                                        "type": "updateComponent",
+                                        "config": {
+                                          "key": "dellCarRepairAssessmentBannerUUID",
+                                          "properties": {
+                                            "hidden": false
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "onFailure": {
+                                    "actions": []
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": []
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "dellCarDpsNumberUUID",
+                  "properties": {
+                    "titleValue": "#getCurrPrevRODetailsBySN.clientReferenceNo1"
+                  }
+                }
+              }
+            ]
+          },
+          "onFailure": {
+            "actions": [
+              {
+                "type": "handleCommonServices",
+                "config": {
+                  "type": "errorRenderTemplate",
+                  "contextKey": "errorMsg",
+                  "updateKey": "errorTitleUUID"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "type": "condition",
+        "hookType": "afterInit",
+        "config": {
+          "operation": "isValid",
+          "addHookAtLast": true,
+          "lhs": "#getFFByWc",
+          "lhsKeyName": "ffName",
+          "lhsKeyValue": "RAM No.1",
+          "lhsSecondKeyName": "ffValue"
+        },
+        "responseDependents": {
+          "onSuccess": {
+            "actions": [
+              {
+                "type": "multipleCondition",
+                "config": {
+                  "multi": true,
+                  "operator": "AND",
+                  "conditions": [
+                    {
+                      "operation": "isNotEqualTo",
+                      "lhs": "#lhsValue",
+                      "rhs": "HOLD"
+                    },
+                    {
+                      "operation": "isNotEqualTo",
+                      "lhs": "#lhsValue",
+                      "rhs": "CID"
+                    }
+                  ]
+                },
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                     {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellCarRamCapacityslot1UUID",
+                          "properties": {
+                            "disabled": true
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": []
+                  }
+                }
+              },
+              {
+                "type": "condition",
+                "hookType": "afterInit",
+                "config": {
+                  "operation": "isValid",
+                  "addHookAtLast": true,
+                  "lhs": "#getFFByWc",
+                  "lhsKeyName": "ffName",
+                  "lhsKeyValue": "KB backlight",
+                  "lhsSecondKeyName": "ffValue"
+                },
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "multipleCondition",
+                        "config": {
+                          "multi": true,
+                          "operator": "AND",
+                          "conditions": [
+                            {
+                              "operation": "isNotEqualTo",
+                              "lhs": "#lhsValue",
+                              "rhs": "HOLD"
+                            },
+                            {
+                              "operation": "isNotEqualTo",
+                              "lhs": "#lhsValue",
+                              "rhs": "CID"
+                            }
+                          ]
+                        },
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "dellCarKeyBoardLightTaskPanelUUID",
+                                  "fieldProperties": {
+                                    "dellCarKeyboardToggle": "#lhsValue"
+                                  }
+                                }
+                              },
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "dellCarKeyBoardUUID",
+                                  "properties": {
+                                    "disabled": true
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": []
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                    ]
+                  }
+                }
+              },
+              {
+                "type": "condition",
+                "hookType": "afterInit",
+                "config": {
+                  "operation": "isValid",
+                  "addHookAtLast": true,
+                  "lhs": "#getFFByWc",
+                  "lhsKeyName": "ffName",
+                  "lhsKeyValue": "User Password",
+                  "lhsSecondKeyName": "ffValue"
+                },
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "multipleCondition",
+                        "config": {
+                          "multi": true,
+                          "operator": "AND",
+                          "conditions": [
+                            {
+                              "operation": "isNotEqualTo",
+                              "lhs": "#lhsValue",
+                              "rhs": "HOLD"
+                            },
+                            {
+                              "operation": "isNotEqualTo",
+                              "lhs": "#lhsValue",
+                              "rhs": "CID"
+                            }
+                          ]
+                        },
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "dellCarCustomerPswUUID",
+                                  "fieldProperties": {
+                                    "customerPsw": "#lhsValue"
+                                  }
+                                }
+                              },
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "dellCarCustomerPswTextfieldUUID",
+                                  "properties": {
+                                    "disabled": true
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": []
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      
+                    ]
+                  }
+                }
+              },
+              {
+                "type": "condition",
+                "hookType": "afterInit",
+                "config": {
+                  "operation": "isValid",
+                  "addHookAtLast": true,
+                  "lhs": "#getFFByWc",
+                  "lhsKeyName": "ffName",
+                  "lhsKeyValue": "HDD No.1 CAP",
+                  "lhsSecondKeyName": "ffValue"
+                },
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "multipleCondition",
+                        "config": {
+                          "multi": true,
+                          "operator": "AND",
+                          "conditions": [
+                            {
+                              "operation": "isNotEqualTo",
+                              "lhs": "#lhsValue",
+                              "rhs": "HOLD"
+                            },
+                            {
+                              "operation": "isNotEqualTo",
+                              "lhs": "#lhsValue",
+                              "rhs": "CID"
+                            }
+                          ]
+                        },
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                             {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "dellCarHDD1CapacityUUID",
+                                  "properties": {
+                                    "disabled": true
+                                    
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": []
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": []
+                  }
+                }
+              },
+              {
+                "type": "condition",
+                "hookType": "afterInit",
+                "config": {
+                  "operation": "isValid",
+                  "addHookAtLast": true,
+                  "lhs": "#getFFByWc",
+                  "lhsKeyName": "ffName",
+                  "lhsKeyValue": "HDD SN No.1",
+                  "lhsSecondKeyName": "ffValue"
+                },
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "multipleCondition",
+                        "config": {
+                          "multi": true,
+                          "operator": "AND",
+                          "conditions": [
+                            {
+                              "operation": "isNotEqualTo",
+                              "lhs": "#lhsValue",
+                              "rhs": "HOLD"
+                            },
+                            {
+                              "operation": "isNotEqualTo",
+                              "lhs": "#lhsValue",
+                              "rhs": "CID"
+                            }
+                          ]
+                        },
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                             {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "dellCarHDDSerial1UUID",
+                                  "properties": {
+                                    "disabled": true
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": []
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": []
+                  }
+                }
+              },
+              {
+                "type": "condition",
+                "hookType": "afterInit",
+                "config": {
+                  "operation": "isValid",
+                  "addHookAtLast": true,
+                  "lhs": "#getFFByWc",
+                  "lhsKeyName": "ffName",
+                  "lhsKeyValue": "Chassis Opened?",
+                  "lhsSecondKeyName": "ffValue"
+                },
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "multipleCondition",
+                        "config": {
+                          "multi": true,
+                          "operator": "AND",
+                          "conditions": [
+                            {
+                              "operation": "isNotEqualTo",
+                              "lhs": "#lhsValue",
+                              "rhs": "HOLD"
+                            },
+                            {
+                              "operation": "isNotEqualTo",
+                              "lhs": "#lhsValue",
+                              "rhs": "CID"
+                            }
+                          ]
+                        },
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "dellCarChassisTaskPanelUUID",
+                                  "fieldProperties": {
+                                    "dellCarChassisToggle": "#lhsValue"
+                                  }
+                                }
+                              },
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "dellCarChassisToggleUUID",
+                                  "properties": {
+                                    "disabled": true
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": []
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "onFailure": {
+            "actions": [
+              {
+                "type": "condition",
+                "hookType": "afterInit",
+                "config": {
+                  "operation": "isValid",
+                  "addHookAtLast": true,
+                  "lhs": "#getPreviouseWc",
+                  "lhsKeyName": "ffName",
+                  "lhsKeyValue": "KB backlight",
+                  "lhsSecondKeyName": "ffValue"
+                },
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "multipleCondition",
+                        "config": {
+                          "multi": true,
+                          "operator": "AND",
+                          "conditions": [
+                            {
+                              "operation": "isNotEqualTo",
+                              "lhs": "#lhsValue",
+                              "rhs": "HOLD"
+                            },
+                            {
+                              "operation": "isNotEqualTo",
+                              "lhs": "#lhsValue",
+                              "rhs": "CID"
+                            }
+                          ]
+                        },
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "dellCarKeyBoardLightTaskPanelUUID",
+                                  "fieldProperties": {
+                                    "dellCarKeyboardToggle": "#lhsValue"
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": []
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": []
+                  }
+                }
+              },
+              {
+                "type": "condition",
+                "hookType": "afterInit",
+                "config": {
+                  "operation": "isValid",
+                  "addHookAtLast": true,
+                  "lhs": "#getPreviouseWc",
+                  "lhsKeyName": "ffName",
+                  "lhsKeyValue": "User Password",
+                  "lhsSecondKeyName": "ffValue"
+                },
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellCarCustomerPswUUID",
+                          "fieldProperties": {
+                            "customerPsw": "#lhsValue"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": []
+                  }
+                }
+              },
+              {
+                "type": "condition",
+                "hookType": "afterInit",
+                "config": {
+                  "operation": "isValid",
+                  "addHookAtLast": true,
+                  "lhs": "#getFFByWc",
+                  "lhsKeyName": "ffName",
+                  "lhsKeyValue": "Chassis Opened?",
+                  "lhsSecondKeyName": "ffValue"
+                },
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "multipleCondition",
+                        "config": {
+                          "multi": true,
+                          "operator": "AND",
+                          "conditions": [
+                            {
+                              "operation": "isNotEqualTo",
+                              "lhs": "#lhsValue",
+                              "rhs": "HOLD"
+                            },
+                            {
+                              "operation": "isNotEqualTo",
+                              "lhs": "#lhsValue",
+                              "rhs": "CID"
+                            }
+                          ]
+                        },
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "dellCarChassisTaskPanelUUID",
+                                  "fieldProperties": {
+                                    "dellCarChassisToggle": "#lhsValue"
+                                  }
+                                }
+                              },
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "dellCarChassisToggleUUID",
+                                  "properties": {
+                                    "disabled": true
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": []
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "type": "arraySetMethod",
+        "config": {
+          "data": "#dellCarHoldCodes",
+          "contextKey": "filteredHoldTypes"
+        },
+        "hookType": "afterInit"
+      },
+      {
+        "type": "condition",
+        "hookType": "afterInit",
+        "config": {
+          "operation": "isValid",
+          "addHookAtLast": true,
+          "lhs": "#dellCarCustomerPswUUID.isTaskCompleted"
+        },
+        "responseDependents": {
+          "onSuccess": {
+            "actions": [
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "dellCarCustomerPswCompleteButtonUUID",
+                  "properties": {
+                    "disabled": true
+                  }
+                }
+              },
+              {
+                "type": "condition",
+                "config": {
+                  "operation": "isValid",
+                  "lhs": "#dellCarRecordRamTaskPanelUUID.isTaskCompleted"
+                },
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "recordRamCompleteUUID",
+                          "properties": {
+                            "disabled": true
+                          }
+                        }
+                      },
+                      {
+                        "type": "condition",
+                        "config": {
+                          "operation": "isValid",
+                          "lhs": "#dellCarRecordHDDTaskPanelUUID.isTaskCompleted"
+                        },
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "dellCarRecordHDDCompleteUID",
+                                  "properties": {
+                                    "disabled": true
+                                  }
+                                }
+                              },
+                              {
+                                "type": "condition",
+                                "config": {
+                                  "operation": "isValid",
+                                  "lhs": "#dellCarKeyBoardLightTaskPanelUUID.isTaskCompleted"
+                                },
+                                "responseDependents": {
+                                  "onSuccess": {
+                                    "actions": [
+                                      {
+                                        "type": "updateComponent",
+                                        "config": {
+                                          "key": "boardLightCompleteButtonUUID",
+                                          "properties": {
+                                            "disabled": true
+                                          }
+                                        }
+                                      },
+                                      {
+                                        "type": "updateComponent",
+                                        "config": {
+                                          "key": "dellCarAssessmentNextButtonUUID",
+                                          "properties": {
+                                            "disabled": false
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "onFailure": {
+                                    "actions": []
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": []
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": []
+                  }
+                }
+              }
+            ]
+          },
+          "onFailure": {
+            "actions": []
+          }
+        }
+      },
+      {
+        "type": "condition",
+        "hookType": "afterInit",
+        "config": {
+            "operation": "isEqualTo",
+            "lhs": "#discrepancyUnitInfo.WORKCENTER",
+            "rhs": "DELL_CAR_DEBUG_ARC"
+        },
+        "responseDependents": {
+            "onSuccess": {
+                "actions": [
+                  {
+                    "type": "updateComponent",
+                    "config": {
+                      "key": "dellCarChassisTaskPanelUUID",
+                      "properties": {
+                        "hidden": false
+                      }
+                    },
+                    "eventSource": "click"
+                  }
+                ]
+            },
+            "onFailure": {
+                "actions": []
+            }
+        }
+      }
+    ],
+    "validations": [],
+    "action": [],
+    "header": [
+      {
+        "ctype": "breadcrumb",
+        "breadcrumbs": [
+          {
+            "label": "#userSelectedLocationName"
+          },
+          {
+            "label": "#userSelectedClientName"
+          },
+          {
+            "label": "#userSelectedContractName"
+          }
+        ]
+      },
+      {
+        "ctype": "toolbar",
+        "toolbarClass": "pagecontent-header",
+        "items": [
+          {
+            "ctype": "title",
+            "uuid": "dellCarRepairAssessmentTitleUUID",
+            "titleValue": "Repair: Initial Assessment",
+            "titleClass": "greyish-black section-title"
+          },
+          {
+            "ctype": "iconbutton",
+            "iconButtonClass": "headeropen-button",
+            "text": "",
+            "uuid": "pageopenUUID",
+            "visibility": true,
+            "disabled": false,
+            "hidden": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "icon": "menu_open",
+            "disableRipple": true,
+            "iconClass": "header-icon",
+            "actions": [
+              {
+                "type": "toggle",
+                "eventSource": "click",
+                "name": "subProcessRightNavref"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "openUUID",
+                  "properties": {
+                    "hidden": false
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "pageopenUUID",
+                  "properties": {
+                    "hidden": true
+                  }
+                },
+                "eventSource": "click"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "items": [
+      {
+        "ctype": "title",
+        "uuid": "successTitleUUID",
+        "titleClass": "success-title",
+        "isShown": false
+      },
+      {
+        "ctype": "title",
+        "uuid": "errorTitleUUID",
+        "containerId": "prebodysectionone",
+        "titleClass": "error-title",
+        "isShown": false
+      },
+      {
+        "ctype": "taskPanel",
+        "uuid": "dellCar4thSeqTaskPanelUUID",
+        "containerId": "prebodysectionone",
+        "title": "",
+        "header": {
+          "title": "4th Sequence",
+          "svgIcon": "description_icon",
+          "iconClass": "active-header",
+          "class": "greyish-black subtitle1 font-weight-700",
+          "statusIcon": "hourglass_empty",
+          "statusClass": "incomplete-status"
+        },
+        "disabled": false,
+        "isblueBorder": true,
+        "expanded": false,
+        "hideToggle": true,
+        "isEditable": true,
+        "isMandatory": false,
+        "visibility": true,
+        "hidden": true,
+        "hooks": [
+          {
+            "type": "updateComponent",
+            "hookType": "afterInit",
+            "config": {
+              "key": "dellCarD4thSeqTaskPanelTextUUID",
+              "properties": {
+                "titleValue": "#trigger4thSeq"
+              }
+            }
+          }
+        ],
+        "validations": [],
+        "actions": [],
+        "items": [
+          {
+            "ctype": "title",
+            "uuid": "dellCarD4thSeqTaskPanelTextUUID",
+            "titleClass": "greyish-black body-italic assessment-alert",
+            "title": "",
+            "titleValue": "#trigger4thSeq"
+          }
+        ],
+        "footer": [
+          {
+            "ctype": "button",
+            "color": "primary",
+            "text": "Complete",
+            "uuid": "dellCar4thSeqCompleteButtonUUID",
+            "class": "primary-btn",
+            "visibility": true,
+            "disabled": false,
+            "type": "submit",
+            "name": "dellCar4thSeqCompleteBtnName",
+            "isDisableNotReq": true,
+            "hooks": [],
+            "validations": [],
+            "actions": [
+              {
+                "type": "dialog",
+                "uuid": "4thSeqpauseDialogUUID",
+                "config": {
+                  "title": "Move to Hold",
+                  "items": [
+                    {
+                      "ctype": "nativeDropdown",
+                      "formGroupClass": "discrepancy-holddrpdwn",
+                      "uuid": "holdType4thSeqUUID",
+                      "label": "Hold Type",
+                      "name": "4thSeqHoldType",
+                      "required": true,
+                      "defaultValue": "",
+                      "dataSource": "",
+                      "code": "storageHoldCode",
+                      "displayValue": "storageHoldCode",
+                      "options": [
+                        {
+                          "code": "AWAITING ENGINEERING",
+                          "displayValue": "AWAITING ENGINEERING"
+                        }
+                      ],
+                      "actions": [
+                        {
+                          "type": "context",
+                          "config": {
+                            "requestMethod": "add",
+                            "key": "storageHoldCode",
+                            "data": "elementControlValue"
+                          },
+                          "eventSource": "change"
+                        },
+                        {
+                          "type": "conditionalFilterData",
+                          "config": {
+                            "data": "#dellCarHoldCodes",
+                            "targetContextKey": "holdSubCodeData",
+                            "keyName": "#storageHoldCode",
+                            "filterRefValue": "storageHoldCode",
+                            "targetUUID": "holdCodeUUID",
+                            "name": "holdCodes"
+                          },
+                          "eventSource": "change"
+                        },
+                        {
+                          "type": "conditionalDestinationLocationData",
+                          "config": {
+                            "data": "#holdSubCodeData",
+                            "filterRefValue": "destStkLocationName"
+                          },
+                          "eventSource": "change"
+                        },
+                        {
+                          "type": "conditionalDestinationLocationData",
+                          "config": {
+                            "data": "#holdSubCodeData",
+                            "filterRefValue": "srcStkLocationName"
+                          },
+                          "eventSource": "change"
+                        }
+                      ]
+                    },
+                    {
+                      "ctype": "nativeDropdown",
+                      "formGroupClass": "discrepancy-holddrpdwn",
+                      "uuid": "holdCodeUUID",
+                      "label": "Hold Code",
+                      "name": "holdCodes",
+                      "dataSource": "#holdSubCodeData",
+                      "code": "storageHoldSubCode",
+                      "displayValue": "storageHoldSubCode",
+                      "defaultValue": "",
+                      "required": true,
+                      "actions": [
+                        {
+                          "type": "context",
+                          "config": {
+                            "requestMethod": "add",
+                            "key": "storageHoldCode",
+                            "data": "elementControlValue"
+                          },
+                          "eventSource": "change"
+                        }
+                      ]
+                    },
+                    {
+                      "ctype": "textarea",
+                      "label": "Add note",
+                      "name": "hold4thSeqAddNote",
+                      "textareaContainer": "timeout-class required-note",
+                      "uuid": "4thSeqholdNodeUUID",
+                      "required": true,
+                      "submitable": true,
+                      "actions": []
+                    }
+                  ],
+                  "footer": [
+                    {
+                      "ctype": "button",
+                      "color": "primary",
+                      "text": "Cancel",
+                      "uuid": "cancelHold4thSeqUUID",
+                      "closeType": "close",
+                      "disableClose": true,
+                      "visibility": true,
+                      "dialogButton": true,
+                      "type": "",
+                      "hooks": [],
+                      "validations": [],
+                      "actions": []
+                    },
+                    {
+                      "ctype": "button",
+                      "color": "primary",
+                      "text": "Done",
+                      "uuid": "doneHold4thSeqUUID",
+                      "dialogButton": true,
+                      "visibility": true,
+                      "disabled": true,
+                      "type": "submit",
+                      "closeType": "success",
+                      "hooks": [],
+                      "validations": [],
+                      "actions": [
+                        {
+                          "type": "context",
+                          "config": {
+                            "key": "repairAssessmentHoldNotes",
+                            "data": "formData",
+                            "requestMethod": "add"
+                          },
+                          "eventSource": "click"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "key": "hold4thSeqDialogData",
+                          "data": "formData",
+                          "requestMethod": "add"
+                        },
+                        "eventSource": "click"
+                      },
+                      {
+                        "type": "microservice",
+                        "config": {
+                          "microserviceId": "moveinventory",
+                          "requestMethod": "post",
+                          "body": {
+                            "apiUsageClientName": "#discrepancyUnitInfo.CLIENTNAME",
+                            "apiUsageLocationName": "#discrepancyUnitInfo.GEONAME",
+                            "callSource": "FrontEnd",
+                            "ip": "::1",
+                            "items": {
+                              "addtionalDetails": {
+                                "comments": "#hold4thSeqDialogData.hold4thSeqAddNote",
+                                "fixedAssetTag": "#discrepancyUnitInfo.FAT",
+                                "storageHoldCode": "#hold4thSeqDialogData.4thSeqHoldType",
+                                "storageHoldSubCode": "#hold4thSeqDialogData.holdCodes"
+                              },
+                              "destinationLocation": {
+                                "bin": "Default",
+                                "geography": "#discrepancyUnitInfo.GEONAME",
+                                "stockingLocation": "#destStkLocationName",
+                                "warehouse": "#discrepancyUnitInfo.WAREHOUSE_NAME"
+                              },
+                              "item": [
+                                {
+                                  "bcn": "#discrepancyUnitInfo.ITEM_BCN",
+                                  "owner": "#discrepancyUnitInfo.CLIENTNAME",
+                                  "partNo": "#discrepancyUnitInfo.PART_NO",
+                                  "serialNo": "#discrepancyUnitInfo.SERIAL_NO",
+                                  "quantity": "1",
+                                  "condition": "Defective"
+                                }
+                              ],
+                              "notes": "#hold4thSeqDialogData.hold4thSeqAddNote",
+                              "sourceLocation": {
+                                "bin": "Default",
+                                "geography": "#discrepancyUnitInfo.GEONAME",
+                                "stockingLocation": "#srcStkLocationName",
+                                "warehouse": "#discrepancyUnitInfo.WAREHOUSE_NAME"
+                              }
+                            },
+                            "usrPwd": {
+                              "userName": "#loginUUID.username",
+                              "password": "#loginUUID.password"
+                            }
+                          },
+                          "toBeStringified": true
+                        },
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "clearScreenData"
+                              },
+                              {
+                                "type": "renderTemplate",
+                                "config": {
+                                  "templateId": "dashboard.json",
+                                  "mode": "local"
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": [
+                              {
+                                "type": "handleCommonServices",
+                                "config": {
+                                  "type": "errorRenderTemplate",
+                                  "contextKey": "errorMsg",
+                                  "updateKey": "errorTitleUUID"
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        "eventSource": "click"
+                      }
+                    ]
+                  },
+                  "onFailure": {}
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "ctype": "taskPanel",
+        "uuid": "dellCarLastNoteTaskUUID",
+        "title": "",
+        "header": {
+          "title": "Last note",
+          "svgIcon": "description_icon",
+          "iconClass": "active-header",
+          "class": "greyish-black subtitle1 font-weight-700"
+        },
+        "expanded": true,
+        "disabled": false,
+        "hideToggle": true,
+        "hidden": true,
+        "hooks": [],
+        "validations": [],
+        "isMandatory": false,
+        "actions": [],
+        "isblueBorder": true,
+        "items": [
+          {
+            "ctype": "title",
+            "uuid": "dellCarRepairLastNoteTextUUID",
+            "titleClass": "greyish-black body-italic assessment-alert",
+            "title": ""
+          }
+        ],
+        "footer": []
+      },
+      {
+        "ctype": "taskPanel",
+        "uuid": "dellCarRepairInformationUUID",
+        "title": "",
+        "header": {
+          "title": "Repair Information",
+          "svgIcon": "description_icon",
+          "iconClass": "active-header",
+          "class": "greyish-black subtitle1 font-weight-700",
+          "statusIcon": "hourglass_empty",
+          "statusClass": "incomplete-status"
+        },
+        "expanded": false,
+        "hideToggle": true,
+        "hidden": false,
+        "disabled": false,
+        "hooks": [],
+        "validations": [],
+        "isMandatory": true,
+        "isEditable": true,
+        "actions": [],
+        "isblueBorder": true,
+        "items": [
+          {
+            "ctype": "title",
+            "uuid": "dellCarRepairInformationHeadingUUID",
+            "titleClass": "greyish-black body-italic assessment-alert font-weight-700",
+            "title": "",
+            "titleValue": ""
+          },
+          {
+            "ctype": "title",
+            "uuid": "dellCarRepairAssessmentInformationTextUUID",
+            "titleClass": "greyish-black assessment-alert",
+            "title": "",
+            "titleValue": ""
+          },
+          {
+            "ctype": "iconText",
+            "text": "INTERMITTENT ALERT",
+            "iconTextClass": "pt-2 pb-1 mb-5 error-block ml-2",
+            "textClass": "greyish-black subtitle1 pl-3 ml-2 ",
+            "uuid": "dellCarRepairAssessmentBannerUUID",
+            "hidden": true,
+            "disabled": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "icon": "info",
+            "iconClass": "error-status ml-3 ",
+            "actions": []
+          },
+          {
+            "ctype": "checkbox",
+            "name": "repairInformationMessageReadCheckbox",
+            "uuid": "dellCarRepairAssessmentCheckboxUUID",
+            "hooks": [],
+            "validations": [],
+            "required": true,
+            "isDisableNotReq": true,
+            "submitable": true,
+            "label": "I have read this message",
+            "labelClass": "ml-3 align-left",
+            "labelPosition": "after",
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "repairInformationCheckboxValue",
+                  "data": "elementControlValue"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "condition",
+                "config": {
+                  "operation": "isValid",
+                  "lhs": "#repairInformationCheckboxValue"
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "repairInformationCompleteUUID",
+                          "properties": {
+                            "disabled": false
+                          }
+                        },
+                        "eventSource": "click"
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "repairInformationCompleteUUID",
+                          "properties": {
+                            "disabled": true
+                          }
+                        },
+                        "eventSource": "click"
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "footer": [
+          {
+            "ctype": "button",
+            "color": "primary",
+            "text": "Complete",
+            "uuid": "repairInformationCompleteUUID",
+            "class": "primary-btn",
+            "visibility": true,
+            "disabled": true,
+            "type": "submit",
+            "name": "repairInformationCompleteBtnName",
+            "isDisableNotReq": true,
+            "hooks": [],
+            "validations": [],
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "repairInformationFormData",
+                  "data": "formData"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "dellCarRepairInformationUUID",
+                  "properties": {
+                    "expanded": false,
+                    "disabled": false,
+                    "header": {
+                      "title": "Repair Information",
+                      "svgIcon": "description_icon",
+                      "statusIcon": "check_circle",
+                      "statusClass": "complete-status",
+                      "class": "greyish-black subtitle1 font-weight-700",
+                      "iconClass": "complete-task"
+                    }
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "dellCarUnitCIDTaskPanelUUID",
+                  "properties": {
+                    "expanded": true,
+                    "disabled": false,
+                    "header": {
+                      "title": "Unit CID",
+                      "svgIcon": "description_icon",
+                      "iconClass": "active-header",
+                      "class": "greyish-black subtitle1 font-weight-700",
+                      "statusIcon": "hourglass_empty",
+                      "statusClass": "incomplete-status"
+                    }
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "repairInformationCompleteUUID",
+                  "properties": {
+                    "disabled": true
+                  }
+                },
+                "eventSource": "click"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "ctype": "taskPanel",
+        "uuid": "dellCarUnitCIDTaskPanelUUID",
+        "title": "",
+        "isblueBorder": true,
+        "disabled": true,
+        "header": {
+          "title": "Unit CID",
+          "svgIcon": "description_icon",
+          "iconClass": "active-header",
+          "class": "greyish-black subtitle1 font-weight-700",
+          "statusIcon": "hourglass_empty",
+          "statusClass": "incomplete-status"
+        },
+        "expanded": false,
+        "hideToggle": true,
+        "isEditable": true,
+        "isMandatory": true,
+        "hidden": false,
+        "visibility": true,
+        "required": true,
+        "hooks": [],
+        "validations": [],
+        "actions": [],
+        "items": [
+          {
+            "ctype": "label",
+            "labelClass": "dell-greyish-black font-weight-700",
+            "text": "CID"
+          },
+          {
+            "ctype": "actionToggle",
+            "formGroupClass": "body2 d-flex justify-content-between mb-2 verifone-receiving-toggle",
+            "uuid": "dellCarUnitCIDUUID",
+            "labelPosition": "before",
+            "label": "Is the Unit CID",
+            "labelClass": "greyish-black pt-2 mt-2 font-weight-600 body",
+            "required": true,
+            "submitable": true,
+            "selectedVal": "#dellCarUnitCIDFormdata.dellCarCIDUnitToggle",
+            "name": "dellCarCIDUnitToggle",
+            "sublabel": "",
+            "options": [
+              {
+                "bgcolor": "light-blue",
+                "color": "white",
+                "text": "No",
+                "value": "No"
+              },
+              {
+                "bgcolor": "light-blue",
+                "color": "white",
+                "text": "Yes",
+                "value": "Yes"
+              }
+            ],
+            "validations": [],
+            "hooks": [],
+            "actions": [
+              {
+                "eventSource": "change",
+                "type": "context",
+                "config": {
+                  "data": "elementControlValue",
+                  "requestMethod": "add",
+                  "key": "dellCarUnitCIDValue"
+                }
+              }
+            ]
+          },
+          {
+            "ctype": "divider",
+            "dividerClass": "spacer-borderFQACosmetic"
+          }
+        ],
+        "footer": [
+          {
+            "ctype": "button",
+            "color": "primary",
+            "text": "Complete",
+            "uuid": "dellCarCIDUnitCompleteButtonUUID",
+            "class": "primary-btn",
+            "visibility": true,
+            "disabled": true,
+            "type": "submit",
+            "name": "unitCIDCompleteBtnName",
+            "isDisableNotReq": true,
+            "hooks": [],
+            "validations": [],
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "dellCarUnitCIDFormdata",
+                  "data": "formData"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "condition",
+                "eventSource": "click",
+                "config": {
+                  "operation": "isValid",
+                  "lhs": "#dellCarUnitCIDFormdata.dellCarCIDUnitToggle"
+                },
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "dellCarCIDToggleSelection",
+                          "data": "#dellCarUnitCIDFormdata.dellCarCIDUnitToggle"
+                        },
+                        "eventSource": "click"
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "dellCarCIDToggleSelection",
+                          "data": "#dellCarUnitCIDValue"
+                        },
+                        "eventSource": "click"
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "dellCarUnitCIDTaskPanelUUID",
+                  "properties": {
+                    "expanded": false,
+                    "disabled": false,
+                    "header": {
+                      "title": "Unit CID",
+                      "svgIcon": "description_icon",
+                      "statusIcon": "check_circle",
+                      "statusClass": "complete-status",
+                      "class": "greyish-black subtitle1 font-weight-700",
+                      "iconClass": "complete-task"
+                    }
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "eventSource": "click",
+                "type": "condition",
+                "config": {
+                  "operation": "isEqualTo",
+                  "lhs": "#dellCarCIDToggleSelection",
+                  "rhs": "Yes"
+                },
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "currentTaskPanelUUID",
+                          "data": ""
+                        },
+                        "hookType": "afterInit"
+                      },
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "currentTaskPanelPropertiesUUID",
+                          "data": ""
+                        },
+                        "hookType": "afterInit"
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellCarAssessmentResultCodesUUID",
+                          "properties": {
+                            "disabled": false,
+                            "hidden": false,
+                            "visibility": true
+                          }
+                        },
+                        "eventSource": "click"
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellCarAssessmentTimeoutUUID",
+                          "properties": {
+                            "disabled": false,
+                            "hidden": false
+                          }
+                        },
+                        "eventSource": "click"
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellCarAssessmentNextButtonUUID",
+                          "properties": {
+                            "disabled": true,
+                            "hidden": true
+                          }
+                        },
+                        "eventSource": "click"
+                      },
+                      {
+                        "type": "handelDellCarAssessmentAction",
+                        "eventSource": "click",
+                        "methodType": "disableTaskPanels"
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": []
+                  }
+                }
+              },
+              {
+                "eventSource": "click",
+                "type": "condition",
+                "config": {
+                  "operation": "isEqualTo",
+                  "lhs": "#dellCarCIDToggleSelection",
+                  "rhs": "No"
+                },
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellCarAssessmentResultCodesUUID",
+                          "properties": {
+                            "disabled": true,
+                            "hidden": true,
+                            "visibility": false
+                          }
+                        },
+                        "eventSource": "click"
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellCarAssessmentTimeoutUUID",
+                          "properties": {
+                            "disabled": true,
+                            "hidden": true
+                          }
+                        },
+                        "eventSource": "click"
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellCarAssessmentNextButtonUUID",
+                          "properties": {
+                            "hidden": false
+                          }
+                        },
+                        "eventSource": "click"
+                      },
+                      {
+                        "type": "handelDellCarAssessmentAction",
+                        "eventSource": "click",
+                        "methodType": "enableTaskPanels"
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": []
+                  }
+                }
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "dellCarCIDUnitCompleteButtonUUID",
+                  "properties": {
+                    "disabled": true
+                  }
+                },
+                "eventSource": "click"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "ctype": "taskPanel",
+        "title": "",
+        "disabled": true,
+        "isblueBorder": true,
+        "header": {
+          "title": "Customer Password",
+          "svgIcon": "description_icon",
+          "class": "greyish-black subtitle1 font-weight-700",
+          "iconClass": "active-header",
+          "statusIcon": "hourglass_empty",
+          "statusClass": "incomplete-status"
+        },
+        "expanded": false,
+        "hideToggle": true,
+        "isEditable": true,
+        "isMandatory": true,
+        "uuid": "dellCarCustomerPswUUID",
+        "visibility": true,
+        "hidden": false,
+        "hooks": [],
+        "validations": [],
+        "actions": [],
+        "items": [
+          {
+            "ctype": "label",
+            "text": "Enter the customer password",
+            "labelClass": "body-italic"
+          },
+          {
+            "ctype": "textField",
+            "uuid": "dellCarCustomerPswTextfieldUUID",
+            "hooks": [],
+            "actions": [],
+            "type": "text",
+            "isUpperCase": true,
+            "placeholder": "Scan #",
+            "submitable": true,
+            "visibility": true,
+            "required": true,
+            "label": "Customer Password",
+            "labelPosition": "left",
+            "textfieldClass": "col-10 dropdown-container textfield-container",
+            "name": "customerPsw",
+            "labelClass": "greyish-black col-6 pl-0 align-left subtitle1-align-self",
+            "formGroupClass": "flex-container-half-width small-text",
+            "validations": [
+              {
+                "type": "regex",
+                "script": "^[a-zA-Z0-9]{1,100}$"
+              }
+            ]
+          }
+        ],
+        "footer": [
+          {
+            "ctype": "button",
+            "color": "primary",
+            "text": "Complete",
+            "uuid": "dellCarCustomerPswCompleteButtonUUID",
+            "class": "primary-btn",
+            "visibility": true,
+            "hidden": false,
+            "disabled": true,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "key": "dellCarCustomerPswFormData",
+                  "data": "rawFormData",
+                  "requestMethod": "add"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "context",
+                "config": {
+                  "key": "dellCarCustomerPwdTaskCompleted",
+                  "data": true,
+                  "requestMethod": "add"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "eventSource": "click",
+                "config": {
+                  "key": "dellCarCustomerPswCompleteButtonUUID",
+                  "properties": {
+                    "disabled": true
+                  }
+                }
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "dellCarCustomerPswUUID",
+                  "properties": {
+                    "expanded": false,
+                    "header": {
+                      "title": "Customer Password",
+                      "svgIcon": "description_icon",
+                      "statusIcon": "check_circle",
+                      "statusClass": "complete-status",
+                      "class": "greyish-black subtitle1 font-weight-700",
+                      "iconClass": "complete-task"
+                    }
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "dellCarRecordRamTaskPanelUUID",
+                  "properties": {
+                    "expanded": true,
+                    "disabled": false,
+                    "header": {
+                      "title": "Record RAM details",
+                      "svgIcon": "description_icon",
+                      "iconClass": "active-header",
+                      "class": "greyish-black subtitle1 font-weight-700",
+                      "statusIcon": "hourglass_empty",
+                      "statusClass": "incomplete-status"
+                    }
+                  }
+                },
+                "eventSource": "click"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "ctype": "taskPanel",
+        "uuid": "dellCarRecordRamTaskPanelUUID",
+        "disabled": true,
+        "isblueBorder": true,
+        "title": "",
+        "header": {
+          "title": "Record RAM details",
+          "svgIcon": "description_icon",
+          "iconClass": "active-header",
+          "class": "greyish-black subtitle1 font-weight-700",
+          "statusIcon": "hourglass_empty",
+          "statusClass": "incomplete-status"
+        },
+        "expanded": false,
+        "hideToggle": true,
+        "isEditable": true,
+        "isMandatory": true,
+        "panelClass": "overflow-show",
+        "visibility": true,
+        "hidden": false,
+        "hooks": [],
+        "validations": [],
+        "actions": [],
+        "items": [
+          {
+            "ctype": "label",
+            "labelClass": "greyish-black body-italic assessment-alert",
+            "text": "Record the details for the RAM"
+          },
+          {
+            "ctype": "dropdownWithSearch",
+            "uuid": "dellCarRamCapacityslot1UUID",
+            "name": "dellCarRamCapacityDropdown1",
+            "label": "Slot 1 RAM Capacity",
+            "dropdownClass": "col-4 dropdown-container textfield-container",
+            "labelClass": "pl-0 align-left rework-lable-width subtitle1-align-self greyish-black",
+            "formGroupClass": "required-note drop-down-select-full-width form-group-margin",
+            "labelPosition": "left",
+            "submitable": true,
+            "disableSort": true,
+            "required": true,
+            "isDisableNotReq": true,
+            "code": "ramcode",
+            "displayValue": "ramValue",
+            "dataSource": "#getProcessWCData.recordram",
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "userSelectedRam1",
+                  "data": "elementControlValue"
+                },
+                "eventSource": "change"
+              },
+              {
+                "type": "isCurrentComponentSelected",
+                "eventSource": "change"
+              },
+              {
+                "type": "condition",
+                "config": {
+                  "operation": "isEqualTo",
+                  "lhs": "#userSelectedRam1",
+                  "rhs": "-Select-"
+                },
+                "eventSource": "change",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "resetCurrentControl",
+                        "eventSource": "click"
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "condition",
+                        "config": {
+                          "operation": "isEqualTo",
+                          "lhs": "#currentComponentSelected",
+                          "rhs": true
+                        },
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": []
+                          },
+                          "onFailure": {
+                            "actions": [
+                              {
+                                "type": "selectedCurrentControl",
+                                "eventSource": "click"
+                              },
+                              {
+                                "type": "handelDellCarAssessmentAction",
+                                "methodType": "createRamdropdown",
+                                "eventSource": "change"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ],
+            "options": []
+          },
+          {
+            "ctype": "dynamicControls",
+            "name": "dynamicRAMFields",
+            "templateType": "ramFields",
+            "splitDatabyOperator": true
+          }
+        ],
+        "footer": [
+          {
+            "ctype": "button",
+            "color": "primary",
+            "text": "Complete",
+            "uuid": "recordRamCompleteUUID",
+            "class": "primary-btn",
+            "visibility": true,
+            "disabled": true,
+            "type": "submit",
+            "name": "recordRamCompleteBtnName",
+            "isDisableNotReq": true,
+            "hooks": [],
+            "validations": [],
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "dellCarRecordRamFormData",
+                  "data": "rawFormData"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "context",
+                "config": {
+                  "key": "dellCarRecordRamTaskCompleted",
+                  "data": true,
+                  "requestMethod": "add"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "handelDellCarAssessmentAction",
+                "methodType": "ramCapacityFormDataOperation",
+                "config": {
+                  "key": "dellCarRecordRamFormData"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "dellCarRecordRamTaskPanelUUID",
+                  "properties": {
+                    "expanded": false,
+                    "disabled": false,
+                    "header": {
+                      "title": "Record RAM details",
+                      "svgIcon": "description_icon",
+                      "statusIcon": "check_circle",
+                      "statusClass": "complete-status",
+                      "class": "greyish-black subtitle1 font-weight-700",
+                      "iconClass": "complete-task"
+                    }
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "recordRamCompleteUUID",
+                  "properties": {
+                    "disabled": true
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "dellCarRecordHDDTaskPanelUUID",
+                  "properties": {
+                    "expanded": true,
+                    "disabled": false,
+                    "header": {
+                      "title": "Record HDD details",
+                      "svgIcon": "description_icon",
+                      "iconClass": "active-header",
+                      "class": "greyish-black subtitle1 font-weight-700",
+                      "statusIcon": "hourglass_empty",
+                      "statusClass": "incomplete-status"
+                    }
+                  }
+                },
+                "eventSource": "click"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "ctype": "taskPanel",
+        "uuid": "dellCarRecordHDDTaskPanelUUID",
+        "panelClass": "overflow-show",
+        "disabled": true,
+        "isblueBorder": true,
+        "title": "",
+        "header": {
+          "title": "Record HDD details",
+          "svgIcon": "description_icon",
+          "iconClass": "active-header",
+          "class": "greyish-black subtitle1 font-weight-700",
+          "statusIcon": "hourglass_empty",
+          "statusClass": "incomplete-status"
+        },
+        "expanded": false,
+        "hideToggle": true,
+        "isEditable": true,
+        "isMandatory": true,
+        "visibility": true,
+        "hidden": false,
+        "hooks": [],
+        "validations": [],
+        "actions": [],
+        "items": [
+          {
+            "ctype": "label",
+            "text": "Record the details of the HDDs",
+            "labelClass": "greyish-black body-italic"
+          },
+          {
+            "ctype": "dropdownWithSearch",
+            "uuid": "dellCarHDD1CapacityUUID",
+            "name": "dellCarHDDCapacityDropdown1",
+            "label": "HDD 1 Capacity",
+            "disableSort": true,
+            "dropdownClass": "col-4 dropdown-container textfield-container",
+            "labelClass": "pl-0 align-left rework-lable-width subtitle1-align-self greyish-black",
+            "formGroupClass": "required-note drop-down-select-full-width form-group-margin",
+            "labelPosition": "left",
+            "required": true,
+            "code": "recordHDDcode",
+            "displayValue": "recordHDDValue",
+            "dataSource": "#getProcessWCData.recordHDD",
+            "hooks": [],
+            "options": [],
+            "actions": []
+          },
+          {
+            "ctype": "textField",
+            "uuid": "dellCarHDDSerial1UUID",
+            "hooks": [],
+            "type": "text",
+            "placeholder": "Scan #",
+            "submitable": true,
+            "visibility": true,
+            "disabled": false,
+            "focus": false,
+            "hidden": false,
+            "isUpperCase": true,
+            "label": "HDD 1 Serial Number",
+            "labelPosition": "left",
+            "textfieldClass": "col-4 dropdown-container textfield-container",
+            "name": "dellCarHDDSerialNumber1",
+            "required": true,
+            "focusOut": true,
+            "onlyEnterKeyPress": true,
+            "disableCompleteButtonEnterActions": true,
+            "labelClass": "pl-0 align-left rework-lable-width subtitle1-align-self greyish-black",
+            "formGroupClass": "required-note",
+            "validations": [
+              {
+                "type": "regex",
+                "script": "[0-9a-zA-Z]{0,32}"
+              }
+            ],
+            "actions": [
+              {
+                "type": "isCurrentComponentSelected",
+                "eventSource": "keydown"
+              },
+              {
+                "type": "condition",
+                "eventSource": "keydown",
+                "config": {
+                  "operation": "isEqualTo",
+                  "lhs": "#currentComponentSelected",
+                  "rhs": true
+                },
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": []
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "selectedCurrentControl",
+                        "eventSource": "click"
+                      },
+                      {
+                        "type": "handelDellCarAssessmentAction",
+                        "methodType": "createHDDFields",
+                        "eventSource": "change"
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "ctype": "dynamicControls",
+            "name": "dynamicRAMFields",
+            "templateType": "HddFields",
+            "splitDatabyOperator": true
+          }
+        ],
+        "footer": [
+          {
+            "ctype": "button",
+            "color": "primary",
+            "text": "Complete",
+            "uuid": "dellCarRecordHDDCompleteUID",
+            "class": "primary-btn",
+            "visibility": true,
+            "disabled": true,
+            "type": "submit",
+            "name": "recordHDDCompleteBtnName",
+            "isDisableNotReq": true,
+            "hooks": [],
+            "validations": [],
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "dellCarRecordHDDFormData",
+                  "data": "rawFormData"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "context",
+                "config": {
+                  "key": "dellCarRecordHDDTaskCompleted",
+                  "data": true,
+                  "requestMethod": "add"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "handelDellCarAssessmentAction",
+                "methodType": "hddFieldsFormDataOperation",
+                "config": {
+                  "key": "dellCarRecordHDDFormData"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "dellCarRecordHDDTaskPanelUUID",
+                  "properties": {
+                    "expanded": false,
+                    "disabled": false,
+                    "header": {
+                      "title": "Record HDD details",
+                      "svgIcon": "description_icon",
+                      "statusIcon": "check_circle",
+                      "statusClass": "complete-status",
+                      "class": "greyish-black subtitle1 font-weight-700",
+                      "iconClass": "complete-task"
+                    }
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "dellCarRecordHDDCompleteUID",
+                  "properties": {
+                    "disabled": true
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "dellCarKeyBoardLightTaskPanelUUID",
+                  "properties": {
+                    "expanded": true,
+                    "disabled": false,
+                    "header": {
+                      "title": "Keyboard Backlight",
+                      "svgIcon": "description_icon",
+                      "iconClass": "active-header",
+                      "class": "greyish-black subtitle1 font-weight-700",
+                      "statusIcon": "hourglass_empty",
+                      "statusClass": "incomplete-status"
+                    }
+                  }
+                },
+                "eventSource": "click"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "ctype": "taskPanel",
+        "uuid": "dellCarKeyBoardLightTaskPanelUUID",
+        "title": "",
+        "isblueBorder": true,
+        "disabled": true,
+        "header": {
+          "title": "Keyboard Backlight",
+          "svgIcon": "description_icon",
+          "iconClass": "active-header",
+          "class": "greyish-black subtitle1 font-weight-700",
+          "statusIcon": "hourglass_empty",
+          "statusClass": "incomplete-status"
+        },
+        "expanded": false,
+        "hideToggle": true,
+        "isEditable": true,
+        "isMandatory": true,
+        "hidden": false,
+        "visibility": true,
+        "hooks": [],
+        "validations": [],
+        "actions": [],
+        "items": [
+          {
+            "ctype": "label",
+            "labelClass": "greyish-black body-italic",
+            "text": "Confirm Details below"
+          },
+          {
+            "ctype": "actionToggle",
+            "formGroupClass": "body2 d-flex justify-content-between mb-2 verifone-receiving-toggle",
+            "uuid": "dellCarKeyBoardUUID",
+            "labelPosition": "before",
+            "label": "Does the Keyboard have a backlight?",
+            "labelClass": "greyish-black pt-2 mt-2 font-weight-600 body",
+            "required": false,
+            "submitable": true,
+            "selectedVal": "",
+            "name": "dellCarKeyboardToggle",
+            "sublabel": "",
+            "options": [
+              {
+                "bgcolor": "light-blue",
+                "color": "white",
+                "text": "No",
+                "value": "NO"
+              },
+              {
+                "bgcolor": "light-blue",
+                "color": "white",
+                "text": "Yes",
+                "value": "YES"
+              }
+            ],
+            "validations": [],
+            "hooks": [],
+            "actions": []
+          },
+          {
+            "ctype": "divider",
+            "dividerClass": "spacer-borderFQACosmetic"
+          }
+        ],
+        "footer": [
+          {
+            "ctype": "button",
+            "color": "primary",
+            "text": "Complete",
+            "uuid": "boardLightCompleteButtonUUID",
+            "class": "primary-btn",
+            "visibility": true,
+            "disabled": true,
+            "type": "submit",
+            "name": "keyBoardLightCompleteBtnName",
+            "isDisableNotReq": true,
+            "hooks": [],
+            "validations": [],
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "dellCarKeyBoardFormdata",
+                  "data": "rawFormData"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "context",
+                "config": {
+                  "key": "dellCarKeyBoardLightTaskCompleted",
+                  "data": true,
+                  "requestMethod": "add"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "dellCarKeyBoardLightTaskPanelUUID",
+                  "properties": {
+                    "expanded": false,
+                    "disabled": false,
+                    "header": {
+                      "title": "Keyboard Backlight",
+                      "svgIcon": "description_icon",
+                      "statusIcon": "check_circle",
+                      "statusClass": "complete-status",
+                      "class": "greyish-black subtitle1 font-weight-700",
+                      "iconClass": "complete-task"
+                    }
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "boardLightCompleteButtonUUID",
+                  "properties": {
+                    "disabled": true
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "condition",
+                "eventSource": "click",
+                "config": {
+                    "operation": "isEqualTo",
+                    "lhs": "#discrepancyUnitInfo.WORKCENTER",
+                    "rhs": "DELL_CAR_DEBUG_ARC"
+                },
+                "responseDependents": {
+                    "onSuccess": {
+                        "actions": [
+                          {
+                            "type": "updateComponent",
+                            "config": {
+                              "key": "dellCarChassisTaskPanelUUID",
+                              "properties": {
+                                "disabled": false,
+                                "expanded": true
+                              }
+                            },
+                            "eventSource": "click"
+                          }
+                        ]
+                    },
+                    "onFailure": {
+                        "actions": [
+                          {
+                            "type": "updateComponent",
+                            "config": {
+                              "key": "dellCarAssessmentNextButtonUUID",
+                              "properties": {
+                                "disabled": false
+                              }
+                            },
+                            "eventSource": "click"
+                          }
+                        ]
+                    }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "ctype": "taskPanel",
+        "uuid": "dellCarChassisTaskPanelUUID",
+        "title": "",
+        "isblueBorder": true,
+        "disabled": true,
+        "header": {
+          "title": "CHASSIS OPENED?",
+          "svgIcon": "description_icon",
+          "iconClass": "active-header",
+          "class": "greyish-black subtitle1 font-weight-700",
+          "statusIcon": "hourglass_empty",
+          "statusClass": "incomplete-status"
+        },
+        "expanded": false,
+        "hideToggle": true,
+        "isEditable": true,
+        "isMandatory": true,
+        "hidden": true,
+        "hooks": [],
+        "validations": [],
+        "actions": [],
+        "items": [
+          {
+            "ctype": "actionToggle",
+            "formGroupClass": "body2 d-flex justify-content-between mb-2 verifone-receiving-toggle",
+            "uuid": "dellCarChassisToggleUUID",
+            "labelPosition": "before",
+            "label": "CHASSIS OPENED?",
+            "labelClass": "greyish-black pt-2 mt-2 font-weight-600 body",
+            "required": true,
+            "submitable": true,
+            "selectedVal": "",
+            "name": "dellCarChassisToggle",
+            "sublabel": "",
+            "options": [
+              {
+                "bgcolor": "light-blue",
+                "color": "white",
+                "text": "No",
+                "value": "NO"
+              },
+              {
+                "bgcolor": "light-blue",
+                "color": "white",
+                "text": "Yes",
+                "value": "YES"
+              }
+            ],
+            "validations": [],
+            "hooks": [],
+            "actions": []
+          },
+          {
+            "ctype": "divider",
+            "dividerClass": "spacer-borderFQACosmetic"
+          }
+        ],
+        "footer": [
+          {
+            "ctype": "button",
+            "color": "primary",
+            "text": "Complete",
+            "uuid": "chassisCompleteButtonUUID",
+            "class": "primary-btn",
+            "visibility": true,
+            "disabled": true,
+            "type": "submit",
+            "name": "ChassisCompleteBtnName",
+            "isDisableNotReq": true,
+            "hooks": [],
+            "validations": [],
+            "actions": [
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "dellCarAssessmentNextButtonUUID",
+                  "properties": {
+                    "disabled": false
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "dellCarChassisFormdata",
+                  "data": "rawFormData"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "dellCarChassisTaskPanelUUID",
+                  "properties": {
+                    "expanded": false,
+                    "disabled": false,
+                    "header": {
+                      "title": "CHASSIS OPENED?",
+                      "svgIcon": "description_icon",
+                      "statusIcon": "check_circle",
+                      "statusClass": "complete-status",
+                      "class": "greyish-black subtitle1 font-weight-700",
+                      "iconClass": "complete-task"
+                    }
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "chassisCompleteButtonUUID",
+                  "properties": {
+                    "disabled": true
+                  }
+                },
+                "eventSource": "click"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "footer": [
+      {
+        "ctype": "toolbar",
+        "toolbarClass": "pagecontent-footer",
+        "items": [
+          {
+            "ctype": "iconbutton",
+            "iconButtonClass": "footer-save body",
+            "text": "Save & Exit",
+            "uuid": "dellCarRepairAssessmentExitUUID",
+            "visibility": true,
+            "disabled": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "icon": "save",
+            "actions": [
+              {
+                "type": "handelDellCarAssessmentAction",
+                "methodType": "clearRamHddIndex",
+                "eventSource": "click"
+              },
+              {
+                "type": "renderTemplate",
+                "config": {
+                  "templateId": "dashboard.json",
+                  "mode": "local"
+                },
+                "eventSource": "click"
+              }
+            ]
+          },
+          {
+            "ctype": "iconText",
+            "uuid": "dellCarAddNoteIconUUID",
+            "icon": "add_comment",
+            "text": "Add Note",
+            "textCss": "",
+            "disabled": false,
+            "iconPosition": "Before",
+            "iconTextClass": "footer-addNote body",
+            "actions": [
+              {
+                "type": "dialog",
+                "uuid": "addNoteDialogUUID",
+                "config": {
+                  "title": "Add Note",
+                  "items": [
+                    {
+                      "ctype": "textarea",
+                      "name": "addNote",
+                      "textareaClass": "note-class",
+                      "uuid": "addNoteUUID",
+                      "required": true,
+                      "value": "#repairAssessmentimeoutNotes.addNote",
+                      "actions": [
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "doneaddnoteUUID",
+                            "properties": {
+                              "disabled": false
+                            }
+                          },
+                          "eventSource": "onLoad"
+                        }
+                      ]
+                    }
+                  ],
+                  "footer": [
+                    {
+                      "ctype": "button",
+                      "color": "primary",
+                      "text": "Cancel",
+                      "uuid": "cancelHoldUUID",
+                      "closeType": "close",
+                      "disableClose": true,
+                      "visibility": true,
+                      "dialogButton": true,
+                      "type": "",
+                      "hooks": [],
+                      "validations": [],
+                      "actions": []
+                    },
+                    {
+                      "ctype": "button",
+                      "color": "primary",
+                      "text": "Done",
+                      "uuid": "doneaddnoteUUID",
+                      "dialogButton": true,
+                      "visibility": true,
+                      "disabled": true,
+                      "type": "submit",
+                      "closeType": "success",
+                      "hooks": [],
+                      "validations": [],
+                      "actions": []
+                    }
+                  ]
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "key": "repairAssessmentimeoutNotes",
+                          "data": "formData",
+                          "requestMethod": "add",
+                          "value": "addNote"
+                        },
+                        "eventSource": "click"
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": []
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "ctype": "spacer",
+            "uuid": "emptySpaceUUID",
+            "class": "empty-space"
+          },
+          {
+            "ctype": "iconbutton",
+            "uuid": "dellCarRepairAssessmentPauseUUID",
+            "visibility": true,
+            "disabled": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "icon": "pause",
+            "iconClass": "",
+            "disableRipple": true,
+            "actions": [
+              {
+                "type": "dialog",
+                "uuid": "pauseDialogUUID",
+                "config": {
+                  "title": "Move to Hold",
+                  "items": [
+                    {
+                      "ctype": "title",
+                      "uuid": "holdBinErrorUUID",
+                      "titleClass": "error-title-holdbin",
+                      "title": "Part Number is not available",
+                      "isShown": false
+                    },
+                    {
+                      "ctype": "nativeDropdown",
+                      "formGroupClass": "discrepancy-holddrpdwn",
+                      "dropdownClass": "dropdown-container textfield-container hold-position",
+                      "uuid": "holdTypeUUID",
+                      "label": "Hold Type",
+                      "name": "holdType",
+                      "required": true,
+                      "dataSource": "#filteredHoldTypes",
+                      "code": "storageHoldCode",
+                      "displayValue": "storageHoldCode",
+                      "actions": [
+                        {
+                          "type": "context",
+                          "config": {
+                            "requestMethod": "add",
+                            "key": "storageHoldCode",
+                            "data": "elementControlValue"
+                          },
+                          "eventSource": "change"
+                        },
+                        {
+                          "type": "condition",
+                          "eventSource": "change",
+                          "config": {
+                              "operation": "isEqualTo",
+                              "lhs": "#storageHoldCode",
+                              "rhs": "AWAITING ENGINEERING"
+                          },
+                          "responseDependents": {
+                              "onSuccess": {
+                                  "actions": [
+                                    {
+                                      "type": "updateComponent",
+                                      "config": {
+                                          "key": "dellCarAssessProblemDescriptionUUID",
+                                          "properties": {
+                                              "hidden": false,
+                                              "required": true
+                                          }
+                                      }
+                                    },
+                                    {
+                                      "type": "updateComponent",
+                                      "config": {
+                                          "key": "dellCarAssessBiosVersionUUID",
+                                          "properties": {
+                                              "hidden": false,
+                                              "required": true
+                                          }
+                                      }
+                                    },
+                                    {
+                                      "type": "updateComponent",
+                                      "config": {
+                                          "key": "dellCarAssessEpsaErrorCodeUUID",
+                                          "properties": {
+                                              "hidden": false,
+                                              "required": true
+                                          }
+                                      }
+                                    },
+                                    {
+                                      "type": "updateComponent",
+                                      "config": {
+                                          "key": "dellCarAssessLedCodeUUID",
+                                          "properties": {
+                                              "hidden": false,
+                                              "required": true
+                                          }
+                                      }
+                                    },
+                                    {
+                                      "type": "updateComponent",
+                                      "config": {
+                                          "key": "dellCarAssessSparePartUsedUUID",
+                                          "properties": {
+                                              "hidden": false,
+                                              "required": true
+                                          }
+                                      }
+                                    },
+                                    {
+                                      "type": "updateComponent",
+                                      "config": {
+                                          "key": "holdNodeUUID",
+                                          "properties": {
+                                            "hidden":true
+                                          }
+                                      }
+                                    }
+                                  ]
+                              },
+                              "onFailure": {
+                                  "actions": [
+                                    {
+                                      "type": "updateComponent",
+                                      "config": {
+                                          "key": "dellCarAssessProblemDescriptionUUID",
+                                          "properties": {
+                                              "hidden": true,
+                                              "required": false
+                                          }
+                                      }
+                                    },
+                                    {
+                                      "type": "updateComponent",
+                                      "config": {
+                                          "key": "dellCarAssessBiosVersionUUID",
+                                          "properties": {
+                                              "hidden": true,
+                                              "required": false
+                                          }
+                                      }
+                                    },
+                                    {
+                                      "type": "updateComponent",
+                                      "config": {
+                                          "key": "dellCarAssessEpsaErrorCodeUUID",
+                                          "properties": {
+                                              "hidden": true,
+                                              "required": false
+                                          }
+                                      }
+                                    },
+                                    {
+                                      "type": "updateComponent",
+                                      "config": {
+                                          "key": "dellCarAssessLedCodeUUID",
+                                          "properties": {
+                                              "hidden": true,
+                                              "required": false
+                                          }
+                                      }
+                                    },
+                                    {
+                                      "type": "updateComponent",
+                                      "config": {
+                                          "key": "dellCarAssessSparePartUsedUUID",
+                                          "properties": {
+                                              "hidden": true,
+                                              "required": false
+                                          }
+                                      }
+                                    },
+                                    {
+                                      "type": "updateComponent",
+                                      "config": {
+                                        "key": "holdNodeUUID",
+                                        "properties": {
+                                          "value": ""
+                                        }
+                                      },
+                                      "eventSource": "change"
+                                    },
+                                    {
+                                      "type": "updateComponent",
+                                      "config": {
+                                          "key": "holdNodeUUID",
+                                          "properties": {
+                                            "hidden":false
+                                          }
+                                      }
+                                    }
+                                  ]
+                              }
+                          }
+                        },
+                        {
+                          "type": "condition",
+                          "eventSource": "change",
+                          "config": {
+                            "operation": "isEqualTo",
+                            "lhs": "#storageHoldCode",
+                            "rhs": "AWAITING PART"
+                          },
+                          "responseDependents": {
+                            "onSuccess": {
+                              "actions": [
+                                {
+                                  "type": "updateComponent",
+                                  "eventSource": "click",
+                                  "config": {
+                                    "key": "holdBinErrorUUID",
+                                    "properties": {
+                                      "isShown": true
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "disableComponent",
+                                  "config": {
+                                    "key": "holdNodeUUID",
+                                    "property": "holdAddNote"
+                                  },
+                                  "eventSource": "click"
+                                },
+                                {
+                                  "type": "updateComponent",
+                                  "eventSource": "click",
+                                  "config": {
+                                    "key": "holdCodeUUID",
+                                    "properties": {
+                                      "disabled": true
+                                    }
+                                  }
+                                }
+                              ]
+                            },
+                            "onFailure": {
+                              "actions": [
+                                {
+                                  "type": "updateComponent",
+                                  "eventSource": "click",
+                                  "config": {
+                                    "key": "holdBinErrorUUID",
+                                    "properties": {
+                                      "isShown": false
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "updateComponent",
+                                  "eventSource": "click",
+                                  "config": {
+                                    "key": "holdCodeUUID",
+                                    "properties": {
+                                      "disabled": false
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "updateComponent",
+                                  "eventSource": "click",
+                                  "config": {
+                                    "key": "holdNodeUUID",
+                                    "properties": {
+                                      "disabled": false
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        },
+                        {
+                          "type": "conditionalFilterData",
+                          "config": {
+                            "data": "#dellCarHoldCodes",
+                            "targetContextKey": "holdSubCodeData",
+                            "keyName": "#storageHoldCode",
+                            "filterRefValue": "storageHoldCode",
+                            "targetUUID": "holdCodeUUID",
+                            "name": "holdCodes"
+                          },
+                          "eventSource": "change"
+                        },
+                        {
+                          "type": "conditionalDestinationLocationData",
+                          "config": {
+                            "data": "#holdSubCodeData",
+                            "filterRefValue": "destStkLocationName"
+                          },
+                          "eventSource": "change"
+                        },
+                        {
+                          "type": "conditionalDestinationLocationData",
+                          "config": {
+                            "data": "#holdSubCodeData",
+                            "filterRefValue": "srcStkLocationName"
+                          },
+                          "eventSource": "change"
+                        }
+                      ]
+                    },
+                    {
+                      "ctype": "nativeDropdown",
+                      "formGroupClass": "discrepancy-holddrpdwn",
+                      "dropdownClass": "dropdown-container textfield-container hold-position",
+                      "uuid": "holdCodeUUID",
+                      "label": "Hold Code",
+                      "name": "holdCodes",
+                      "dataSource": "#holdSubCodeData",
+                      "code": "storageHoldSubCode",
+                      "displayValue": "storageHoldSubCode",
+                      "defaultValue": "",
+                      "required": true,
+                      "disabled": false,
+                      "actions": [
+                        {
+                          "type": "context",
+                          "config": {
+                            "requestMethod": "add",
+                            "key": "storageHoldCode",
+                            "data": "elementControlValue"
+                          },
+                          "eventSource": "change"
+                        }
+                      ]
+                    },
+                    {
+                      "ctype": "textField",
+                      "uuid": "dellCarAssessProblemDescriptionUUID",
+                      "submitable": false,
+                      "disabled": false,
+                      "validations": [],
+                      "hidden": true,
+                      "inLine": true,
+                      "formGroupClass": "flex-container required-note",
+                      "textfieldClass": "hold-textfield-container",
+                      "labelClass": "hold-tf-label change-label-width",
+                      "hooks": [],
+                      "name": "problemDescription",
+                      "label": "Problem Description",
+                      "labelPosition": "left",
+                      "tooltip": "",
+                      "TooltipPosition": "",
+                      "defaultValue": "",
+                      "readonly": false,
+                      "type": "text",
+                      "required": false,
+                      "placeholder": "Enter Value",
+                      "value": "",
+                      "prefix": false,
+                      "prefixIcon": "",
+                      "validateGroup": false,
+                      "suffix": false,
+                      "suffixIcon": "",
+                      "actions": [
+                        {
+                          "type": "context",
+                          "config": {
+                            "requestMethod": "add",
+                            "key": "StoreDataProblemDescription",
+                            "data": "elementControlValue"
+                          },
+                          "eventSource": "input"
+                        },
+                        {
+                          "type": "handelDellCarAssessmentAction",
+                          "methodType": "addNotePrepopulatedData",
+                          "eventSource": "input"
+                        },
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "holdNodeUUID",
+                            "properties": {
+                              "value": "#dellCarAssessAddHoldNoteData"
+                            }
+                          },
+                          "eventSource": "input"
+                        },
+                        {
+                          "type": "setDefaultValue",
+                          "eventSource": "input",
+                          "config": {
+                              "key": "holdNodeUUID",
+                              "defaultValue": "#dellCarAssessAddHoldNoteData"
+                          }
+                      }
+                      ]
+                    },
+                    {
+                      "ctype": "textField",
+                      "uuid": "dellCarAssessBiosVersionUUID",
+                      "submitable": false,
+                      "disabled": false,
+                      "validations": [],
+                      "hidden": true,
+                      "inLine": true,
+                      "formGroupClass": "flex-container required-note",
+                      "textfieldClass": "hold-textfield-container",
+                      "labelClass": "hold-tf-label change-label-width",
+                      "hooks": [],
+                      "name": "biosVersion",
+                      "label": "BIOS Version",
+                      "labelPosition": "left",
+                      "tooltip": "",
+                      "TooltipPosition": "",
+                      "defaultValue": "",
+                      "readonly": false,
+                      "type": "text",
+                      "required": false,
+                      "validateGroup": false,
+                      "placeholder": "Enter Value",
+                      "value": "",
+                      "prefix": false,
+                      "prefixIcon": "",
+                      "suffix": false,
+                      "suffixIcon": "",
+                      "actions": [
+                        {
+                          "type": "context",
+                          "config": {
+                            "requestMethod": "add",
+                            "key": "StoreDataBiosVersion",
+                            "data": "elementControlValue"
+                          },
+                          "eventSource": "input"
+                        },
+                        {
+                          "type": "handelDellCarAssessmentAction",
+                          "methodType": "addNotePrepopulatedData",
+                          "eventSource": "input"
+                        },
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "holdNodeUUID",
+                            "properties": {
+                              "value": "#dellCarAssessAddHoldNoteData"
+                            }
+                          },
+                          "eventSource": "input"
+                        },
+                        {
+                          "type": "setDefaultValue",
+                          "eventSource": "input",
+                          "config": {
+                              "key": "holdNodeUUID",
+                              "defaultValue": "#dellCarAssessAddHoldNoteData"
+                          }
+                      }
+                      ]
+                    },
+                    {
+                      "ctype": "textField",
+                      "uuid": "dellCarAssessEpsaErrorCodeUUID",
+                      "submitable": false,
+                      "disabled": false,
+                      "validations": [],
+                      "hidden": true,
+                      "inLine": true,
+                      "formGroupClass": "flex-container required-note",
+                      "textfieldClass": "hold-textfield-container",
+                      "labelClass": "hold-tf-label change-label-width",
+                      "hooks": [],
+                      "name": "epsaErrorCode",
+                      "label": "EPSA Error Code",
+                      "labelPosition": "left",
+                      "tooltip": "",
+                      "TooltipPosition": "",
+                      "defaultValue": "",
+                      "readonly": false,
+                      "type": "text",
+                      "required": false,
+                      "validateGroup": false,
+                      "placeholder": "Enter Value",
+                      "value": "",
+                      "prefix": false,
+                      "prefixIcon": "",
+                      "suffix": false,
+                      "suffixIcon": "",
+                      "actions": [
+                        {
+                          "type": "context",
+                          "config": {
+                            "requestMethod": "add",
+                            "key": "StoreDataEpsaErrorCode",
+                            "data": "elementControlValue"
+                          },
+                          "eventSource": "input"
+                        },
+                        {
+                          "type": "handelDellCarAssessmentAction",
+                          "methodType": "addNotePrepopulatedData",
+                          "eventSource": "input"
+                        },
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "holdNodeUUID",
+                            "properties": {
+                              "value": "#dellCarAssessAddHoldNoteData"
+                            }
+                          },
+                          "eventSource": "input"
+                        },
+                        {
+                          "type": "setDefaultValue",
+                          "eventSource": "input",
+                          "config": {
+                              "key": "holdNodeUUID",
+                              "defaultValue": "#dellCarAssessAddHoldNoteData"
+                          }
+                      }
+                      ]
+                    },
+                    {
+                      "ctype": "textField",
+                      "uuid": "dellCarAssessLedCodeUUID",
+                      "submitable": false,
+                      "disabled": false,
+                      "validations": [],
+                      "hidden": true,
+                      "inLine": true,
+                      "formGroupClass": "flex-container required-note",
+                      "textfieldClass": "hold-textfield-container",
+                      "labelClass": "hold-tf-label change-label-width",
+                      "hooks": [],
+                      "name": "ledCode",
+                      "label": "LED Code",
+                      "labelPosition": "left",
+                      "tooltip": "",
+                      "TooltipPosition": "",
+                      "defaultValue": "",
+                      "readonly": false,
+                      "validateGroup": false,
+                      "type": "text",
+                      "required": false,
+                      "placeholder": "Enter Value",
+                      "value": "",
+                      "prefix": false,
+                      "prefixIcon": "",
+                      "suffix": false,
+                      "suffixIcon": "",
+                      "actions": [
+                        {
+                          "type": "context",
+                          "config": {
+                            "requestMethod": "add",
+                            "key": "StoreDataLedCode",
+                            "data": "elementControlValue"
+                          },
+                          "eventSource": "input"
+                        },
+                        {
+                          "type": "handelDellCarAssessmentAction",
+                          "methodType": "addNotePrepopulatedData",
+                          "eventSource": "input"
+                        },
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "holdNodeUUID",
+                            "properties": {
+                              "value": "#dellCarAssessAddHoldNoteData"
+                            }
+                          },
+                          "eventSource": "input"
+                        },
+                        {
+                          "type": "setDefaultValue",
+                          "eventSource": "input",
+                          "config": {
+                              "key": "holdNodeUUID",
+                              "defaultValue": "#dellCarAssessAddHoldNoteData"
+                          }
+                      }
+                      ]
+                    },
+                    {
+                      "ctype": "textField",
+                      "uuid": "dellCarAssessSparePartUsedUUID",
+                      "submitable": false,
+                      "disabled": false,
+                      "hidden": true,
+                      "inLine": true,
+                      "validateGroup": false,
+                      "formGroupClass": "flex-container required-note",
+                      "textfieldClass": "hold-textfield-container ",
+                      "labelClass": "hold-tf-label change-label-width",
+                      "name": "sparePartUsed",
+                      "label": "Spare Parts Used",
+                      "labelPosition": "left",
+                      "type": "text",
+                      "validations": [],
+                      "required": false,
+                      "placeholder": "Enter Value",
+                      "value": "",
+                      "actions": [
+                        {
+                          "type": "context",
+                          "config": {
+                            "requestMethod": "add",
+                            "key": "StoreDataSparePartUsed",
+                            "data": "elementControlValue"
+                          },
+                          "eventSource": "input"
+                        },
+                        {
+                          "type": "handelDellCarAssessmentAction",
+                          "methodType": "addNotePrepopulatedData",
+                          "eventSource": "input"
+                        },
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "holdNodeUUID",
+                            "properties": {
+                              "value": "#dellCarAssessAddHoldNoteData"
+                            }
+                          },
+                          "eventSource": "input"
+                        },
+                        {
+                          "type": "setDefaultValue",
+                          "eventSource": "input",
+                          "config": {
+                              "key": "holdNodeUUID",
+                              "defaultValue": "#dellCarAssessAddHoldNoteData"
+                          }
+                      }
+                     ]
+                    },
+                    {
+                      "ctype": "textarea",
+                      "label": "Add note",
+                      "name": "holdAddNote",
+                      "textareaClass": "dellCartextposition",
+                      "textareaContainer": "timeout-class required-note",
+                      "uuid": "holdNodeUUID",
+                      "hidden":false,
+                      "required": true,
+                      "submitable": true,
+                      "actions": []
+                    }
+                  ],
+                  "footer": [
+                    {
+                      "ctype": "button",
+                      "color": "primary",
+                      "text": "Cancel",
+                      "uuid": "cancelHoldUUID",
+                      "closeType": "close",
+                      "disableClose": true,
+                      "visibility": true,
+                      "dialogButton": true,
+                      "type": "",
+                      "hooks": [],
+                      "validations": [],
+                      "actions": []
+                    },
+                    {
+                      "ctype": "button",
+                      "color": "primary",
+                      "text": "Done",
+                      "uuid": "doneHoldUUID",
+                      "dialogButton": true,
+                      "visibility": true,
+                      "disabled": true,
+                      "type": "submit",
+                      "closeType": "success",
+                      "hooks": [],
+                      "validations": [],
+                      "actions": [
+                        {
+                          "type": "context",
+                          "config": {
+                            "key": "repairAssessmentimeoutNotes",
+                            "data": "formData",
+                            "requestMethod": "add"
+                          },
+                          "eventSource": "click"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "condition",
+                        "eventSource": "change",
+                        "config": {
+                          "operation": "isEqualTo",
+                          "lhs": "#storageHoldCode",
+                          "rhs": "AWAITING PART"
+                        },
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": []
+                          },
+                          "onFailure": {
+                            "actions": [
+                              {
+                                "type": "context",
+                                "config": {
+                                  "key": "holdDialogData",
+                                  "data": "formData",
+                                  "requestMethod": "add"
+                                },
+                                "eventSource": "click"
+                              },
+                              {
+                                "type": "condition",
+                                "config": {
+                                  "operation": "isValid",
+                                  "lhs": "#submittableRamCapacityFormData"
+                                },
+                                "eventSource": "click",
+                                "responseDependents": {
+                                  "onSuccess": {
+                                    "actions": [
+                                      {
+                                        "type": "context",
+                                        "eventSource": "click",
+                                        "config": {
+                                          "requestMethod": "add",
+                                          "key": "ramCapacityData",
+                                          "data": "#submittableRamCapacityFormData"
+                                        }
+                                      },
+                                      {
+                                        "type": "condition",
+                                        "config": {
+                                          "operation": "isValid",
+                                          "lhs": "#submittableHddCapacityFormData"
+                                        },
+                                        "eventSource": "click",
+                                        "responseDependents": {
+                                          "onSuccess": {
+                                            "actions": [
+                                              {
+                                                "type": "context",
+                                                "eventSource": "click",
+                                                "config": {
+                                                  "requestMethod": "add",
+                                                  "key": "hddCapacityData",
+                                                  "data": "#submittableHddCapacityFormData"
+                                                }
+                                              },
+                                              {
+                                                "type": "condition",
+                                                "config": {
+                                                  "operation": "isValid",
+                                                  "lhs": "#submittableHddSerialNumberFormData"
+                                                },
+                                                "eventSource": "click",
+                                                "responseDependents": {
+                                                  "onSuccess": {
+                                                    "actions": [
+                                                      {
+                                                        "type": "context",
+                                                        "eventSource": "click",
+                                                        "config": {
+                                                          "requestMethod": "add",
+                                                          "key": "hddSerialData",
+                                                          "data": "#submittableHddSerialNumberFormData"
+                                                        }
+                                                      },
+                                                      {
+                                                        "type": "condition",
+                                                        "config": {
+                                                          "operation": "isValid",
+                                                          "lhs": "#dellCarKeyBoardFormdata.dellCarKeyboardToggle"
+                                                        },
+                                                        "eventSource": "click",
+                                                        "responseDependents": {
+                                                          "onSuccess": {
+                                                            "actions": [
+                                                              {
+                                                                "type": "context",
+                                                                "eventSource": "click",
+                                                                "config": {
+                                                                  "requestMethod": "add",
+                                                                  "key": "keyboardBacklightData",
+                                                                  "data": "#dellCarKeyBoardFormdata.dellCarKeyboardToggle"
+                                                                }
+                                                              }
+                                                            ]
+                                                          },
+                                                          "onFailure": {
+                                                            "actions": [
+                                                              {
+                                                                "type": "context",
+                                                                "eventSource": "click",
+                                                                "config": {
+                                                                  "requestMethod": "add",
+                                                                  "key": "keyboardBacklightData",
+                                                                  "data": "HOLD"
+                                                                }
+                                                              }
+                                                            ]
+                                                          }
+                                                        }
+                                                      }
+                                                    ]
+                                                  },
+                                                  "onFailure": {
+                                                    "actions": [
+                                                      {
+                                                        "type": "context",
+                                                        "eventSource": "click",
+                                                        "config": {
+                                                          "requestMethod": "add",
+                                                          "key": "keyboardBacklightData",
+                                                          "data": "HOLD"
+                                                        }
+                                                      },
+                                                      {
+                                                        "type": "context",
+                                                        "eventSource": "click",
+                                                        "config": {
+                                                          "requestMethod": "add",
+                                                          "key": "hddSerialData",
+                                                          "data": "HOLD"
+                                                        }
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          "onFailure": {
+                                            "actions": [
+                                              {
+                                                "type": "context",
+                                                "eventSource": "click",
+                                                "config": {
+                                                  "requestMethod": "add",
+                                                  "key": "hddCapacityData",
+                                                  "data": "HOLD"
+                                                }
+                                              },
+                                              {
+                                                "type": "context",
+                                                "eventSource": "click",
+                                                "config": {
+                                                  "requestMethod": "add",
+                                                  "key": "keyboardBacklightData",
+                                                  "data": "HOLD"
+                                                }
+                                              },
+                                              {
+                                                "type": "context",
+                                                "eventSource": "click",
+                                                "config": {
+                                                  "requestMethod": "add",
+                                                  "key": "hddSerialData",
+                                                  "data": "HOLD"
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "onFailure": {
+                                    "actions": [
+                                      {
+                                        "type": "context",
+                                        "eventSource": "click",
+                                        "config": {
+                                          "requestMethod": "add",
+                                          "key": "ramCapacityData",
+                                          "data": "HOLD"
+                                        }
+                                      },
+                                      {
+                                        "type": "context",
+                                        "eventSource": "click",
+                                        "config": {
+                                          "requestMethod": "add",
+                                          "key": "hddCapacityData",
+                                          "data": "HOLD"
+                                        }
+                                      },
+                                      {
+                                        "type": "context",
+                                        "eventSource": "click",
+                                        "config": {
+                                          "requestMethod": "add",
+                                          "key": "keyboardBacklightData",
+                                          "data": "HOLD"
+                                        }
+                                      },
+                                      {
+                                        "type": "context",
+                                        "eventSource": "click",
+                                        "config": {
+                                          "requestMethod": "add",
+                                          "key": "hddSerialData",
+                                          "data": "HOLD"
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              },
+                              {
+                                "type": "multipleCondition",
+                                "eventSource": "click",
+                                "config": {
+                                  "multi": true,
+                                  "operator": "OR",
+                                  "conditions": [
+                                    {
+                                      "operation": "isValid",
+                                      "lhs": "#submittableRamCapacityFormData"
+                                    },
+                                    {
+                                      "operation": "isValid",
+                                      "lhs": "#submittableHddCapacityFormData"
+                                    },
+                                    {
+                                      "operation": "isValid",
+                                      "lhs": "#submittableHddSerialNumberFormData"
+                                    },
+                                    {
+                                      "operation": "isValid",
+                                      "lhs": "#dellCarKeyBoardFormdata.dellCarKeyboardToggle"
+                                    }
+                                  ]
+                                },
+                                "responseDependents": {
+                                  "onSuccess": {
+                                    "actions": [
+                                      {
+                                        "type": "microservice",
+                                        "config": {
+                                          "microserviceId": "addInfoCodes",
+                                          "isLocal": false,
+                                          "LocalService": "assets/Responses/performFA.json",
+                                          "requestMethod": "post",
+                                          "body": {
+                                            "bcn": "#discrepancyUnitInfo.ITEM_BCN",
+                                            "notes": "#holdDialogData.holdAddNote",
+                                            "workCenter": "#discrepancyUnitInfo.WORKCENTER",
+                                            "geography": "#discrepancyUnitInfo.GEONAME",
+                                            "part": "#discrepancyUnitInfo.PART_NO",
+                                            "woTimeLoggedInHours": "1",
+                                            "userName": "#userAccountInfo.PersonalDetails.USERID",
+                                            "password": "#loginUUID.password",
+                                            "flexFields": [
+                                              {
+                                                "name": "User Password",
+                                                "value": "#dellCarCustomerPswFormData.customerPsw"
+                                              },
+                                              {
+                                                "name": "RAM No.1",
+                                                "value": "#ramCapacityData"
+                                              },
+                                              {
+                                                "name": "HDD No.1 CAP",
+                                                "value": "#hddCapacityData"
+                                              },
+                                              {
+                                                "name": "HDD SN No.1",
+                                                "value": "#hddSerialData"
+                                              },
+                                              {
+                                                "name": "KB backlight",
+                                                "value": "#keyboardBacklightData"
+                                              },
+                                              {
+                                                "name": "Computer Tested",
+                                                "value": "HOLD"
+                                              },
+                                              {
+                                                "name": "DEBUG CID IW",
+                                                "value": "HOLD"
+                                              },
+                                              {
+                                                "name": "Chassis Opened?",
+                                                "value": "#dellCarChassisFormdata.dellCarChassisToggle"
+                                              }
+                                            ]
+                                          },
+                                          "toBeStringified": true,
+                                          "spliceIfEmptyValueObject": [
+                                            {
+                                              "identifier": "flexFields",
+                                              "valueField": "value",
+                                              "keyToBeRemoved": "flexFields"
+                                            }
+                                          ]
+                                        },
+                                        "responseDependents": {
+                                          "onSuccess": {
+                                            "actions": [
+                                              {
+                                                "type": "context",
+                                                "config": {
+                                                  "requestMethod": "add",
+                                                  "key": "addInfoRespData",
+                                                  "data": "responseData"
+                                                }
+                                              },
+                                              {
+                                                "type": "microservice",
+                                                "config": {
+                                                  "microserviceId": "moveinventory",
+                                                  "requestMethod": "post",
+                                                  "body": {
+                                                    "apiUsageClientName": "#discrepancyUnitInfo.CLIENTNAME",
+                                                    "apiUsageLocationName": "#discrepancyUnitInfo.GEONAME",
+                                                    "callSource": "FrontEnd",
+                                                    "ip": "::1",
+                                                    "items": {
+                                                      "addtionalDetails": {
+                                                        "comments": "#holdDialogData.holdAddNote",
+                                                        "fixedAssetTag": "#discrepancyUnitInfo.FAT",
+                                                        "storageHoldCode": "#holdDialogData.holdType",
+                                                        "storageHoldSubCode": "#holdDialogData.holdCodes"
+                                                      },
+                                                      "destinationLocation": {
+                                                        "bin": "Default",
+                                                        "geography": "#discrepancyUnitInfo.GEONAME",
+                                                        "stockingLocation": "#destStkLocationName",
+                                                        "warehouse": "#discrepancyUnitInfo.WAREHOUSE_NAME"
+                                                      },
+                                                      "item": [
+                                                        {
+                                                          "bcn": "#discrepancyUnitInfo.ITEM_BCN",
+                                                          "owner": "#discrepancyUnitInfo.CLIENTNAME",
+                                                          "partNo": "#discrepancyUnitInfo.PART_NO",
+                                                          "serialNo": "#discrepancyUnitInfo.SERIAL_NO",
+                                                          "quantity": "1",
+                                                          "condition": "Defective"
+                                                        }
+                                                      ],
+                                                      "notes": "#holdDialogData.holdAddNote",
+                                                      "sourceLocation": {
+                                                        "bin": "Default",
+                                                        "geography": "#discrepancyUnitInfo.GEONAME",
+                                                        "stockingLocation": "#srcStkLocationName",
+                                                        "warehouse": "#discrepancyUnitInfo.WAREHOUSE_NAME"
+                                                      }
+                                                    },
+                                                    "usrPwd": {
+                                                      "userName": "#loginUUID.username",
+                                                      "password": "#loginUUID.password"
+                                                    }
+                                                  },
+                                                  "toBeStringified": true
+                                                },
+                                                "responseDependents": {
+                                                  "onSuccess": {
+                                                    "actions": [
+                                                      {
+                                                        "type": "pauseScreenData"
+                                                      },
+                                                      {
+                                                        "type": "renderTemplate",
+                                                        "config": {
+                                                          "templateId": "dashboard.json",
+                                                          "mode": "local"
+                                                        }
+                                                      }
+                                                    ]
+                                                  },
+                                                  "onFailure": {
+                                                    "actions": [
+                                                      {
+                                                        "type": "handleCommonServices",
+                                                        "config": {
+                                                          "type": "errorRenderTemplate",
+                                                          "contextKey": "errorMsg",
+                                                          "updateKey": "errorTitleUUID"
+                                                        }
+                                                      }
+                                                    ]
+                                                  }
+                                                },
+                                                "eventSource": "click"
+                                              }
+                                            ]
+                                          },
+                                          "onFailure": {
+                                            "actions": [
+                                              {
+                                                "type": "handleCommonServices",
+                                                "config": {
+                                                  "type": "errorRenderTemplate",
+                                                  "contextKey": "errorMsg",
+                                                  "updateKey": "errorTitleUUID"
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        },
+                                        "eventSource": "click"
+                                      }
+                                    ]
+                                  },
+                                  "onFailure": {
+                                    "actions": [
+                                      {
+                                        "type": "microservice",
+                                        "config": {
+                                          "microserviceId": "moveinventory",
+                                          "requestMethod": "post",
+                                          "body": {
+                                            "apiUsageClientName": "#discrepancyUnitInfo.CLIENTNAME",
+                                            "apiUsageLocationName": "#discrepancyUnitInfo.GEONAME",
+                                            "callSource": "FrontEnd",
+                                            "ip": "::1",
+                                            "items": {
+                                              "addtionalDetails": {
+                                                "comments": "#holdDialogData.holdAddNote",
+                                                "fixedAssetTag": "#discrepancyUnitInfo.FAT",
+                                                "storageHoldCode": "#holdDialogData.holdType",
+                                                "storageHoldSubCode": "#holdDialogData.holdCodes"
+                                              },
+                                              "destinationLocation": {
+                                                "bin": "Default",
+                                                "geography": "#discrepancyUnitInfo.GEONAME",
+                                                "stockingLocation": "#destStkLocationName",
+                                                "warehouse": "#discrepancyUnitInfo.WAREHOUSE_NAME"
+                                              },
+                                              "item": [
+                                                {
+                                                  "bcn": "#discrepancyUnitInfo.ITEM_BCN",
+                                                  "owner": "#discrepancyUnitInfo.CLIENTNAME",
+                                                  "partNo": "#discrepancyUnitInfo.PART_NO",
+                                                  "serialNo": "#discrepancyUnitInfo.SERIAL_NO",
+                                                  "quantity": "1",
+                                                  "condition": "Defective"
+                                                }
+                                              ],
+                                              "notes": "#holdDialogData.holdAddNote",
+                                              "sourceLocation": {
+                                                "bin": "Default",
+                                                "geography": "#discrepancyUnitInfo.GEONAME",
+                                                "stockingLocation": "#srcStkLocationName",
+                                                "warehouse": "#discrepancyUnitInfo.WAREHOUSE_NAME"
+                                              }
+                                            },
+                                            "usrPwd": {
+                                              "userName": "#loginUUID.username",
+                                              "password": "#loginUUID.password"
+                                            }
+                                          },
+                                          "toBeStringified": true
+                                        },
+                                        "responseDependents": {
+                                          "onSuccess": {
+                                            "actions": [
+                                              {
+                                                "type": "pauseScreenData"
+                                              },
+                                              {
+                                                "type": "renderTemplate",
+                                                "config": {
+                                                  "templateId": "dashboard.json",
+                                                  "mode": "local"
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          "onFailure": {
+                                            "actions": [
+                                              {
+                                                "type": "handleCommonServices",
+                                                "config": {
+                                                  "type": "errorRenderTemplate",
+                                                  "contextKey": "errorMsg",
+                                                  "updateKey": "errorTitleUUID"
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        },
+                                        "eventSource": "click"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {}
+                }
+              },
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "holdSubCodeData",
+                  "data": ""
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "context",
+                "config": {
+                    "requestMethod": "add",
+                    "key": "holdAddNote",
+                    "data": ""
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "context",
+                "config": {
+                    "requestMethod": "add",
+                    "key": "StoreDataProblemDescription",
+                    "data": ""
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "context",
+                "config": {
+                    "requestMethod": "add",
+                    "key": "StoreDataBiosVersion",
+                    "data": ""
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "context",
+                "config": {
+                    "requestMethod": "add",
+                    "key": "StoreDataEpsaErrorCode",
+                    "data": ""
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "context",
+                "config": {
+                    "requestMethod": "add",
+                    "key": "StoreDataLedCode",
+                    "data": ""
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "context",
+                "config": {
+                    "requestMethod": "add",
+                    "key": "StoreDataSparePartUsed",
+                    "data": ""
+                },
+                "eventSource": "click"
+              }
+            ]
+          },
+          {
+            "ctype": "nativeDropdown",
+            "dropdownClass": "footer-dropdown dropdown-container body2",
+            "uuid": "dellCarAssessmentResultCodesUUID",
+            "name": "ResultCodes",
+            "isDropdownNotSelected": true,
+            "dataSource": [
+              "CID"
+            ],
+            "disabled": true,
+            "hidden": true,
+            "visibility": false,
+            "selectedVal": "",
+            "defaultValue": "CID",
+            "actions": [
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "dellCarAssessmentTimeoutUUID",
+                  "properties": {
+                    "disabled": false
+                  }
+                },
+                "eventSource": "change"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "errorTitleUUID",
+                  "properties": {
+                    "titleValue": "",
+                    "isShown": true
+                  }
+                },
+                "eventSource": "change"
+              }
+            ]
+          },
+          {
+            "ctype": "button",
+            "color": "primary",
+            "text": "Next",
+            "class": "primary-btn subprocess-save",
+            "uuid": "dellCarAssessmentNextButtonUUID",
+            "visibility": true,
+            "disabled": true,
+            "hidden": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "actions": [
+              {
+                "type": "renderTemplate",
+                "config": {
+                  "templateId": "dellCarEcn.json",
+                  "mode": "local"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateStage",
+                "eventSource": "click",
+                "config": {
+                  "currentStage": "ASSESSMENT",
+                  "currentSubProcess": "REPAIR",
+                  "nextStage": "ECN",
+                  "targetId": "menuTreeUUID",
+                  "processId": "#SubprocessMenu"
+                }
+              }
+            ]
+          },
+          {
+            "ctype": "button",
+            "color": "primary",
+            "text": "Time Out",
+            "uuid": "dellCarAssessmentTimeoutUUID",
+            "name": "dellCarAssessmentTimeoutBtn",
+            "visibility": true,
+            "disabled": true,
+            "hidden": true,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "buttonClass": "footer-button primary-btn",
+            "class": "primary-btn",
+            "actions": [
+              {
+                "type": "handelDellCarAssessmentAction",
+                "methodType": "clearRamHddIndex",
+                "eventSource": "click"
+              },
+              {
+                "type": "microservice",
+                "eventSource": "click",
+                "config": {
+                  "microserviceId": "performTimeOut",
+                  "requestMethod": "post",
+                  "isLocal": false,
+                  "LocalService": "assets/Responses/mockHoldSubCode.json",
+                  "body": {
+                    "timeOutRequest": {
+                      "location": "#discrepancyUnitInfo.GEONAME",
+                      "bcn": "#discrepancyUnitInfo.ITEM_BCN",
+                      "workCenter": "#discrepancyUnitInfo.WORKCENTER",
+                      "password": "#loginUUID.password",
+                      "notes": "#repairAssessmentimeoutNotes.addNote",
+                      "resultCode": "CID",
+                      "workCenterFlexFieldList": {
+                        "flexField": [
+                          {
+                            "name": "RAM No.1",
+                            "value": "CID"
+                          },
+                          {
+                            "name": "HDD No.1 CAP",
+                            "value": "CID"
+                          },
+                          {
+                            "name": "HDD SN No.1",
+                            "value": "CID"
+                          },
+                          {
+                            "name": "KB backlight",
+                            "value": "CID"
+                          },
+                          {
+                            "name": "Computer Tested",
+                            "value": "CID"
+                          },
+                          {
+                            "name": "DEBUG CID IW",
+                            "value": "CID"
+                          },
+                          {
+                            "name": "Chassis Opened?",
+                            "value": "CID"
+                          }
+                        ]
+                      }
+                    },
+                    "timeOutType": "ProcessImmediate",
+                    "clientName": "#discrepancyUnitInfo.CLIENTNAME",
+                    "contractName": "#discrepancyUnitInfo.CONTRACTNAME",
+                    "userName": "#userAccountInfo.PersonalDetails.USERID",
+                    "userPass": "#loginUUID.password",
+                    "ip": "::1",
+                    "callSource": "FrontEnd",
+                    "apiUsage_LocationName": "#discrepancyUnitInfo.GEONAME",
+                    "apiUsage_ClientName": "#discrepancyUnitInfo.CLIENTNAME"
+                  },
+                  "toBeStringified": true,
+                  "spliceIfEmptyValueObject": [
+                    {
+                      "identifier": "flexField",
+                      "valueField": "value",
+                      "keyToBeRemoved": "workCenterFlexFieldList"
+                    }
+                  ]
+                },
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "clearScreenData",
+                        "eventSource": "click"
+                      },
+                      {
+                        "type": "renderTemplate",
+                        "config": {
+                          "templateId": "dashboard.json",
+                          "mode": "local"
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "handleCommonServices",
+                        "config": {
+                          "type": "errorRenderTemplate"
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "Result": "SUCCESS"
+}

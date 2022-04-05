@@ -1,0 +1,12 @@
+<mat-grid-list [cols]="cols" [rowHeight]="rowHeight">
+  <mat-grid-tile *ngFor="let tile of tiles" [colspan]="tile.cols" [rowspan]="tile.rows"
+    (click)="clickEvent(tile,$event)">
+    <app-image *ngIf="tile.imageSrc" [imageSrc]="tile.imageSrc" [css]="tile.css"></app-image>
+    <app-title *ngIf="tile.text" [title]="tile.text | translate" [css]="tile.css"></app-title>
+    <div class="overlay">
+      <div class="text">
+        <mat-icon>add</mat-icon>
+      </div>
+    </div>
+  </mat-grid-tile>
+</mat-grid-list>

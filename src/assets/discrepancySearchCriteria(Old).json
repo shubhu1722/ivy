@@ -1,0 +1,488 @@
+{
+    "ctype": "page",
+    "uuid": "pageUUID",
+    "css": "",
+    "visibility": true,
+    "hooks": [],
+    "validations": [],
+    "action": [],
+    "header": [
+        {
+            "ctype": "toolbar",
+            "toolbarClass": "searchCriteria-toolbar section-title",
+            "items": [
+                {
+                    "ctype": "title",
+                    "title": "WC Operation"
+                }
+            ]
+        }
+    ],
+    "items": [
+        {
+            "ctype": "title",
+            "uuid": "searchCriteriaErrorTitleUUID",
+            "titleClass": "error-title",
+            "isShown": false
+        },
+        {
+            "ctype": "formPanel",
+            "title": "Discrepancy",
+            "header": "",
+            "uuid": "discrepancyUUID",
+            "formPanelClass": "searchCriteria-panel",
+            "visibility": true,
+            "hooks": [],
+            "validations": [],
+            "actions": [],
+            "items": [
+                {
+                    "ctype": "nativeDropdown",
+                    "uuid": "discrepancyTypeUUID",
+                    "hooks": [],
+                    "validations": [],
+                    "actions": [],
+                    "type": "text",
+                    "required": true,
+                    "submitable": true,
+                    "label": "",
+                    "labelPosition": "",
+                    "name": "identificatorTypeForDiscrepancy",
+                    "defaultValue": "SerialNumber",
+                    "dropdownClass": "searchcriteris-drpdwn",
+                    "options": [
+                        {
+                            "code": "BCN",
+                            "displayValue": "BCN"
+                        },
+                        {
+                            "code": "FixedAssetTag",
+                            "displayValue": "FAT"
+                        },
+                        {
+                            "code": "SerialNumber",
+                            "displayValue": "Serial No."
+                        }
+                    ]
+                },
+                {
+                    "ctype": "textField",
+                    "uuid": "discrepancyUnitValueUUID",
+                    "hooks": [],
+                    "validations": [],
+                    "textfieldClass": "searchcriteris-text",
+                    "type": "text",
+                    "required": true,
+                    "placeholder": "Scan Serial Number",
+                    "submitable": true,
+                    "label": "",
+                    "labelPosition": "",
+                    "name": "discrepancyunitIdentificationValue",
+                    "prefix": "true",
+                    "prefixIcon": "qr_code_scanner",
+                    "suffix": true,
+                    "suffixIcon": "arrow_forward",
+                    "actions": [
+                        {
+                            "type": "context",
+                            "config": {
+                                "key": "discrepancyUserSearchCriteria",
+                                "data": "formData",
+                                "requestMethod": "add"
+                            },
+                            "eventSource": "click"
+                        },
+                        {
+                            "type": "microservice",
+                            "config": {
+                                "microserviceId": "getUnitInfo",
+                                "requestMethod": "get",
+                                "params": {
+                                    "unitIdentificationValue": "#discrepancyUserSearchCriteria.discrepancyunitIdentificationValue",
+                                    "identificatorType": "#discrepancyUserSearchCriteria.identificatorTypeForDiscrepancy"
+                                }
+                            },
+                            "eventSource": "click",
+                            "responseDependents": {
+                                "onSuccess": {
+                                    "actions": [
+                                        {
+                                            "type": "context",
+                                            "config": {
+                                                "requestMethod": "add",
+                                                "key": "discrepancyUnitInfo",
+                                                "data": "responseData"
+                                            }
+                                        },
+                                        {
+                                            "type": "condition",
+                                            "config": {
+                                                "operation": "isEqualTo",
+                                                "lhs": "#discrepancyUnitInfo.ONHOLD",
+                                                "rhs": "1"
+                                            },
+                                            "responseDependents": {
+                                                "onSuccess": {
+                                                    "actions": [
+                                                        {
+                                                            "type": "updateComponent",
+                                                            "config": {
+                                                                "key": "searchCriteriaErrorTitleUUID",
+                                                                "properties": {
+                                                                    "titleValue": "Device on Hold.",
+                                                                    "isShown": true
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                "onFailure": {
+                                                    "actions": [
+                                                        {
+                                                            "type": "microservice",
+                                                            "config": {
+                                                                "microserviceId": "getResultCodeForDiscrepancy",
+                                                                "requestMethod": "get",
+                                                                "params": {
+                                                                    "bcn": "#discrepancyUnitInfo.ITEM_BCN",
+                                                                    "validateResult": 1
+                                                                }
+                                                            },
+                                                            "responseDependents": {
+                                                                "onSuccess": {
+                                                                    "actions": [
+                                                                        {
+                                                                            "type": "context",
+                                                                            "config": {
+                                                                                "requestMethod": "add",
+                                                                                "key": "resultCodesForDiscrepancy",
+                                                                                "data": "responseData"
+                                                                            }
+                                                                        },
+                                                                        {
+                                                                            "type": "microservice",
+                                                                            "config": {
+                                                                                "microserviceId": "getstorageholdsubcode",
+                                                                                "requestMethod": "post",
+                                                                                "body": {
+                                                                                    "locationId": "#discrepancyUnitInfo.LOCATION_ID",
+                                                                                    "clientId": "#discrepancyUnitInfo.CLIENT_ID",
+                                                                                    "contractId": "#discrepancyUnitInfo.CONTRACT_ID",
+                                                                                    "route": "#discrepancyUnitInfo.ROUTE",
+                                                                                    "username": "#userAccountInfo.PersonalDetails.USERID",
+                                                                                    "startIindex": 0,
+                                                                                    "endIndex": 1
+                                                                                },
+                                                                                "toBeStringified": true
+                                                                            },
+                                                                            "responseDependents": {
+                                                                                "onSuccess": {
+                                                                                    "actions": [
+                                                                                        {
+                                                                                            "type": "context",
+                                                                                            "config": {
+                                                                                                "requestMethod": "add",
+                                                                                                "key": "holdCodesForDiscrepancy",
+                                                                                                "data": "responseData"
+                                                                                            }
+                                                                                        },
+                                                                                        {
+                                                                                            "type": "microservice",
+                                                                                            "config": {
+                                                                                                "microserviceId": "receiptDate",
+                                                                                                "requestMethod": "get",
+                                                                                                "params": {
+                                                                                                    "locationId": "#discrepancyUnitInfo.LOCATION_ID",
+                                                                                                    "itemId": "#discrepancyUnitInfo.ITEM_ID",
+                                                                                                    "username": "#userAccountInfo.PersonalDetails.USERID"
+                                                                                                }
+                                                                                            },
+                                                                                            "responseDependents": {
+                                                                                                "onSuccess": {
+                                                                                                    "actions": [
+                                                                                                        {
+                                                                                                            "type": "context",
+                                                                                                            "config": {
+                                                                                                                "requestMethod": "add",
+                                                                                                                "key": "receiptDateForDiscrepancy",
+                                                                                                                "data": "responseData"
+                                                                                                            }
+                                                                                                        },
+                                                                                                        {
+                                                                                                            "type": "dateFormat",
+                                                                                                            "config": {
+                                                                                                                "format": "dd MMM, yyy",
+                                                                                                                "dateKey": "localDateTime",
+                                                                                                                "targetKey": "tat",
+                                                                                                                "source": "#receiptDateForDiscrepancy"
+                                                                                                            }
+                                                                                                        },
+                                                                                                        {
+                                                                                                            "type": "microservice",
+                                                                                                            "config": {
+                                                                                                                "microserviceId": "getROByBCN",
+                                                                                                                "requestMethod": "get",
+                                                                                                                "params": {
+                                                                                                                    "userName": "#userAccountInfo.PersonalDetails.USERID",
+                                                                                                                    "itemBCN": "#discrepancyUnitInfo.ITEM_BCN"
+                                                                                                                }
+                                                                                                            },
+                                                                                                            "responseDependents": {
+                                                                                                                "onSuccess": {
+                                                                                                                    "actions": [
+                                                                                                                        {
+                                                                                                                            "type": "context",
+                                                                                                                            "config": {
+                                                                                                                                "requestMethod": "add",
+                                                                                                                                "key": "ROByBCNForDiscrepancy",
+                                                                                                                                "data": "responseData"
+                                                                                                                            }
+                                                                                                                        },
+                                                                                                                        {
+                                                                                                                            "type": "microservice",
+                                                                                                                            "config": {
+                                                                                                                                "microserviceId": "getPartModelAndWarrentyDetails",
+                                                                                                                                "requestMethod": "get",
+                                                                                                                                "params": {
+                                                                                                                                    "locationId": "#discrepancyUnitInfo.LOCATION_ID",
+                                                                                                                                    "clinetId": "#discrepancyUnitInfo.CLIENT_ID",
+                                                                                                                                    "contractId": "#discrepancyUnitInfo.CONTRACT_ID",
+                                                                                                                                    "reforderId": "#ROByBCNForDiscrepancy",
+                                                                                                                                    "partNumber": "#discrepancyUnitInfo.PART_NO",
+                                                                                                                                    "userName": "#userAccountInfo.PersonalDetails.USERID"
+                                                                                                                                }
+                                                                                                                            },
+                                                                                                                            "responseDependents": {
+                                                                                                                                "onSuccess": {
+                                                                                                                                    "actions": [
+                                                                                                                                        {
+                                                                                                                                            "type": "context",
+                                                                                                                                            "config": {
+                                                                                                                                                "requestMethod": "add",
+                                                                                                                                                "key": "discrepancyPartAndWarrantyDetails",
+                                                                                                                                                "data": "responseData"
+                                                                                                                                            }
+                                                                                                                                        },
+                                                                                                                                        {
+                                                                                                                                            "type": "condition",
+                                                                                                                                            "config": {
+                                                                                                                                                "operation": "isValid",
+                                                                                                                                                "lhs": "#discrepancyUnitInfo.ROUTE_ID"
+                                                                                                                                            },
+                                                                                                                                            "responseDependents": {
+                                                                                                                                                "onSuccess": {
+                                                                                                                                                    "actions": [
+                                                                                                                                                        {
+                                                                                                                                                            "type": "condition",
+                                                                                                                                                            "config": {
+                                                                                                                                                                "operation": "isValid",
+                                                                                                                                                                "lhs": "#discrepancyUnitInfo.WORKCENTER_ID"
+                                                                                                                                                            },
+                                                                                                                                                            "responseDependents": {
+                                                                                                                                                                "onSuccess": {
+                                                                                                                                                                    "actions": [
+                                                                                                                                                                        {
+                                                                                                                                                                            "type": "microservice",
+                                                                                                                                                                            "config": {
+                                                                                                                                                                                "microserviceId": "getSubProcessMenu",
+                                                                                                                                                                                "requestMethod": "get",
+                                                                                                                                                                                "params": {
+                                                                                                                                                                                    "userId": "#loginUUID.username",
+                                                                                                                                                                                    "locationId": "#userSelectedLocation",
+                                                                                                                                                                                    "clientId": "#userSelectedClient",
+                                                                                                                                                                                    "contractId": "#userSelectedContract",
+                                                                                                                                                                                    "wcId": "#discrepancyUnitInfo.WORKCENTER_ID",
+                                                                                                                                                                                    "optId": "#discrepancyUnitInfo.ROUTE_ID"
+                                                                                                                                                                                }
+                                                                                                                                                                            },
+                                                                                                                                                                            "responseDependents": {
+                                                                                                                                                                                "onSuccess": {
+                                                                                                                                                                                    "actions": [
+                                                                                                                                                                                        {
+                                                                                                                                                                                            "type": "context",
+                                                                                                                                                                                            "config": {
+                                                                                                                                                                                                "requestMethod": "add",
+                                                                                                                                                                                                "key": "SubprocessMenu",
+                                                                                                                                                                                                "data": "responseData"
+                                                                                                                                                                                            }
+                                                                                                                                                                                        },
+                                                                                                                                                                                        {
+                                                                                                                                                                                            "type": "renderTemplate",
+                                                                                                                                                                                            "config": {
+                                                                                                                                                                                                "templateId": "discrepancySubProcess.json",
+                                                                                                                                                                                                "mode": "local"
+                                                                                                                                                                                            }
+                                                                                                                                                                                        }
+                                                                                                                                                                                    ]
+                                                                                                                                                                                },
+                                                                                                                                                                                "onFailure": {
+                                                                                                                                                                                    "actions": [
+                                                                                                                                                                                        {
+                                                                                                                                                                                            "type": "updateComponent",
+                                                                                                                                                                                            "config": {
+                                                                                                                                                                                                "key": "searchCriteriaErrorTitleUUID",
+                                                                                                                                                                                                "properties": {
+                                                                                                                                                                                                    "titleValue": "Failed to fetch getSubprocess Menu.",
+                                                                                                                                                                                                    "isShown": true
+                                                                                                                                                                                                }
+                                                                                                                                                                                            }
+                                                                                                                                                                                        }
+                                                                                                                                                                                    ]
+                                                                                                                                                                                }
+                                                                                                                                                                            }
+                                                                                                                                                                        }
+                                                                                                                                                                    ]
+                                                                                                                                                                },
+                                                                                                                                                                "onFailure": {
+                                                                                                                                                                    "actions": [
+                                                                                                                                                                        {
+                                                                                                                                                                            "type": "updateComponent",
+                                                                                                                                                                            "config": {
+                                                                                                                                                                                "key": "searchCriteriaErrorTitleUUID",
+                                                                                                                                                                                "properties": {
+                                                                                                                                                                                    "titleValue": "WorkCenter Is Not Assigned.",
+                                                                                                                                                                                    "isShown": true
+                                                                                                                                                                                }
+                                                                                                                                                                            }
+                                                                                                                                                                        }
+                                                                                                                                                                    ]
+                                                                                                                                                                }
+                                                                                                                                                            }
+                                                                                                                                                        }
+                                                                                                                                                    ]
+                                                                                                                                                },
+                                                                                                                                                "onFailure": {
+                                                                                                                                                    "actions": [
+                                                                                                                                                        {
+                                                                                                                                                            "type": "updateComponent",
+                                                                                                                                                            "config": {
+                                                                                                                                                                "key": "searchCriteriaErrorTitleUUID",
+                                                                                                                                                                "properties": {
+                                                                                                                                                                    "titleValue": "Order Process Type Is Empty.",
+                                                                                                                                                                    "isShown": true
+                                                                                                                                                                }
+                                                                                                                                                            }
+                                                                                                                                                        }
+                                                                                                                                                    ]
+                                                                                                                                                }
+                                                                                                                                            }
+                                                                                                                                        }
+                                                                                                                                    ]
+                                                                                                                                },
+                                                                                                                                "onFailure": {
+                                                                                                                                    "actions": [
+                                                                                                                                        {
+                                                                                                                                            "type": "updateComponent",
+                                                                                                                                            "config": {
+                                                                                                                                                "key": "searchCriteriaErrorTitleUUID",
+                                                                                                                                                "properties": {
+                                                                                                                                                    "titleValue": "Failed to fetch warranty details.",
+                                                                                                                                                    "isShown": true
+                                                                                                                                                }
+                                                                                                                                            }
+                                                                                                                                        }
+                                                                                                                                    ]
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                        }
+                                                                                                                    ]
+                                                                                                                },
+                                                                                                                "onFailure": {
+                                                                                                                    "actions": [
+                                                                                                                        {
+                                                                                                                            "type": "updateComponent",
+                                                                                                                            "config": {
+                                                                                                                                "key": "searchCriteriaErrorTitleUUID",
+                                                                                                                                "properties": {
+                                                                                                                                    "titleValue": "Failed to fetch reference order details.",
+                                                                                                                                    "isShown": true
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                        }
+                                                                                                                    ]
+                                                                                                                }
+                                                                                                            }
+                                                                                                        }
+                                                                                                    ]
+                                                                                                },
+                                                                                                "onFailure": {
+                                                                                                    "actions": [
+                                                                                                        {
+                                                                                                            "type": "updateComponent",
+                                                                                                            "config": {
+                                                                                                                "key": "searchCriteriaErrorTitleUUID",
+                                                                                                                "properties": {
+                                                                                                                    "titleValue": "Failed to fetch receipt date.",
+                                                                                                                    "isShown": true
+                                                                                                                }
+                                                                                                            }
+                                                                                                        }
+                                                                                                    ]
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                    ]
+                                                                                },
+                                                                                "onFailure": {
+                                                                                    "actions": [
+                                                                                        {
+                                                                                            "type": "updateComponent",
+                                                                                            "config": {
+                                                                                                "key": "searchCriteriaErrorTitleUUID",
+                                                                                                "properties": {
+                                                                                                    "titleValue": "Failed to fetch hold sub codes.",
+                                                                                                    "isShown": true
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                    ]
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                },
+                                                                "onFailure": {
+                                                                    "actions": [
+                                                                        {
+                                                                            "type": "updateComponent",
+                                                                            "config": {
+                                                                                "key": "searchCriteriaErrorTitleUUID",
+                                                                                "properties": {
+                                                                                    "titleValue": "Failed to fetch results code.",
+                                                                                    "isShown": true
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            }
+                                        }
+                                    ]
+                                },
+                                "onFailure": {
+                                    "actions": [
+                                        {
+                                            "type": "updateComponent",
+                                            "config": {
+                                                "key": "searchCriteriaErrorTitleUUID",
+                                                "properties": {
+                                                    "titleValue": "Failed to fetch getUnitInfo.",
+                                                    "isShown": true
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "footer": []
+}

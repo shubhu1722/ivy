@@ -1,0 +1,254 @@
+{
+    "ResultData": 
+    {
+        "ctype": "page",
+        "uuid": "pageUUID",
+        "visibility": true,
+        "hooks": [],
+        "validations": [],
+        "action": [],
+        "header": [
+            {
+                "ctype": "breadcrumb",
+                "breadcrumbs": [
+                    {
+                        "label": "#userSelectedLocationName"
+                    },
+                    {
+                        "label": "#userSelectedClientName"
+                    },
+                    {
+                        "label": "#userSelectedContractName"
+                    }
+                ]
+            },
+            {
+                "ctype": "toolbar",
+                "toolbarClass": "pagecontent-header",
+                "items": [
+                    {
+                        "ctype": "title",
+                        "uuid": "dellCarBSOTitleUUID",
+                        "titleValue": "Box Ship Only"
+                    }
+                ]
+            }
+        ],
+        "items": [
+            {
+                "ctype": "title",
+                "uuid": "successTitleUUID",
+                "titleClass": "success-title",
+                "isShown": false
+            },
+            {
+                "ctype": "title",
+                "uuid": "errorTitleUUID",
+                "containerId": "prebodysectionone",
+                "titleClass": "error-title",
+                "isShown": false
+            },
+            {
+                "ctype": "taskPanel",
+                "containerId": "prebodysectionone",
+                "taskPanelHeaderClass": "background-white",
+                "header": {
+                    "title": "Box Ship Only Orders",
+                    "svgIcon": "description_icon",
+                    "class": "greyish-black subtitle1 font-weight-700",
+                    "iconClass": "active-header"
+                },
+                "expanded": true,
+                "disabled": false,
+                "hideToggle": true,
+                "hidden": false,
+                "hooks": [
+                    {
+                        "type": "microservice",
+                        "hookType": "afterInit",
+                        "config": {
+                            "microserviceId": "getCarBSOOrders",
+                            "isLocal": false,
+                            "LocalService": "assets/Responses/repairMockRamResponse.json",
+                            "requestMethod": "get",
+                            "params": {
+                                "locationId": "#userSelectedLocation",
+                                "clientId": "#userSelectedClient",
+                                "contractId": "#userSelectedContract",
+                                "userName": "#userAccountInfo.PersonalDetails.USERID",
+                                "businessTrxType": "AX",
+                                "orderProcessTypeCode": "OSTK",
+                                "conditionName": "New"
+                            }
+                        },
+                        "responseDependents": {
+                            "onSuccess": {
+                                "actions": [
+                                    {
+                                        "type": "context",
+                                        "config": {
+                                            "requestMethod": "add",
+                                            "key": "dellCarBSOData",
+                                            "data": "responseData"
+                                        }
+                                    },
+                                    {
+                                        "type": "updateComponent",
+                                        "config": {
+                                            "key": "dellCarBSOTableUUID",
+                                            "fieldProperties": {
+                                                "dataSource": "#dellCarBSOData"
+                                            }
+                                        }
+                                    }
+                                ]
+                            },
+                            "onFailure": {
+                                "actions": [
+                                    {
+                                        "type": "context",
+                                        "config": {
+                                            "requestMethod": "add",
+                                            "key": "dellCarBSOData",
+                                            "data": []
+                                        }
+                                    },
+                                    {
+                                        "type": "updateComponent",
+                                        "config": {
+                                            "key": "dellCarBSOTableUUID",
+                                            "fieldProperties": {
+                                                "dataSource": "#dellCarBSOData"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "type": "handleCommonServices",
+                                        "config": {
+                                            "type": "errorRenderTemplate",
+                                            "contextKey": "errorMsg",
+                                            "updateKey": "errorTitleUUID"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ],
+                "validations": [],
+                "actions": [],
+                "isblueBorder": true,
+                "uuid": "dellCarBSOPanelUUID",
+                "items": [
+                    {
+                        "ctype": "label",
+                        "text": "Select an Order number to complete.",
+                        "labelClass": "greyish-black body-italic"
+                    },
+                    {
+                        "ctype": "tableWithSearchAndSort",
+                        "uuid": "dellCarBSOTableUUID",
+                        "tableClass": "replaceTaskTableclass",
+                        "tableDivCalss": "boxShippingTable",
+                        "tableHeaderClass": "requisitionList-table-header subtitle1 font-weight-700",
+                        "tableContainerClass": "requisitionList-table",
+                        "tableDataClass": "body greyish-black",
+                        "hooks": [],
+                        "displayedColumns": [
+                            "Order Number",
+                            "Box Part Number",
+                            "OrderStatus"
+                        ],
+                        "displayValues": {
+                            "outBoundOrderId": "Order Number",
+                            "partNo": "Box Part Number",
+                            "orderStatus": "OrderStatus"
+                        },
+                        "datasource": [],
+                        "iconList": {
+                            "OrderStatus": {
+                                "iconBeforeText": true,
+                                "iconAfterText": false,
+                                "iconClass": "incomplete-status",
+                                "icon": "hourglass_empty",
+                                "showText": false,
+                                "enableSort": false
+                            },
+                            "Box Part Number": {
+                                "iconBeforeText": false,
+                                "iconAfterText": false,
+                                "showText": true,
+                                "enableSort": true
+                            },
+                            "Order Number": {
+                                "iconBeforeText": false,
+                                "iconAfterText": false,
+                                "showText": true,
+                                "enableSort": true
+                            }
+                        },
+                        "actions": [
+                            {
+                                "type": "addRowData",
+                                "keyToSave": "boxShippingSelectedRow",
+                                "eventSource": "rowClick"
+                            },
+                            {
+                                "type": "extractValueBasedOnKey",
+                                "eventSource": "rowClick",
+                                "hookType": "afterInit",
+                                "config": {
+                                    "data": "dellCarBSOData",
+                                    "reqKey": "outBoundOrderId",
+                                    "reqValue": "#boxShippingSelectedRow.Order Number",
+                                    "key": "shippingRoOoResponse"
+                                }
+                            },
+                            {
+                                "type": "handleDellCarShippingActions",
+                                "eventSource": "rowClick",
+                                "methodType": "getRoOoDataIntoContextBoxShipping"
+                            },
+                            {
+                                "type": "handleDellCarShippingActions",
+                                "eventSource": "rowClick",
+                                "methodType": "dellCarRoutingToShippingPage"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "footer": [
+            {
+                "ctype": "toolbar",
+                "toolbarClass": "pagecontent-footer",
+                "items": [
+                    {
+                        "ctype": "iconbutton",
+                        "iconButtonClass": "footer-save body",
+                        "text": "Exit",
+                        "uuid": "ExitButtonUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "icon": "save",
+                        "actions": [
+                            {
+                                "type": "renderTemplate",
+                                "config": {
+                                    "templateId": "dashboard.json",
+                                    "mode": "local"
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "Result": "SUCCESS"
+}

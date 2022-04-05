@@ -1,0 +1,179 @@
+<div class="col-12 d-flex flex-column batch-css">
+    <!-- Add unit text field -->
+    <div>
+        <div class="row add-item-text">
+            <label for="batchUnit">Add Unit</label>
+            <input matInput type="text" (keyup.enter)="addUnitToBatch($event)" name="batchUnit" id="batchUnit"
+                [disabled]="currentBatchTakeoverStatus">
+        </div>
+    </div>
+
+    <!--table header -->
+    <div class="table-heading d-flex flex-column pt-1">
+        <div class="row">
+            <div class="col-1" [ngClass]="workInstructionOpenedFlag ? 'headerColumn' : 'removeHeaderColumn'"><span
+                    class="cursor-pointer"># <i class="fas  fa-sort"
+                        (click)="sortUnitTable('unitOrder', items, sortOrder)"></i></span></div>
+            <div class="col-2 " [ngClass]="workInstructionOpenedFlag ? 'headerColumn' : 'removeHeaderColumn'"><span
+                    class="cursor-pointer">Serial Number <i class="fas  fa-sort"
+                        (click)="sortUnitTable('serialNo', items, sortOrder)"></i></span></div>
+            <div class="col-2 " [ngClass]="workInstructionOpenedFlag ? 'headerColumn' : 'removeHeaderColumn'"><span
+                    class="cursor-pointer">Model Number <i class="fas  fa-sort"
+                        (click)="sortUnitTable('modelNo', items, sortOrder)"></i></span></div>
+            <div class="col-3 text-center"
+                [ngClass]="workInstructionOpenedFlag ? 'headerColumn' : 'removeHeaderColumn'">Condition</div>
+            <div class="col-3 " [ngClass]="workInstructionOpenedFlag ? 'headerColumn' : 'removeHeaderColumn'"><span
+                    class="cursor-pointer">Destination Work Center <i class="fas  fa-sort"
+                        (click)="sortUnitTable('destinationWc', items, sortOrder)"></i></span></div>
+        </div>
+    </div>
+
+    <!-- Batch table -->
+    <div class="table-body d-flex align-items-center flex-column pt-1" *ngIf="items.length > 0">
+        <div class="row" *ngFor="let item of items; let i=index">
+            <div class="col-1 p-1">
+                <label for="" class="" id=""
+                    [ngClass]="workInstructionOpenedFlag ? 'headerColumn headerColumn1' : 'removeHeaderColumn removeHeaderColumn1'">{{item.batchDetailsReponse
+                    && item.batchDetailsReponse.unitOrder?
+                    item.batchDetailsReponse.unitOrder:getOrderId(item.batchDetailsReponse.unitBatchId)}}</label>
+            </div>
+
+            <div class="col-2 p-1">
+                <label for="" class="" id=""
+                    [ngClass]="workInstructionOpenedFlag ? 'headerColumn headerColumn1' : 'removeHeaderColumn removeHeaderColumn1'"><a
+                        href="javascript:void(0)"
+                        (click)="showItemHistory(item.batchDetailsReponse.itemId)">{{item.batchDetailsReponse.serialNo}}</a></label>
+            </div>
+
+            <div class="col-2 p-1">
+                <label for="" class="" id=""
+                    [ngClass]="workInstructionOpenedFlag ? 'headerColumn headerColumn1' : 'removeHeaderColumn removeHeaderColumn1'">{{item.batchDetailsReponse.modelNo}}</label>
+            </div>
+
+            <div class="col-3 text-center p-1">
+                <div [class]="formGroupClass">
+                    <mat-button-toggle-group #group="matButtonToggleGroup" [disabled]='disabled' [name]='name'
+                        [value]="item.condition" [vertical]='vertical' [attr.checked]='checked' [id]='id'
+                        [attr.visibility]='visibilty' [style]='css' [class]="toggleClass"
+                        (click)="onClick(group, $event, i, item)" (change)="toggle($event,i,item)" (dblclick)="onDblClick(group, $event,i,item)">
+                        <mat-button-toggle
+                            [ngClass]="workInstructionOpenedFlag ? 'applyUnitControls' : 'removeUnitControls'"
+                            *ngFor="let item of options" value="{{item.value}}"
+                            [style.background-color]="activeItemBGColor" [disabled]="currentBatchTakeoverStatus">
+                            {{item.text}}</mat-button-toggle>
+                    </mat-button-toggle-group>
+                    <ng-container #afterButtonToggle></ng-container>
+                </div>
+            </div>
+
+            <div class="col-3 p-1">
+                <!-- item.batchDetailsReponse -->
+                <label for="" class="" id=""
+                    [ngClass]="workInstructionOpenedFlag ? 'headerColumn headerColumn1' : 'removeHeaderColumn removeHeaderColumn1'">{{item?.batchDetailsReponse?.selectedDestinationWC}}</label>
+            </div>
+            <div class="col-12 p-0 text-danger" *ngIf="item.message">
+                <p>{{item.message}}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Model popup -->
+    <div class="modal" id="batchModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true" #batchModal [style]="getPopupStyle()" style="position: fixed;width: 100%;height: 100%;
+        background: rgba(0,0,0,0.7);">
+        <div class="modal-dialog modal-xl modal-dialog-centered p-2" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title heading1 p-1 bold" style="font-family: Arial, Helvetica, sans-serif;"
+                        id="arcModalTitle">Route Units
+                    </h2>
+                    <button type="button" class="close" aria-label="Close" (click)="closePopup()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body pl-4">
+                    <div>
+                        <p class="body-italic">Units added, route units and attach note.</p>
+
+                        <div class="table-heading d-flex flex-column pt-1 ml-3">
+                            <div class="row">
+                                <div class="col-2 "># &nbsp; Serial Number <i class="fas  fa-sort"></i></div>
+                                <div class="col-2 ">Model Number<i class="fas  fa-sort"></i></div>
+                                <div class="col-2 ">Route To</div>
+                                <div class="col-2 " *ngIf="isKeyingWC">Symptom code</div>
+                                <div class="col-3 ">Instruction</div>
+                                <div class="col-3 ">Add Notes</div>
+                            </div>
+                        </div>
+
+                        <div class="table-body d-flex align-items-center flex-column pt-1 ml-3"
+                            *ngIf="items.length > 0">
+                            <div class="row" *ngFor="let item of items; let i=index">
+                                <div class="row mb-2" *ngIf="checkCondition(item,i) == i">
+                                    <div class="col-2 pl-0">
+                                        <label for="" class="headerColumn2" id="">{{item.batchDetailsReponse.unitOrder ?
+                                            item.batchDetailsReponse.unitOrder:getOrderId(item.batchDetailsReponse.unitBatchId)}}</label> &nbsp;
+                                        <label for="" class="headerColumn2" id=""><a href="javascript:void(0)"
+                                                (click)="showItemHistory(item.batchDetailsReponse.itemId)">{{item.batchDetailsReponse.serialNo}}</a></label>
+                                    </div>
+
+                                    <div class="col-2 p2-0">
+                                        <label for="" class="headerColumn2" id="">{{item.batchDetailsReponse.modelNo}}</label>
+                                    </div>
+
+                                    <div class="col-2 pl-0">
+                                        <select class="form-select form-select-lg textAndDDHW"
+                                            aria-label=".form-select-lg example"
+                                            (change)="onChange($event.target.value,item,i)">
+                                            <option selected disabled>--select--</option>
+                                            <option *ngFor="let rc of getResultcodeArray(item,i); let k=index"
+                                                value="{{rc.outcomeCodeId}}"
+                                                [selected]="rc.outcomeCodeId==item.selectedRc">
+                                                {{rc.outcomeCodeId}}</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-2 pl-0" *ngIf="isKeyingWC">
+                                        <select class="form-select form-select-lg textAndDDHW"
+                                            aria-label=".form-select-lg example"
+                                            (change)="onChange($event.target.value,item,i)">
+                                            <option selected disabled>--select--</option>
+                                            <option *ngFor="let rc of getKeyingResultCode(item,i); let k=index"
+                                                value="{{rc.outcomeCodeId}}"
+                                                [selected]="rc.outcomeCodeId==item.selectedRc">
+                                                {{rc.outcomeCodeId}}</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="col-3 pl-0">
+                                        <label for="" class="headerColumn2" id="">{{getSelectedInstruction(item,i)}}</label>
+                                    </div>
+
+                                    <div class="col-3 pl-0">
+                                        <input class="textAndDDHW" placeholder="Enter Text" type="text"
+                                            (input)="addNotesForTheUnit($event,item,i)" [value]="item.notes?item.notes:''">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-normal border" (click)="closePopup()">Close</button>
+                    <button type="button" class="btn btn-primary" (click)="completePopup()">Complete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screen Complete button -->
+    <div class="d-flex justify-content-end mt-5 border-top align-self-end batch-footer-block"
+        *ngIf="!currentBatchTakeoverStatus">
+        <button type="button" [ngClass]="completeDisabled ? 'btn btn-secondary border' : 'btn btn-primary'"
+            [disabled]="completeDisabled" (click)="openPopup()">Complete</button>
+    </div>
+    <div class="d-flex justify-content-end mt-5 border-top align-self-end batch-footer-block"
+        *ngIf="currentBatchTakeoverStatus">
+        <button type="button" class="btn btn-primary" (click)="takeoverBatch()">Takeover</button>
+    </div>
+</div>

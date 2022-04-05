@@ -1,0 +1,54 @@
+{
+	"ctype": "subProcess",
+	"title": "2CORNER",
+	"uuid": "assesmentUUID",
+	"subMenuIndex": 0,
+	"clientName": "CISCO",
+	"openRightNav": false,
+	"hooks": [
+	  {
+		"type": "microservice",
+		"hookType": "beforeInit",
+		"config": {
+		  "microserviceId": "getSubProcessPageBody",
+		  "requestMethod": "get",
+		  "params": {
+			"subProcessId": "#getReferenceDataKeys.subProcess.Cisco.2CORNER",
+			"userName": "#userAccountInfo.PersonalDetails.USERID"
+		  },
+		  "isLocal": false,
+		  "LocalService": "assets/Responses/SubProcess/CISCO/2CornerSubProcess.json"
+		},
+		"responseDependents": {
+		  "onSuccess": {
+			"actions": [
+			  {
+				"type": "context",
+				"config": {
+				  "requestMethod": "add",
+				  "key": "twoCornerData",
+				  "data": "responseData"
+				}
+			  },
+			  {
+				"type": "renderTemplate",
+				"config": {
+				  "mode": "remote",
+				  "targetId": "mainPageContentBodysp",
+				  "templateId": "twoCornerData"
+				}
+			  }
+			]
+		  },
+		  "onFailure": {
+			"actions": [
+			  {
+				"type": "toast",
+				"message": "Failed to fetch 2 Corner JSON"
+			  }
+			]
+		  }
+		}
+	  }
+	]
+  }

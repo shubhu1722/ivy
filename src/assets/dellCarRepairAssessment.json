@@ -1,0 +1,47 @@
+{
+    "ctype": "subProcess",
+    "title": "ASSESSMENT",
+    "slWcName": "DELL_CAR_DEBUG",
+    "uuid": "dellCarAssessmentUUID",
+    "subMenuIndex": 0,
+    "clientName": "DELL_CAR",
+    "openRightNav": false,
+    "hooks": [
+      {
+        "type": "microservice",
+        "hookType": "beforeInit",
+        "config": {
+          "microserviceId": "getSubProcessPageBody",
+          "requestMethod": "get",
+          "params": {
+            "subProcessId": "#dellCarwcSubprocess.ASSESSMENT.subProcessID",
+            "userName": "#userAccountInfo.PersonalDetails.USERID"
+          },
+          "isLocal": false,
+          "LocalService": "assets/Responses/SubProcess/DELL_CAR/dellCarRepairAssessmentSubProcess.json"
+        },
+        "responseDependents": {
+          "onSuccess": {
+            "actions": [
+              {
+                "type": "renderTemplate",
+                "config": {
+                  "mode": "remote",
+                  "targetId": "mainPageContentBodysp",
+                  "templateId": "getSubProcessPageBody"
+                }
+              }
+            ]
+          },
+          "onFailure": {
+            "actions": [
+              {
+                "type": "toast",
+                "message": "Failed to fetch Repair Assessment JSON"
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }

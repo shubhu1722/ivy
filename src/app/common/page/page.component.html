@@ -1,0 +1,14 @@
+<header class="page-header">
+  <ng-container #bodyheader></ng-container>
+</header>
+<!-- mainContent -->
+<div class="page-content" [ngClass]="{ hidden: !visibility}">
+  <mat-spinner *ngIf="!visibility" mode="indeterminate" strokeWidth="2" diameter="30" class="preloader"></mat-spinner>
+  <ng-container #prebodysectionone></ng-container>
+  <ng-container #prebodysection></ng-container>
+  <ng-container #prebodysectiontwo></ng-container>
+  <ng-container #bodypage></ng-container>
+</div>
+<footer class="page-footer">
+  <ng-container #bodyfooter></ng-container>
+</footer>

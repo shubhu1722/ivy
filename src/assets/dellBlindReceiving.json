@@ -1,0 +1,71 @@
+{
+    "ctype": "subProcess",
+    "title": "Blind Receiving",
+    "uuid": "dellBlindReceivingUUID",
+    "subMenuIndex": 0,
+    "clientName": "DELL_Receving",
+    "openRightNav": false,
+    "hooks": [
+      {
+        "type": "microservice",
+        "hookType": "beforeInit",
+        "config": {
+          "microserviceId": "getSubProcessPageBody",
+          "requestMethod": "get",
+          "params": {
+            "subProcessId": "#getProcessData.subProcess.Receiving[1].subProcessID",
+            "userName": "#userAccountInfo.PersonalDetails.USERID"
+          },
+          "isLocal": false,
+          "LocalService": "assets/Responses/SubProcess/DELL/receivingSubProcess.json"
+        },
+        "responseDependents": {
+          "onSuccess": {
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                    "requestMethod": "add",
+                    "key": "dellBlindReceivingData",
+                    "data": "responseData"
+                }
+            },
+            {
+              "type": "context",
+              "config": {
+                "requestMethod": "add",
+                "key": "isblindTrackingNumberVisible",
+                "data": true
+              }
+            },
+            {
+              "type": "context",
+              "config": {
+                "requestMethod": "add",
+                "key": "isReceivingTrackingNumberVisible",
+                "data": false
+              }
+            },
+              { 
+                "type": "renderTemplate",
+                "config": {
+                  "mode": "remote",
+                  "targetId": "mainPageContentBodysp",
+                  "templateId": "dellBlindReceivingData"
+                }
+              }
+            ]
+          },
+          "onFailure": {
+            "actions": [
+              {
+                "type": "toast",
+                "message": "Failed to fetch Dell Blind Receiving JSON"
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+  

@@ -1,0 +1,9 @@
+
+<mat-form-field appearance="none">
+    <mat-label>{{placeholder | translate}}</mat-label>
+    <mat-select [disableRipple]='disableRipple' [disabled]='disabled' [value]="defaultValue | translate" [attr.empty]='empty' [panelClass]='panelClass' [class]='focused' [id]='id' (selectionChange)="selectedItem($event.value)" (openedChange)="openedChangedHandler($event)" [placeholder]="placeholder | translate" [required]="required">
+      <mat-option [style]="css">Select option</mat-option>
+       <mat-option [style]="css"  *ngFor="let option of options" [value]="option.code" >{{option.displayValue | translate}}</mat-option>
+    </mat-select>
+</mat-form-field>
+

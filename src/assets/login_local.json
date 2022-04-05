@@ -1,0 +1,147 @@
+{
+    "ctype": "formPanel",
+    "_comment": " This will be a container in the center which will have 2 text fields username and password and a submit button",
+    "header": "",
+    "uuid": "loginUUID",
+    "css": "text-align: center !important; margin-top: 70px ; width: 100%;max-width: 470px;padding: 15px;margin: auto ; min-width: 200px;border: 1px solid rgba(0,100,0,0.8); border-radius:18px;display: flex;flex-direction: column;",
+    "visibility": true,
+    "hooks": [],
+    "validations": [],
+    "actions": [],
+    "footerClass": "d-md-flex justify-content-center",
+    "items": [
+        {
+            "ctype": "image",
+            "title": "",
+            "uuid": "imageUUID",
+            "css": "width: 74px;height: 68px;display: block;margin: 0 auto 20px auto",
+            "imageSrc": "https://lh3.googleusercontent.com/-YNJREBfr7ZQ/XvSmYw3pRjI/AAAAAAAABJ0/9eL4N0PF61AHCacCkVcGyYDSNNbECLn-gCK8BGAsYHg/s0/2020-06-25.jpg"
+        },
+        {
+            "ctype": "textField",
+            "uuid": "usernameUUID",
+            "hooks": [],
+            "validations": [
+                {
+                    "type": "regex",
+                    "script": ""
+                }
+            ],
+            "actions": [],
+            "type": "email",
+            "required": true,
+            "placeholder": "User Name",
+            "submitable": true,
+            "label": "User Name",
+            "labelPosition": "top",
+            "labelstyles": "color:rgba(0,100,0,0.8); font-weight:700; font-size:13px;",
+            "name": "username",
+            "inputStyles": "width: 100%;"
+        },
+        {
+            "ctype": "passwordField",
+            "uuid": "passwordUUID",
+            "hooks": [],
+            "validations": [
+                {
+                    "type": "regex",
+                    "script": ""
+                }
+            ],
+            "actions": [],
+            "required": true,
+            "placeholder": "Password",
+            "submitable": true,
+            "label": "Password",
+            "labelPosition": "top",
+            "labelstyles": "color:rgba(0,100,0,0.8); font-weight:700; font-size:13px;",
+            "name": "password",
+            "inputStyles": "width: 100%",
+            "revealpassword": true
+        }
+    ],
+    "footer": [
+        {
+            "ctype": "button",
+            "inputStyles": " border:1px solid rgba(0,191,255,0.3); background-color:rgba(0,191,255,0.3) ;color:#202020; font-weight:400; font-size:16px; min-width:100px; height: 32px;",
+            "text": "Login",
+            "uuid": "signInUUID",
+            "visibility": true,
+            "disabled": true,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "class": "col-md-2 col-lg-2 col-sm-12 m-1 capsule",
+            "actions": [
+                {
+                    "type": "context",
+                    "config": {
+                        "requestMethod": "add",
+                        "key": "loginUUID",
+                        "data": "formData"
+                    },
+                    "eventSource": "click"
+                },
+                {
+                    "type": "microservice",
+                    "config": {
+                        "microserviceId": "assets/validate_login_response_new.json",
+                        "requestMethod": "get"
+                    },
+                    "eventSource": "click",
+                    "responseDependents": {
+                        "onSuccess": {
+                            "actions": [
+                                {
+                                    "type": "toast",
+                                    "message": "Successfull Logged In"
+                                },
+                                {
+                                    "type": "context",
+                                    "config": {
+                                        "requestMethod": "add",
+                                        "key": "userAccountInfo",
+                                        "data": "responseData"
+                                    }
+                                },
+                                {
+                                    "type": "renderTemplate",
+                                    "config": {
+                                        "templateId": "dashboard.json",
+                                        "mode": "local"
+                                    }
+                                }
+                            ]
+                        },
+                        "onFailure": {
+                            "actions": [
+                                {
+                                    "type": "toast",
+                                    "message": "Login Failed."
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "ctype": "button",
+            "inputStyles": "border:1px solid #777777 ;color:#202020; font-weight:400;font-size:16px; background-color:white;min-width:100px; height: 32px;",
+            "text": "Cancel",
+            "uuid": "signInUUID",
+            "visibility": true,
+            "disabled": true,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "class": "col-lg-2 col-sm-12  m-1 capsule",
+            "actions": [
+                {
+                    "type": "resetData",
+                    "eventSource": "click"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,54 @@
+{
+	"ctype": "subProcess",
+	"title": "FQA",
+	"uuid": "ciscoFQAUUID",
+	"subMenuIndex": 0,
+	"clientName": "CISCO",
+	"openRightNav": false,
+	"hooks": [
+	  {
+		"type": "microservice",
+		"hookType": "beforeInit",
+		"config": {
+		  "microserviceId": "getSubProcessPageBody",
+		  "requestMethod": "get",
+		  "params": {
+			"subProcessId": "#getReferenceDataKeys.subProcess.Cisco.FQA",
+			"userName": "#userAccountInfo.PersonalDetails.USERID"
+		  },
+		  "isLocal": false,
+		  "LocalService": "assets/Responses/SubProcess/CISCO/FQASubProcess.json"
+		},
+		"responseDependents": {
+		  "onSuccess": {
+			"actions": [
+			  {
+				"type": "context",
+				"config": {
+				  "requestMethod": "add",
+				  "key": "fqaData",
+				  "data": "responseData"
+				}
+			  },
+			  {
+				"type": "renderTemplate",
+				"config": {
+				  "mode": "remote",
+				  "targetId": "mainPageContentBodysp",
+				  "templateId": "fqaData"
+				}
+			  }
+			]
+		  },
+		  "onFailure": {
+			"actions": [
+			  {
+				"type": "toast",
+				"message": "Failed to fetch FQA JSON"
+			  }
+			]
+		  }
+		}
+	  }
+	]
+}

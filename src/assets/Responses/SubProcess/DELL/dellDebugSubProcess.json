@@ -1,0 +1,1077 @@
+{
+    "ResultData": {
+        "ctype": "page",
+        "uuid": "pageUUID",
+        "contentClass": "",
+        "css": "",
+        "visibility": true,
+        "onLoadActions": [
+            {
+                "type": "microservice",
+                "config": {
+                    "microserviceId": "getDellDebugHPFAHistory",
+                    "requestMethod": "get",
+                    "params": {
+                        "itemId": "#discrepancyUnitInfo.ITEM_ID",
+                        "workCenterId": "#discrepancyUnitInfo.WORKCENTER_ID",
+                        "userName": "#userAccountInfo.PersonalDetails.USERID" 
+                    },
+                    "toBeStringified": true,
+                    "isLocal": true,
+                    "LocalService": "assets/Responses/mockHoldSubCode.json"
+                },
+                "responseDependents": {
+                    "onSuccess": {
+                        "actions": []
+                    },
+                    "onFailure": {
+                        "actions": [
+                            {
+                                "type": "handleCommonServices",
+                                "config": {
+                                    "type": "errorRenderTemplate",
+                                    "contextKey": "errorMsg",
+                                    "updateKey": "errorTitleUUID"
+                                }
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "type": "microservice",
+                "hookType": "afterInit",
+                "config": {
+                    "microserviceId": "getPreviousHistory",
+                    "requestMethod": "get",
+                    "params": {
+                        "itemId": "#discrepancyUnitInfo.ITEM_ID",
+                        "username": "#loginUUID.username"
+                    }
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                    "onSuccess": {
+                        "actions": []
+                    },
+                    "onFailure": {
+                        "actions": [
+                            {
+                                "type": "handleCommonServices",
+                                "config": {
+                                    "type": "errorRenderTemplate",
+                                    "contextKey": "errorMsg",
+                                    "updateKey": "errorTitleUUID"
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+        ],
+        "hooks": [
+            {
+                "type": "context",
+                "hookType": "afterInit",
+                "config": {
+                    "requestMethod": "add",
+                    "key": "occurenceList",
+                    "data": []
+                }
+            },
+            {
+                "type": "context",
+                "hookType": "afterInit",
+                "config": {
+                    "requestMethod": "add",
+                    "key": "defectCodeList",
+                    "data": []
+                }
+            },
+            {
+                "type": "updateComponent",
+                "hookType": "afterInit",
+                "config": {
+                    "key": "dellDebugResultCodesUUID",
+                    "dropDownProperties": {
+                        "options": "#resultCodesForDiscrepancy"
+                    }
+                }
+            },
+            {
+                "type": "condition",
+                "hookType": "afterInit",
+                "config": {
+                    "operation": "isValid",
+                    "lhs": "#getDellDebugHPFAHistory"
+                },
+                "responseDependents": {
+                    "onSuccess": {
+                        "actions": [
+                            {
+                                "type": "handleDellDebugActions",
+                                "hookType": "afterInit",
+                                "methodType": "getAllActionCodes"
+                            }
+                        ]
+                    },
+                    "onFailure": {
+                        "actions": [
+                            {
+                                "type": "handleDellDebugActions",
+                                "hookType": "afterInit",
+                                "methodType": "resetData"
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "type": "arraySetMethod",
+                "config": {
+                    "data": "#holdCodesForDiscrepancy",
+                    "contextKey": "filteredHoldTypes"
+                },
+                "hookType": "afterInit"
+            },
+            {
+                "type": "handleDellDebugActions",
+                "methodType": "handle2ndVisit",
+                "hookType": "afterInit"
+            },
+            {
+                "type": "condition",
+                "hookType": "afterInit",
+                "config": {
+                    "operation": "isEqualTo",
+                    "lhs": "#userSelectedLocation",
+                    "rhs": "1244"
+                },
+                "responseDependents": {
+                    "onSuccess": {
+                        "actions": [
+                            {
+                                "type": "condition",
+                                "hookType": "afterInit",
+                                "config": {
+                                    "operation": "isValid",
+                                    "lhs": "#topLeftHeaderData",
+                                    "lhsKeyName": "ffName",
+                                    "lhsKeyValue": "LOB",
+                                    "lhsSecondKeyName": "ffValue"
+                                },
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "condition",
+                                                "eventSource": "click",
+                                                "config": {
+                                                    "operation": "isNotEqualTo",
+                                                    "lhs": "#is2ndVisit",
+                                                    "rhs": true
+                                                },
+                                                "responseDependents": {
+                                                    "onSuccess": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "condition",
+                                                                "eventSource": "click",
+                                                                "config": {
+                                                                    "operation": "isEqualTo",
+                                                                    "lhs": "#lhsValue",
+                                                                    "rhs": "PON"
+                                                                },
+                                                                "responseDependents": {
+                                                                    "onSuccess": {
+                                                                        "actions": [
+                                                                            {
+                                                                                "type": "multipleCondition",
+                                                                                "hookType": "afterInit",
+                                                                                "config": {
+                                                                                    "multi": true,
+                                                                                    "operator": "OR",
+                                                                                    "conditions": [
+                                                                                        {
+                                                                                            "operation": "isEqualTo",
+                                                                                            "lhs": "#dellLeftSideDpsType",
+                                                                                            "rhs": "DDE"
+                                                                                        },
+                                                                                        {
+                                                                                            "operation": "isEqualTo",
+                                                                                            "lhs": "#dellLeftSideDpsType",
+                                                                                            "rhs": "DDC"
+                                                                                        }
+                                                                                    ]
+                                                                                },
+                                                                                "responseDependents": {
+                                                                                    "onSuccess": {
+                                                                                        "actions": [
+                                                                                            {
+                                                                                                "type": "updateComponent",
+                                                                                                "config": {
+                                                                                                    "key": "errorTitleUUID",
+                                                                                                    "properties": {
+                                                                                                        "titleValue": "Depot Diagnostics Unit, Move to Estimation HOLD with Parts Needed",
+                                                                                                        "titleValueClass": "error-title",
+                                                                                                        "isShown": true
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        ]
+                                                                                    },
+                                                                                    "onFailure": {
+                                                                                        "actions": []
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "onFailure": {
+                                                                        "actions": []
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    "onFailure": {
+                                                        "actions": []
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": []
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    "onFailure": {
+                        "actions": []
+                    }
+                }
+            }
+        ],
+        "validations": [],
+        "action": [],
+        "header": [
+            {
+                "ctype": "breadcrumb",
+                "breadcrumbs": [
+                    {
+                        "label": "#userSelectedLocationName"
+                    },
+                    {
+                        "label": "#userSelectedClientName"
+                    },
+                    {
+                        "label": "#userSelectedContractName"
+                    }
+                ]
+            },
+            {
+                "ctype": "toolbar",
+                "toolbarClass": "pagecontent-header",
+                "items": [
+                    {
+                        "ctype": "title",
+                        "uuid": "subProcessTitleUUID",
+                        "titleValue": "Repair Debug",
+                        "titleClass": "section-title"
+                    },
+                    {
+                        "ctype": "spacer",
+                        "uuid": "emptySpaceUUID",
+                        "class": "empty-space"
+                    },
+                    {
+                        "ctype": "reqlistbutton",
+                        "iconButtonClass": "wishListButton",
+                        "text": "Requisition List",
+                        "count": "#dellDebugReqListLength",
+                        "uuid": "dellDebugReqListButtonUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "actions": [
+                            {
+                                "type": "dialog",
+                                "uuid": "dellDebugReqListUUID",
+                                "config": {
+                                    "title": "Requisition List",
+                                    "minimumWidth": false,
+                                    "disableClose": false,
+                                    "hasBackdrop": true,
+                                    "backdropClass": "cdk-overlay-transparent-backdrop",
+                                    "width": "380px",
+                                    "height": "400px",
+                                    "footerclass": "float-right",
+                                    "position": {
+                                        "bottom": "0",
+                                        "left": "70%",
+                                        "right": "0",
+                                        "top": "1%"
+                                    },
+                                    "items": [
+                                        {
+                                            "ctype": "table",
+                                            "isDelete": true,
+                                            "tooltip": "",
+                                            "uuid": "dellDebugReqListTableUUID",
+                                            "tableClass": "replaceTaskTableclass",
+                                            "tableHeaderClass": "requisitionList-table-header subtitle1",
+                                            "tableContainerClass": "requisitionList-table",
+                                            "hooks": [],
+                                            "displayedColumns": [
+                                                "Part Details",
+                                                "Qty"
+                                            ],
+                                            "datasource": "#dellDebugReqList",
+                                            "actions": [
+                                                {
+                                                    "type": "handleDellDebugActions",
+                                                    "methodType": "deleteItemFromReqPopUp",
+                                                    "eventSource": "rowDelete"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "footer": []
+                                },
+                                "eventSource": "click",
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": []
+                                    },
+                                    "onFailure": {
+                                        "actions": []
+                                    }
+                                }
+                            }
+                        ],
+                        "icon": "shopping_cart",
+                        "iconClass": "header-icon"
+                    },
+                    {
+                        "ctype": "iconbutton",
+                        "iconButtonClass": "headeropen-button",
+                        "text": "",
+                        "uuid": "pageopenUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "hidden": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "icon": "menu_open",
+                        "disableRipple": true,
+                        "iconClass": "header-icon",
+                        "css": "padding-bottom: 35px;",
+                        "actions": [
+                            {
+                                "type": "toggle",
+                                "eventSource": "click",
+                                "name": "subProcessRightNavref"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "openUUID",
+                                    "properties": {
+                                        "hidden": false
+                                    }
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "pageopenUUID",
+                                    "properties": {
+                                        "hidden": true
+                                    }
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "items": [
+            {
+                "ctype": "title",
+                "uuid": "successTitleUUID",
+                "titleClass": "success-title",
+                "isShown": false
+            },
+            {
+                "ctype": "title",
+                "uuid": "errorTitleUUID",
+                "containerId": "prebodysectionone",
+                "titleClass": "error-title",
+                "isShown": false
+            },
+            {
+                "ctype": "toolbar",
+                "toolbarClass": "creatorTask-Toolbar",
+                "hoverClass": "background-white",
+                "items": [
+                    {
+                        "ctype": "iconText",
+                        "hoverClass": "blue-icon",
+                        "svgIcon": "replace",
+                        "text": "Replace",
+                        "iconTextClass": "creatorTask-Icontext",
+                        "uuid": "dellDebugReplaceIconUUID",
+                        "textClass": "heading3-regular greyish-black",
+                        "iconPosition": "top",
+                        "actions": [
+                            {
+                                "type": "updateComponent",
+                                "eventSource": "click",
+                                "config": {
+                                    "key": "errorTitleUUID",
+                                    "properties": {
+                                        "titleValue": "",
+                                        "isShown": false
+                                    }
+                                }
+                            },
+                            {
+                                "type": "handleDellDebugActions",
+                                "methodType": "handleDellProcessActions",
+                                "eventSource": "click",
+                                "config": {
+                                    "svgIcon": "replace",
+                                    "text": "Replace Part",
+                                    "processType": "replace"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "iconText",
+                        "hoverClass": "blue-icon",
+                        "svgIcon": "software",
+                        "text": "Software",
+                        "iconTextClass": "creatorTask-Icontext",
+                        "uuid": "dellDebugSoftwareIconUUID",
+                        "textClass": "heading3-regular greyish-black",
+                        "iconPosition": "top",
+                        "actions": [
+                            {
+                                "type": "updateComponent",
+                                "eventSource": "click",
+                                "config": {
+                                    "key": "errorTitleUUID",
+                                    "properties": {
+                                        "titleValue": "",
+                                        "isShown": false
+                                    }
+                                }
+                            },
+                            {
+                                "type": "handleDellDebugActions",
+                                "methodType": "handleDellProcessActions",
+                                "eventSource": "click",
+                                "config": {
+                                    "svgIcon": "software",
+                                    "text": "Software",
+                                    "processType": "software"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "iconText",
+                        "hoverClass": "blue-icon",
+                        "svgIcon": "manual",
+                        "text": "Reseat",
+                        "iconTextClass": "creatorTask-Icontext",
+                        "uuid": "dellDebugReseatIconUUID",
+                        "textClass": "heading3-regular greyish-black",
+                        "iconPosition": "top",
+                        "actions": [
+                            {
+                                "type": "updateComponent",
+                                "eventSource": "click",
+                                "config": {
+                                    "key": "errorTitleUUID",
+                                    "properties": {
+                                        "titleValue": "",
+                                        "isShown": false
+                                    }
+                                }
+                            },
+                            {
+                                "type": "handleDellDebugActions",
+                                "methodType": "handleDellProcessActions",
+                                "eventSource": "click",
+                                "config": {
+                                    "svgIcon": "manual",
+                                    "text": "Reseat",
+                                    "processType": "reseat"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "iconText",
+                        "hoverClass": "blue-icon",
+                        "svgIcon": "description",
+                        "text": "Other",
+                        "iconTextClass": "creatorTask-Icontext",
+                        "uuid": "dellDebugOtherIconUUID",
+                        "textClass": "heading3-regular greyish-black",
+                        "iconPosition": "top",
+                        "actions": [
+                            {
+                                "type": "updateComponent",
+                                "eventSource": "click",
+                                "config": {
+                                    "key": "errorTitleUUID",
+                                    "properties": {
+                                        "titleValue": "",
+                                        "isShown": false
+                                    }
+                                }
+                            },
+                            {
+                                "type": "handleDellDebugActions",
+                                "methodType": "handleDellProcessActions",
+                                "eventSource": "click",
+                                "config": {
+                                    "svgIcon": "description",
+                                    "text": "Other",
+                                    "processType": "other"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "footer": [
+            {
+                "ctype": "toolbar",
+                "toolbarClass": "pagecontent-footer",
+                "items": [
+                    {
+                        "ctype": "iconbutton",
+                        "iconButtonClass": "footer-save body",
+                        "text": "Exit",
+                        "uuid": "dellDebugSaveUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "icon": "save",
+                        "actions": [
+                            {
+                                "type": "renderTemplate",
+                                "config": {
+                                    "templateId": "dashboard.json",
+                                    "mode": "local"
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "iconText",
+                        "uuid": "dellDebugIconUUID",
+                        "icon": "add_comment",
+                        "disabled": false,
+                        "text": "Add Note",
+                        "textCss": "",
+                        "iconPosition": "Before",
+                        "iconTextClass": "footer-addNote body",
+                        "actions": [
+                            {
+                                "type": "dialog",
+                                "uuid": "dellDebugAddNoteDialogUUID",
+                                "config": {
+                                    "title": "Add Note",
+                                    "items": [
+                                        {
+                                            "ctype": "textarea",
+                                            "name": "addNote",
+                                            "textareaClass": "note-class",
+                                            "uuid": "addNoteUUID",
+                                            "required": true,
+                                            "disabled": false,
+                                            "value": "#timeoutNotes.addNote",
+                                            "actions": [
+                                                {
+                                                    "type": "updateComponent",
+                                                    "config": {
+                                                        "key": "dellDebugDoneButtonUUID",
+                                                        "properties": {
+                                                            "disabled": false
+                                                        }
+                                                    },
+                                                    "eventSource": "onLoad"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "footer": [
+                                        {
+                                            "ctype": "button",
+                                            "color": "primary",
+                                            "text": "Cancel",
+                                            "uuid": "cancelHoldUUID",
+                                            "closeType": "close",
+                                            "disableClose": true,
+                                            "visibility": true,
+                                            "disabled": false,
+                                            "dialogButton": true,
+                                            "type": "",
+                                            "hooks": [],
+                                            "validations": [],
+                                            "actions": []
+                                        },
+                                        {
+                                            "ctype": "button",
+                                            "color": "primary",
+                                            "text": "Done",
+                                            "uuid": "doneaddnoteUUID",
+                                            "dialogButton": true,
+                                            "visibility": true,
+                                            "disabled": true,
+                                            "type": "submit",
+                                            "closeType": "success",
+                                            "hooks": [],
+                                            "validations": [],
+                                            "actions": []
+                                        }
+                                    ]
+                                },
+                                "eventSource": "click",
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "key": "timeoutNotes",
+                                                    "data": "formData",
+                                                    "requestMethod": "add",
+                                                    "value": "addNote"
+                                                },
+                                                "eventSource": "click"
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": []
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "spacer",
+                        "uuid": "emptySpaceUUID",
+                        "class": "empty-space"
+                    },
+                    {
+                        "ctype": "iconbutton",
+                        "uuid": "dellDebugPauseUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "icon": "pause",
+                        "iconClass": "footer-btnas",
+                        "disableRipple": true,
+                        "actions": [
+                            {
+                                "type": "handleDellDebugActions",
+                                "methodType": "dellDebugHoldActions",
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "holdSubCodeData",
+                                    "data": ""
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "nativeDropdown",
+                        "dropdownClass": "footer-dropdown dropdown-container body2",
+                        "uuid": "dellDebugResultCodesUUID",
+                        "name": "ResultCodes",
+                        "code": "resultCode",
+                        "displayValue": "resultCode",
+                        "hooks": [
+                            {
+                                "type": "enableComponent",
+                                "config": {
+                                    "key": "dellDebugResultCodesUUID",
+                                    "property": "ResultCodes"
+                                },
+                                "hookType": "afterInit"
+                            },
+                            {
+                                "type": "condition",
+                                "hookType": "afterInit",
+                                "config": {
+                                    "operation": "isValid",
+                                    "lhs": "#selectedResultcode"
+                                },
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "dellDebugTimeOutUUID",
+                                                    "properties": {
+                                                        "disabled": false
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "type": "setDefaultValue",
+                                                "config": {
+                                                    "key": "dellDebugResultCodesUUID",
+                                                    "defaultValue": "#selectedResultcode"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": [
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "dellDebugTimeOutUUID",
+                                                    "properties": {
+                                                        "disabled": true
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
+                        "disabled": false,
+                        "visibility": true,
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "selectedResultcode",
+                                    "data": "elementControlValue"
+                                },
+                                "eventSource": "change"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "dellDebugTimeOutUUID",
+                                    "properties": {
+                                        "disabled": false
+                                    }
+                                },
+                                "eventSource": "change"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "errorTitleUUID",
+                                    "properties": {
+                                        "titleValue": "",
+                                        "isShown": true
+                                    }
+                                },
+                                "eventSource": "change"
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "button",
+                        "color": "primary",
+                        "text": "Time Out",
+                        "uuid": "dellDebugTimeOutUUID",
+                        "visibility": true,
+                        "disabled": true,
+                        "type": "submit",
+                        "hooks": [
+                            {
+                                "type": "condition",
+                                "hookType": "afterInit",
+                                "config": {
+                                    "operation": "isValid",
+                                    "lhs": "#selectedResultcode"
+                                },
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "dellDebugTimeOutUUID",
+                                                    "properties": {
+                                                        "disabled": false
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": [
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "dellDebugTimeOutUUID",
+                                                    "properties": {
+                                                        "disabled": true
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
+                        "validations": [],
+                        "buttonClass": "footer-button primary-btn",
+                        "class": "primary-btn",
+                        "actions": [
+                            {
+                                "type": "updateComponent",
+                                "eventSource": "click",
+                                "config": {
+                                    "key": "errorTitleUUID",
+                                    "properties": {
+                                        "titleValue": "",
+                                        "isShown": false
+                                    }
+                                }
+                            },
+                            {
+                                "type": "condition",
+                                "eventSource": "click",
+                                "config": {
+                                    "operation": "isEqualTo",
+                                    "lhs": "#userSelectedLocation",
+                                    "rhs": "1244"
+                                },
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "condition",
+                                                "eventSource": "click",
+                                                "config": {
+                                                    "operation": "isValid",
+                                                    "lhs": "#topLeftHeaderData",
+                                                    "lhsKeyName": "ffName",
+                                                    "lhsKeyValue": "LOB",
+                                                    "lhsSecondKeyName": "ffValue"
+                                                },
+                                                "responseDependents": {
+                                                    "onSuccess": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "condition",
+                                                                "eventSource": "click",
+                                                                "config": {
+                                                                    "operation": "isGreaterThan",
+                                                                    "lhs": "#dellDebugReqListLength",
+                                                                    "rhs": 0
+                                                                },
+                                                                "responseDependents": {
+                                                                    "onSuccess": {
+                                                                        "actions": [
+                                                                            {
+                                                                                "type": "handleDellDebugActions",
+                                                                                "methodType": "reqSaveButtonActions",
+                                                                                "eventSource": "click"
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "onFailure": {
+                                                                        "actions": [
+                                                                            {
+                                                                                "type": "condition",
+                                                                                "eventSource": "click",
+                                                                                "config": {
+                                                                                    "operation": "isNotEqualTo",
+                                                                                    "lhs": "#is2ndVisit",
+                                                                                    "rhs": true
+                                                                                },
+                                                                                "responseDependents": {
+                                                                                    "onSuccess": {
+                                                                                        "actions": [
+                                                                                            {
+                                                                                                "type": "multipleCondition",
+                                                                                                "hookType": "afterInit",
+                                                                                                "config": {
+                                                                                                    "multi": true,
+                                                                                                    "operator": "OR",
+                                                                                                    "conditions": [
+                                                                                                        {
+                                                                                                            "operation": "isEqualTo",
+                                                                                                            "lhs": "#dellLeftSideDpsType",
+                                                                                                            "rhs": "DDE"
+                                                                                                        },
+                                                                                                        {
+                                                                                                            "operation": "isEqualTo",
+                                                                                                            "lhs": "#dellLeftSideDpsType",
+                                                                                                            "rhs": "DDC"
+                                                                                                        }
+                                                                                                    ]
+                                                                                                },
+                                                                                                "responseDependents": {
+                                                                                                    "onSuccess": {
+                                                                                                        "actions": [
+                                                                                                            {
+                                                                                                                "type": "condition",
+                                                                                                                "config": {
+                                                                                                                  "operation": "isEqualTo",
+                                                                                                                  "lhs": "#lhsValue",
+                                                                                                                  "rhs": "PON"
+                                                                                                                },
+                                                                                                                "eventSource": "click",
+                                                                                                                "responseDependents": {
+                                                                                                                  "onSuccess": {
+                                                                                                                    "actions": [
+                                                                                                                        {
+                                                                                                                            "type": "multipleCondition",
+                                                                                                                            "config": {
+                                                                                                                                "multi": true,
+                                                                                                                                "operator": "AND",
+                                                                                                                                "conditions": [
+                                                                                                                                    {
+                                                                                                                                        "operation": "isEqualTo",
+                                                                                                                                        "lhs": "#selectedResultcode",
+                                                                                                                                        "rhs": "ESTIMATE"
+                                                                                                                                    },
+                                                                                                                                    {
+                                                                                                                                        "operation": "isLessThanEqualTo",
+                                                                                                                                        "lhs": "#dellDebugReqListLength",
+                                                                                                                                        "rhs": 0
+                                                                                                                                    }
+                                                                                                                                ]
+                                                                                                                            },
+                                                                                                                            "responseDependents": {
+                                                                                                                                "onSuccess": {
+                                                                                                                                    "actions": [
+                                                                                                                                        {
+                                                                                                                                            "type": "handleDellDebugActions",
+                                                                                                                                            "methodType": "reqSaveButtonActions",
+                                                                                                                                            "eventSource": "click"
+                                                                                                                                        }
+                                                                                                                                    ]
+                                                                                                                                },
+                                                                                                                                "onFailure": {
+                                                                                                                                    "actions": [
+                                                                                                                                        {
+                                                                                                                                            "type": "updateComponent",
+                                                                                                                                            "config": {
+                                                                                                                                                "key": "errorTitleUUID",
+                                                                                                                                                "properties": {
+                                                                                                                                                    "titleValue": "Only Estimation Allowed",
+                                                                                                                                                    "titleValueClass": "error-title",
+                                                                                                                                                    "isShown": true
+                                                                                                                                                }
+                                                                                                                                            }
+                                                                                                                                        }
+                                                                                                                                    ]
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                        }
+                                                                                                                    ]
+                                                                                                                  },
+                                                                                                                  "onFailure": {
+                                                                                                                    "actions": [
+                                                                                                                        {
+                                                                                                                            "type": "handleDellDebugActions",
+                                                                                                                            "methodType": "reqSaveButtonActions",
+                                                                                                                            "eventSource": "click"
+                                                                                                                        }
+                                                                                                                    ]
+                                                                                                                  }
+                                                                                                                }
+                                                                                                              }
+                                                                                                        ]
+                                                                                                    },
+                                                                                                    "onFailure": {
+                                                                                                        "actions": [
+                                                                                                            {
+                                                                                                                "type": "handleDellDebugActions",
+                                                                                                                "methodType": "reqSaveButtonActions",
+                                                                                                                "eventSource": "click"
+                                                                                                            }
+                                                                                                        ]
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        ]
+                                                                                    },
+                                                                                    "onFailure": {
+                                                                                        "actions": [
+                                                                                            {
+                                                                                                "type": "handleDellDebugActions",
+                                                                                                "methodType": "reqSaveButtonActions",
+                                                                                                "eventSource": "click"
+                                                                                            }
+                                                                                        ]
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    "onFailure": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "handleDellDebugActions",
+                                                                "methodType": "reqSaveButtonActions",
+                                                                "eventSource": "click"
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": [
+                                            {
+                                                "type": "handleDellDebugActions",
+                                                "methodType": "reqSaveButtonActions",
+                                                "eventSource": "click"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "Result": "SUCCESS"
+}

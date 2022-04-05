@@ -1,0 +1,747 @@
+{
+  "ResultData": {
+    "ctype": "page",
+    "uuid": "pageUUID",
+    "css": "",
+    "visibility": true,
+    "hooks": [
+      {
+        "type":"condition",
+        "config":{
+          "operation":"isEqualTo",
+          "lhs":"#isBlindReceipt",
+          "rhs":true
+        },
+        "hookType":"afterInit",
+        "responseDependents":{
+          "onSuccess":{
+            "actions":[
+              {
+                "type":"condition",
+                "config": {
+                  "operation": "isValid",
+                  "lhs": "#receiptId.ReceiptRONumber"
+                  },
+                  "hookType": "afterInit",
+                  "responseDependents":{
+                    "onSuccess":{
+                      "actions":[
+                        {
+                          "type":"updateComponent",
+                          "config":{
+                            "key":"blindReceiptNumberUUID",
+                            "properties":{
+                              "isShown":true
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    "onFailure":{
+                      "actions":[{}]
+                    }
+                  }
+              }
+            ]
+          },
+          "onFailure":{
+            "actions":[
+              {
+                "type":"condition",
+                "config": {
+                  "operation": "isValid",
+                  "lhs":"#dellReceivingreceiptId.ReceiptID"
+                  },
+                  "responseDependents":{
+                    "onSuccess":{
+                      "actions":[
+                        {
+                          "type":"updateComponent",
+                          "config":{
+                            "key":"ReceivingreceiptNumberUUID",
+                            "properties":{
+                              "isShown":true
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    "onFailure":{
+                      "actions":[{}]
+                    }
+                  }
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "validations": [],
+    "action": [],
+    "header": [
+      {
+        "ctype": "toolbar",
+        "toolbarClass": "searchCriteria-toolbar section-title",
+        "items": [
+          {
+            "ctype": "title",
+            "title": "Receiving"
+          }
+        ]
+      }
+    ],
+    "items": [
+      {
+        "ctype": "title",
+        "uuid": "searchCriteriaErrorTitleUUID",
+        "titleClass": "error-title",
+        "isShown": false
+      },
+      {
+        "ctype":"title",
+        "title": "Blind Receipt Successfull : ",
+        "uuid":"blindReceiptNumberUUID",
+        "titleClass": "success-title",
+        "titleValue":"#receiptId.ReceiptRONumber",
+        "isShown":false
+      },
+      {
+        "ctype":"title",
+        "title": "Receipt Successfull : ",
+        "uuid":"ReceivingreceiptNumberUUID",
+        "titleClass": "success-title",
+        "titleValue":"#dellReceivingreceiptId.ReceiptID",
+        "isShown":false
+      },
+      {
+        "ctype": "formPanel",
+        "title": "dellReceivingHomeScreen",
+        "header": "",
+        "uuid": "dellReceivingHomeScreenUUID",
+        "formPanelClass": "searchCriteria-panel",
+        "visibility": true,
+        "hooks": [],
+        "validations": [],
+        "actions": [],
+        "items": [
+          {
+            "ctype": "nativeDropdown",
+            "uuid": "identificatorTypeUUID",
+            "hooks": [],
+            "validations": [],
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "userOptionIdentifierType",
+                  "data": "elementControlValue"
+                },
+                "eventSource": "change"
+              }
+            ],
+            "type": "text",
+            "required": true,
+            "placeholder": "Identificator Type",
+            "submitable": true,
+            "label": "",
+            "labelPosition": "",
+            "name": "identificatorType",
+            "defaultValue": "#userOptionIdentifierType",
+            "dropdownClass": "searchcriteris-drpdwn",
+            "disabled": true,
+            "options": [
+              {
+                "code": "SerialNumber",
+                "displayValue": "Service Tag",
+                "isDefault": true
+              }
+            ]
+          },
+          {
+            "ctype": "textField",
+            "uuid": "unitIdentificationValueUUID",
+            "hooks": [],
+            "validations": [],
+            "textfieldClass": "searchcriteris-text",
+            "type": "text",
+            "required": true,
+            "placeholder": "Scan Number",
+            "submitable": true,
+            "isUpperCase": true,
+            "label": "",
+            "labelPosition": "",
+            "name": "unitIdentificationValue",
+            "prefix": "true",
+            "prefixIcon": "qr_code_scanner",
+            "suffix": true,
+            "suffixIcon": "arrow_forward",
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "key": "userSearchCriteria",
+                  "data": "formData",
+                  "requestMethod": "add"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type":"updateComponent",
+                "config":{
+                  "key":"blindReceiptNumberUUID",
+                  "properties":{
+                    "isShown":false
+                  }
+                },
+                "eventSource":"click"
+              },
+              {
+                "type":"updateComponent",
+                "config":{
+                  "key":"ReceivingreceiptNumberUUID",
+                  "properties":{
+                    "isShown":false
+                  }
+                },
+                "eventSource":"click"
+              },
+              {
+                "type": "microservice",
+                "config": {
+                  "microserviceId": "getOrders",
+                  "requestMethod": "get",
+                  "params": {
+                    "searchCriteriaValue": "#userSearchCriteria.unitIdentificationValue",
+                    "searchCriteriaName": "SerialNumber",
+                    "username": "#userAccountInfo.PersonalDetails.USERID"
+                  }
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "isBlindReceipt",
+                          "data": false
+                        }
+                      },
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "pageTitle",
+                          "data": "Receiving"
+                        }
+                      },
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "dellReceivingOrderDetails",
+                          "data": "responseData"
+                        }
+                      },
+                      {
+                        "type": "condition",
+                        "config": {
+                          "operation": "isEqualTo",
+                          "lhs": "#dellReceivingOrderDetails.LOCATION_ID",
+                          "rhs": "#userSelectedLocation"
+                        },
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "condition",
+                                "config": {
+                                  "operation": "isEqualTo",
+                                  "lhs": "#dellReceivingOrderDetails.CLIENT_ID",
+                                  "rhs": "#userSelectedClient"
+                                },
+                                "responseDependents": {
+                                  "onSuccess": {
+                                    "actions": [
+                                      {
+                                        "type": "condition",
+                                        "config": {
+                                          "operation": "isEqualTo",
+                                          "lhs": "#dellReceivingOrderDetails.CONTRACT_ID",
+                                          "rhs": "#userSelectedContract"
+                                        },
+                                        "responseDependents": {
+                                          "onSuccess": {
+                                            "actions": [
+                                              {
+                                                "type": "microservice",
+                                                "eventSource": "click",
+                                                "config": {
+                                                  "microserviceId": "getSubProcessMenu",
+                                                  "isLocal": false,
+                                                  "LocalService": "assets/Responses/getSubProcessMenu.json",
+                                                  "requestMethod": "get",
+                                                  "params": {
+                                                    "userId": "#loginUUID.username",
+                                                    "locationId": "#userSelectedLocation",
+                                                    "clientId": "#userSelectedClient",
+                                                    "contractId": "#userSelectedContract",
+                                                    "wcId": 1,
+                                                    "optId": 1,
+                                                    "btt": 1,
+                                                    "whId": "1",
+                                                    "operationType": "#userSelectedSubProcessType",
+                                                    "workCenterName": ""
+                                                  }
+                                                },
+                                                "responseDependents": {
+                                                  "onSuccess": {
+                                                    "actions": [
+                                                      {
+                                                        "type": "context",
+                                                        "config": {
+                                                          "requestMethod": "add",
+                                                          "key": "SubprocessMenu",
+                                                          "data": "responseData"
+                                                        }
+                                                      },
+                                                      {
+                                                        "type": "microservice",
+                                                        "config": {
+                                                          "microserviceId": "getProcess",
+                                                          "requestMethod": "get",
+                                                          "parseJson": true,
+                                                          "params": {
+                                                            "locationId": "#userSelectedLocation",
+                                                            "clientId": "#userSelectedClient",
+                                                            "contractId": "#userSelectedContract",
+                                                            "btt": 1,
+                                                            "optId": 1,
+                                                            "whId": 1,
+                                                            "userId": "#userAccountInfo.PersonalDetails.USERID",
+                                                            "wcId": 1,
+                                                            "operationType": "#userSelectedSubProcessType",
+                                                            "workCenterName": ""
+                                                          }
+                                                        },
+                                                        "responseDependents": {
+                                                          "onSuccess": {
+                                                            "actions": [
+                                                              {
+                                                                "type": "context",
+                                                                "config": {
+                                                                  "requestMethod": "add",
+                                                                  "key": "getProcessData",
+                                                                  "data": "responseData"
+                                                                }
+                                                              },
+                                                              {
+                                                                "type": "microservice",
+                                                                "eventSource": "click",
+                                                                "config": {
+                                                                  "microserviceId": "getRoffByRo",
+                                                                  "isLocal": false,
+                                                                  "LocalService": "assets/Responses/getSubProcessMenu.json",
+                                                                  "requestMethod": "get",
+                                                                  "params": {
+                                                                    "userName": "#loginUUID.username",
+                                                                    "refernceOrderById": "#dellReceivingOrderDetails.REFERENCE_ORDER_ID"
+                                                                  }
+                                                                },
+                                                                "responseDependents": {
+                                                                  "onSuccess": {
+                                                                    "actions": [
+                                                                      {
+                                                                        "type": "context",
+                                                                        "config": {
+                                                                          "requestMethod": "add",
+                                                                          "key": "topLeftHeaderData",
+                                                                          "data": "responseData"
+                                                                        }
+                                                                      },
+                                                                      {
+                                                                        "type": "context",
+                                                                        "config": {
+                                                                          "requestMethod": "add",
+                                                                          "key": "topLeftHeaderDataVisibity",
+                                                                          "data": true
+                                                                        }
+                                                                      },
+                                                                      {
+                                                                        "type": "renderTemplate",
+                                                                        "config": {
+                                                                          "templateId": "dellReceiving.json",
+                                                                          "mode": "local"
+                                                                        }
+                                                                      }
+                                                                    ]
+                                                                  },
+                                                                  "onFailure": {
+                                                                    "actions": [
+                                                                      {
+                                                                        "type": "renderTemplate",
+                                                                        "config": {
+                                                                          "templateId": "dellReceiving.json",
+                                                                          "mode": "local"
+                                                                        }
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                }
+                                                              }
+                                                            ]
+                                                          },
+                                                          "onFailure": {
+                                                            "actions": [
+                                                              {
+                                                                "type": "context",
+                                                                "config": {
+                                                                  "requestMethod": "add",
+                                                                  "key": "getProcessData",
+                                                                  "data": "responseData"
+                                                                }
+                                                              },
+                                                              {
+                                                                "type": "updateComponent",
+                                                                "config": {
+                                                                  "key": "searchCriteriaErrorTitleUUID",
+                                                                  "properties": {
+                                                                    "titleValue": "#getProcessData",
+                                                                    "isShown": true
+                                                                  }
+                                                                }
+                                                              }
+                                                            ]
+                                                          }
+                                                        }
+                                                      }
+                                                    ]
+                                                  },
+                                                  "onFailure": {
+                                                    "actions": [
+                                                      {
+                                                        "type": "updateComponent",
+                                                        "config": {
+                                                          "key": "searchCriteriaErrorTitleUUID",
+                                                          "properties": {
+                                                            "titleValue": "Failed to fetch getSubprocess Menu.",
+                                                            "isShown": true
+                                                          }
+                                                        }
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          "onFailure": {
+                                            "actions": [
+                                              {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                  "key": "searchCriteriaErrorTitleUUID",
+                                                  "properties": {
+                                                    "titleValue": "This unit doesn't belong to selected Location/Client/Contract. Please scan the correct unit.",
+                                                    "isShown": true
+                                                  }
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "onFailure": {
+                                    "actions": [
+                                      {
+                                        "type": "updateComponent",
+                                        "config": {
+                                          "key": "searchCriteriaErrorTitleUUID",
+                                          "properties": {
+                                            "titleValue": "This unit doesn't belong to selected Location/Client/Contract. Please scan the correct unit.",
+                                            "isShown": true
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": [
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "searchCriteriaErrorTitleUUID",
+                                  "properties": {
+                                    "titleValue": "This unit doesn't belong to selected Location/Client/Contract. Please scan the correct unit.",
+                                    "isShown": true
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "dialog",
+                        "config": {
+                          "title": "Send to Blind Receipt",
+                          "message": "Are you sure you want to Continue to Blind Receipt?",
+                          "items": [],
+                          "footer": [
+                            {
+                              "ctype": "button",
+                              "text": "No",
+                              "uuid": "noButtonUUID",
+                              "closeType": "close",
+                              "inputClass": "close-button",
+                              "disableClose": true,
+                              "visibility": true,
+                              "dialogButton": true,
+                              "type": "",
+                              "hooks": [],
+                              "validations": [],
+                              "actions": []
+                            },
+                            {
+                              "ctype": "button",
+                              "color": "primary",
+                              "text": "Yes",
+                              "uuid": "yesButtonUUID",
+                              "dialogButton": true,
+                              "visibility": true,
+                              "disabled": false,
+                              "type": "submit",
+                              "closeType": "success",
+                              "hooks": [],
+                              "validations": [],
+                              "actions": []
+                            }
+                          ]
+                        },
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "context",
+                                "config": {
+                                  "requestMethod": "add",
+                                  "key": "isBlindReceipt",
+                                  "data": true
+                                }
+                              },
+                              {
+                                "type": "context",
+                                "config": {
+                                  "requestMethod": "add",
+                                  "key": "pageTitle",
+                                  "data": "Blind Receiving"
+                                }
+                              },
+                              {
+                                "type": "condition",
+                                "config": {
+                                  "operation": "isEqualTo",
+                                  "lhs": "#userSelectedLocation",
+                                  "rhs": 1244
+                                },
+                                "responseDependents": {
+                                  "onSuccess": {
+                                    "actions": [
+                                      {
+                                        "type": "context",
+                                        "config": {
+                                          "requestMethod": "add",
+                                          "key": "warhouseName",
+                                          "data": "LOU-Building 1"
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "onFailure": {
+                                    "actions": [
+                                      {
+                                        "type": "context",
+                                        "config": {
+                                          "requestMethod": "add",
+                                          "key": "warhouseName",
+                                          "data": "UMISS-JGS"
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              },
+                              {
+                                "type": "microservice",
+                                "eventSource": "click",
+                                "config": {
+                                  "microserviceId": "getSubProcessMenu",
+                                  "isLocal": false,
+                                  "LocalService": "assets/Responses/getSubProcessMenu.json",
+                                  "requestMethod": "get",
+                                  "params": {
+                                    "userId": "#loginUUID.username",
+                                    "locationId": "#userSelectedLocation",
+                                    "clientId": "#userSelectedClient",
+                                    "contractId": "#userSelectedContract",
+                                    "wcId": 1,
+                                    "optId": 1,
+                                    "btt": 1,
+                                    "whId": "1",
+                                    "operationType": "#userSelectedSubProcessType",
+                                    "workCenterName": ""
+                                  }
+                                },
+                                "responseDependents": {
+                                  "onSuccess": {
+                                    "actions": [
+                                      {
+                                        "type": "context",
+                                        "config": {
+                                          "requestMethod": "add",
+                                          "key": "SubprocessMenu",
+                                          "data": "responseData"
+                                        }
+                                      },
+                                      {
+                                        "type": "microservice",
+                                        "config": {
+                                          "microserviceId": "getProcess",
+                                          "requestMethod": "get",
+                                          "parseJson": true,
+                                          "params": {
+                                            "locationId": "#userSelectedLocation",
+                                            "clientId": "#userSelectedClient",
+                                            "contractId": "#userSelectedContract",
+                                            "btt": 1,
+                                            "optId": 1,
+                                            "whId": 1,
+                                            "userId": "#userAccountInfo.PersonalDetails.USERID",
+                                            "wcId": 1,
+                                            "operationType": "#userSelectedSubProcessType",
+                                            "workCenterName": ""
+                                          }
+                                        },
+                                        "responseDependents": {
+                                          "onSuccess": {
+                                            "actions": [
+                                              {
+                                                "type": "context",
+                                                "config": {
+                                                  "requestMethod": "add",
+                                                  "key": "getProcessData",
+                                                  "data": "responseData"
+                                                }
+                                              },
+                                              {
+                                                "type": "renderTemplate",
+                                                "config": {
+                                                  "templateId": "dellBlindReceiving.json",
+                                                  "mode": "local"
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          "onFailure": {
+                                            "actions": [
+                                              {
+                                                "type": "context",
+                                                "config": {
+                                                  "requestMethod": "add",
+                                                  "key": "getProcessData",
+                                                  "data": "responseData"
+                                                }
+                                              },
+                                              {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                  "key": "searchCriteriaErrorTitleUUID",
+                                                  "properties": {
+                                                    "titleValue": "#getProcessData",
+                                                    "isShown": true
+                                                  }
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "onFailure": {
+                                    "actions": [
+                                      {
+                                        "type": "updateComponent",
+                                        "config": {
+                                          "key": "searchCriteriaErrorTitleUUID",
+                                          "properties": {
+                                            "titleValue": "Failed to fetch getSubprocess Menu.",
+                                            "isShown": true
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              },
+                              {
+                                "type": "microservice",
+                                "hookType": "afterInit",
+                                "config": {
+                                  "microserviceId": "getNextItemBCN",
+                                  "requestMethod": "get",
+                                  "isLocal": false,
+                                  "LocalService": "assets/Responses/getBCNFromSN.json"
+                                },
+                                "responseDependents": {
+                                  "onSuccess": {
+                                    "actions": [
+                                      {
+                                        "type": "context",
+                                        "config": {
+                                          "requestMethod": "add",
+                                          "key": "bcnFromSN",
+                                          "data": "responseData"
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "onFailure": {
+                                    "actions": [
+                                      {
+                                        "type": "toast",
+                                        "message": "Failed to fetch bcn from sn"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "footer": []
+  },
+  "Result": "SUCCESS"
+}

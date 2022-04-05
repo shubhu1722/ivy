@@ -1,0 +1,9 @@
+<div>
+    <ol class="breadcrumb">
+        <li *ngFor="let breadcrumb of breadcrumbs">
+            <span [class]="class" [style]="style">
+                {{ breadcrumb.label | translate }}
+            </span>
+        </li>
+    </ol>
+</div>

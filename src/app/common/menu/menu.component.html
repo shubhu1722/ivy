@@ -1,0 +1,5 @@
+<button mat-button [matMenuTriggerFor]="menu"  [disableRipple]='disableRipple' [dir]='direction'  [disabled]='disabled'>Menu</button>
+<mat-menu #menu="matMenu" [backdropClass]='backdropClass'  [hasBackdrop]='hasBackdrop' [overlapTrigger]='overlapTrigger'
+   [class]='panelClass' [xPosition]='xPosition' [yPosition]='yPosition'>
+  <button mat-menu-item *ngFor='let item of items' >{{item | translate}}</button>
+</mat-menu>

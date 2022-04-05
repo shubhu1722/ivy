@@ -1,0 +1,54 @@
+{
+	"ctype": "subProcess",
+	"title": "PARAMETRIC",
+	"uuid": "assesmentUUID",
+	"subMenuIndex": 0,
+	"clientName": "CISCO",
+	"openRightNav": false,
+	"hooks": [
+	  {
+		"type": "microservice",
+		"hookType": "beforeInit",
+		"config": {
+		  "microserviceId": "getSubProcessPageBody",
+		  "requestMethod": "get",
+		  "params": {
+			"subProcessId": "#getReferenceDataKeys.subProcess.Cisco.PARAMETRIC",
+			"userName": "#userAccountInfo.PersonalDetails.USERID"
+		  },
+		  "isLocal": false,
+		  "LocalService": "assets/Responses/SubProcess/CISCO/PARAMETRICSubProcess.json"
+		},
+		"responseDependents": {
+		  "onSuccess": {
+			"actions": [
+			  {
+				"type": "context",
+				"config": {
+				  "requestMethod": "add",
+				  "key": "PARAMETRICData",
+				  "data": "responseData"
+				}
+			  },
+			  {
+				"type": "renderTemplate",
+				"config": {
+				  "mode": "remote",
+				  "targetId": "mainPageContentBodysp",
+				  "templateId": "PARAMETRICData"
+				}
+			  }
+			]
+		  },
+		  "onFailure": {
+			"actions": [
+			  {
+				"type": "toast",
+				"message": "Failed to fetch Cisco PARAMETRIC JSON"
+			  }
+			]
+		  }
+		}
+	  }
+	]
+  }

@@ -1,0 +1,833 @@
+{
+    "ctype": "page",
+    "uuid": "pageUUID",
+    "css": "",
+    "visibility": true,
+    "hooks": [
+        {
+            "type": "condition",
+            "hookType": "afterInit",
+            "config": {
+                "operation": "isEqualTo",
+                "lhs": "#isTimeOutFromHpWC",
+                "rhs": true
+            },
+            "responseDependents": {
+                "onSuccess": {
+                    "actions": [
+                        {
+                            "type": "microservice",
+                            "config": {
+                                "microserviceId": "getUnitInfo",
+                                "requestMethod": "get",
+                                "params": {
+                                    "unitIdentificationValue": "#discrepancyUserSearchCriteria.discrepancyunitIdentificationValue",
+                                    "identificatorType": "#identificatorTypeValue",
+                                    "locationId": "#userSelectedLocation",
+                                    "clientId": "#userSelectedClient",
+                                    "contractId": "#userSelectedContract"
+                                }
+                            },
+                            "eventSource": "click",
+                            "responseDependents": {
+                                "onSuccess": {
+                                    "actions": [
+                                        {
+                                            "type": "context",
+                                            "config": {
+                                                "requestMethod": "add",
+                                                "key": "nextWCUnitInfoResp",
+                                                "data": "responseData"
+                                            }
+                                        },
+                                        {
+                                            "type": "condition",
+                                            "config": {
+                                              "operation": "isValid",
+                                              "lhs": "#nextWCUnitInfoResp.DESTINATIONWC"
+                                            },
+                                            "responseDependents": {
+                                              "onSuccess": {
+                                                "actions": [
+                                                    {
+                                                        "type": "concatContexts",
+                                                        "config": {
+                                                            "contextKey": "nextHpWorkCenterMessage",
+                                                            "contexts": [
+                                                                "Unit has been Timed Out to ",
+                                                                "'",
+                                                                "#nextWCUnitInfoResp.DESTINATIONWC",
+                                                                "'"
+                                                            ]
+                                                        }
+                                                    }
+                                                ]
+                                              },
+                                              "onFailure": {
+                                                "actions": [
+                                                    {
+                                                        "type": "concatContexts",
+                                                        "config": {
+                                                            "contextKey": "nextHpWorkCenterMessage",
+                                                            "contexts": [
+                                                                "Unit has been Timed Out to ",
+                                                                "'",
+                                                                "#nextWCUnitInfoResp.WORKCENTER",
+                                                                "'"
+                                                            ]
+                                                        }
+                                                    }
+                                                ]
+                                              }
+                                            }
+                                        },
+                                        {
+                                            "type": "updateComponent",
+                                            "config": {
+                                                "key": "searchCriteriaSuccessTitleUUID",
+                                                "properties": {
+                                                    "titleValue": "#nextHpWorkCenterMessage",
+                                                    "titleClass": "success-title",
+                                                    "isShown": true
+                                                }
+                                            }
+                                        }
+                                    ]
+                                },
+                                "onFailure": {
+                                    "actions": [
+                                        {
+                                            "type": "handleCommonServices",
+                                            "config": {
+                                                "type": "errorRenderTemplate",
+                                                "contextKey": "nextWcUnitErrorMsg",
+                                                "updateKey": "searchCriteriaErrorTitleUUID"
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                },
+                "onFailure": {
+                    "actions": []
+                }
+            }
+        }
+    ],
+    "validations": [],
+    "action": [],
+    "header": [
+        {
+            "ctype": "toolbar",
+            "toolbarClass": "searchCriteria-toolbar section-title",
+            "items": [
+                {
+                    "ctype": "title",
+                    "title": "WC Operation"
+                }
+            ]
+        }
+    ],
+    "items": [
+        {
+            "ctype": "title",
+            "uuid": "searchCriteriaErrorTitleUUID",
+            "titleClass": "error-title",
+            "isShown": false
+        },
+        {
+            "ctype": "title",
+            "uuid": "searchCriteriaSuccessTitleUUID",
+            "titleClass": "success-title",
+            "isShown": false
+        },
+        {
+            "ctype": "formPanel",
+            "title": "Discrepancy",
+            "header": "",
+            "uuid": "discrepancyUUID",
+            "formPanelClass": "searchCriteria-panel-full",
+            "visibility": true,
+            "hooks": [],
+            "validations": [],
+            "actions": [],
+            "items": [
+                {
+                    "ctype": "textField",
+                    "uuid": "discrepancyUnitValueUUID",
+                    "isUpperCase": true,
+                    "hooks": [],
+                    "validations": [],
+                    "textfieldClass": "searchcriteris-text-full",
+                    "type": "text",
+                    "required": true,
+                    "placeholder": "Scan",
+                    "submitable": true,
+                    "label": "",
+                    "labelPosition": "",
+                    "name": "discrepancyunitIdentificationValue",
+                    "prefix": "true",
+                    "prefixIcon": "qr_code_scanner",
+                    "suffix": true,
+                    "suffixIcon": "arrow_forward",
+                    "actions": [
+                        {
+                            "type": "context",
+                            "config": {
+                                "requestMethod": "add",
+                                "key": "errorDisp",
+                                "data": ""
+                            },
+                            "eventSource": "click"
+                        },
+                        {
+                            "type": "updateComponent",
+                            "eventSource": "click",
+                            "config": {
+                                "key": "searchCriteriaSuccessTitleUUID",
+                                "properties": {
+                                    "titleValue": "",
+                                    "isShown": false
+                                }
+                            }
+                        },
+                        {
+                            "type": "context",
+                            "config": {
+                                "key": "isTimeOutFromHpWC",
+                                "data": false,
+                                "requestMethod": "addToGlobalContext"
+                            },
+                            "eventSource": "click"
+                        },
+                        {
+                            "type": "updateComponent",
+                            "config": {
+                              "key": "searchCriteriaErrorTitleUUID",
+                              "properties": {
+                                "titleValue": "",
+                                "isShown": false
+                              }
+                            },
+                            "eventSource": "click"
+                          },
+                        {
+                            "type": "context",
+                            "config": {
+                                "key": "discrepancyUserSearchCriteria",
+                                "data": "formData",
+                                "requestMethod": "add"
+                            },
+                            "eventSource": "click"
+                        },
+                        {
+                            "type": "findIdentificatorType",
+                            "eventSource": "click",
+                            "config": {
+                                "key" : "identificatorTypeValue",
+                                "unitIdentificationValue": "#discrepancyUserSearchCriteria.discrepancyunitIdentificationValue"
+                            }
+                        },
+                        {
+                            "type": "microservice",
+                            "config": {
+                                "microserviceId": "getUnitInfo",
+                                "requestMethod": "get",
+                                "params": {
+                                    "unitIdentificationValue": "#discrepancyUserSearchCriteria.discrepancyunitIdentificationValue",
+                                    "identificatorType": "#identificatorTypeValue",
+                                    "locationId": "#userSelectedLocation",
+                                    "clientId": "#userSelectedClient",
+                                    "contractId": "#userSelectedContract"
+                                }
+                            },
+                            "eventSource": "click",
+                            "responseDependents": {
+                                "onSuccess": {
+                                    "actions": [
+                                        {
+                                            "type": "context",
+                                            "config": {
+                                                "requestMethod": "add",
+                                                "key": "discrepancyUnitInfo",
+                                                "data": "responseData"
+                                            }
+                                        },
+                                        {
+                                            "type": "context",
+                                            "config": {
+                                                "requestMethod": "add",
+                                                "key": "repairUnitInfo",
+                                                "data": "responseData"
+                                            }
+                                        },
+                                        {
+                                            "type": "microservice",
+                                            "hookType": "afterInit",
+                                            "config": {
+                                                "microserviceId": "getHPFAHistory",
+                                                "requestMethod": "get",
+                                                "isLocal": false,
+                                                "LocalService": "assets/Responses/getHPFAHistory.json",
+                                                "params": {
+                                                    "locationId": "#repairUnitInfo.LOCATION_ID",
+                                                    "clientId": "#repairUnitInfo.CLIENT_ID",
+                                                    "contractId": "#repairUnitInfo.CONTRACT_ID",
+                                                    "itemId": "#repairUnitInfo.ITEM_ID",
+                                                    "userName": "#userAccountInfo.PersonalDetails.USERID"
+                                                }
+                                            },
+                                            "responseDependents": {
+                                                "onSuccess": {
+                                                    "actions": [
+                                                        {
+                                                            "type": "context",
+                                                            "config": {
+                                                                "requestMethod": "add",
+                                                                "key": "getHPFAHistoryResp",
+                                                                "data": "responseData"
+                                                            },
+                                                            "eventSource": "click"
+                                                        }
+                                                    ]
+                                                },
+                                                "onFailure": {
+                                                    "actions": [
+                                                        {
+                                                            "type": "context",
+                                                            "config": {
+                                                                "requestMethod": "add",
+                                                                "key": "errorResp",
+                                                                "data": "responseData"
+                                                            },
+                                                            "eventSource": "click"
+                                                        },
+                                                        {
+                                                            "type": "updateComponent",
+                                                            "config": {
+                                                                "key": "searchCriteriaErrorTitleUUID",
+                                                                "properties": {
+                                                                    "titleValue": "#errorResp",
+                                                                    "isShown": true
+                                                                },
+                                                                "eventSource": "click"
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "type": "condition",
+                                            "config": {
+                                                "operation": "isEqualTo",
+                                                "lhs": "#discrepancyUnitInfo.ONHOLD",
+                                                "rhs": "1"
+                                            },
+                                            "responseDependents": {
+                                                "onSuccess": {
+                                                    "actions": [
+                                                        {
+                                                            "type": "dialog",
+                                                            "uuid": "addNoteDialogUUID",
+                                                            "config": {
+                                                                "title": "Release Popup",
+                                                                "items": [
+                                                                    {
+                                                                        "ctype": "title",
+                                                                        "uuid": "searchCriteriaErrorTitleUUID",
+                                                                        "titleClass": "",
+                                                                        "title": "HOLDERROR: Unit can't be processed, as this is currently on hold, Storage IS NOT same as the one on the workorder."
+                                                                    },
+                                                                    {
+                                                                        "ctype": "title",
+                                                                        "uuid": "searchCriteriaErrorTitleUUID",
+                                                                        "titleClass": "",
+                                                                        "title": "Do you want to release the unit?"
+                                                                    }
+                                                                ],
+                                                                "footer": [
+                                                                    {
+                                                                        "ctype": "button",
+                                                                        "color": "primary",
+                                                                        "text": "No",
+                                                                        "uuid": "closeReleaseButtonUUID",
+                                                                        "closeType": "close",
+                                                                        "inputClass": "close-button",
+                                                                        "disableClose": true,
+                                                                        "visibility": true,
+                                                                        "dialogButton": true,
+                                                                        "type": "",
+                                                                        "hooks": [],
+                                                                        "validations": [],
+                                                                        "actions": []
+                                                                    },
+                                                                    {
+                                                                        "ctype": "button",
+                                                                        "color": "primary",
+                                                                        "text": "Yes",
+                                                                        "uuid": "doneReleaseHoldUUID",
+                                                                        "dialogButton": true,
+                                                                        "visibility": true,
+                                                                        "disabled": false,
+                                                                        "type": "submit",
+                                                                        "closeType": "success",
+                                                                        "hooks": [],
+                                                                        "validations": [],
+                                                                        "actions": []
+                                                                    }
+                                                                ]
+                                                            },
+                                                            "eventSource": "click",
+                                                            "responseDependents": {
+                                                                "onSuccess": {
+                                                                    "actions": [
+                                                                        {
+                                                                            "type": "microservice",
+                                                                            "config": {
+                                                                                "microserviceId": "getHoldReleaseDetailService",
+                                                                                "requestMethod": "get",
+                                                                                "params": {
+                                                                                    "itemId": "#discrepancyUnitInfo.ITEM_ID",
+                                                                                    "operationType": "RELEASE",
+                                                                                    "userName": "#loginUUID.username"
+                                                                                }
+                                                                            },
+                                                                            "eventSource": "click",
+                                                                            "responseDependents": {
+                                                                                "onSuccess": {
+                                                                                    "actions": [
+                                                                                        {
+                                                                                            "type": "context",
+                                                                                            "config": {
+                                                                                                "requestMethod": "add",
+                                                                                                "key": "getHoldReleaseDetailResp",
+                                                                                                "data": "responseData"
+                                                                                            }
+                                                                                        },
+                                                                                        {
+                                                                                            "type": "microservice",
+                                                                                            "config": {
+                                                                                                "microserviceId": "moveinventory",
+                                                                                                "requestMethod": "post",
+                                                                                                "body": {
+                                                                                                    "apiUsageClientName": "#discrepancyUnitInfo.CLIENTNAME",
+                                                                                                    "apiUsageLocationName": "#discrepancyUnitInfo.GEONAME",
+                                                                                                    "callSource": "FrontEnd",
+                                                                                                    "ip": "::1",
+                                                                                                    "items": {
+                                                                                                        "addtionalDetails": {
+                                                                                                            "comments": "Unit released from Storage Hold",
+                                                                                                            "fixedAssetTag": "#discrepancyUnitInfo.FAT",
+                                                                                                            "storageHoldCode": "#getHoldReleaseDetailResp.storateHoldCode",
+                                                                                                            "storageHoldSubCode": "#getHoldReleaseDetailResp.storateHoldSubCode"
+                                                                                                        },
+                                                                                                        "destinationLocation": {
+                                                                                                            "bin": "Default",
+                                                                                                            "geography": "#discrepancyUnitInfo.GEONAME",
+                                                                                                            "stockingLocation": "#getHoldReleaseDetailResp.destStkLocationName",
+                                                                                                            "warehouse": "#getHoldReleaseDetailResp.wareHouseName"
+                                                                                                        },
+                                                                                                        "item": [
+                                                                                                            {
+                                                                                                                "bcn": "#discrepancyUnitInfo.ITEM_BCN",
+                                                                                                                "owner": "#discrepancyUnitInfo.CLIENTNAME",
+                                                                                                                "partNo": "#discrepancyUnitInfo.PART_NO",
+                                                                                                                "quantity": "1",
+                                                                                                                "serialNo": "#discrepancyUnitInfo.SERIAL_NO",
+                                                                                                                "condition": "Defective"
+                                                                                                            }
+                                                                                                        ],
+                                                                                                        "notes": "Unit released from Storage Hold",
+                                                                                                        "sourceLocation": {
+                                                                                                            "bin": "#getHoldReleaseDetailResp.bin",
+                                                                                                            "geography": "#discrepancyUnitInfo.GEONAME",
+                                                                                                            "stockingLocation": "#getHoldReleaseDetailResp.srcStkLocationName",
+                                                                                                            "warehouse": "#getHoldReleaseDetailResp.wareHouseName"
+                                                                                                        }
+                                                                                                    },
+                                                                                                    "usrPwd": {
+                                                                                                        "userName": "#loginUUID.username",
+                                                                                                        "password": "#loginUUID.password"
+                                                                                                    }
+                                                                                                },
+                                                                                                "toBeStringified": true
+                                                                                            },
+                                                                                            "responseDependents": {
+                                                                                                "onSuccess": {
+                                                                                                    "actions": [
+                                                                                                        {
+                                                                                                            "type": "condition",
+                                                                                                            "config": {
+                                                                                                                "operation": "isEqualTo",
+                                                                                                                "lhs": "#discrepancyUnitInfo.STATUS",
+                                                                                                                "rhs": "Time Out"
+                                                                                                            },
+                                                                                                            "responseDependents": {
+                                                                                                                "onSuccess": {
+                                                                                                                    "actions": [
+                                                                                                                        {
+                                                                                                                            "type": "condition",
+                                                                                                                            "config": {
+                                                                                                                                "operation": "isValid",
+                                                                                                                                "lhs": "#discrepancyUnitInfo.DESTINATIONWC"
+                                                                                                                            },
+                                                                                                                            "responseDependents": {
+                                                                                                                                "onSuccess": {
+                                                                                                                                    "actions": [
+                                                                                                                                        {
+                                                                                                                                            "type": "timeInMicroServices",
+                                                                                                                                            "config": {
+                                                                                                                                                "DESTINATIONWC": "#discrepancyUnitInfo.DESTINATIONWC"
+                                                                                                                                            }
+                                                                                                                                        }
+                                                                                                                                    ]
+                                                                                                                                },
+                                                                                                                                "onFailure": {
+                                                                                                                                    "actions": [
+                                                                                                                                        {
+                                                                                                                                            "type": "errorPrepareAndRender",
+                                                                                                                                            "config": {
+                                                                                                                                                "key": "searchCriteriaErrorTitleUUID",
+                                                                                                                                                "properties": {
+                                                                                                                                                    "titleValue": "Item- {0} Reached to it's Destination Workcenter: {1}",
+                                                                                                                                                    "isShown": true
+                                                                                                                                                },
+                                                                                                                                                "valueArray": [
+                                                                                                                                                    "#discrepancyUnitInfo.ITEM_BCN",
+                                                                                                                                                    "#discrepancyUnitInfo.WORKCENTER"
+                                                                                                                                                ]
+                                                                                                                                            }
+                                                                                                                                        }
+                                                                                                                                    ]
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                        }
+                                                                                                                    ]
+                                                                                                                },
+                                                                                                                "onFailure": {
+                                                                                                                    "actions": [
+                                                                                                                        {
+                                                                                                                            "type": "microservice",
+                                                                                                                            "eventSource": "click",
+                                                                                                                            "config": {
+                                                                                                                                "microserviceId": "releaseFromHold",
+                                                                                                                                "LocalService": "assets/Responses/performFA.json",
+                                                                                                                                "isLocal": false,
+                                                                                                                                "requestMethod": "post",
+                                                                                                                                "body": {
+                                                                                                                                    "unitBCN": "#repairUnitInfo.ITEM_BCN",
+                                                                                                                                    "releaseNotes": "RELEASE",
+                                                                                                                                    "userPwd": {
+                                                                                                                                        "userName": "#userAccountInfo.PersonalDetails.USERID",
+                                                                                                                                        "password": "#loginUUID.password"
+                                                                                                                                    }
+                                                                                                                                }
+                                                                                                                            },
+                                                                                                                            "responseDependents": {
+                                                                                                                                "onSuccess": {
+                                                                                                                                    "actions": [
+                                                                                                                                        {
+                                                                                                                                            "type": "condition",
+                                                                                                                                            "config": {
+                                                                                                                                                "operation": "isValid",
+                                                                                                                                                "lhs": "#discrepancyUnitInfo.STATUS"
+                                                                                                                                            },
+                                                                                                                                            "responseDependents": {
+                                                                                                                                                "onSuccess": {
+                                                                                                                                                    "actions": [
+                                                                                                                                                        {
+                                                                                                                                                            "type": "releaseActions",
+                                                                                                                                                            "config": {
+                                                                                                                                                                "discrepancyUnitInfo": "#discrepancyUnitInfo"
+                                                                                                                                                            }
+                                                                                                                                                        }
+                                                                                                                                                    ]
+                                                                                                                                                },
+                                                                                                                                                "onFailure": {
+                                                                                                                                                    "actions": [
+                                                                                                                                                        {
+                                                                                                                                                            "type": "condition",
+                                                                                                                                                            "config": {
+                                                                                                                                                                "operation": "isValid",
+                                                                                                                                                                "lhs": "#discrepancyUnitInfo.DESTINATIONWC"
+                                                                                                                                                            },
+                                                                                                                                                            "responseDependents": {
+                                                                                                                                                                "onSuccess": {
+                                                                                                                                                                    "actions": [
+                                                                                                                                                                        {
+                                                                                                                                                                            "type": "timeInMicroServices",
+                                                                                                                                                                            "config": {
+                                                                                                                                                                                "DESTINATIONWC": "#discrepancyUnitInfo.DESTINATIONWC"
+                                                                                                                                                                            }
+                                                                                                                                                                        }
+                                                                                                                                                                    ]
+                                                                                                                                                                },
+                                                                                                                                                                "onFailure": {
+                                                                                                                                                                    "actions": [
+                                                                                                                                                                        {
+                                                                                                                                                                            "type": "errorPrepareAndRender",
+                                                                                                                                                                            "config": {
+                                                                                                                                                                                "key": "searchCriteriaErrorTitleUUID",
+                                                                                                                                                                                "properties": {
+                                                                                                                                                                                    "titleValue": "Item- {0} Reached to it's Destination Workcenter: {1}",
+                                                                                                                                                                                    "isShown": true
+                                                                                                                                                                                },
+                                                                                                                                                                                "valueArray": [
+                                                                                                                                                                                    "#discrepancyUnitInfo.ITEM_BCN",
+                                                                                                                                                                                    "#discrepancyUnitInfo.WORKCENTER"
+                                                                                                                                                                                ]
+                                                                                                                                                                            }
+                                                                                                                                                                        }
+                                                                                                                                                                    ]
+                                                                                                                                                                }
+                                                                                                                                                            }
+                                                                                                                                                        }
+                                                                                                                                                    ]
+                                                                                                                                                }
+                                                                                                                                            }
+                                                                                                                                        }
+                                                                                                                                    ]
+                                                                                                                                },
+                                                                                                                                "onFailure": {
+                                                                                                                                    "actions": [
+                                                                                                                                        {
+                                                                                                                                            "type": "context",
+                                                                                                                                            "config": {
+                                                                                                                                                "requestMethod": "add",
+                                                                                                                                                "key": "errorDisp",
+                                                                                                                                                "data": "responseData"
+                                                                                                                                            }
+                                                                                                                                        },
+                                                                                                                                        {
+                                                                                                                                            "type": "updateComponent",
+                                                                                                                                            "config": {
+                                                                                                                                                "key": "searchCriteriaErrorTitleUUID",
+                                                                                                                                                "properties": {
+                                                                                                                                                    "titleValue": "#errorDisp",
+                                                                                                                                                    "isShown": true
+                                                                                                                                                }
+                                                                                                                                            }
+                                                                                                                                        }
+                                                                                                                                    ]
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                        }
+                                                                                                                    ]
+                                                                                                                }
+                                                                                                            }
+                                                                                                        }
+                                                                                                    ]
+                                                                                                },
+                                                                                                "onFailure": {
+                                                                                                    "actions": [
+                                                                                                        {
+                                                                                                            "type": "context",
+                                                                                                            "config": {
+                                                                                                                "requestMethod": "add",
+                                                                                                                "key": "errorDisp",
+                                                                                                                "data": "responseData"
+                                                                                                            }
+                                                                                                        },
+                                                                                                        {
+                                                                                                            "type": "updateComponent",
+                                                                                                            "config": {
+                                                                                                                "key": "searchCriteriaErrorTitleUUID",
+                                                                                                                "properties": {
+                                                                                                                    "titleValue": "#errorDisp",
+                                                                                                                    "isShown": true
+                                                                                                                }
+                                                                                                            }
+                                                                                                        }
+                                                                                                    ]
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                    ]
+                                                                                },
+                                                                                "onFailure": {
+                                                                                    "actions": [
+                                                                                        {
+                                                                                            "type": "context",
+                                                                                            "config": {
+                                                                                                "requestMethod": "add",
+                                                                                                "key": "errorDisp",
+                                                                                                "data": "responseData"
+                                                                                            }
+                                                                                        },
+                                                                                        {
+                                                                                            "type": "updateComponent",
+                                                                                            "config": {
+                                                                                                "key": "searchCriteriaErrorTitleUUID",
+                                                                                                "properties": {
+                                                                                                    "titleValue": "#errorDisp",
+                                                                                                    "isShown": true
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                    ]
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                "onFailure": {
+                                                    "actions": [
+                                                        {
+                                                            "type": "condition",
+                                                            "config": {
+                                                                "operation": "isEqualTo",
+                                                                "lhs": "#discrepancyUnitInfo.STATUS",
+                                                                "rhs": "Time Out"
+                                                            },
+                                                            "responseDependents": {
+                                                                "onSuccess": {
+                                                                    "actions": [
+                                                                        {
+                                                                            "type": "condition",
+                                                                            "config": {
+                                                                                "operation": "isValid",
+                                                                                "lhs": "#discrepancyUnitInfo.DESTINATIONWC"
+                                                                            },
+                                                                            "responseDependents": {
+                                                                                "onSuccess": {
+                                                                                    "actions": [
+                                                                                        {
+                                                                                            "type": "timeInMicroServices",
+                                                                                            "config": {
+                                                                                                "DESTINATIONWC": "#discrepancyUnitInfo.DESTINATIONWC"
+                                                                                            }
+                                                                                        }
+                                                                                    ]
+                                                                                },
+                                                                                "onFailure": {
+                                                                                    "actions": [
+                                                                                        {
+                                                                                            "type": "errorPrepareAndRender",
+                                                                                            "config": {
+                                                                                                "key": "searchCriteriaErrorTitleUUID",
+                                                                                                "properties": {
+                                                                                                    "titleValue": "Item- {0} Reached to it's Destination Workcenter: {1}",
+                                                                                                    "isShown": true
+                                                                                                },
+                                                                                                "valueArray": [
+                                                                                                    "#discrepancyUnitInfo.ITEM_BCN",
+                                                                                                    "#discrepancyUnitInfo.WORKCENTER"
+                                                                                                ]
+                                                                                            }
+                                                                                        }
+                                                                                    ]
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                },
+                                                                "onFailure": {
+                                                                    "actions": [
+                                                                        {
+                                                                            "type": "condition",
+                                                                            "config": {
+                                                                                "operation": "isValid",
+                                                                                "lhs": "#discrepancyUnitInfo.STATUS"
+                                                                            },
+                                                                            "responseDependents": {
+                                                                                "onSuccess": {
+                                                                                    "actions": [
+                                                                                        {
+                                                                                            "type": "commonHPWCOperations",
+                                                                                            "config": {
+                                                                                                "discrepancyUnitInfo": "#discrepancyUnitInfo"
+                                                                                            }
+                                                                                        }
+                                                                                    ]
+                                                                                },
+                                                                                "onFailure": {
+                                                                                    "actions": [
+                                                                                        {
+                                                                                            "type": "condition",
+                                                                                            "config": {
+                                                                                                "operation": "isValid",
+                                                                                                "lhs": "#discrepancyUnitInfo.DESTINATIONWC"
+                                                                                            },
+                                                                                            "responseDependents": {
+                                                                                                "onSuccess": {
+                                                                                                    "actions": [
+                                                                                                        {
+                                                                                                            "type": "timeInMicroServices",
+                                                                                                            "config": {
+                                                                                                                "DESTINATIONWC": "#discrepancyUnitInfo.DESTINATIONWC"
+                                                                                                            }
+                                                                                                        }
+                                                                                                    ]
+                                                                                                },
+                                                                                                "onFailure": {
+                                                                                                    "actions": [
+                                                                                                        {
+                                                                                                            "type": "errorPrepareAndRender",
+                                                                                                            "config": {
+                                                                                                                "key": "searchCriteriaErrorTitleUUID",
+                                                                                                                "properties": {
+                                                                                                                    "titleValue": "Item- {0} Reached to it's Destination Workcenter: {1}",
+                                                                                                                    "isShown": true
+                                                                                                                },
+                                                                                                                "valueArray": [
+                                                                                                                    "#discrepancyUnitInfo.ITEM_BCN",
+                                                                                                                    "#discrepancyUnitInfo.WORKCENTER"
+                                                                                                                ]
+                                                                                                            }
+                                                                                                        }
+                                                                                                    ]
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                    ]
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            }
+                                        }
+                                    ]
+                                },
+                                "onFailure": {
+                                    "actions": [
+                                        {
+                                            "type": "context",
+                                            "config": {
+                                                "requestMethod": "add",
+                                                "key": "errorDisp",
+                                                "data": "responseData"
+                                            }
+                                        },
+                                        {
+                                            "type": "updateComponent",
+                                            "config": {
+                                                "key": "searchCriteriaErrorTitleUUID",
+                                                "properties": {
+                                                    "titleValue": "#errorDisp",
+                                                    "isShown": true
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "footer": []
+}

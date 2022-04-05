@@ -1,0 +1,47 @@
+<mat-expansion-panel
+  #matPanel
+  [id]="panelUUID"
+  [hideToggle]="true"
+  [ngClass]="{ 'blue-border-left': matPanel.expanded }"
+  class="task-panel-container"
+>
+  <mat-expansion-panel-header>
+    <mat-panel-title class="heading2" [ngClass]="header.class">
+      <mat-icon [svgIcon]="header.svgIcon" [class]="header.iconClass">{{ header.icon }}</mat-icon>
+      <div>{{ header.title }}</div>
+    </mat-panel-title>
+    <mat-panel-description>
+      <mat-icon [class]="header.statusClass">
+        {{ header.statusIcon }}
+      </mat-icon>
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+
+  <form *ngIf="form" [formGroup]="form">
+    <div class="content-padding padding-top-15">
+      <app-title titleClass="greyish-black body-italic" title="Special Message"></app-title>
+      <app-title *ngIf="moreInfoMessage" titleClass="greyish-black body-italic" [title]="moreInfoMessage"></app-title>
+      <app-checkbox
+        [group]="form"
+        [checked]="fC?.value"
+        [name]="controlUUID"
+        [required]="true"
+        [disabled]="false"
+        label="I have read this message"
+        labelPosition="after"
+      ></app-checkbox>
+    </div>
+  </form>
+  <mat-action-row class="mat-action-row-no-border">
+    <app-button
+      [id]="btnUUID"
+      [disabled]="completeBtnDisabled"
+      [clickInterceptor]="handleMessageReadComplete"
+      [class]="'primary-btn no-ml-button'"
+      color="primary"
+      text="Complete"
+      type="submit"
+    >
+    </app-button>
+  </mat-action-row>
+</mat-expansion-panel>

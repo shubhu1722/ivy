@@ -1,0 +1,337 @@
+{
+    "ctype": "page",
+    "uuid": "pageUUID",
+    "css": "",
+    "visibility": true,
+    "hooks": [],
+    "validations": [],
+    "action": [],
+    "header": [
+        {
+            "ctype": "toolbar",
+            "toolbarClass": "searchCriteria-toolbar section-title",
+            "items": [
+                {
+                    "ctype": "title",
+                    "title": "Receiving"
+                }
+            ]
+        }
+    ],
+    "items": [
+        {
+            "ctype": "title",
+            "uuid": "searchCriteriaErrorTitleUUID",
+            "titleClass": "error-title",
+            "isShown": false
+        },
+        {
+            "ctype": "formPanel",
+            "title": "Receiving",
+            "header": "",
+            "uuid": "receivingUUID",
+            "formPanelClass": "searchCriteria-panel",
+            "visibility": true,
+            "hooks": [],
+            "validations": [],
+            "actions": [],
+            "items": [
+                {
+                    "ctype": "nativeDropdown",
+                    "uuid": "dropdownUUID",
+                    "hooks": [
+                      {
+                        "type": "context",
+                        "config": {
+                            "requestMethod": "add",
+                            "key": "userOptionTrackingNo",
+                            "data": "TrackingNo"
+                        },
+                        "hookType": "afterInit"
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                            "key": "dropdownUUID",
+                            "fieldProperties": {
+                              "homeSearchCriteria": "#userOptionTrackingNo"
+                            }
+                        },
+                        "hookType": "afterInit"
+                      }
+                    ],
+                    "validations": [],
+                    "actions": [
+                        {
+                            "type": "context",
+                            "config": {
+                                "requestMethod": "add",
+                                "key": "userOptionTrackingNo",
+                                "data": "elementControlValue"
+                            },
+                            "eventSource": "change"
+                        }
+                    ],
+                    "type": "text",
+                    "required": true,
+                    "placeholder": "ReferenceOrderID",
+                    "submitable": true,
+                    "label": "",
+                    "labelPosition": "",
+                    "name": "homeSearchCriteria",
+                    "defaultValue":  "#userOptionTrackingNo",
+                    "dropdownClass": "searchcriteris-drpdwn",
+                    "options": [
+                        {
+                            "code": "TrackingNo",
+                            "displayValue": "Tracking Number"
+                        }
+                    ]
+                },
+                {
+                    "ctype": "textField",
+                    "uuid": "scanUUID",
+                    "isUpperCase": true,
+                    "hooks": [],
+                    "validations": [
+                        {
+                            "type": "regex",
+                            "script": "^[a-zA-Z0-9]{0,32}$"
+                        }
+                    ],
+                    "textfieldClass": "searchcriteris-text",
+                    "type": "text",
+                    "required": true,
+                    "placeholder": "Scan Tracking Number",
+                    "submitable": true,
+                    "label": "",
+                    "labelPosition": "",
+                    "name": "scan",
+                    "prefix": "true",
+                    "prefixIcon": "qr_code_scanner",
+                    "suffix": true,
+                    "suffixIcon": "arrow_forward",
+                    "actions": [
+                        {
+                            "type": "updateComponent",
+                            "eventSource": "click",
+                            "config": {
+                                "key": "searchCriteriaErrorTitleUUID",
+                                "properties": {
+                                    "titleValue": "",
+                                    "isShown": false
+                                }
+                            }
+                        },
+                        {
+                            "type": "context",
+                            "config": {
+                                "key": "userSearchCriteria",
+                                "data": "formData",
+                                "requestMethod": "add"
+                            },
+                            "eventSource": "click"
+                        },
+                        {
+                            "type": "condition",
+                            "config": {
+                                "operation": "isEqualTo",
+                                "lhs": "#userSearchCriteria.homeSearchCriteria",
+                                "rhs": "TrackingNo"
+                            },
+                            "eventSource": "click",
+                            "responseDependents": {
+                                "onSuccess": {
+                                    "actions": [
+                                        {
+                                            "type": "context",
+                                            "config": {
+                                                "requestMethod": "add",
+                                                "key": "trackingNo",
+                                                "data": "#userSearchCriteria.scan"
+                                            }
+                                        }
+                                    ]
+                                },
+                                "onFailure": {
+                                    "actions": [
+                                        {
+                                            "type": "context",
+                                            "config": {
+                                                "requestMethod": "add",
+                                                "key": "trackingNo",
+                                                "data": ""
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "type": "microservice",
+                            "config": {
+                                "microserviceId": "getOrders",
+                                "requestMethod": "get",
+                                "params": {
+                                    "searchCriteriaValue": "#userSearchCriteria.scan",
+                                    "searchCriteriaName": "#userSearchCriteria.homeSearchCriteria",
+                                    "username": "#userAccountInfo.PersonalDetails.USERID"
+                                }
+                            },
+                            "eventSource": "click",
+                            "responseDependents": {
+                                "onSuccess": {
+                                    "actions": [
+                                        {
+                                            "type": "context",
+                                            "config": {
+                                                "requestMethod": "add",
+                                                "key": "orderDetails",
+                                                "data": "responseData"
+                                            }
+                                        },
+                                        {
+                                            "type": "context",
+                                            "config": {
+                                                "requestMethod": "add",
+                                                "key": "isGetOrdersSuccess",
+                                                "data": true
+                                            }
+                                        }
+                                    ]
+                                },
+                                "onFailure": {
+                                    "actions": []
+                                }
+                            }
+                        },
+                        {
+                            "type": "microservice",
+                            "eventSource": "click",
+                            "config": {
+                                "microserviceId": "getSubProcessMenu",
+                                "isLocal": false,
+                                "LocalService": "assets/Responses/getSubProcessMenu.json",
+                                "requestMethod": "get",
+                                "params": {
+                                    "userId": "#loginUUID.username",
+                                    "locationId": "#userSelectedLocation",
+                                    "clientId": "#userSelectedClient",
+                                    "contractId": "#userSelectedContract",
+                                    "wcId": 1,
+                                    "optId": 1,
+                                    "btt":1,
+                                    "whId":"1",
+                                    "operationType":"#userSelectedSubProcessType",
+                                    "workCenterName":""
+                                }
+                            },
+                            "responseDependents": {
+                                "onSuccess": {
+                                    "actions": [
+                                        {
+                                            "type": "context",
+                                            "config": {
+                                                "requestMethod": "add",
+                                                "key": "SubprocessMenu",
+                                                "data": "responseData"
+                                            }
+                                        },
+                                        {
+                                            "type": "microservice",
+                                            "config": {
+                                                "microserviceId": "getProcess",
+                                                "requestMethod": "get",
+                                                "parseJson": true,
+                                                "params": {
+                                                    "locationId": "#userSelectedLocation",
+                                                    "clientId": "#userSelectedClient",
+                                                    "contractId": "#userSelectedContract",
+                                                    "btt": 1,
+                                                    "optId": 1,
+                                                    "whId": 1,
+                                                    "userId": "#userAccountInfo.PersonalDetails.USERID",
+                                                    "wcId": 1,
+                                                    "operationType":"#userSelectedSubProcessType",
+                                                    "workCenterName":""
+                                                },
+                                                "isLocal": false,
+                                                "LocalService": "assets/Responses/getProcessHPData.json"
+                                            },
+                                            "responseDependents": {
+                                                "onSuccess": {
+                                                    "actions": [
+                                                        {
+                                                            "type": "context",
+                                                            "config": {
+                                                                "requestMethod": "add",
+                                                                "key": "getProcessData",
+                                                                "data": "responseData"
+                                                            }
+                                                        },
+                                                        {
+                                                            "type": "context",
+                                                            "config": {
+                                                              "requestMethod": "add",
+                                                              "key": "getReferenceDataKeys",
+                                                              "data": "responseData"
+                                                            }
+                                                          },
+                                                        {
+                                                            "type": "renderTemplate",
+                                                            "config": {
+                                                                "templateId": "HP_Receiving.json",
+                                                                "mode": "local"
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                "onFailure": {
+                                                    "actions": [
+                                                        {
+                                                            "type": "context",
+                                                            "config": {
+                                                                "requestMethod": "add",
+                                                                "key": "getProcessData",
+                                                                "data": "responseData"
+                                                            }
+                                                        },
+                                                        {
+                                                            "type": "updateComponent",
+                                                            "config": {
+                                                                "key": "searchCriteriaErrorTitleUUID",
+                                                                "properties": {
+                                                                    "titleValue": "#getProcessData",
+                                                                    "isShown": true
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            }
+                                        }
+                                    ]
+                                },
+                                "onFailure": {
+                                    "actions": [
+                                        {
+                                            "type": "updateComponent",
+                                            "config": {
+                                                "key": "searchCriteriaErrorTitleUUID",
+                                                "properties": {
+                                                    "titleValue": "Failed to fetch getSubprocess Menu.",
+                                                    "isShown": true
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "footer": []
+}

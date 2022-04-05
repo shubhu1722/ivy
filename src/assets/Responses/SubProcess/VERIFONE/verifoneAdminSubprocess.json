@@ -1,0 +1,878 @@
+{
+    "ResultData": {
+        "ctype": "page",
+        "uuid": "pageUUID",
+        "visibility": true,
+        "hooks": [
+            {
+                "type": "microservice",
+                "hookType": "afterInit",
+                "config": {
+                    "microserviceId": "getPreviousWCNote",
+                    "requestMethod": "get",
+                    "params": {
+                        "itemId": "#UnitInfo.ITEM_ID"
+                    }
+                },
+                "responseDependents": {
+                    "onSuccess": {
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "lastNoteData",
+                                    "data": "responseData"
+                                }
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "verifoneAdminLastNoteTextUUID",
+                                    "properties": {
+                                        "titleValue": "#lastNoteData.timeOutNote"
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    "onFailure": {
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "errorDisp",
+                                    "data": "responseData"
+                                }
+                            },
+                            {
+                                "type": "condition",
+                                "config": {
+                                    "operation": "isEqualTo",
+                                    "lhs": "#errorDisp",
+                                    "rhs": "No Record Found"
+                                },
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "errorTitleUUID",
+                                                    "properties": {
+                                                        "titleValue": "#errorDisp",
+                                                        "isShown": false
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": [
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "errorTitleUUID",
+                                                    "properties": {
+                                                        "titleValue": "#errorDisp",
+                                                        "isShown": true
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "type": "microservice",
+                "hookType": "afterInit",
+                "config": {
+                  "microserviceId": "getResultCodes",
+                  "isLocal": false,
+                  "LocalService": "assets/Responses/mockBGA.json",
+                  "requestMethod": "get",
+                  "params": {
+                    "bcn": "#UnitInfo.ITEM_BCN",
+                    "validateResult": 1
+                  }
+                },
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "getverifoneAdminResultcodes",
+                          "data": "responseData"
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "ResultCodeVerifoneAdminUUID",
+                          "dropDownProperties": {
+                            "options": "#getverifoneAdminResultcodes"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "errorDisp",
+                          "data": "responseData"
+                        }
+                      },
+                      {
+                        "type": "condition",
+                        "config": {
+                          "operation": "isEqualTo",
+                          "lhs": "#errorDisp",
+                          "rhs": "No Record Found"
+                        },
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "errorTitleUUID",
+                                  "properties": {
+                                    "titleValue": "#errorDisp",
+                                    "isShown": false
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": [
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "errorTitleUUID",
+                                  "properties": {
+                                    "titleValue": "#errorDisp",
+                                    "isShown": true
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+            }
+        ],
+        "header": [
+            {
+                "ctype": "breadcrumb",
+                "style": "padding-left: 4px;",
+                "breadcrumbs": [
+                    {
+                        "label": "#userSelectedLocationName"
+                    },
+                    {
+                        "label": "#userSelectedClientName"
+                    },
+                    {
+                        "label": "#userSelectedContractName"
+                    }
+                ]
+            },
+            {
+                "ctype": "toolbar",
+                "css": "padding-top: 35px;",
+                "toolbarClass": "pagecontent-header",
+                "items": [
+                    {
+                        "ctype": "title",
+                        "uuid": "AdminHHeadertitleuuid",
+                        "titleValue": "Admin",
+                        "titleClass": "section-title",
+                        "css": "padding-bottom: 35px;padding-left: 4px;"
+                    },
+                    {
+                        "ctype": "spacer",
+                        "uuid": "emptySpaceUUID",
+                        "class": "empty-space"
+                    },
+                    {
+                        "ctype": "iconbutton",
+                        "iconButtonClass": "headeropen-button",
+                        "text": "",
+                        "uuid": "pageopenUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "hidden": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "icon": "menu_open",
+                        "disableRipple": true,
+                        "iconClass": "header-icon",
+                        "css": "padding-bottom: 35px;",
+                        "actions": [
+                            {
+                                "type": "toggle",
+                                "eventSource": "click",
+                                "name": "subProcessRightNavref"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "openUUID",
+                                    "properties": {
+                                        "hidden": false
+                                    }
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "pageopenUUID",
+                                    "properties": {
+                                        "hidden": true
+                                    }
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "items": [
+            {
+                "ctype": "title",
+                "uuid": "successTitleUUID",
+                "titleClass": "success-title",
+                "isShown": false,
+                "containerId": "prebodysectionone"
+            },
+            {
+                "ctype": "title",
+                "uuid": "errorTitleUUID",
+                "titleClass": "error-title",
+                "isShown": false,
+                "containerId": "prebodysectionone"
+            },
+            {
+                "ctype": "taskPanel",
+                "title": "",
+                "containerId": "prebodysectiontwo",
+                "header": {
+                  "title": "Last note",
+                  "svgIcon": "description_icon",
+                  "iconClass": "active-header",
+                  "class": "greyish-black"
+                },
+                "expanded": false,
+                "disabled": false,
+                "hideToggle": true,
+                "isMandatory": false,
+                "taskPanelHeaderClass":"background-white",
+                "hidden": false,
+                "hooks": [],
+                "validations": [],
+                "actions": [],
+                "isblueBorder": true,
+                "uuid": "verifoneAdminlastNoteTaskUUID",
+                "visibility": true,
+                "items": [
+                  {
+                    "ctype": "title",
+                    "uuid": "verifoneAdminLastNoteTextUUID",
+                    "titleClass": "greyish-black body-italic assessment-alert",
+                    "title": ""
+                  }
+                ]
+            },
+            {
+            "ctype": "taskPanel",
+            "title": "",
+            "isblueBorder": true,
+            "containerId": "prebodysectiontwo",
+            "header": {
+                "title": "Repair Information",
+                "svgIcon": "description_icon",
+                "iconClass": "active-header",
+                "statusIcon": "hourglass_empty",
+                "statusClass": "incomplete-status",
+                "class": "greyish-black"
+            },
+            "uuid": "verifoneAdminRepairInformationTaskUUID",
+            "expanded": true,
+            "hideToggle": true,
+            "disabled": false,
+            "visibility": true,
+            "isEditable": true,
+            "isMandatory": false,
+            "hooks": [],
+            "validations": [],
+            "actions": [],
+            "items": [
+                {
+                "ctype": "title",
+                "uuid": "verifoneAdminRepairInformationTextUUID",
+                "titleClass": "greyish-black body-italic assessment-alert",
+                "title": ""
+                },
+                {
+                    "ctype": "title",
+                    "uuid": "verifoneAdminRepairInformationSMSpacerUUID",
+                    "titleClass": "greyish-black body-italic assessment-alert",
+                    "isShown": false,
+                    "title": ""
+                },
+                {
+                    "ctype": "title",
+                    "uuid": "verifoneAdminRepairInformationSMHeadingUUID",
+                    "titleClass": "greyish-black heading2",
+                    "isShown": false,
+                    "title": "Special Message"
+                },
+                {
+                    "ctype": "title",
+                    "uuid": "verifoneAdminRepairInformationSMUUID",
+                    "titleClass": "greyish-black body-italic",
+                    "isShown": false,
+                    "title": ""
+                },
+                {
+                "ctype": "checkbox",
+                "name": "verifoneAdminReadMessageCheckbox",
+                "uuid": "verifoneAdminReadMessageUUID",
+                "hooks": [],
+                "validations": [],
+                "required": true,
+                "disabled": false,
+                "label": "I have read this message",
+                "labelPosition": "after",
+                "submitable": true,
+                "isDisableNotReq": true,
+                "checkboxContainer": "label-init",
+                "actions": [
+                    {
+                    "type": "context",
+                    "config": {
+                        "requestMethod": "add",
+                        "key": "verifoneAdminCheckboxValue",
+                        "data": "formData"
+                    },
+                    "eventSource": "click"
+                    },
+                    {
+                    "type": "condition",
+                    "config": {
+                        "operation": "isValid",
+                        "lhs": "#verifoneAdminCheckboxValue.verifoneAdminReadMessageCheckbox"
+                    },
+                    "eventSource": "click",
+                    "responseDependents": {
+                        "onSuccess": {
+                        "actions": [
+                            {
+                            "type": "updateComponent",
+                            "config": {
+                                "key": "verifoneAdminCompleteeButtonUUID",
+                                "properties": {
+                                "disabled": false
+                                }
+                            }
+                            }
+                        ]
+                        },
+                        "onFailure": {
+                        "actions": [
+                            {
+                            "type": "updateComponent",
+                            "config": {
+                                "key": "verifoneAdminCompleteeButtonUUID",
+                                "properties": {
+                                "disabled": true
+                                }
+                            }
+                            }
+                        ]
+                        }
+                    }
+                    }
+                ]
+                }
+            ],
+            "footer": [
+                {
+                "ctype": "button",
+                "color": "primary",
+                "text": "Complete",
+                "class": "primary-btn",
+                "name":"verifoneAdminRepairInfoCompleteName",
+                "isDisableNotReq": true,
+                "uuid": "verifoneAdminCompleteeButtonUUID",
+                "disabled": true,
+                "hidden": false,
+                "visibility": true,
+                "type": "submit",
+                "hooks": [],
+                "validations": [],
+                "actions": [
+                    {
+                        "type": "context",
+                        "config": {
+                            "requestMethod": "add",
+                            "key": "repairInfoEstimateData",
+                            "data": "rawFormData"
+                        },
+                        "eventSource": "click"
+                    },
+                    {
+                    "type": "enableComponent",
+                    "config": {
+                        "key": "verifoneAdminResultCodesUUID",
+                        "property": "ResultCodes"
+                    },
+                    "eventSource": "click"
+                },
+                {
+                    "type": "updateComponent",
+                    "config": {
+                    "key": "verifoneAdminRepairInformationTaskUUID",
+                    "properties": {
+                        "expanded": false,
+                        "disabled": false,
+                        "header": {
+                        "title": "Repair Information",
+                        "svgIcon": "description_icon",
+                        "statusIcon": "check_circle",
+                        "statusClass": "complete-status",
+                        "class": "complete-task ",
+                        "iconClass": "complete-task"
+                        }
+                    }
+                    },
+                    "eventSource": "click"
+                },
+                    {
+                        "type": "condition",
+                        "config": {
+                            "operation": "isEqualTo",
+                            "lhs": "#repairInfoEstimateData.verifoneAdminReadMessageCheckbox",
+                            "rhs": true
+                        },
+                        "eventSource": "click",
+                        "responseDependents": {
+                            "onSuccess": {
+                                "actions": [
+                                    {
+                                        "type": "context",
+                                        "config": {
+                                            "requestMethod": "add",
+                                            "key": "submitablemsgRead",
+                                            "data": "Yes"
+                                        }
+                                    }
+                                ]
+                            },
+                            "onFailure": {
+                                "actions": [
+                                    {
+                                        "type": "context",
+                                        "config": {
+                                            "requestMethod": "add",
+                                            "key": "submitablemsgRead",
+                                            "data": "No"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    {
+                    "type": "updateComponent",
+                    "config": {
+                        "key": "verifoneAdminHLPFUUID",
+                        "properties": {
+                        "expanded": true,
+                        "disabled": false,
+                        "header": {
+                            "title": "HLPF override",
+                            "svgIcon": "description_icon",
+                            "iconClass": "complete-task",
+                            "statusIcon": "hourglass_empty",
+                            "statusClass": "incomplete-status",
+                            "class": "greyish-black"
+                        }
+                        }
+                    },
+                    "eventSource": "click"
+                    }
+                ]
+                }
+            ]
+            },
+            {
+                "ctype": "taskPanel",
+                "containerId": "prebodysectiontwo",
+                "header": {
+                    "title": "HLPF override",
+                    "svgIcon": "description_icon",
+                    "iconClass": "active-header",
+                    "statusIcon": "hourglass_empty",
+                    "statusClass": "incomplete-status",
+                    "class": "greyish-black"
+                },
+                "expanded": false,
+                "hideToggle": true,
+                "uuid": "verifoneAdminHLPFUUID",
+                "visibility": false,
+                "disabled": true,
+                "hooks": [],
+                "validations": [],
+                "actions": [],
+                "items": [
+                    {
+                        "ctype": "title",
+                        "uuid": "verifoneAdminHLPFTextUUID",
+                        "titleValue": "Do you wish to override the error?",
+                        "titleValueClass": "body-italic text-secondary"
+                    },
+                    {
+                        "ctype": "nativeDropdown",
+                        "dropdownClass": "col-2 mb-3 footer-dropdown body2 reworkCommon verifoneProblemDescLayout",
+                        "formGroupClass": "d-flex",
+                        "uuid": "HLPFOverrideRuleUUID",
+                        "name": "HLPFOverrideRule",
+                        "label": "HLPF Override Rule",
+                        "labelClass": "pl-0 pt-3 align-left",
+                        "dataSource": "",
+                        "code": "value",
+                        "displayValue": "value",
+                        "required": true,
+                        "options": [],
+                        "actions": [
+                        ]
+                    }
+                ],
+                "footer": [
+                    {
+                        "ctype": "button",
+                        "color": "primary",
+                        "text": "Complete",
+                        "class": "primary-btn",
+                        "uuid": "HLPFSubmitUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "actions": [
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "verifoneAdminHLPFUUID",
+                                    "properties": {
+                                        "expanded": false,
+                                        "disabled": false,
+                                        "header": {
+                                            "title": "HLPF Override",
+                                            "svgIcon": "description_icon",
+                                            "iconClass": "active-header",
+                                            "statusIcon": "check_circle",
+                                            "statusClass": "complete-status",
+                                            "class": "disable-text"
+                                        }
+                                    }
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "ResultCodeVerifoneAdminUUID",
+                                    "properties": {
+                                        "disabled": false
+                                    }
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "footer": [
+            {
+                "ctype": "toolbar",
+                "toolbarClass": "pagecontent-footer",
+                "items": [
+                    {
+                        "ctype": "iconbutton",
+                        "iconButtonClass": "footer-save body primary-btn",
+                        "text": "Exit",
+                        "uuid": "saveUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "icon": "close",
+                        "actions": [
+                            {
+                                "type": "clearAllContext",
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "renderTemplate",
+                                "config": {
+                                    "templateId": "dashboard.json",
+                                    "mode": "local"
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "iconText",
+                        "uuid": "IconUUID",
+                        "iconTextClass": "footer-addNote body",
+                        "icon": "add_comment",
+                        "text": "Add Note",
+                        "iconPosition": "Before",
+                        "actions": [
+                            {
+                                "type": "dialog",
+                                "uuid": "addNoteDialogUUID",
+                                "config": {
+                                    "title": "Add Note",
+                                    "items": [
+                                        {
+                                            "ctype": "textarea",
+                                            "name": "addNote",
+                                            "textareaClass": "note-class",
+                                            "uuid": "addNoteUUID",
+                                            "value": "#LoadStationHNotes.addNote",
+                                            "actions": []
+                                        }
+                                    ],
+                                    "footer": [
+                                        {
+                                            "ctype": "button",
+                                            "color": "primary",
+                                            "text": "Close",
+                                            "uuid": "closeButtonUUID",
+                                            "closeType": "close",
+                                            "inputClass": "close-button",
+                                            "disableClose": true,
+                                            "visibility": true,
+                                            "dialogButton": true,
+                                            "type": "",
+                                            "hooks": [],
+                                            "validations": [],
+                                            "actions": []
+                                        },
+                                        {
+                                            "ctype": "button",
+                                            "color": "primary",
+                                            "text": "Done",
+                                            "uuid": "doneHoldUUID",
+                                            "dialogButton": true,
+                                            "visibility": true,
+                                            "type": "submit",
+                                            "closeType": "success",
+                                            "hooks": [],
+                                            "validations": [],
+                                            "actions": []
+                                        }
+                                    ]
+                                },
+                                "eventSource": "click",
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "AdminNotes",
+                                                    "data": "formData"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "spacer",
+                        "uuid": "emptySpaceUUID",
+                        "class": "empty-space"
+                    },
+                    {
+                        "ctype": "iconbutton",
+                        "uuid": "discrepancyPauseUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "type": "submit",
+                        "icon": "pause",
+                        "iconClass": "",
+                        "disableRipple": true,
+                        "actions": [
+                            {
+                                "type":"showVerifoneOLEPausebuttonInScreen",
+                                "eventSource": "click"
+                              }
+                        ]
+                    },
+                    {
+                        "ctype": "nativeDropdown",
+                        "dropdownClass": "footer-dropdown dropdown-container body2",
+                        "uuid": "ResultCodeVerifoneAdminUUID",
+                        "isDropdownNotSelected": true,
+                        "hooks": [],
+                        "validations": [],
+                        "type": "text",
+                        "required": true,
+                        "submitable": true,
+                        "label": "",
+                        "labelPosition": "",
+                        "name": "identificatorTypeForUnit",
+                        "defaultValue": "",
+                        "code": "outcomeCodeId",
+                        "displayValue": "outcomeCodeValue",
+                        "disabled": true,
+                        "options": [],
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "SelectedResultcode",
+                                    "data": "elementControlName"
+                                },
+                                "eventSource": "change"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "AdminTimeoutUUID",
+                                    "properties": {
+                                        "disabled": false
+                                    }
+                                },
+                                "eventSource": "change"
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "button",
+                        "color": "primary",
+                        "buttonClass": "footer-button",
+                        "text": "Time Out",
+                        "uuid": "AdminTimeoutUUID",
+                        "visibility": true,
+                        "checkGroupValidity": false,
+                        "disabled": true,
+                        "hidden": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "actions": [
+                            {
+                                "type": "microservice",
+                                "eventSource": "click",
+                                "config": {
+                                  "microserviceId": "performTimeOut",
+                                  "requestMethod": "post",
+                                  "body": {
+                                    "timeOutRequest": {
+                                      "location": "#repairUnitInfo.GEONAME",
+                                      "bcn": "#repairUnitInfo.ITEM_BCN",
+                                      "workCenter": "#repairUnitInfo.WORKCENTER",
+                                      "password": "#loginUUID.password",
+                                      "warrantyInd": "false",
+                                      "notes": "#dellObaFailTimeoutNotes.addNote",
+                                      "resultCode": "#SelectedAdminResultcode",
+                                      "workCenterFlexFieldList": {
+                                        "flexField": [
+                                          {
+                                            "name": "Admin_Result",
+                                            "value": "#adminTestResultDropdownData"
+                                          },
+                                          {
+                                            "name": "msgRead",
+                                            "value": "#adminSubmitablemsgRead"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    "modifyWarranty": 0,
+                                    "timeOutType": "ProcessImmediate",
+                                    "clientName": "#repairUnitInfo.CLIENTNAME",
+                                    "contractName": "#repairUnitInfo.CONTRACTNAME",
+                                    "userName": "#loginUUID.username",
+                                    "userPass": "#loginUUID.password",
+                                    "ip": "::1",
+                                    "callSource": "FrontEnd",
+                                    "apiUsage_LocationName": "#repairUnitInfo.GEONAME",
+                                    "apiUsage_ClientName": "#repairUnitInfo.CLIENTNAME"
+                                  },
+                                  "toBeStringified": true
+                                },
+                                "responseDependents": {
+                                  "onSuccess": {
+                                    "actions":[
+                                          {
+                                            "type": "clearAllContext",
+                                            "eventSource": "click"
+                                          },
+                                          {
+                                            "type": "clearScreenData"
+                                          },
+                                          {
+                                            "type": "renderTemplate",
+                                            "config": {
+                                              "templateId": "dashboard.json",
+                                              "mode": "local"
+                                            },
+                                            "eventSource": "click"
+                                          }
+                                    ]
+                                  },
+                                  "onFailure": {
+                                    "actions": [
+                                      {
+                                        "type": "handleCommonServices",
+                                        "config": {
+                                          "type": "errorRenderTemplate",
+                                          "contextKey": "errorMsg",
+                                          "updateKey": "errorTitleUUID"
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                            }
+                        ]
+
+                    }
+                ]
+            }
+        ]
+    },
+    "Result": "SUCCESS"
+}

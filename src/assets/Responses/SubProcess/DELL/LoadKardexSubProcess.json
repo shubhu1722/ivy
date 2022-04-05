@@ -1,0 +1,654 @@
+{
+    "ResultData": {
+      "ctype": "page",
+      "uuid": "pageUUID",
+      "css": "",
+      "visibility": true,
+      "onLoadActions": [],
+      "hooks": [
+        {
+          "type": "concatContexts",
+          "hookType": "afterInit",
+          "config": {
+              "contextKey": "SubProcessTitleValue",
+              "contexts": [
+                  "Kardex 1 > Load:",
+                  "#dellKDSearchedRecord.Serial Number"
+              ]
+          }
+      },
+      {
+          "type": "updateComponent",
+          "hookType": "afterInit",
+          "config": {
+            "key": "subProcessTitleUUID",
+            "properties": {
+              "titleValue": "#SubProcessTitleValue"
+            }
+          }
+        },
+        {
+          "type": "concatContexts",
+          "hookType": "afterInit",
+          "config": {
+              "contextKey": "LoadTaskPanelTitle",
+              "contexts": [
+                  "Load:",
+                  "#dellKDSearchedRecord.Serial Number"
+              ]
+          }
+      },
+      {
+          "type": "updateComponent",
+          "hookType": "afterInit",
+          "config": {
+            "key": "dellKardexLoadUUID",
+            "properties": {
+              "header": {
+                "title": "#LoadTaskPanelTitle",
+                "svgIcon": "description_icon",
+            "iconClass": "active-header",
+            "class": "greyish-black"
+              }
+              }
+          }
+        },
+        {
+            "type": "microservice",
+            "hookType": "afterInit",
+            "config": {
+              "microserviceId": "getEmptykardexBins",
+              "requestMethod": "get",
+              "isLocal": false,
+              "LocalService": "assets/Responses/dellDebugDefects.json",
+              "params": {
+                "locationId": "#userSelectedLocation",
+                "userName": "#userAccountInfo.PersonalDetails.USERID"
+              }
+            },
+            "responseDependents": {
+              "onSuccess": {
+                "actions": [
+                  {
+                    "type": "context",
+                    "config": {
+                      "requestMethod": "add",
+                      "key": "getEmptykardexBins",
+                      "data": "responseArray"
+                    }
+                  },
+                  {
+                    "type": "concatContexts",
+                    "config": {
+                        "contextKey": "DestinationValue",
+                        "contexts": [
+                            "Kardex_1 >",
+                            "#getEmptykardexBins.binName"
+                        ]
+                    }
+                },
+                {
+                    "type": "updateComponent",
+                    "config": {
+                      "key": "destinationUUID",
+                      "properties": {
+                        "titleValue": "#DestinationValue"
+                      }
+                    }
+                  },
+                  {
+                    "type": "microservice",
+                    "config": {
+                      "microserviceId": "getGLBDellKardexDetails",
+                      "requestMethod": "post",
+                      "body": {
+                        "bcnNumber": "#UnitInfo.ITEM_BCN",
+                        "userName": "#loginUUID.username",
+                        "optCode": "#UnitInfo.ROUTE",
+                        "partNumber": "#UnitInfo.PART_NO",
+                        "workCenterId": "#UnitInfo.WORKCENTER_ID",
+                        "clientId": "#UnitInfo.CLIENT_ID",
+                        "contractId": "#UnitInfo.CONTRACT_ID",
+                        "locationId": "#UnitInfo.LOCATION_ID",
+                        "workCenterName": "#UnitInfo.WORKCENTER",
+                        "serialNumber": "#UnitInfo.SERIAL_NO",
+                        "destinationBin": "#getEmptykardexBins.binName"
+                      },
+                      "toBeStringified": true
+                    },
+                    "responseDependents": {
+                      "onSuccess": {
+                        "actions": [
+                          {
+                            "type": "updateComponent",
+                            "config": {
+                              "key": "loadConfirmUUID",
+                              "properties": {
+                                "disabled": false
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      "onFailure": {
+                        "actions": [
+                          {
+                            "type": "handleCommonServices",
+                            "config": {
+                              "type": "errorRenderTemplate",
+                              "contextKey": "errorMsg",
+                              "updateKey": "errorTitleUUID"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    "eventSource": "click"
+                  }
+                ]
+              },
+              "onFailure": {
+                "actions": [
+                  {
+                    "type": "handleCommonServices",
+                    "config": {
+                      "type": "errorRenderTemplate",
+                      "contextKey": "errorMsg",
+                      "updateKey": "errorTitleUUID"
+                    }
+                  }
+                ]
+              }
+            }
+          }   
+      ],
+      "validations": [],
+      "action": [],
+      "header": [
+        {
+          "ctype": "breadcrumb",
+          "breadcrumbs": [
+            {
+              "label": "#userSelectedLocationName"
+            },
+            {
+              "label": "#userSelectedClientName"
+            },
+            {
+              "label": "#userSelectedContractName"
+            }
+          ]
+        },
+        {
+          "ctype": "toolbar",
+          "toolbarClass": "pagecontent-header",
+          "items": [
+            {
+              "ctype": "title",
+              "actions":[
+                {
+                  "type": "renderTemplate",
+                  "config": {
+                    "mode": "remote",
+                    "targetId": "mainPageContentBody",
+                    "templateId": "kardexProcessJson"
+                  },
+                  "eventSource": "click"
+                }
+              ],
+              "uuid": "subProcessTitleUUID",
+              "titleValue": "#SubProcessTitleValue",
+              "titleClass": "section-title"
+            },
+            {
+              "ctype": "iconbutton",
+              "iconButtonClass": "headeropen-button",
+              "text": "",
+              "uuid": "pageopenUUID",
+              "visibility": true,
+              "disabled": false,
+              "hidden": false,
+              "type": "submit",
+              "hooks": [],
+              "validations": [],
+              "icon": "menu_open",
+              "disableRipple": true,
+              "iconClass": "header-icon",
+              "actions": [
+                {
+                  "type": "toggle",
+                  "eventSource": "click",
+                  "name": "subProcessRightNavref"
+                },
+                {
+                  "type": "updateComponent",
+                  "config": {
+                    "key": "openUUID",
+                    "properties": {
+                      "hidden": false
+                    }
+                  },
+                  "eventSource": "click"
+                },
+                {
+                  "type": "updateComponent",
+                  "config": {
+                    "key": "pageopenUUID",
+                    "properties": {
+                      "hidden": true
+                    }
+                  },
+                  "eventSource": "click"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "items": [
+        {
+          "ctype": "title",
+          "uuid": "successTitleUUID",
+          "titleClass": "success-title",
+          "containerId": "prebodysectionone",
+          "isShown": false
+        },
+        {
+          "ctype": "title",
+          "uuid": "errorTitleUUID",
+          "containerId": "prebodysectionone",
+          "titleClass": "error-title",
+          "isShown": false
+        },
+        {
+          "ctype": "taskPanel",
+          "isblueBorder": true,
+          "uuid": "dellKardexLoadUUID",
+          "containerId": "prebodysectionone",
+          "title": "",
+          "header": {
+            "title": "#LoadTaskPanelTitle",
+            "svgIcon": "description_icon",
+            "iconClass": "active-header",
+            "class": "greyish-black"
+          },
+          "expanded": true,
+          "disabled": false,
+          "panelClass": "margin-top-10",
+          "hidden": false,
+          "hooks": [],
+          "validations": [],
+          "actions": [],
+          "items": [
+            {
+              "ctype": "title",
+              "uuid": "destinationUUID",
+              "titleClass": "flex-container flex-container-half-width",
+              "title": "Destination",
+              "titleValue": "#Destination",
+              "titleValueClass": "textfield-container-small-width"
+            },
+            {
+                "ctype": "title",
+                "uuid": "holdTypeUUID",
+                "titleClass": "flex-container flex-container-half-width",
+                "title": "Hold Type",
+                "titleValue": "#dellKDSearchedRecord.Hold Type",
+                "titleValueClass": "textfield-container-small-width"
+            },
+            {
+                "ctype": "iconText",
+                "uuid": "overflowShelfUUID",
+                "icon": "report",
+                "hoverClass": "cursor-pointer",
+                "text": "Overflow Shelf",
+                "iconClass": "reportIcon",
+                "disabled": false,
+                "textCss": "",
+                "iconPosition": "Before",
+                "iconTextClass": "body text-primary",
+                "actions": [
+                  {
+                    "type": "dialog",
+                    "uuid": "OverflowShelfDialogUUID",
+                    "config": {
+                      "title": "Overflow Shelf",
+                      "height": "231px",
+                        "width": "547px",
+                        "minimumWidth": false,
+                        "disableClose": false,
+                      "items": [
+                        {
+                            "ctype": "title",
+                            "uuid": "overflowShelfTextUUID",
+                            "titleClass": "flex-container flex-container-half-width",
+                            "title": "Scan Overflow Shelf Location",
+                            "titleValue": ""
+                        },
+                        {
+                            "ctype": "textField",
+                            "uuid": "overflowShelfLocationUUID",
+                            "submitable": false,
+                            "disabled": false,
+                            "inLine": true,
+                            "formGroupClass": "flex-container1",
+                            "textfieldClass": "hold-textfield1-container",
+                            "hooks": [],
+                            "validations": [
+                            ],
+                            "actions": [],
+                            "name": "OverflowShelfLocation",
+                            "label": "Overflow Shelf Location",
+                            "labelClass": "hold-tf-label",
+                            "labelPosition": "left",
+                            "tooltip": "",
+                            "TooltipPosition": "",
+                            "defaultValue": "",
+                            "readonly": false,
+                            "type": "text",
+                            "required": true,
+                            "placeholder": "Scan #",
+                            "value": "",
+                            "prefix": false,
+                            "prefixIcon": "",
+                            "suffix": false,
+                            "suffixIcon": ""
+                          }
+                      ],
+                      "footer": [
+                        {
+                          "ctype": "button",
+                          "color": "primary",
+                          "text": "Cancel",
+                          "uuid": "dellValidationCancelAddNoteUUID",
+                          "closeType": "close",
+                          "buttonClass": "overflowshelfcancel",
+                          "disableClose": true,
+                          "visibility": true,
+                          "dialogButton": true,
+                          "type": "",
+                          "hooks": [],
+                          "validations": [],
+                          "actions": []
+                        },
+                        {
+                          "ctype": "button",
+                          "color": "primary",
+                          "text": "OK",
+                          "uuid": "dellReworkDoneAddNoteUUID",
+                          "dialogButton": true,
+                          "visibility": true,
+                          "disabled": true,
+                          "type": "submit",
+                          "closeType": "success",
+                          "hooks": [],
+                          "validations": [],
+                          "actions": []
+                        }
+                      ]
+                    },
+                    "eventSource": "click",
+                    "responseDependents": {
+                      "onSuccess": {
+                        "actions": [
+                          {
+                            "type": "context",
+                            "config": {
+                              "key": "overflowShelfData",
+                              "data": "formData",
+                              "requestMethod": "add"
+                            },
+                            "eventSource": "click"
+                          },
+                          {
+                            "type": "microservice",
+                            "config": {
+                              "microserviceId": "moveinventory",
+                              "requestMethod": "post",
+                              "body": {
+                                "apiUsageClientName": "#UnitInfo.CLIENTNAME",
+                                "apiUsageLocationName": "#UnitInfo.GEONAME",
+                                "callSource": "FrontEnd",
+                                "ip": "::1",
+                                "items": {
+                                  "addtionalDetails": {
+                                    "comments": "#overflowShelfData.OverflowShelfLocation",
+                                    "storageHoldCode": "#dellKDSearchedRecord.Hold Type"
+                                  },
+                                  "destinationLocation": {
+                                    "bin": "#overflowShelfData.OverflowShelfLocation",
+                                    "geography": "#UnitInfo.GEONAME",
+                                    "stockingLocation": "#getDellKDHoldReleaseDetails.srcStkLocationName",
+                                    "warehouse": "#UnitInfo.WAREHOUSE_NAME"
+                                  },
+                                  "item": [
+                                    {
+                                      "bcn": "#UnitInfo.ITEM_BCN",
+                                      "owner": "#UnitInfo.CLIENTNAME",
+                                      "partNo": "#UnitInfo.PART_NO",
+                                      "quantity": "1",
+                                      "serialNo": "#UnitInfo.SERIAL_NO",
+                                      "condition": "Defective"
+                                    }
+                                  ],
+                                  "notes": "#overflowShelfData.OverflowShelfLocation",
+                                  "sourceLocation": {
+                                    "bin": "#dellKDCurrentBinName",
+                                    "geography": "#UnitInfo.GEONAME",
+                                    "stockingLocation": "#getDellKDHoldReleaseDetails.destStkLocationName",
+                                    "warehouse": "#UnitInfo.WAREHOUSE_NAME"
+                                }
+                                },
+                                "usrPwd": {
+                                  "userName": "#loginUUID.username",
+                                  "password": "#loginUUID.password"
+                                }
+                              },
+                              "toBeStringified": true
+                            },
+                            "responseDependents": {
+                              "onSuccess": {
+                                "actions": [
+                                  {
+                                    "type": "pauseScreenData"
+                                  },
+                                  {
+                                    "type": "context",
+                                    "config": {
+                                      "key": "dellAssessmentholdDialogData",
+                                      "data": "formData",
+                                      "requestMethod": "add"
+                                    }
+                                  },
+                                  {
+                                    "type": "renderTemplate",
+                                    "config": {
+                                      "mode": "remote",
+                                      "targetId": "mainPageContentBody",
+                                      "templateId": "kardexProcessJson"
+                                    }
+                                  }
+                                ]
+                              },
+                              "onFailure": {
+                                "actions": [
+                                  {
+                                    "type": "handleCommonServices",
+                                    "config": {
+                                      "type": "errorRenderTemplate",
+                                      "contextKey": "errorMsg",
+                                      "updateKey": "errorTitleUUID"
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            "eventSource": "click"
+                          }
+                        ]
+                      },
+                      "onFailure": {
+                        "actions": []
+                      }
+                    }
+                  }
+                ]
+            }
+          ],
+          "footer": [
+            {
+                "ctype": "button",
+                "color": "primary",
+                "text": "Cancel",
+                "class": "primary-btn",
+                "uuid": "loadCancelUUID",
+                "name": "LoadCancel",
+                "visibility": true,
+                "disabled": false,
+                "type": "submit",
+                "tooltip": "",
+                "isDisableNotReq": true,
+                "hooks": [],
+                "validations": [],
+                "actions": [
+                  {
+                    "type": "renderTemplate",
+                    "config": {
+                      "mode": "remote",
+                      "targetId": "mainPageContentBody",
+                      "templateId": "kardexProcessJson"
+                    },
+                    "eventSource": "click"
+                  }
+                ]
+              },
+            {
+                "ctype": "button",
+                "color": "primary",
+                "text": "Confirm",
+                "class": "primary-btn",
+                "uuid": "loadConfirmUUID",
+                "name": "LoadConfirm",
+                "visibility": true,
+                "disabled": true,
+                "type": "submit",
+                "tooltip": "",
+                "isDisableNotReq": true,
+                "hooks": [],
+                "validations": [],
+                "actions": [
+                  {
+                    "type": "microservice",
+                    "config": {
+                      "microserviceId": "moveinventory",
+                      "requestMethod": "post",
+                      "body": {
+                        "apiUsageClientName": "#UnitInfo.CLIENTNAME",
+                        "apiUsageLocationName": "#UnitInfo.GEONAME",
+                        "callSource": "FrontEnd",
+                        "ip": "::1",
+                        "items": {
+                          "addtionalDetails": {
+                            "comments": "#holdDialogData.dellReworkHoldAddNote",
+                            "storageHoldCode": "#dellKDSearchedRecord.Hold Type"
+                          },
+                          "destinationLocation": {
+                            "bin": "#getEmptykardexBins.binName",
+                            "geography": "#UnitInfo.GEONAME",
+                            "stockingLocation": "#getDellKDHoldReleaseDetails.srcStkLocationName",
+                            "warehouse": "#UnitInfo.WAREHOUSE_NAME"
+                          },
+                          "item": [
+                            {
+                              "bcn": "#UnitInfo.ITEM_BCN",
+                              "owner": "#UnitInfo.CLIENTNAME",
+                              "partNo": "#UnitInfo.PART_NO",
+                              "quantity": "1",
+                              "serialNo": "#UnitInfo.SERIAL_NO",
+                              "condition": "Defective"
+                            }
+                          ],
+                          "notes": "#holdDialogData.dellReworkHoldAddNote",
+                          "sourceLocation": {
+                            "bin": "#dellKDCurrentBinName",
+                            "geography": "#UnitInfo.GEONAME",
+                            "stockingLocation": "#getDellKDHoldReleaseDetails.destStkLocationName",
+                            "warehouse": "#UnitInfo.WAREHOUSE_NAME"
+                        }
+                        },
+                        "usrPwd": {
+                          "userName": "#loginUUID.username",
+                          "password": "#loginUUID.password"
+                        }
+                      },
+                      "toBeStringified": true
+                    },
+                    "responseDependents": {
+                      "onSuccess": {
+                        "actions": [
+                          {
+                            "type": "pauseScreenData"
+                          },
+                          {
+                            "type": "renderTemplate",
+                            "config": {
+                              "mode": "remote",
+                              "targetId": "mainPageContentBody",
+                              "templateId": "kardexProcessJson"
+                            }
+                          }
+                        ]
+                      },
+                      "onFailure": {
+                        "actions": [
+                          {
+                            "type": "handleCommonServices",
+                            "config": {
+                              "type": "errorRenderTemplate",
+                              "contextKey": "errorMsg",
+                              "updateKey": "errorTitleUUID"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    "eventSource": "click"
+                  }
+                ]
+              }
+          ]
+        }
+      ],
+      "footer": [
+        {
+          "ctype": "toolbar",
+          "toolbarClass": "pagecontent-footer",
+          "items": [
+            {
+              "ctype": "iconbutton",
+              "iconButtonClass": "footer-save body",
+              "text": "Exit",
+              "uuid": "loadSaveUUID",
+              "visibility": true,
+              "disabled": false,
+              "type": "submit",
+              "hooks": [],
+              "validations": [],
+              "icon": "close",
+              "actions": [
+                {
+                  "type": "renderTemplate",
+                  "config": {
+                    "templateId": "dashboard.json",
+                    "mode": "local"
+                  },
+                  "eventSource": "click"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "Result": "SUCCESS"
+  }

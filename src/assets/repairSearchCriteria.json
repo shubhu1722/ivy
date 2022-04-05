@@ -1,0 +1,266 @@
+{
+    "ctype": "page",
+    "uuid": "pageUUID",
+    "css": "",
+    "visibility": true,
+    "hooks": [],
+    "validations": [],
+    "action": [],
+    "header": [
+        {
+            "ctype": "toolbar",
+            "toolbarClass": "searchCriteria-toolbar section-title",
+            "items": [
+                {
+                    "ctype": "title",
+                    "title": "Repair Debug"
+                }
+            ]
+        }
+    ],
+    "items": [
+        {
+            "ctype": "title",
+            "uuid": "searchCriteriaErrorTitleUUID",
+            "titleClass": "error-title",
+            "isShown": false
+        },
+        {
+            "ctype": "formPanel",
+            "title": "Discrepancy",
+            "header": "",
+            "uuid": "discrepancyUUID",
+            "formPanelClass": "searchCriteria-panel",
+            "visibility": true,
+            "hooks": [],
+            "validations": [],
+            "actions": [],
+            "items": [
+                {
+                    "ctype": "nativeDropdown",
+                    "uuid": "discrepancyTypeUUID",
+                    "hooks": [],
+                    "validations": [],
+                    "actions": [
+                        {
+                            "type": "context",
+                            "config": {
+                                "requestMethod": "add",
+                                "key": "userOptionSerialNumber",
+                                "data": "elementControlValue"
+                            },
+                            "eventSource": "change"
+                        }
+                    ],
+                    "type": "text",
+                    "required": true,
+                    "submitable": true,
+                    "label": "",
+                    "labelPosition": "",
+                    "name": "identificatorTypeForDiscrepancy",
+                    "defaultValue": "#userOptionSerialNumber",
+                    "dropdownClass": "searchcriteris-drpdwn",
+                    "options": [
+                        {
+                            "code": "BCN",
+                            "displayValue": "BCN"
+                        },
+                        {
+                            "code": "FixedAssetTag",
+                            "displayValue": "FAT"
+                        },
+                        {
+                            "code": "SerialNumber",
+                            "displayValue": "Serial No.",
+                            "isDefault": true
+                        }
+                    ]
+                },
+                {
+                    "ctype": "textField",
+                    "uuid": "discrepancyUnitValueUUID",
+                    "hooks": [],
+                    "validations": [],
+                    "textfieldClass": "searchcriteris-text",
+                    "type": "text",
+                    "required": true,
+                    "placeholder": "Scan Serial Number",
+                    "submitable": true,
+                    "label": "",
+                    "labelPosition": "",
+                    "name": "discrepancyunitIdentificationValue",
+                    "prefix": "true",
+                    "prefixIcon": "qr_code_scanner",
+                    "suffix": true,
+                    "suffixIcon": "arrow_forward",
+                    "actions": [
+                        {
+                            "type": "context",
+                            "config": {
+                                "key": "discrepancyUserSearchCriteria",
+                                "data": "formData",
+                                "requestMethod": "add"
+                            },
+                            "eventSource": "click"
+                        },
+                        {
+                            "type": "microservice",
+                            "config": {
+                                "microserviceId": "getUnitInfo",
+                                "requestMethod": "get",
+                                "params": {
+                                    "unitIdentificationValue": "#discrepancyUserSearchCriteria.discrepancyunitIdentificationValue",
+                                    "identificatorType": "#discrepancyUserSearchCriteria.identificatorTypeForDiscrepancy"
+                                }
+                            },
+                            "eventSource": "click",
+                            "responseDependents": {
+                                "onSuccess": {
+                                    "actions": [
+                                        {
+                                            "type": "context",
+                                            "config": {
+                                                "requestMethod": "add",
+                                                "key": "repairUnitInfo",
+                                                "data": "responseData"
+                                            }
+                                        },
+                                        {
+                                            "type": "microservice",
+                                            "config": {
+                                                "microserviceId": "getROByBCN",
+                                                "requestMethod": "get",
+                                                "params": {
+                                                    "userName": "#userAccountInfo.PersonalDetails.USERID",
+                                                    "itemBCN": "#discrepancyUnitInfo.ITEM_BCN"
+                                                }
+                                            },
+                                            "responseDependents": {
+                                                "onSuccess": {
+                                                    "actions": [
+                                                        {
+                                                            "type": "context",
+                                                            "config": {
+                                                                "requestMethod": "add",
+                                                                "key": "ROByBCNForDiscrepancy",
+                                                                "data": "responseData"
+                                                            }
+                                                        },
+                                                        {
+                                                            "type": "microservice",
+                                                            "config": {
+                                                                "microserviceId": "getPartModelAndWarrentyDetails",
+                                                                "requestMethod": "get",
+                                                                "params": {
+                                                                    "locationId": "#discrepancyUnitInfo.LOCATION_ID",
+                                                                    "clinetId": "#discrepancyUnitInfo.CLIENT_ID",
+                                                                    "contractId": "#discrepancyUnitInfo.CONTRACT_ID",
+                                                                    "reforderId": "#ROByBCNForDiscrepancy",
+                                                                    "partNumber": "#discrepancyUnitInfo.PART_NO",
+                                                                    "userName": "#userAccountInfo.PersonalDetails.USERID"
+                                                                }
+                                                            },
+                                                            "responseDependents": {
+                                                                "onSuccess": {
+                                                                    "actions": [
+                                                                        {
+                                                                            "type": "context",
+                                                                            "config": {
+                                                                                "requestMethod": "add",
+                                                                                "key": "discrepancyPartAndWarrantyDetails",
+                                                                                "data": "responseData"
+                                                                            }
+                                                                        },
+                                                                        {
+                                                                            "type": "renderTemplate",
+                                                                            "config": {
+                                                                                "templateId": "repair_debug.json",
+                                                                                "mode": "local"
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                },
+                                                                "onFailure": {
+                                                                    "actions": [
+                                                                        {
+                                                                            "type": "context",
+                                                                            "config": {
+                                                                                "requestMethod": "add",
+                                                                                "key": "errorDisp",
+                                                                                "data": "responseData"
+                                                                            }
+                                                                        },
+                                                                        {
+                                                                            "type": "updateComponent",
+                                                                            "config": {
+                                                                                "key": "searchCriteriaErrorTitleUUID",
+                                                                                "properties": {
+                                                                                    "titleValue": "#errorDisp",
+                                                                                    "isShown": true
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                "onFailure": {
+                                                    "actions": [
+                                                        {
+                                                            "type": "context",
+                                                            "config": {
+                                                                "requestMethod": "add",
+                                                                "key": "errorDisp",
+                                                                "data": "responseData"
+                                                            }
+                                                        },
+                                                        {
+                                                            "type": "updateComponent",
+                                                            "config": {
+                                                                "key": "searchCriteriaErrorTitleUUID",
+                                                                "properties": {
+                                                                    "titleValue": "#errorDisp",
+                                                                    "isShown": true
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            }
+                                        }
+                                       
+                                    ]
+                                },
+                                "onFailure": {
+                                    "actions": [
+                                        {
+                                            "type": "context",
+                                            "config": {
+                                                "requestMethod": "add",
+                                                "key": "errorDisp",
+                                                "data": "responseData"
+                                            }
+                                        },
+                                        {
+                                            "type": "updateComponent",
+                                            "config": {
+                                                "key": "searchCriteriaErrorTitleUUID",
+                                                "properties": {
+                                                    "titleValue": "#errorDisp",
+                                                    "isShown": true
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "footer": []
+}

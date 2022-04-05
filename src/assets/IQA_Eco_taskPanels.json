@@ -1,0 +1,109 @@
+[
+    {
+        "ctype": "taskPanel",
+        "header": {
+            "title": "(2) Test ECO - EA 562882 - ROMMON v1.1.4 - OPEN",  
+            "icon": "description",
+            "css": "color:black",
+            "status": ""
+        },
+        "expanded": "true",
+        "hideToggle": "true",
+        "uuid": "ecoBookingUUID",
+        "hooks": [],
+        "validations": [],
+        "actions": [],
+        "items": [
+            {
+                "ctype": "title",
+                "titleValue": "EA 562882 - ROMMON v1.1.4",
+                "uuid": "fruTitleUUID",
+                "titleClass": "bold-font"
+            },
+            {
+                "ctype": "title",
+                "titleValue": "Eco to be performed in DeviceVersion 73-17511-08 A0. Rommon and Firmware Upgrade less than - Test Automatically.",
+                "uuid": "ecoDescriptionUUID"
+            },
+            {
+                "ctype": "link",
+                "href": "https://support.hp.com/us-en/checkwarranty",
+                "uuid": "originalECOLinkUUID",
+                "name": "Original ECO Document"
+            }
+        ],
+        "footer": [
+            {
+                "ctype": "button",
+                "color": "primary",
+                "text": "Complete",
+                "uuid": "completeECOButtonUUID",
+                "visibility": true,
+                "disabled": false,
+                "type": "submit",
+                "tooltip": "",
+                "hooks": [],
+                "validations": [],
+                "actions": []
+            }
+        ]
+    },
+    {
+        "ctype": "taskPanel",
+        "header": {
+            "title": "(2) Test ECO - EA 562882 - ROMMON v1.1.4 - OPEN",  
+            "icon": "description",
+            "css": "color:black",
+            "status": ""
+        },
+        "expanded": "true",
+        "hideToggle": "true",
+        "uuid": "ecoBookingUUID",
+        "hooks": [],
+        "validations": [],
+        "actions": [],
+        "items": [
+            {
+                "ctype": "title",
+                "titleValue": "EA 562882 - ROMMON v1.1.4",
+                "uuid": "fruTitleUUID",
+                "titleClass": "bold-font"
+            },
+            {
+                "ctype": "radioButtonGroup",
+                "uuid": "radioButtonGroupUUID",
+                "name": "moroccanCEMark",
+                "hooks": [],
+                "validations": [],
+                "required": true,
+                "label": "Does the product have a \"Moroccan CE mark\" ?",
+                "radioButtonOptions": ["Yes", "No"],
+                "labelstyles": "",
+                "inputStyles": "",
+                "groupClass": "stack-vertical",
+                "actions": []
+            },
+            {
+                "ctype": "link",
+                "href": "https://support.hp.com/us-en/checkwarranty",
+                "name": "Original ECO Document",
+                "uuid": "originalECOLinkUUID"
+            }
+        ],
+        "footer": [
+            {
+                "ctype": "button",
+                "color": "primary",
+                "text": "Complete",
+                "uuid": "completeECOButtonUUID",
+                "visibility": true,
+                "disabled": false,
+                "type": "submit",
+                "tooltip": "",
+                "hooks": [],
+                "validations": [],
+                "actions": []
+            }
+        ]
+    }
+]

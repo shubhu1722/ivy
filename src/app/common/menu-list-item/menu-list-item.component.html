@@ -1,0 +1,26 @@
+<mat-nav-list *ngFor="let item of items" [class]="menuListClass" [ngClass]="{'active': selectedItem == item.name}">
+  <a mat-list-item [ngStyle]="" [style]="style" (click)="onItemSelected(item)" [ngClass]="{'expanded': expanded}"
+    class="menu-list-item" *ngIf="isVisible">
+    <mat-icon class="routeIcon">{{item.icon}}</mat-icon>
+    {{item.name | translate}}
+    <mat-icon class="ml-auto" *ngIf="item.name == 'Batch Processes'">{{this.hidden === true ? 'arrow_drop_down' :
+      'arrow_drop_up'}}</mat-icon>
+    <span fxFlex *ngIf="item.children && item.children.length">
+      <span fxFlex></span>
+      <mat-icon style="float: right;" [@indicatorRotate]="expanded ? 'expanded': 'collapsed'">
+        expand_more
+      </mat-icon>
+    </span>
+  </a>
+  <div>
+    <ul *ngIf="item.name == 'Batch Processes'" type="none" [hidden]="hidden" class="batch-menu-class">
+      <a class="d-flex" *ngFor="let option of getBatchOptions(item.options)" (click)="onOptionSelected(option)">
+        <img src="./../../../assets/Images/arrow-hexa.svg" alt="">
+        <li class="body sub-menu-list" style="color:lightgray;">{{option.workcenterName}}</li>
+      </a>
+    </ul>
+  </div>
+  <div *ngIf="expanded">
+    <app-menu-list-item [items]="item.children" [style]="'margin-left:10px;'" [depth]="depth+1"></app-menu-list-item>
+  </div>
+</mat-nav-list>

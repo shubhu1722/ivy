@@ -1,0 +1,8 @@
+<p *ngIf="isShown" id="tooltipId"  [matTooltip]="verifoneLeftSidetooltip" matTooltipPosition= "above" [style.visibility]="visibility ? 'visible' : 'hidden'" [hidden]="hidden" [ngClass]="titleClass"
+  [style]="css">{{title | translate}} 
+  <span *ngIf="isLeftSpan"  [class]="leftTitleValueClass" [innerHtml]="leftTitleValue" ></span>
+  <span [class]="titleValueClass" [innerHtml]="titleValue" (click)="onTextClick($event)"></span>
+</p>
+
+
+  

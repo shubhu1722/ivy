@@ -1,0 +1,394 @@
+{
+  "ResultData": {
+    "ctype": "page",
+    "uuid": "dellMBRPageUUID",
+    "contentClass": "",
+    "css": "",
+    "visibility": false,
+    "hooks": [
+      {
+        "type": "context",
+        "hookType": "afterInit",
+        "config": {
+          "requestMethod": "restoreSavedData"
+        }
+      },
+      {
+        "type": "condition",
+        "hookType": "afterInit",
+        "config": {
+          "operation": "isValid",
+          "lhs": "#testPlatformValue"
+        },
+        "responseDependents": {
+          "onSuccess": {
+            "actions": [
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "lastNoteTestPlatformUUID",
+                  "properties": {
+                    "titleValue": "#testPlatformValue"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "type": "condition",
+        "hookType": "afterInit",
+        "config": {
+          "operation": "isValid",
+          "lhs": "#getLastNote"
+        },
+        "responseDependents": {
+          "onSuccess": {
+            "actions": [
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "lastNoteTextUUID",
+                  "properties": {
+                    "title": "#getLastNote"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "type": "microservice",
+        "hookType": "afterInit",
+        "config": {
+          "microserviceId": "getFFValue",
+          "isLocal": false,
+          "LocalService": "assets/Responses/repairMockRamResponse.json",
+          "requestMethod": "get",
+          "params": {
+            "ffId": "#getFFByWc.0.ffId",
+            "userName": "#loginUUID.username"
+          }
+        },
+        "responseDependents": {
+          "onSuccess": {
+            "actions": [
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "dellOBAResultCodesDropdownUUID",
+                  "dropDownProperties": {
+                    "options": "#getFFValue"
+                  }
+                }
+              },
+              {
+                "type": "context",
+                "hookType": "afterInit",
+                "config": {
+                  "requestMethod": "populateMBRScreenWithStoredData"
+                }
+              }
+            ]
+          },
+          "onFailure": {
+            "actions": [
+              {
+                "type": "handleCommonServices",
+                "config": {
+                  "type": "errorRenderTemplate",
+                  "contextKey": "errorMsg",
+                  "updateKey": "errorTitleUUID"
+                }
+              },
+              {
+                "type": "context",
+                "hookType": "afterInit",
+                "config": {
+                  "requestMethod": "populateMBRScreenWithStoredData"
+                }
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "validations": [],
+    "action": [],
+    "header": [
+      {
+        "ctype": "breadcrumb",
+        "breadcrumbs": [
+          {
+            "label": "#userSelectedLocationName"
+          },
+          {
+            "label": "#userSelectedClientName"
+          },
+          {
+            "label": "#userSelectedContractName"
+          }
+        ]
+      },
+      {
+        "ctype": "toolbar",
+        "toolbarClass": "pagecontent-header",
+        "items": [
+          {
+            "ctype": "title",
+            "uuid": "subProcessTitleUUID",
+            "titleValue": "OBA",
+            "titleClass": "section-title"
+          },
+          {
+            "ctype": "iconbutton",
+            "iconButtonClass": "headeropen-button",
+            "text": "",
+            "uuid": "pageopenUUID",
+            "visibility": true,
+            "disabled": false,
+            "hidden": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "icon": "menu_open",
+            "disableRipple": true,
+            "iconClass": "header-icon",
+            "actions": [
+              {
+                "type": "toggle",
+                "eventSource": "click",
+                "name": "subProcessRightNavref"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "openUUID",
+                  "properties": {
+                    "hidden": false
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "pageopenUUID",
+                  "properties": {
+                    "hidden": true
+                  }
+                },
+                "eventSource": "click"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "items": [
+      {
+        "ctype": "title",
+        "uuid": "successTitleUUID",
+        "titleClass": "success-title",
+        "isShown": false
+      },
+      {
+        "ctype": "title",
+        "uuid": "errorTitleUUID",
+        "containerId": "prebodysectionone",
+        "titleClass": "error-title",
+        "isShown": false
+      },
+      {
+        "ctype": "taskPanel",
+        "containerId": "prebodysectionone",
+        "header": {
+          "title": "Last Note",
+          "svgIcon": "description_icon",
+          "statusIcon": "hourglass_empty",
+          "statusClass": "incomplete-status",
+          "class": "greyish-black font-weight-700"
+        },
+        "expanded": true,
+        "isblueBorder": true,
+        "disabled": false,
+        "hideToggle": true,
+        "uuid": "dellOBANoteTaskPanelUUID",
+        "visibility": false,
+        "hooks": [],
+        "validations": [],
+        "actions": [],
+        "items": [
+          {
+            "ctype": "disabled",
+            "uuid": "lastNoteDisabledUUID",
+            "disabledClass": "disabledFalse"
+          },
+          {
+            "ctype": "title",
+            "uuid": "lastNoteTextUUID",
+            "titleClass": "greyish-black body-italic",
+            "title": "No content"
+          },
+          {
+            "ctype": "title",
+            "uuid": "lastNoteTestPlatformUUID",
+            "titleClass": "greyish-black body-italic",
+            "title": "Test Platform"
+          }
+        ],
+        "footer": []
+      },
+      {
+        "ctype": "dellWcOperationsMessageReadPanel"
+      },
+      {
+        "ctype": "taskPanel",
+        "uuid": "obaResultInformationUUID",
+        "title": "",
+        "header": {
+          "title": "OBA Result",
+          "svgIcon": "description_icon",
+          "statusIcon": "hourglass_empty",
+          "statusClass": "incomplete-status",
+          "class": "greyish-black font-weight-700"
+        },
+        "expanded": false,
+        "isblueBorder": true,
+        "disabled": false,
+        "hideToggle": "true",
+        "visibility": false,
+        "hooks": [],
+        "validations": [],
+        "actions": [],
+        "items": [
+          {
+            "ctype": "title",
+            "uuid": "obaResultInformationTitleUUID",
+            "titleClass": "greyish-black body-italic",
+            "title": "Record the OBA Result"
+          },
+          {
+            "ctype": "nativeDropdown",
+            "uuid": "dellOBAResultCodesDropdownUUID",
+            "isDropdownNotSelected": false,
+            "formGroupClass": "flex-container flex-container-one-fourth-width form-group",
+            "dropdownClass": "condition-dropdown dropdown-container body2",
+            "label": "OBA Result",
+            "labelPosition": "left",
+            "labelClass": "subtitle1 mb-0",
+            "name": "dellOBAResultCodes",
+            "code": "value",
+            "displayValue": "value",
+            "disabled": false,
+            "defaultValue": null,
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "currentUIState",
+                  "nestedKey": "dellOBAResultCodesDropdownUUID",
+                  "data": "elementControlValue"
+                },
+                "eventSource": "change"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "obaCompleteButtonUUID",
+                  "properties": {
+                    "disabled": false
+                  }
+                },
+                "eventSource": "change"
+              }
+            ]
+          }
+        ],
+        "footer": [
+          {
+            "ctype": "button",
+            "color": "primary",
+            "text": "Complete",
+            "uuid": "obaCompleteButtonUUID",
+            "class": "primary-btn",
+            "visibility": true,
+            "disabled": true,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "actions": [
+              {
+                "type": "condition",
+                "config": {
+                  "operation": "isValid",
+                  "lhs": "#currentUIState.dellOBAResultCodesDropdownUUID"
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "currentScreenData",
+                          "nestedKey": "OBA RESULT",
+                          "data": "#currentUIState.dellOBAResultCodesDropdownUUID"
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "obaResultInformationUUID",
+                          "properties": {
+                            "expanded": false,
+                            "disabled": false,
+                            "taskPanelHeaderClass": "background-white",
+                            "header": {
+                              "title": "OBA Result",
+                              "svgIcon": "description_icon",
+                              "statusIcon": "check_circle",
+                              "statusClass": "complete-status",
+                              "class": "complete-task",
+                              "iconClass": "complete-task"
+                            }
+                          }
+                        },
+                        "eventSource": "click"
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "obaCompleteButtonUUID",
+                          "properties": {
+                            "disabled": true
+                          }
+                        },
+                        "eventSource": "click"
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": []
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "footer": [
+      {
+        "ctype": "dellWcOperationsTimeOutFooter",
+        "uuid": "dellWcOperationsTimeOutFooterUUID",
+        "screenNameContextKey": "#currentWC"
+      }
+    ]
+  },
+  "Result": "SUCCESS"
+}

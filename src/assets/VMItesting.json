@@ -1,0 +1,55 @@
+{
+    "ctype": "subProcess",
+    "title": "VMI",
+    "uuid": "VMIUUID",
+    "subMenuIndex": 0,
+    "clientName": "VeriFone",
+    "openRightNav": false,
+    "hooks": [
+        {
+            "type": "microservice",
+            "hookType": "beforeInit",
+            "config": {
+                "microserviceId": "getSubProcessPageBody",
+                "requestMethod": "get",
+                "params": {
+                    "subProcessId": "#getReferenceDataKeys.subProcess.VERIFONE.VMI",
+                    "userName": "#userAccountInfo.PersonalDetails.USERID"
+                },
+                "isLocal": true,
+                "LocalService": "assets/test.json"
+            },
+            "responseDependents": {
+                "onSuccess": {
+                    "actions": [
+                        {
+                            "type": "context",
+                            "config": {
+                                "requestMethod": "add",
+                                "key": "VMIData",
+                                "data": "responseData"
+                            }
+                        },
+                        {
+                            "type": "renderTemplate",
+                            "config": {
+                                "mode": "remote",
+                                "targetId": "mainPageContentBodysp",
+                                "templateId": "VMIData"
+                            }
+                        }
+                    ]
+                },
+                "onFailure": {
+                    "actions": [
+                        {
+                            "type": "toast",
+                            "message": "Failed to fetch VMI JSON"
+                        }
+                    ]
+                }
+            }
+        }
+        
+    ]
+}

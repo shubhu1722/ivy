@@ -1,0 +1,46 @@
+<div [class]="buttonClass" *ngIf="visibility">
+  <button
+    *ngIf="!dialogButton"
+    appPreventMultipleClick
+    (throttledClick)="onClickButton($event)"
+    [throttleTime]="1000"
+    mat-raised-button
+    [color]="color"
+    [hidden]="hidden"
+    [type]="type"
+    [class]="class"
+    [disableRipple]="disableRipple"
+    [disabled]="disabled"
+    [attr.isIconButton]="isIconButton"
+    [attr.isRoundButton]="isRoundButton"
+    [style]="inputStyles"
+    class="body"
+  >
+    <mat-icon *ngIf="isIcon" [attr.iconPosition]="iconPosition" [class]="iconClass" [svgIcon]="icon">{{
+      icon
+    }}</mat-icon>
+    {{ text | translate }}
+  </button>
+  <button
+    *ngIf="dialogButton && !dialogBoxHoldBinErrorMessage"
+    [class]="inputClass"
+    mat-raised-button
+    [color]="color"
+    [style.background-color]="bgColor"
+    [disabled]="!disableClose ? disabled : false"
+    [mat-dialog-close]="closeType"
+    [style]="inputStyles"
+  >
+    {{ text | translate }}
+  </button>
+  <button
+    *ngIf="dialogButton && dialogBoxHoldBinErrorMessage"
+    [class]="inputClass"
+    mat-raised-button
+    [color]="color"
+    [disabled]="!disableClose ? disabled : false"
+    (click)="checkForValidateBin($event)"
+  >
+    {{ text | translate }}
+  </button>
+</div>

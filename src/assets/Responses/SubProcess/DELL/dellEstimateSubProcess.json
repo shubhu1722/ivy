@@ -1,0 +1,3191 @@
+{
+  "ResultData": {
+    "ctype": "page",
+    "uuid": "pageUUID",
+    "css": "",
+    "visibility": true,
+    "onLoadActions": [
+      {
+        "type": "microservice",
+        "config": {
+          "microserviceId": "getDellEstimateHPFAHistory",
+          "requestMethod": "get",
+          "params": {
+            "itemId": "#discrepancyUnitInfo.ITEM_ID",
+            "workCenterId": "#discrepancyUnitInfo.WORKCENTER_ID",
+            "userName": "#userAccountInfo.PersonalDetails.USERID"
+          },
+          "toBeStringified": true,
+          "isLocal": false,
+          "LocalService": "assets/Responses/mockHoldSubCode.json"
+        },
+        "responseDependents": {
+          "onSuccess": {
+            "actions": []
+          },
+          "onFailure": {
+            "actions": [
+              {
+                "type": "handleCommonServices",
+                "config": {
+                  "type": "errorRenderTemplate",
+                  "contextKey": "errorMsg",
+                  "updateKey": "errorTitleUUID"
+                }
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "hooks": [
+      {
+        "type": "condition",
+        "hookType": "afterInit",
+        "config": {
+          "operation": "isValid",
+          "lhs": "#getCurrPrevRODetailsBySN"
+        },
+        "responseDependents": {
+          "onSuccess": {
+            "actions": [
+              {
+                "type": "condition",
+                "config": {
+                  "operation": "isValid",
+                  "lhs": "#getCurrPrevRODetailsBySN.lastNote"
+                },
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellEstimationlastNoteTaskUUID",
+                          "properties": {
+                            "expanded": false,
+                            "hidden": false
+                          }
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellEstimationLastNoteTextUUID",
+                          "properties": {
+                            "title": "#getCurrPrevRODetailsBySN.lastNote"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellEstimationlastNoteTaskUUID",
+                          "properties": {
+                            "hidden": true
+                          }
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellEstimationRepairInformationTaskUUID",
+                          "properties": {
+                            "expanded": true
+                          }
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellEstimationLastNoteTextUUID",
+                          "properties": {
+                            "title": ""
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "dellEstimationRepairInformationTextUUID",
+                  "properties": {
+                    "title": "#getCurrPrevRODetailsBySN.repairInformation"
+                  }
+                }
+              },
+              {
+                "type": "condition",
+                "config": {
+                    "operation": "isValid",
+                    "lhs": "#specialMessageData.moreInfo"
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                    "onSuccess": {
+                        "actions": [
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "dellEstimateRepairInformationSMUUID",
+                                    "properties": {
+                                        "title": "#specialMessageData.moreInfo",
+                                        "isShown": true
+                                    }
+                                }
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "dellEstimateRepairInformationSMSpacerUUID",
+                                    "properties": {
+                                        "isShown": true
+                                    }
+                                }
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "dellEstimateRepairInformationSMHeadingUUID",
+                                    "properties": {
+                                        "isShown": true
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    "onFailure": {
+                        "actions": [
+                            {
+                              "type": "updateComponent",
+                              "config": {
+                                  "key": "dellEstimationRepairInformationTaskUUID",
+                                  "properties": {
+                                      "expanded": false,
+                                      "disabled": false,
+                                      "header": {
+                                          "title": "Repair Information",
+                                          "svgIcon": "description_icon",
+                                          "statusIcon": "check_circle",
+                                          "statusClass": "complete-status",
+                                          "class": "complete-task ",
+                                          "iconClass": "complete-task"
+                                      }
+                                  }
+                              }
+                          },
+                          {
+                              "type": "updateComponent",
+                              "config": {
+                                  "key": "dellEstimationReadMessageUUID",
+                                  "properties": {
+                                      "checkVisibility": false
+                                  }
+                              }
+                          },
+                          {
+                              "type": "updateComponent",
+                              "config": {
+                                  "key": "dellEstimationCompleteeButtonUUID",
+                                  "properties": {
+                                      "hidden": true
+                                  }
+                              }
+                          },
+                          {
+                            "type": "enableComponent",
+                            "config": {
+                              "key": "dellEstimationResultCodesUUID",
+                              "property": "ResultCodes"
+                            },
+                            "eventSource": "click"
+                          }
+
+                        ]
+                    }
+                }
+              }
+            ]
+          },
+          "onFailure": {
+            "actions": [
+              {
+                "type": "microservice",
+                "config": {
+                  "microserviceId": "getCurrPrevRODetailsBySN",
+                  "requestMethod": "get",
+                  "params": {
+                    "serialNo": "#repairUnitInfo.SERIAL_NO",
+                    "locationId": "#userSelectedLocation",
+                    "clientId": "#userSelectedClient",
+                    "contractId": "#userSelectedContract",
+                    "userName": "#loginUUID.username"
+                  }
+                },
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "condition",
+                        "config": {
+                          "operation": "isValid",
+                          "lhs": "#getCurrPrevRODetailsBySN.lastNote"
+                        },
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "dellEstimationlastNoteTaskUUID",
+                                  "properties": {
+                                    "expanded": true,
+                                    "hidden": false
+                                  }
+                                }
+                              },
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "dellEstimationLastNoteTextUUID",
+                                  "properties": {
+                                    "title": "#getCurrPrevRODetailsBySN.lastNote"
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": [
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "dellEstimationlastNoteTaskUUID",
+                                  "properties": {
+                                    "hidden": true
+                                  }
+                                }
+                              },
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "dellEstimationRepairInformationTaskUUID",
+                                  "properties": {
+                                    "expanded": true
+                                  }
+                                }
+                              },
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "dellEstimationLastNoteTextUUID",
+                                  "properties": {
+                                    "title": ""
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellEstimationRepairInformationTextUUID",
+                          "properties": {
+                            "title": "#getCurrPrevRODetailsBySN.repairInformation"
+                          }
+                        }
+                      },
+                      {
+                        "type": "condition",
+                        "config": {
+                            "operation": "isValid",
+                            "lhs": "#specialMessageData.moreInfo"
+                        },
+                        "eventSource": "click",
+                        "responseDependents": {
+                            "onSuccess": {
+                                "actions": [
+                                    {
+                                        "type": "updateComponent",
+                                        "config": {
+                                            "key": "dellEstimateRepairInformationSMUUID",
+                                            "properties": {
+                                                "title": "#specialMessageData.moreInfo",
+                                                "isShown": true
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "type": "updateComponent",
+                                        "config": {
+                                            "key": "dellEstimateRepairInformationSMSpacerUUID",
+                                            "properties": {
+                                                "isShown": true
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "type": "updateComponent",
+                                        "config": {
+                                            "key": "dellEstimateRepairInformationSMHeadingUUID",
+                                            "properties": {
+                                                "isShown": true
+                                            }
+                                        }
+                                    }
+                                ]
+                            },
+                            "onFailure": {
+                                "actions": [
+                                    {
+                                      "type": "updateComponent",
+                                      "config": {
+                                          "key": "dellEstimationRepairInformationTaskUUID",
+                                          "properties": {
+                                              "expanded": false,
+                                              "disabled": false,
+                                              "header": {
+                                                  "title": "Repair Information",
+                                                  "svgIcon": "description_icon",
+                                                  "statusIcon": "check_circle",
+                                                  "statusClass": "complete-status",
+                                                  "class": "complete-task ",
+                                                  "iconClass": "complete-task"
+                                              }
+                                          }
+                                      }
+                                  },
+                                  {
+                                      "type": "updateComponent",
+                                      "config": {
+                                          "key": "dellEstimationReadMessageUUID",
+                                          "properties": {
+                                              "checkVisibility": false
+                                          }
+                                      }
+                                  },
+                                  {
+                                      "type": "updateComponent",
+                                      "config": {
+                                          "key": "dellEstimationCompleteeButtonUUID",
+                                          "properties": {
+                                              "hidden": true
+                                          }
+                                      }
+                                  },
+                                  {
+                                    "type": "enableComponent",
+                                    "config": {
+                                      "key": "dellEstimationResultCodesUUID",
+                                      "property": "ResultCodes"
+                                    },
+                                    "eventSource": "click"
+                                  }
+        
+                                ]
+                            }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "errorDisp",
+                          "data": "responseData"
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "estimateErrorTitleUUID",
+                          "properties": {
+                            "titleValue": "#errorDisp",
+                            "isShown": true
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+          "type": "microservice",
+          "hookType": "afterInit",
+          "config": {
+            "microserviceId": "getResultCodeForDiscrepancy",
+            "isLocal": false,
+            "LocalService": "assets/Responses/mockBGA.json",
+            "requestMethod": "get",
+            "params": {
+             "bcn":"#discrepancyUnitInfo.ITEM_BCN",
+             "validateResult": 1
+            }
+          },
+          "responseDependents": {
+            "onSuccess": {
+              "actions": [
+                {
+                  "type": "context",
+                  "config": {
+                    "requestMethod": "add",
+                    "key": "getDellEstimateResultcodes",
+                    "data": "responseData"
+                  }
+                },
+                {
+                  "type": "updateComponent",
+                  "config": {
+                    "key": "dellEstimationResultCodesUUID",
+                    "dropDownProperties": {
+                      "options": "#getDellEstimateResultcodes"
+                    }
+                  }
+                }
+              ]
+            },
+            "onFailure": {
+              "actions": [
+                {
+                  "type": "context",
+                  "config": {
+                    "requestMethod": "add",
+                    "key": "errorMsg",
+                    "data": "responseData"
+                  }
+                },
+                {
+                  "type": "updateComponent",
+                  "config": {
+                    "key": "errorTitleUUID",
+                    "properties": {
+                      "titleValue": "#errorMsg",
+                      "isShown": true
+                    }
+                  }
+                }
+              ]
+            }
+          }
+      },
+      {
+        "type": "arraySetMethod",
+        "config": {
+          "data": "#holdCodesForDiscrepancy",
+          "contextKey": "filteredHoldTypes"
+        },
+        "hookType": "afterInit"
+      },
+      {
+        "type": "microservice",
+        "config": {
+          "microserviceId": "getAllItemHistory",
+          "requestMethod": "get",
+          "params": {
+            "itemId": "#discrepancyUnitInfo.ITEM_ID",
+            "userName": "#loginUUID.username"
+          }
+        },
+        "hookType": "afterInit",
+        "responseDependents": {
+          "onSuccess": {
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "estimateItemHistoryData",
+                  "data": "responseData"
+                }
+              },
+              {
+                "type": "microservice",
+                "config": {
+                  "microserviceId": "getdellEstimateActionCode",
+                  "requestMethod": "get",
+                  "isLocal": false,
+                  "LocalService": "assets/Responses/dellReplaceActionCodes.json",
+                  "params": {
+                    "locationId": "#userSelectedLocation",
+                    "clientId": "#userSelectedClient",
+                    "contractId": "#userSelectedContract",
+                    "orderProcessTypeCode": "#discrepancyUnitInfo.ROUTE",
+                    "workcenterId": "#discrepancyUnitInfo.WORKCENTER_ID",
+                    "actionTypes": "Replace",
+                    "userName": "#userAccountInfo.PersonalDetails.USERID"
+                  }
+                },
+                "hookType": "afterInit",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "condition",
+                        "hookType": "afterInit",
+                        "config": {
+                          "operation": "isValid",
+                          "lhs": "#getDellEstimateHPFAHistory"
+                        },
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "handleDellEstimateActions",
+                                "hookType": "afterInit",
+                                "methodType": "createLopperTasks"
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": [
+                              {
+                                "type": "handleDellEstimateActions",
+                                "hookType": "afterInit",
+                                "methodType": "resetData"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "handleCommonServices",
+                        "config": {
+                          "type": "errorRenderTemplate",
+                          "contextKey": "errorMsg",
+                          "updateKey": "errorTitleUUID"
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "onFailure": {
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "errorAllItemHistory",
+                  "data": "responseData"
+                }
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "errorTitleUUID",
+                  "properties": {
+                    "titleValue": "#errorAllItemHistory",
+                    "isShown": true
+                  }
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "type": "condition",
+        "config": {
+          "operation": "isValid",
+          "lhs": "#getdellEstimateROHFFValueByRO",
+          "addHookAtLast": true
+        },
+        "hookType": "afterInit",
+        "responseDependents": {
+          "onSuccess": {
+            "actions": [
+              {
+                "type": "multipleCondition",
+                "config": {
+                  "multi": true,
+                  "operator": "OR",
+                  "conditions": [
+                    {
+                      "operation": "isEqualTo",
+                      "lhs": "#getdellEstimateROHFFValueByRO",
+                      "rhs": "PASS"
+                    },
+                    {
+                      "operation": "isEqualTo",
+                      "lhs": "#getdellEstimateROHFFValueByRO",
+                      "rhs": "FAIL"
+                    }
+                  ]
+                },
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "setDefaultValue",
+                        "config": {
+                          "key": "dellEstimationResultCodesUUID",
+                          "defaultValue": "#getdellEstimateROHFFValueByRO"
+                        }
+                      },
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "dellEstimationSelectedDropdownValue",
+                          "data": "#getdellEstimateROHFFValueByRO"
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellEstimationTimeoutButtonUUID",
+                          "properties": {
+                            "disabled": false
+                            }
+                        }
+                      },
+                      {
+                        "type": "disableComponent",
+                        "config": {
+                          "key": "dellEstimationResultCodesUUID",
+                          "property": "ResultCodes",
+                          "isNotReset":true
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "condition",
+                        "config": {
+                          "operation": "isValid",
+                          "lhs": "#dellEstimationSelectedDropdownValue"
+                        },
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "dellEstimationTimeoutButtonUUID",
+                                  "properties": {
+                                    "disabled": false
+                                  }
+                                }
+                              },
+                              {
+                                "type": "setDefaultValue",
+                                "config": {
+                                  "key": "dellEstimationResultCodesUUID",
+                                  "defaultValue": "#dellEstimationSelectedDropdownValue"
+                                }
+                              },
+                              {
+                                "type": "enableComponent",
+                                "config": {
+                                  "key": "dellEstimationResultCodesUUID",
+                                  "property": "ResultCodes"
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": [
+                              {
+                                "type": "enableComponent",
+                                "config": {
+                                  "key": "dellEstimationResultCodesUUID",
+                                  "property": "ResultCodes"
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "onFailure": {
+            "actions": []
+          }
+        }
+      }
+    ],
+    "validations": [],
+    "action": [],
+    "header": [
+      {
+        "ctype": "breadcrumb",
+        "breadcrumbs": [
+          {
+            "label": "#userSelectedLocationName"
+          },
+          {
+            "label": "#userSelectedClientName"
+          },
+          {
+            "label": "#userSelectedContractName"
+          }
+        ]
+      },
+      {
+        "ctype": "toolbar",
+        "toolbarClass": "pagecontent-header",
+        "items": [
+          {
+            "ctype": "title",
+            "uuid": "subProcessTitleUUID",
+            "titleValue": "ESTIMATE",
+            "titleClass": "section-title"
+          },
+          {
+            "ctype": "iconbutton",
+            "iconButtonClass": "headeropen-button",
+            "text": "",
+            "uuid": "pageopenUUID",
+            "visibility": true,
+            "disabled": false,
+            "hidden": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "icon": "menu_open",
+            "disableRipple": true,
+            "iconClass": "header-icon",
+            "actions": [
+              {
+                "type": "toggle",
+                "eventSource": "click",
+                "name": "subProcessRightNavref"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "openUUID",
+                  "properties": {
+                    "hidden": false
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "pageopenUUID",
+                  "properties": {
+                    "hidden": true
+                  }
+                },
+                "eventSource": "click"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "items": [
+      {
+        "ctype": "title",
+        "uuid": "successTitleUUID",
+        "titleClass": "success-title",
+        "containerId": "prebodysectionone",
+        "isShown": false
+      },
+      {
+        "ctype": "title",
+        "uuid": "errorTitleUUID",
+        "titleClass": "error-title",
+        "containerId": "prebodysectionone",
+        "isShown": false
+      },
+      {
+        "ctype": "taskPanel",
+        "title": "",
+        "containerId": "prebodysectiontwo",
+        "header": {
+          "title": "Last note",
+          "svgIcon": "description_icon",
+          "iconClass": "active-header",
+          "class": "greyish-black"
+        },
+        "expanded": false,
+        "disabled": false,
+        "hideToggle": true,
+        "isMandatory": false,
+        "taskPanelHeaderClass":"background-white",
+        "hidden": true,
+        "hooks": [],
+        "validations": [],
+        "actions": [],
+        "isblueBorder": true,
+        "uuid": "dellEstimationlastNoteTaskUUID",
+        "visibility": true,
+        "items": [
+          {
+            "ctype": "title",
+            "uuid": "dellEstimationLastNoteTextUUID",
+            "titleClass": "greyish-black body-italic assessment-alert",
+            "title": ""
+          }
+        ]
+      },
+      {
+        "ctype": "taskPanel",
+        "title": "",
+        "isblueBorder": true,
+        "containerId": "prebodysectiontwo",
+        "header": {
+          "title": "Repair Information",
+          "svgIcon": "description_icon",
+          "iconClass": "active-header",
+          "statusIcon": "hourglass_empty",
+          "statusClass": "incomplete-status",
+          "class": "greyish-black"
+      },
+        "uuid": "dellEstimationRepairInformationTaskUUID",
+        "expanded": false,
+        "hideToggle": true,
+        "disabled": false,
+        "visibility": true,
+        "isEditable": true,
+        "isMandatory": false,
+        "hooks": [],
+        "validations": [],
+        "actions": [],
+        "items": [
+          {
+            "ctype": "title",
+            "uuid": "dellEstimationRepairInformationTextUUID",
+            "titleClass": "greyish-black body-italic assessment-alert",
+            "title": ""
+          },
+          {
+              "ctype": "title",
+              "uuid": "dellEstimateRepairInformationSMSpacerUUID",
+              "titleClass": "greyish-black body-italic assessment-alert",
+              "isShown": false,
+              "title": ""
+          },
+          {
+              "ctype": "title",
+              "uuid": "dellEstimateRepairInformationSMHeadingUUID",
+              "titleClass": "greyish-black heading2",
+              "isShown": false,
+              "title": "Special Message"
+          },
+          {
+              "ctype": "title",
+              "uuid": "dellEstimateRepairInformationSMUUID",
+              "titleClass": "greyish-black body-italic",
+              "isShown": false,
+              "title": ""
+          },
+          {
+            "ctype": "checkbox",
+            "name": "dellEstimateReadMessageCheckbox",
+            "uuid": "dellEstimationReadMessageUUID",
+            "hooks": [],
+            "validations": [],
+            "required": true,
+            "disabled": false,
+            "label": "I have read this message",
+            "labelPosition": "after",
+            "submitable": true,
+            "isDisableNotReq": true,
+            "checkboxContainer": "label-init",
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "dellEstimationCheckboxValue",
+                  "data": "formData"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "condition",
+                "config": {
+                  "operation": "isValid",
+                  "lhs": "#dellEstimationCheckboxValue.dellEstimateReadMessageCheckbox"
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellEstimationCompleteeButtonUUID",
+                          "properties": {
+                            "disabled": false
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellEstimationCompleteeButtonUUID",
+                          "properties": {
+                            "disabled": true
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "footer": [
+          {
+            "ctype": "button",
+            "color": "primary",
+            "text": "Complete",
+            "class": "primary-btn",
+            "name":"dellEstimationRepairInfoCompleteName",
+            "isDisableNotReq": true,
+            "uuid": "dellEstimationCompleteeButtonUUID",
+            "disabled": true,
+            "hidden": false,
+            "visibility": true,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "actions": [
+              {
+                  "type": "context",
+                  "config": {
+                      "requestMethod": "add",
+                      "key": "repairInfoEstimateData",
+                      "data": "rawFormData"
+                  },
+                  "eventSource": "click"
+              },
+              {
+                "type": "enableComponent",
+                "config": {
+                  "key": "dellEstimationResultCodesUUID",
+                  "property": "ResultCodes"
+                },
+                "eventSource": "click"
+            },
+            {
+              "type": "updateComponent",
+              "config": {
+                "key": "dellEstimationRepairInformationTaskUUID",
+                "properties": {
+                  "expanded": false,
+                  "disabled": false,
+                  "header": {
+                    "title": "Repair Information",
+                    "svgIcon": "description_icon",
+                    "statusIcon": "check_circle",
+                    "statusClass": "complete-status",
+                    "class": "complete-task ",
+                    "iconClass": "complete-task"
+                  }
+                }
+              },
+              "eventSource": "click"
+            },
+              {
+                  "type": "condition",
+                  "config": {
+                      "operation": "isEqualTo",
+                      "lhs": "#repairInfoEstimateData.dellEstimateReadMessageCheckbox",
+                      "rhs": true
+                  },
+                  "eventSource": "click",
+                  "responseDependents": {
+                      "onSuccess": {
+                          "actions": [
+                              {
+                                  "type": "context",
+                                  "config": {
+                                      "requestMethod": "add",
+                                      "key": "submitablemsgRead",
+                                      "data": "Yes"
+                                  }
+                              }
+                          ]
+                      },
+                      "onFailure": {
+                          "actions": [
+                              {
+                                  "type": "context",
+                                  "config": {
+                                      "requestMethod": "add",
+                                      "key": "submitablemsgRead",
+                                      "data": "No"
+                                  }
+                              }
+                          ]
+                      }
+                  }
+              },
+              {
+                  "type": "microservice",
+                  "config": {
+                      "microserviceId": "stopProcessClientReceiving",
+                      "requestMethod": "post",
+                      "eventSource": "click",
+                      "body": {  
+                          "actionType":"PwcPerformTimeOut",
+                          "subActionTypeName":"addBcnLabel",
+                          "geoId":"#discrepancyUnitInfo.LOCATION_ID",
+                          "partNumber" : "#discrepancyUnitInfo.PART_NO",
+                          "userLoginId":"#userAccountInfo.PersonalDetails.USERID",
+                          "locationId": "#discrepancyUnitInfo.LOCATION_ID",
+                          "clientId": "#userSelectedClient",
+                          "contractId": "#userSelectedContract",
+                          "orderProcessType": "#repairUnitInfo.ROUTE",
+                          "clientName" : "DELL",
+                          "serialNo": "#repairUnitInfo.SERIAL_NO",
+                          "contractName" : "DELL AIO",
+                          "revisionLevel":"",
+                          "selectedResultCode":"[ALL]",
+                          "workCenter":"#discrepancyUnitInfo.WORKCENTER",
+                          "timeOutTab":"",
+                          "geographyNumber": "#userSelectedLocationName",
+                          "loaderName" : "TOR_DELLAIO_STOP_PROCESS",
+                          "pwcXml":{
+                              "timeOutTab":{
+                                  "selectedResultCode":"[ALL]"
+                              },
+                              "flexFieldDefinitionList":[{
+                                  "ffName" : "msgRead",
+                                  "ffId": "#locationDependentFFIDDetails.msgRead",
+                                  "ffValue":"#submitablemsgRead"
+                              }],
+                             "ffvalueList" : [
+                              {
+                                "ffId": "#locationDependentFFIDDetails.msgRead",
+                                "ffValue":"#submitablemsgRead"  
+                              }
+                          ]
+                          },
+                          "referenceOrderNumber" : "#refId",
+                          "outboundOrderId" : "",
+                          "bcn": "#discrepancyUnitInfo.ITEM_BCN",
+                          "workOrderId": "#repairUnitInfo.WORKORDER_ID",
+                          "itemId": "#repairUnitInfo.ITEM_ID",
+                          "flexFieldList" : [{
+                              "ffId": "#locationDependentFFIDDetails.msgRead",
+                              "ffName" : "msgRead",
+                              "ffValue" : "#submitablemsgRead"
+                          }],
+                          "wcOperation":"WC Operation"
+                      },
+                      "toBeStringified": true
+                  },
+                  "responseDependents": {
+                      "onSuccess": {
+                          "actions": [
+                              {
+                                  "type": "updateComponent",
+                                  "config": {
+                                      "key": "dellEstimationCompleteeButtonUUID",
+                                      "properties": {
+                                          "disabled": true
+                                      }
+                                  },
+                                  "eventSource": "click"
+                              }
+                          ]
+                      },
+                      "onFailure": {
+                          "actions": [
+                              {
+                                  "type": "handleCommonServices",
+                                  "config": {
+                                      "type": "errorRenderTemplate",
+                                      "contextKey": "errorMsg",
+                                      "updateKey": "errorTitleUUID"
+                                  }
+                              },
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "dellEstimationRepairInformationTaskUUID",
+                                  "properties": {
+                                    "expanded": false,
+                                    "disabled": false,
+                                    "header": {
+                                      "title": "Repair Information",
+                                      "svgIcon": "description_icon",
+                                      "statusIcon": "check_circle",
+                                      "statusClass": "complete-status",
+                                      "class": "complete-task ",
+                                      "iconClass": "complete-task"
+                                    }
+                                  }
+                                },
+                                "eventSource": "click"
+                              },
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "dellEstimationResultCodesUUID",
+                                  "properties": {
+                                    "disabled": true
+                                  }
+                                },
+                                "eventSource": "click"
+                              }
+                          ]
+                      }
+                  },
+                  "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "dellEstimationFusionResponseUUID",
+                  "properties": {
+                    "expanded": true,
+                    "disabled": false,
+                    "header": {
+                      "title": "Fusion Response",
+                      "svgIcon": "description_icon",
+                      "iconClass": "complete-task"
+                    }
+                  }
+                },
+                "eventSource": "click"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "ctype": "toolbar",
+        "toolbarClass": "creatorTask-Toolbar",
+        "hoverClass": "background-white",
+        "items": [
+          {
+            "ctype": "iconText",
+            "hoverClass": "blue-icon",
+            "svgIcon": "replace",
+            "text": "Replace",
+            "iconTextClass": "creatorTask-Icontext",
+            "uuid": "dellEstimateReplaceTask",
+            "textClass": "heading3-regular greyish-black",
+            "iconPosition": "top",
+            "actions": [
+              {
+                "type": "updateComponent",
+                "eventSource": "click",
+                "config": {
+                  "key": "errorTitleUUID",
+                  "properties": {
+                    "titleValue": "",
+                    "isShown": false
+                  }
+                }
+              },
+              {
+                "type": "updateComponent",
+                "eventSource": "click",
+                "config": {
+                  "key": "dellEstimateReplaceTask",
+                  "properties": {
+                    "disabled": true
+                  }
+                }
+              },
+              {
+                "type": "deleteComponent",
+                "eventSource": "click",
+                "config": {
+                  "key": "dellEstimateTaskPanelUUID"
+                }
+              },
+              {
+                "type": "context",
+                "eventSource": "click",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "dellEstimateSelectedProcess",
+                  "data": "replace"
+                }
+              },
+              {
+                "type": "context",
+                "eventSource": "click",
+                "config": {
+                  "data": "",
+                  "requestMethod": "add",
+                  "key": "dellEstimatereplacePart"
+                }
+              },
+              {
+                "type": "createComponent",
+                "config": {
+                  "targetId": "pageUUID",
+                  "containerId": "prebodysectiontwo",
+                  "data": {
+                    "ctype": "taskPanel",
+                    "uuid": "dellEstimateTaskPanelUUID",
+                    "title": "",
+                    "header": {
+                      "title": "Required Estimate Information",
+                      "svgIcon": "replace",
+                      "iconClass": "active-header",
+                      "status": "",
+                      "statusIcon": "close",
+                      "statusClass": "header-icon"
+                    },
+                    "expanded": true,
+                    "hideToggle": true,
+                    "splitView": true,
+                    "collapsedHeight": "40px",
+                    "expandedHeight": "40px",
+                    "bodyclass": "splitView",
+                    "panelClass": "top-margin",
+                    "leftDivclass": "width:50%",
+                    "rightDivclass": "width:50%",
+                    "taskPanelHeaderClass": "task-panel-header-color-light-grey",
+                    "visibility": false,
+                    "hooks": [],
+                    "validations": [],
+                    "actions": [
+                      {
+                        "type": "updateComponent",
+                        "eventSource": "click",
+                        "config": {
+                          "key": "errorTitleUUID",
+                          "properties": {
+                            "titleValue": "",
+                            "isShown": false
+                          }
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "eventSource": "click",
+                        "config": {
+                          "key": "dellEstimateReplaceTask",
+                          "properties": {
+                            "disabled": false
+                          }
+                        }
+                      },
+                      {
+                        "type": "deleteComponent",
+                        "eventSource": "click",
+                        "config": {
+                          "key": "dellEstimateTaskPanelUUID"
+                        }
+                      },
+                      {
+                        "type": "context",
+                        "eventSource": "click",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "currentTaskUUID",
+                          "data": ""
+                        }
+                      }
+                    ],
+                    "items": [
+                      {
+                        "ctype": "nativeDropdown",
+                        "uuid": "dellEstimateActionCodeUUID",
+                        "hooks": [
+                          {
+                            "type": "condition",
+                            "config": {
+                              "operation": "isValid",
+                              "lhs": "#dellEstimateActionCodeName"
+                            },
+                            "hookType": "afterInit",
+                            "responseDependents": {
+                              "onSuccess": {
+                                "actions": [
+                                  {
+                                    "type": "updateComponent",
+                                    "config": {
+                                      "key": "dellEstimateActionCodeUUID",
+                                      "dropDownProperties": {
+                                        "options": "#getdellEstimateActionCodes"
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "type": "setDefaultValue",
+                                    "config": {
+                                      "key": "dellEstimateActionCodeUUID",
+                                      "defaultValue": "#dellEstimateActionCode"
+                                    }
+                                  },
+                                  {
+                                    "type": "updateComponent",
+                                    "config": {
+                                      "key": "dellEstimateRepairActionUUID",
+                                      "properties": {
+                                        "visibility": true
+                                      }
+                                    }
+                                  }
+                                ]
+                              },
+                              "onFailure": {
+                                "actions": [
+                                  {
+                                    "type": "microservice",
+                                    "config": {
+                                      "microserviceId": "getdellEstimateActionCode",
+                                      "requestMethod": "get",
+                                      "isLocal": false,
+                                      "LocalService": "assets/Responses/dellReplaceActionCodes.json",
+                                      "params": {
+                                        "locationId": "#userSelectedLocation",
+                                        "clientId": "#userSelectedClient",
+                                        "contractId": "#userSelectedContract",
+                                        "orderProcessTypeCode": "#discrepancyUnitInfo.ROUTE",
+                                        "workcenterId": "#discrepancyUnitInfo.WORKCENTER_ID",
+                                        "actionTypes": "Replace",
+                                        "userName": "#userAccountInfo.PersonalDetails.USERID"
+                                      }
+                                    },
+                                    "responseDependents": {
+                                      "onSuccess": {
+                                        "actions": [
+                                          {
+                                            "type": "updateComponent",
+                                            "config": {
+                                              "key": "dellEstimateActionCodeUUID",
+                                              "dropDownProperties": {
+                                                "options": "#getdellEstimateActionCode"
+                                              }
+                                            }
+                                          },
+                                          {
+                                            "type": "context",
+                                            "config": {
+                                              "requestMethod": "add",
+                                              "key": "getdellEstimateActionCodes",
+                                              "data": "responseData"
+                                            }
+                                          },
+                                          {
+                                            "type": "condition",
+                                            "config": {
+                                              "operation": "isEqualTo",
+                                              "lhs": "replace",
+                                              "rhs": "replace"
+                                            },
+                                            "responseDependents": {
+                                              "onSuccess": {
+                                                "actions": [
+                                                  {
+                                                    "type": "setDefaultValue",
+                                                    "config": {
+                                                      "key": "dellEstimateActionCodeUUID",
+                                                      "defaultValue": "#getProcessWCData.dellDebugDefaultActionCodeId"
+                                                    }
+                                                  },
+                                                  {
+                                                    "type": "context",
+                                                    "config": {
+                                                      "requestMethod": "add",
+                                                      "key": "dellEstimateActionCode",
+                                                      "data": "#getProcessWCData.dellDebugDefaultActionCodeId"
+                                                    }
+                                                  },
+                                                  {
+                                                    "type": "context",
+                                                    "config": {
+                                                      "requestMethod": "add",
+                                                      "key": "dellEstimateActionCodeName",
+                                                      "data": "#getProcessWCData.dellDebugDefaultActionCode"
+                                                    }
+                                                  },
+                                                  {
+                                                    "type": "handleDellDebugActions",
+                                                    "methodType": "checkforValidPart"
+                                                  }
+                                                ]
+                                              },
+                                              "onFailure": {
+                                                "actions": []
+                                              }
+                                            }
+                                          }
+                                        ]
+                                      },
+                                      "onFailure": {
+                                        "actions": [
+                                          {
+                                            "type": "handleCommonServices",
+                                            "config": {
+                                              "type": "errorRenderTemplate",
+                                              "contextKey": "errorMsg",
+                                              "updateKey": "errorTitleUUID"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  }
+                                ]
+                              }
+                            }
+                          }
+                        ],
+                        "submitable": true,
+                        "visibility": true,
+                        "required": true,
+                        "label": "Action Code",
+                        "labelPosition": "left",
+                        "name": "replaceActionCode",
+                        "formGroupClass": "flex-container-full-width form-group-margin",
+                        "dropdownClass": "dropdown-container textfield-container",
+                        "labelClass": "subtitle1-align-self greyish-black",
+                        "code": "id",
+                        "displayValue": "actonCodesAbbreviation",
+                        "dataSource": "#dellEstimateActionCodeRes",
+                        "actions": [
+                          {
+                            "type": "updateComponent",
+                            "eventSource": "change",
+                            "config": {
+                              "key": "errorTitleUUID",
+                              "properties": {
+                                "titleValue": "",
+                                "isShown": false
+                              }
+                            }
+                          },
+                          {
+                            "type": "context",
+                            "config": {
+                              "requestMethod": "add",
+                              "key": "dellEstimateActionCode",
+                              "data": "elementControlValue"
+                            },
+                            "eventSource": "change"
+                          },
+                          {
+                            "type": "context",
+                            "config": {
+                              "requestMethod": "add",
+                              "key": "dellEstimateActionCodeName",
+                              "data": "elementControlName"
+                            },
+                            "eventSource": "change"
+                          },
+                          {
+                            "type": "updateComponent",
+                            "eventSource": "change",
+                            "config": {
+                              "key": "dellEstimateRepairActionUUID",
+                              "properties": {
+                                "visibility": true
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "ctype": "nativeDropdown",
+                        "uuid": "dellEstimateDefectGroupUUID",
+                        "hooks": [
+                          {
+                            "type": "condition",
+                            "config": {
+                              "operation": "isValid",
+                              "lhs": "#getdellEstimateDefectGroups"
+                            },
+                            "hookType": "afterInit",
+                            "responseDependents": {
+                              "onSuccess": {
+                                "actions": [
+                                  {
+                                    "type": "updateComponent",
+                                    "config": {
+                                      "key": "dellEstimateDefectGroupUUID",
+                                      "dropDownProperties": {
+                                        "options": "#getdellEstimateDefectGroups"
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "type": "condition",
+                                    "config": {
+                                      "operation": "isValid",
+                                      "lhs": "#dellEstimateDefectGroupValue"
+                                    },
+                                    "responseDependents": {
+                                      "onSuccess": {
+                                        "actions": [
+                                          {
+                                            "type": "setDefaultValue",
+                                            "config": {
+                                              "key": "dellEstimateDefectGroupUUID",
+                                              "defaultValue": "#dellEstimateDefectGroupValue"
+                                            }
+                                          }
+                                        ]
+                                      },
+                                      "onFailure": {
+                                        "actions": []
+                                      }
+                                    }
+                                  }
+                                ]
+                              },
+                              "onFailure": {
+                                "actions": [
+                                  {
+                                    "type": "microservice",
+                                    "config": {
+                                      "microserviceId": "getDellEstimateDefectGroup",
+                                      "requestMethod": "post",
+                                      "isLocal": false,
+                                      "LocalService": "assets/Responses/dellReplaceActionCodes.json",
+                                      "body": {
+                                        "clientId": "#userSelectedClient",
+                                        "contractId": "#userSelectedContract",
+                                        "locationId": "#userSelectedLocation",
+                                        "orderProcessType": "#discrepancyUnitInfo.ROUTE",
+                                        "userName": "#userAccountInfo.PersonalDetails.USERID"
+                                      },
+                                      "toBeStringified": true
+                                    },
+                                    "responseDependents": {
+                                      "onSuccess": {
+                                        "actions": [
+                                          {
+                                            "type": "context",
+                                            "config": {
+                                              "requestMethod": "add",
+                                              "key": "getdellEstimateDefectGroups",
+                                              "data": "responseData"
+                                            }
+                                          },
+                                          {
+                                            "type": "updateComponent",
+                                            "config": {
+                                              "key": "dellEstimateDefectGroupUUID",
+                                              "dropDownProperties": {
+                                                "options": "#getdellEstimateDefectGroups"
+                                              }
+                                            }
+                                          }
+                                        ]
+                                      },
+                                      "onFailure": {
+                                        "actions": [
+                                          {
+                                            "type": "handleCommonServices",
+                                            "config": {
+                                              "type": "errorRenderTemplate",
+                                              "contextKey": "errorMsg",
+                                              "updateKey": "errorTitleUUID"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  }
+                                ]
+                              }
+                            }
+                          }
+                        ],
+                        "submitable": true,
+                        "visibility": true,
+                        "required": true,
+                        "label": "Defect Group",
+                        "labelPosition": "left",
+                        "name": "replaceDefectGroup",
+                        "formGroupClass": "flex-container-full-width form-group-margin",
+                        "dropdownClass": "dropdown-container textfield-container",
+                        "labelClass": "subtitle1-align-self greyish-black",
+                        "code": "path",
+                        "displayValue": "name",
+                        "dataSource": "#dellEstimateDefectGroupRes",
+                        "actions": [
+                          {
+                            "type": "updateComponent",
+                            "eventSource": "change",
+                            "config": {
+                              "key": "errorTitleUUID",
+                              "properties": {
+                                "titleValue": "",
+                                "isShown": false
+                              }
+                            }
+                          },
+                          {
+                            "type": "context",
+                            "config": {
+                              "requestMethod": "add",
+                              "key": "dellEstimateDefectGroupValue",
+                              "data": "elementControlValue"
+                            },
+                            "eventSource": "change"
+                          },
+                          {
+                            "type": "context",
+                            "config": {
+                              "requestMethod": "add",
+                              "key": "dellEstimateDefectGroupName",
+                              "data": "elementControlName"
+                            },
+                            "eventSource": "change"
+                          },
+                          {
+                            "type": "updateComponent",
+                            "eventSource": "change",
+                            "config": {
+                              "key": "dellEstimateRepairActionUUID",
+                              "properties": {
+                                "visibility": true
+                              }
+                            }
+                          },
+                          {
+                            "type": "microservice",
+                            "eventSource": "change",
+                            "config": {
+                              "microserviceId": "getDellEstimateDefectByDefectGroup",
+                              "requestMethod": "post",
+                              "isLocal": false,
+                              "LocalService": "assets/Responses/dellDebugDefects.json",
+                              "body": {
+                                "locationId": "#userSelectedLocation",
+                                "clientId": "#userSelectedClient",
+                                "contractId": "#userSelectedContract",
+                                "orderProcessType": "#discrepancyUnitInfo.ROUTE",
+                                "path": "#dellEstimateDefectGroupValue",
+                                "userName": "#userAccountInfo.PersonalDetails.USERID"
+                              },
+                              "toBeStringified": true
+                            },
+                            "responseDependents": {
+                              "onSuccess": {
+                                "actions": [
+                                  {
+                                    "type": "context",
+                                    "config": {
+                                      "requestMethod": "add",
+                                      "key": "getdellEstimateDefects",
+                                      "data": "responseData"
+                                    }
+                                  },
+                                  {
+                                    "type": "condition",
+                                    "config": {
+                                      "operation": "isValid",
+                                      "lhs": "#getdellEstimateDefects"
+                                    },
+                                    "responseDependents": {
+                                      "onSuccess": {
+                                        "actions": [
+                                          {
+                                            "type": "updateComponent",
+                                            "config": {
+                                              "key": "dellEstimateDefectUUID",
+                                              "dropDownProperties": {
+                                                "options": "#getdellEstimateDefects"
+                                              },
+                                              "concat": true
+                                            }
+                                          }
+                                        ]
+                                      },
+                                      "onFailure": {
+                                        "actions": [
+                                          {
+                                            "type": "updateComponent",
+                                            "config": {
+                                              "key": "dellEstimateDefectUUID",
+                                              "dropDownProperties": {
+                                                "options": []
+                                              },
+                                              "properties": {
+                                                "isReset": true,
+                                                "name": "dellEstimateDefect"
+                                              }
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  }
+                                ]
+                              },
+                              "onFailure": {
+                                "actions": [
+                                  {
+                                    "type": "handleCommonServices",
+                                    "config": {
+                                      "type": "errorRenderTemplate",
+                                      "contextKey": "errorMsg",
+                                      "updateKey": "errorTitleUUID"
+                                    }
+                                  },
+                                  {
+                                    "type": "context",
+                                    "config": {
+                                      "requestMethod": "add",
+                                      "key":"getdellEstimateDefects",
+                                      "data":""
+                                    }
+                                  },
+                                  {
+                                    "type": "updateComponent",
+                                    "config": {
+                                      "key": "dellEstimateDefectUUID",
+                                      "dropDownProperties": {
+                                        "options": []
+                                      },
+                                      "properties": {
+                                        "isReset": true,
+                                        "name": "dellEstimateDefect"
+                                      }
+                                    }
+                                  }
+                                ]
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "ctype": "nativeDropdown",
+                        "uuid": "dellEstimateDefectUUID",
+                        "hooks": [
+                          {
+                            "type": "condition",
+                            "config": {
+                              "operation": "isValid",
+                              "lhs": "#getdellEstimateDefects"
+                            },
+                            "hookType": "afterInit",
+                            "responseDependents": {
+                              "onSuccess": {
+                                "actions": [
+                                  {
+                                    "type": "updateComponent",
+                                    "config": {
+                                      "key": "dellEstimateDefectUUID",
+                                      "dropDownProperties": {
+                                        "options": "#getdellEstimateDefects"
+                                      },
+                                      "concat": true
+                                    }
+                                  },
+                                  {
+                                    "type": "condition",
+                                    "config": {
+                                      "operation": "isValid",
+                                      "lhs": "#dellEstimateDefectCode"
+                                    },
+                                    "responseDependents": {
+                                      "onSuccess": {
+                                        "actions": [
+                                          {
+                                            "type": "setDefaultValue",
+                                            "config": {
+                                              "key": "dellEstimateDefectUUID",
+                                              "defaultValue": "#dellEstimateDefectCode"
+                                            }
+                                          }
+                                        ]
+                                      },
+                                      "onFailure": {
+                                        "actions": []
+                                      }
+                                    }
+                                  }
+                                  ]
+                              },
+                              "onFailure": {
+                                "actions": [
+                                  {
+                                    "type": "updateComponent",
+                                    "config": {
+                                      "key": "dellEstimateDefectUUID",
+                                      "dropDownProperties": {
+                                        "options": []
+                                      },
+                                      "properties": {
+                                        "isReset": true,
+                                        "name": "dellEstimateDefect"
+                                      }
+                                    }
+                                  }
+                                ]
+                              }
+                            }
+                            }
+                        ],
+                        "submitable": true,
+                        "visibility": true,
+                        "required": true,
+                        "label": "Defect",
+                        "labelPosition": "left",
+                        "name": "dellEstimateDefect",
+                        "formGroupClass": "flex-container-full-width form-group-margin",
+                        "dropdownClass": "dropdown-container textfield-container",
+                        "labelClass": "subtitle1-align-self greyish-black",
+                        "code": "name",
+                        "displayValue": "name",
+                        "displayConcatValue": "description",
+                        "dataSource": "#dellEstimateDefectRes",
+                        "actions": [
+                          {
+                            "type": "updateComponent",
+                            "eventSource": "change",
+                            "config": {
+                              "key": "errorTitleUUID",
+                              "properties": {
+                                "titleValue": "",
+                                "isShown": false
+                              }
+                            }
+                          },
+                          {
+                            "type": "context",
+                            "config": {
+                              "requestMethod": "add",
+                              "key": "dellEstimateDefectCodeName",
+                              "data": "elementControlName"
+                            },
+                            "eventSource": "change"
+                          },
+                          {
+                            "type": "context",
+                            "config": {
+                              "requestMethod": "add",
+                              "key": "dellEstimateDefectCode",
+                              "data": "elementControlValue"
+                            },
+                            "eventSource": "change"
+                          }
+                        ]
+                      },
+                      {
+                        "ctype": "textField",
+                        "uuid": "dellEstimatePartUUID",
+                        "name": "dellEstimatePart",
+                        "hooks": [],
+                        "actions": [
+                          {
+                            "type": "updateComponent",
+                            "eventSource": "input",
+                            "config": {
+                              "key": "errorTitleUUID",
+                              "properties": {
+                                "titleValue": "",
+                                "isShown": false
+                              }
+                            }
+                          },
+                          {
+                            "type": "context",
+                            "config": {
+                              "requestMethod": "add",
+                              "key": "dellEstimatePart",
+                              "data": "elementControlValue"
+                            },
+                            "eventSource": "input"
+                          }
+                        ],
+                        "isUpperCase": true,
+                        "isConvertValueToUpperCase": true,
+                        "validations": [
+                          {
+                            "type": "regex",
+                            "script": "^.{5,}$"
+                          }
+                        ],
+                        "type": "text",
+                        "required": true,
+                        "stopBlurEvent": true,
+                        "validateGroup": false,
+                        "placeholder": "Enter Value",
+                        "submitable": true,
+                        "visibility": true,
+                        "label": "Part",
+                        "readonly": false,
+                        "labelPosition": "left",
+                        "labelClass": "greyish-black subtitle1-align-self",
+                        "textfieldClass": "textfield-container",
+                        "formGroupClass": "dell-debug-label-container-30-50"
+                      },
+                      {
+                        "ctype": "textField",
+                        "uuid": "dellEstimatePartQuantityUUID",
+                        "name": "dellEstimatePartQuantity",
+                        "hooks": [
+                          {
+                            "type": "context",
+                            "hookType":"afterInit",
+                            "config": {
+                              "requestMethod": "add",
+                              "key": "dellEstimatePartQty",
+                              "data": "1"
+                            }
+                          }
+                        ],
+                        "actions": [
+                          {
+                            "type": "updateComponent",
+                            "eventSource": "input",
+                            "config": {
+                              "key": "errorTitleUUID",
+                              "properties": {
+                                "titleValue": "",
+                                "isShown": false
+                              }
+                            }
+                          },
+                          {
+                            "type": "context",
+                            "config": {
+                              "requestMethod": "add",
+                              "key": "dellEstimatePartQty",
+                              "data": "elementControlValue"
+                            },
+                            "eventSource": "input"
+                          }
+                        ],
+                        "isUpperCase": true,
+                        "isConvertValueToUpperCase": true,
+                        "validations": [
+                          {
+                            "type": "regex",
+                            "script": ""
+                          }
+                        ],
+                        "type": "number",
+                        "required": true,
+                        "stopBlurEvent": true,
+                        "validateGroup": false,
+                        "placeholder": "Enter Value",
+                        "submitable": true,
+                        "visibility": true,
+                        "label": "Quantity",
+                        "readonly": false,
+                        "disabled": true,
+                        "labelPosition": "left",
+                        "labelClass": "greyish-black subtitle1-align-self",
+                        "textfieldClass": "textfield-container",
+                        "formGroupClass": "dell-debug-label-container-30-50",
+                        "defaultValue" : "1"
+                      }
+                    ],
+                    "rightItems": [
+                      {
+                        "ctype": "nativeDropdown",
+                        "uuid": "dellEstimateDamageTypeUUID",
+                        "hooks": [
+                          {
+                            "type": "condition",
+                            "config": {
+                              "operation": "isValid",
+                              "lhs": "#dellEstimateDamageType"
+                            },
+                            "hookType": "afterInit",
+                            "responseDependents": {
+                              "onSuccess": {
+                                "actions": [
+                                  {
+                                    "type": "updateComponent",
+                                    "config": {
+                                      "key": "dellEstimateDamageTypeUUID",
+                                      "dropDownProperties": {
+                                        "options": "#getdellEstimateDamageTypes"
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "type": "setDefaultValue",
+                                    "config": {
+                                      "key": "dellEstimateDamageTypeUUID",
+                                      "defaultValue": "#dellEstimateDamageType"
+                                    }
+                                  }
+                                ]
+                              },
+                              "onFailure": {
+                                "actions": [
+                                  {
+                                    "type": "microservice",
+                                    "hookType": "afterInit",
+                                    "config": {
+                                      "microserviceId": "getdellEstimateDamageTypes",
+                                      "isLocal": false,
+                                      "LocalService": "assets/Responses/getQRStatus.json",
+                                      "requestMethod": "get",
+                                      "params": {
+                                        "faffId": "#locationDependentFFIDDetails.Damage_Type",
+                                        "userName": "#userAccountInfo.PersonalDetails.USERID"
+                                      }
+                                    },
+                                    "responseDependents": {
+                                      "onSuccess": {
+                                        "actions": [
+                                          {
+                                            "type": "updateComponent",
+                                            "config": {
+                                              "key": "dellEstimateDamageTypeUUID",
+                                              "dropDownProperties": {
+                                                "options": "#getdellEstimateDamageTypes"
+                                              }
+                                            }
+                                          },
+                                          {
+                                            "type": "context",
+                                            "config": {
+                                              "requestMethod": "add",
+                                              "key": "getdellEstimateDamageTypes",
+                                              "data": "responseData"
+                                            }
+                                          }
+                                        ]
+                                      },
+                                      "onFailure": {
+                                        "actions": [
+                                          {
+                                            "type": "handleCommonServices",
+                                            "config": {
+                                              "type": "errorRenderTemplate",
+                                              "contextKey": "errorMsg",
+                                              "updateKey": "errorTitleUUID"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  }
+                                ]
+                              }
+                            }
+                          }
+                        ],
+                        "submitable": true,
+                        "visibility": true,
+                        "required": true,
+                        "label": "Damage Type",
+                        "labelPosition": "left",
+                        "name": "dellEstimateDamageType",
+                        "formGroupClass": "flex-container-full-width form-group-margin",
+                        "dropdownClass": "dropdown-container textfield-container",
+                        "labelClass": "subtitle1-align-self greyish-black",
+                        "dataSource": "#dellEstimateDamageTypeRes",
+                        "actions": [
+                          {
+                            "type": "updateComponent",
+                            "eventSource": "change",
+                            "config": {
+                              "key": "errorTitleUUID",
+                              "properties": {
+                                "titleValue": "",
+                                "isShown": false
+                              }
+                            }
+                          },
+                          {
+                            "type": "context",
+                            "config": {
+                              "requestMethod": "add",
+                              "key": "dellEstimateDamageType",
+                              "data": "elementControlValue"
+                            },
+                            "eventSource": "change"
+                          },
+                          {
+                            "type": "context",
+                            "config": {
+                              "requestMethod": "add",
+                              "key": "dellEstimateDamageTypeName",
+                              "data": "elementControlName"
+                            },
+                            "eventSource": "change"
+                          }
+                        ]
+                      }
+                    ],
+                    "footer": [
+                      {
+                        "ctype": "iconbutton",
+                        "text": "Reset Form",
+                        "parentuuid": "replaceTaskUUID",
+                        "uuid": "ReplaceresetUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "icon": "not_interested",
+                        "iconClass": "resetIcon",
+                        "actions": [
+                          {
+                            "type": "updateComponent",
+                            "eventSource": "click",
+                            "config": {
+                              "key": "errorTitleUUID",
+                              "properties": {
+                                "titleValue": "",
+                                "isShown": false
+                              }
+                            }
+                          },
+                          {
+                            "type": "resetData",
+                            "eventSource": "click"
+                          },
+                          {
+                            "type": "updateComponent",
+                            "eventSource": "click",
+                            "config": {
+                              "key": "dellEstimateDefectUUID",
+                              "dropDownProperties": {
+                                "options": []
+                              }
+                            }
+                          },
+                          {
+                            "type": "context",
+                            "config": {
+                              "requestMethod": "add",
+                              "key": "dellEstimatePart",
+                              "data": ""
+                            },
+                            "eventSource": "click"
+                          },
+                          {
+                            "type": "context",
+                            "config": {
+                              "requestMethod": "add",
+                              "key":"dellEstimateActionCodeName",
+                              "data":""
+                            },
+                            "eventSource": "click"
+                          },
+                          {
+                            "type": "context",
+                            "config": {
+                              "requestMethod": "add",
+                              "key":"getdellEstimateDefects",
+                              "data":""
+                            },
+                            "eventSource": "click"
+                          },
+                          {
+                            "type": "context",
+                            "config": {
+                              "requestMethod": "add",
+                              "key":"dellEstimateDefectCode",
+                              "data":""
+                            },
+                            "eventSource": "click"
+                          }, 
+                          {
+                            "type": "context",
+                            "config": {
+                              "requestMethod": "add",
+                              "key": "dellEstimateDefectCodeName",
+                              "data":""
+                            },
+                            "eventSource": "click"
+                          },
+                          {
+                            "type": "context",
+                            "config": {
+                              "requestMethod": "add",
+                              "key": "dellEstimateDefectGroupValue",
+                              "data":""
+                            },
+                            "eventSource": "click"
+                          },
+                          {
+                            "type": "context",
+                            "config": {
+                              "requestMethod": "add",
+                              "key": "dellEstimateDefectGroupName",
+                              "data":""
+                            },
+                            "eventSource": "click"
+                          },
+                          {
+                            "type": "context",
+                            "config": {
+                              "requestMethod": "add",
+                              "key": "dellEstimateDamageType",
+                              "data":""
+                            },
+                            "eventSource": "click"
+                          },
+                          {
+                            "type": "setDefaultValue",
+                            "config": {
+                              "key": "dellEstimatePartQuantityUUID",
+                              "defaultValue": "1"
+                            },
+                            "eventSource": "click"
+                          }
+                        ]
+                      },
+                      {
+                        "ctype": "button",
+                        "color": "primary",
+                        "text": "Complete",
+                        "class": "primary-btn",                        
+                        "name":"dellRequiredEstimateInfocompleteName",
+                        "isDisableNotReq": true,
+                        "parentuuid": "replaceTaskUUID",
+                        "visibility": true,
+                        "disabled": true,
+                        "type": "submit",
+                        "tooltip": "",
+                        "hooks": [],
+                        "validations": [],
+                        "actions": [
+                          {
+                            "type": "handleDellEstimateActions",
+                            "methodType": "transactionsOnClickOfComplete",
+                            "eventSource": "click",
+                            "config": {}
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "eventSource": "click"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "footer": [
+      {
+        "ctype": "toolbar",
+        "toolbarClass": "pagecontent-footer",
+        "items": [
+          {
+            "ctype": "iconbutton",
+            "iconButtonClass": "footer-save body",
+            "text": "Exit",
+            "uuid": "dellEstimationExitButton",
+            "visibility": true,
+            "disabled": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "icon": "close",
+            "actions": [
+              {
+                "type": "renderTemplate",
+                "config": {
+                  "templateId": "dashboard.json",
+                  "mode": "local"
+                },
+                "eventSource": "click"
+              }
+            ]
+          },
+          {
+            "ctype": "iconText",
+            "uuid": "dellEstimationAddNoteUUID",
+            "icon": "add_comment",
+            "disabled": false,
+            "text": "Add Note",
+            "textCss": "",
+            "iconPosition": "Before",
+            "iconTextClass": "footer-addNote body",
+            "actions": [
+              {
+                "type": "dialog",
+                "uuid": "dellEstimationAddNoteDialogUUID",
+                "config": {
+                  "title": "Add Note",
+                  "items": [
+                    {
+                      "ctype": "textarea",
+                      "name": "addNote",
+                      "textareaClass": "note-class",
+                      "uuid": "dellEstimationAddNoteUUID",
+                      "required": true,
+                      "disabled": false,
+                      "value": "#dellEstimateTimeoutNotes.addNote",
+                      "actions": []
+                    }
+                  ],
+                  "footer": [
+                    {
+                      "ctype": "button",
+                      "color": "primary",
+                      "text": "Cancel",
+                      "uuid": "dellEstimationCancelAddNoteUUID",
+                      "closeType": "close",
+                      "disableClose": true,
+                      "visibility": true,
+                      "disabled": false,
+                      "dialogButton": true,
+                      "type": "",
+                      "hooks": [],
+                      "validations": [],
+                      "actions": []
+                    },
+                    {
+                      "ctype": "button",
+                      "color": "primary",
+                      "text": "Done",
+                      "uuid": "dellEstimationDoneAddNoteUUID",
+                      "dialogButton": true,
+                      "visibility": true,
+                      "disabled": true,
+                      "type": "submit",
+                      "closeType": "success",
+                      "hooks": [],
+                      "validations": [],
+                      "actions": []
+                    }
+                  ]
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "key": "dellEstimateTimeoutNotes",
+                          "data": "formData",
+                          "requestMethod": "add",
+                          "value": "addNote"
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": []
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "ctype": "spacer",
+            "uuid": "dellEstimationSpaceUUID",
+            "class": "empty-space"
+          },
+          {
+            "ctype": "iconbutton",
+            "uuid": "dellEstimationPauseUUID",
+            "visibility": true,
+            "disabled": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "icon": "pause",
+            "iconClass": "footer-btnas",
+            "disableRipple": true,
+            "actions": [
+              {
+                "type": "dialogwithmessage",
+                "uuid": "dellEstimationPauseDialogUUID",
+                "config": {
+                  "title": "Hold",
+                  "disableClose": true,
+                  "items": [
+                    {
+                      "ctype": "title",
+                      "uuid": "holdBinErrorUUID",
+                      "titleClass": "error-title-holdbin",
+                      "isShown": false
+                    },
+                    {
+                      "ctype": "nativeDropdown",
+                      "formGroupClass": "discrepancy-holddrpdwn",
+                      "uuid": "dellEstimationHoldTypeUUID",
+                      "label": "Hold Type",
+                      "name": "dellEstimationHoldType",
+                      "dataSource": "#filteredHoldTypes",
+                      "code": "storageHoldCode",
+                      "displayValue": "storageHoldCode",
+                      "defaultValue": "",
+                      "required": true,
+                      "actions": [
+                        {
+                          "type": "context",
+                          "config": {
+                            "requestMethod": "add",
+                            "key": "storageHoldCode",
+                            "data": "elementControlValue"
+                          },
+                          "eventSource": "change"
+                        },
+                        {
+                          "type": "condition",
+                          "eventSource": "change",
+                          "config": {
+                            "operation": "isEqualTo",
+                            "lhs": "#storageHoldCode",
+                            "rhs": "AWAITING PART"
+                          },
+                          "responseDependents": {
+                            "onSuccess": {
+                              "actions": [
+                                {
+                                  "type": "updateComponent",
+                                  "config": {
+                                    "key": "dellEstimationHoldPartUUID",
+                                    "properties": {
+                                      "hidden": false,
+                                      "required": true
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "updateComponent",
+                                  "config": {
+                                    "key": "holdCodeUUID",
+                                    "properties": {
+                                      "hidden": true,
+                                      "required": false
+                                    }
+                                  }
+                                }
+                              ]
+                            },
+                            "onFailure": {
+                              "actions": [
+                                {
+                                  "type": "updateComponent",
+                                  "config": {
+                                    "key": "dellEstimationHoldPartUUID",
+                                    "properties": {
+                                      "hidden": true,
+                                      "required": false
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "updateComponent",
+                                  "config": {
+                                    "key": "holdCodeUUID",
+                                    "properties": {
+                                      "hidden": false,
+                                      "required": true
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        },
+                        {
+                          "type": "conditionalFilterData",
+                          "config": {
+                            "data": "#holdCodesForDiscrepancy",
+                            "targetContextKey": "holdSubCodeData",
+                            "keyName": "#storageHoldCode",
+                            "filterRefValue": "storageHoldCode",
+                            "targetUUID": "holdCodeUUID",
+                            "name": "holdCodes"
+                          },
+                          "eventSource": "change"
+                        }
+                      ]
+                    },
+                    {
+                      "ctype": "nativeDropdown",
+                      "formGroupClass": "discrepancy-holddrpdwn",
+                      "uuid": "holdCodeUUID",
+                      "label": "Hold Code",
+                      "name": "holdCodes",
+                      "dataSource": "",
+                      "code": "storageHoldSubCode",
+                      "displayValue": "storageHoldSubCode",
+                      "defaultValue": "",
+                      "required": true,
+                      "actions": [
+                          {
+                              "type": "context",
+                              "config": {
+                                "requestMethod": "add",
+                                "key": "storageHoldCode",
+                                "data": "elementControlValue"
+                              },
+                              "eventSource": "change"
+                          }
+                      ]
+                    },
+                    {
+                      "ctype": "textField",
+                      "uuid": "dellEstimationHoldPartUUID",
+                      "submitable": false,
+                      "disabled": false,
+                      "validations": [],
+                      "hidden": true,
+                      "inLine": true,
+                      "formGroupClass": "flex-container",
+                      "textfieldClass": "hold-textfield-container",
+                      "labelClass": "hold-tf-label",
+                      "hooks": [],
+                      "name": "holdCode",
+                      "label": "Part Number(s)",
+                      "labelPosition": "left",
+                      "tooltip": "",
+                      "TooltipPosition": "",
+                      "defaultValue": "",
+                      "readonly": false,
+                      "type": "text",
+                      "required": false,
+                      "placeholder": "Enter Value",
+                      "value": "",
+                      "prefix": false,
+                      "prefixIcon": "",
+                      "suffix": false,
+                      "suffixIcon": "",
+                      "actions": []
+                    },
+                    {
+                      "ctype": "textField",
+                      "uuid": "dellEstimationBinUUID",
+                      "submitable": false,
+                      "disabled": false,
+                      "validations": [],
+                      "hidden": false,
+                      "inLine": true,
+                      "formGroupClass": "flex-container required-note",
+                      "textfieldClass": "hold-textfield-container",
+                      "labelClass": "hold-tf-label",
+                      "hooks": [],
+                      "name": "storageBin",
+                      "label": "Hold Bin",
+                      "labelPosition": "left",
+                      "tooltip": "",
+                      "TooltipPosition": "",
+                      "defaultValue": "",
+                      "readonly": false,
+                      "type": "text",
+                      "required": true,
+                      "placeholder": "Enter Value",
+                      "value": "",
+                      "prefix": false,
+                      "prefixIcon": "",
+                      "suffix": false,
+                      "suffixIcon": "",
+                      "actions": []
+                    },
+                    {
+                      "ctype": "textarea",
+                      "label": "Add note",
+                      "name": "dellEstimationHoldAddNote",
+                      "value": "",
+                      "textareaContainer": "timeout-class required-note",
+                      "uuid": "dellEstimationHoldNodeUUID",
+                      "required": true,
+                      "submitable": true,
+                      "actions": []
+                    }
+                  ],
+                  "footer": [
+                    {
+                      "ctype": "button",
+                      "color": "primary",
+                      "text": "Cancel",
+                      "uuid": "dellEstimationCancelHoldUUID",
+                      "closeType": "close",
+                      "disableClose": true,
+                      "visibility": true,
+                      "dialogButton": true,
+                      "type": "",
+                      "hooks": [],
+                      "validations": [],
+                      "actions": []
+                    },
+                    {
+                      "ctype": "button",
+                      "color": "primary",
+                      "text": "Done",
+                      "uuid": "dellEstimationDoneHoldUUID",
+                      "dialogBoxHoldBinErrorMessage": true,
+                      "dialogButton": true,
+                      "visibility": true,
+                      "disabled": true,
+                      "type": "submit",
+                      "closeType": "success",
+                      "hooks": [],
+                      "validations": [],
+                      "actions": [
+                        {
+                          "type": "context",
+                          "config": {
+                            "key": "dellEstimationTimeoutNotes",
+                            "data": "formData",
+                            "requestMethod": "add",
+                            "value": "dellEstimationHoldAddNote"
+                          },
+                          "eventSource": "click"
+                        },
+                        {
+                          "eventSource": "click",
+                          "responseDependents": {
+                            "onSuccess": {
+                              "actions": [
+                                {
+                                  "type": "context",
+                                  "config": {
+                                    "key": "holdDialogData",
+                                    "data": "formData",
+                                    "requestMethod": "add"
+                                  },
+                                  "eventSource": "click"
+                                },
+                                {
+                                  "type": "condition",
+                                  "config": {
+                                    "operation": "isValid",
+                                    "lhs": "#holdDialogData.holdCodes"
+                                  },
+                                  "eventSource": "click",
+                                  "responseDependents": {
+                                    "onSuccess": {
+                                      "actions": [
+                                        {
+                                          "type": "context",
+                                          "config": {
+                                            "requestMethod": "add",
+                                            "key": "subHoldCode",
+                                            "data": "#holdDialogData.holdCodes"
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "onFailure": {
+                                      "actions": [
+                                        {
+                                          "type": "context",
+                                          "config": {
+                                            "requestMethod": "add",
+                                            "key": "subHoldCode",
+                                            "data": "#holdDialogData.holdCode"
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "microservice",
+                                  "config": {
+                                    "microserviceId": "validateBin",
+                                    "requestMethod": "get",
+                                    "params": {
+                                      "locationId": "#repairUnitInfo.LOCATION_ID",
+                                      "wareHouseId": "#repairUnitInfo.WAREHOUSE_ID",
+                                      "binName": "#holdDialogData.storageBin",
+                                      "userName": "#loginUUID.username"
+                                    },
+                                    "toBeStringified": true,
+                                    "isLocal": false,
+                                    "LocalService": "assets/Responses/mockHoldSubCode.json"
+                                  },
+                                  "responseDependents": {
+                                    "onSuccess": {
+                                      "actions": [
+                                        {
+                                          "type": "microservice",
+                                          "config": {
+                                            "microserviceId": "moveinventory",
+                                            "requestMethod": "post",
+                                            "body": {
+                                              "apiUsageClientName": "#discrepancyUnitInfo.CLIENTNAME",
+                                              "apiUsageLocationName": "#discrepancyUnitInfo.GEONAME",
+                                              "callSource": "FrontEnd",
+                                              "ip": "::1",
+                                              "items": {
+                                                "addtionalDetails": {
+                                                  "comments": "#holdDialogData.dellEstimationHoldAddNote",
+                                                  "fixedAssetTag": "#discrepancyUnitInfo.FAT",
+                                                  "storageHoldCode": "#holdDialogData.dellEstimationHoldType",
+                                                  "storageHoldSubCode": "#subHoldCode"
+                                                },
+                                                "destinationLocation": {
+                                                  "bin": "#holdDialogData.storageBin",
+                                                  "geography": "#discrepancyUnitInfo.GEONAME",
+                                                  "stockingLocation": "DELL_AIO_DMR",
+                                                  "warehouse": "#discrepancyUnitInfo.WAREHOUSE_NAME"
+                                                },
+                                                "item": [
+                                                  {
+                                                    "bcn": "#discrepancyUnitInfo.ITEM_BCN",
+                                                    "owner": "#discrepancyUnitInfo.CLIENTNAME",
+                                                    "partNo": "#discrepancyUnitInfo.PART_NO",
+                                                    "quantity": "1",
+                                                    "serialNo": "#discrepancyUnitInfo.SERIAL_NO",
+                                                    "condition": "Defective"
+                                                  }
+                                                ],
+                                                "notes": "#holdDialogData.dellEstimationHoldAddNote",
+                                                "sourceLocation": {
+                                                  "bin": "#holdDialogData.storageBin",
+                                                  "geography": "#discrepancyUnitInfo.GEONAME",
+                                                  "stockingLocation": "DELL_AIO_WIP",
+                                                  "warehouse": "#discrepancyUnitInfo.WAREHOUSE_NAME"
+                                                }
+                                              },
+                                              "usrPwd": {
+                                                "userName": "#loginUUID.username",
+                                                "password": "#loginUUID.password"
+                                              }
+                                            },
+                                            "toBeStringified": true
+                                          },
+                                          "responseDependents": {
+                                            "onSuccess": {
+                                              "actions": [
+                                                {
+                                                  "type": "handleDellEstimateActions",
+                                                  "methodType": "updateReplaceIconStatus",
+                                                  "iconStatus": false
+                                                },
+                                                {
+                                                  "type": "pauseScreenData"
+                                                },
+                                                {
+                                                  "type": "renderTemplate",
+                                                  "config": {
+                                                    "templateId": "dashboard.json",
+                                                    "mode": "local"
+                                                  }
+                                                }
+                                              ]
+                                            },
+                                            "onFailure": {
+                                              "actions": [
+                                                {
+                                                  "type": "context",
+                                                  "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "moveinventoryForDiscrepancy",
+                                                    "data": "responseData"
+                                                  }
+                                                },
+                                                {
+                                                  "type": "updateComponent",
+                                                  "config": {
+                                                    "key": "errorTitleUUID",
+                                                    "properties": {
+                                                      "titleValue": "#moveinventoryForDiscrepancy",
+                                                      "isShown": true
+                                                    }
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          "eventSource": "click"
+                                        },
+                                        {
+                                          "type": "closeAllDialogs"
+                                        }
+                                      ]
+                                    },
+                                    "onFailure": {
+                                      "actions": [
+                                        {
+                                          "type": "context",
+                                          "config": {
+                                            "requestMethod": "add",
+                                            "key": "moveinventoryForDiscrepancy",
+                                            "data": "responseData"
+                                          }
+                                        },
+                                        {
+                                          "type": "updateComponent",
+                                          "config": {
+                                            "key": "holdBinErrorUUID",
+                                            "properties": {
+                                              "titleValue": "#moveinventoryForDiscrepancy",
+                                              "isShown": true
+                                            }
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "eventSource": "click"
+                                }
+                              ]
+                            },
+                            "onFailure": {}
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "holdSubCodeData",
+                  "data": ""
+                },
+                "eventSource": "click"
+              }
+            ]
+          },
+          {
+            "ctype": "nativeDropdown",
+            "dropdownClass": "footer-dropdown dropdown-container body2",
+            "uuid": "dellEstimationResultCodesUUID",
+            "name": "ResultCodes",
+            "dataSource": "",
+            "code": "resultCode",
+            "displayValue": "resultCode",
+            "disabled": true,
+            "hooks":[
+              {
+                "type": "condition",
+                "config": {
+                  "operation": "isValid",
+                  "lhs": "#getdellEstimateROHFFValueByRO",
+                  "addHookAtLast": true
+                },
+                "hookType": "afterInit",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "multipleCondition",
+                        "config": {
+                          "multi": true,
+                          "operator": "OR",
+                          "conditions": [
+                            {
+                              "operation": "isEqualTo",
+                              "lhs": "#getdellEstimateROHFFValueByRO",
+                              "rhs": "PASS"
+                            },
+                            {
+                              "operation": "isEqualTo",
+                              "lhs": "#getdellEstimateROHFFValueByRO",
+                              "rhs": "FAIL"
+                            }
+                          ]
+                        },
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "setDefaultValue",
+                                "config": {
+                                  "key": "dellEstimationResultCodesUUID",
+                                  "defaultValue": "#getdellEstimateROHFFValueByRO"
+                                }
+                              },
+                              {
+                                "type": "context",
+                                "config": {
+                                  "requestMethod": "add",
+                                  "key": "dellEstimationSelectedDropdownValue",
+                                  "data": "#getdellEstimateROHFFValueByRO"
+                                }
+                              },
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "dellEstimationTimeoutButtonUUID",
+                                  "properties": {
+                                    "disabled": false
+                                    }
+                                }
+                              },
+                              {
+                                "type": "disableComponent",
+                                "config": {
+                                  "key": "dellEstimationResultCodesUUID",
+                                  "property": "ResultCodes",
+                                  "isNotReset":true
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": []
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": []
+                  }
+                }
+              }
+            ],
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "dellEstimationSelectedDropdownValue",
+                  "data": "elementControlValue"
+                },
+                "eventSource": "change"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "dellEstimationTimeoutButtonUUID",
+                  "properties": {
+                    "disabled": false
+                    }
+                },
+                "eventSource": "change"
+              }
+            ]
+          },
+          {
+            "ctype": "button",
+            "color": "primary",
+            "text": "Time out",
+            "uuid": "dellEstimationTimeoutButtonUUID",
+            "visibility": true,
+            "disabled": true,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "buttonClass": "footer-button primary-btn",
+            "class": "primary-btn",
+            "actions": [
+              {
+                  "type": "dialog",
+                  "uuid": "dellEstimatePauseDialogUUID",
+                  "config": {
+                    "title": "Time Out",
+                    "items": [
+                      {
+                        "ctype": "textarea",
+                        "label": "Add note",
+                        "name": "addNote",
+                        "textareaClass": "note-class",
+                        "uuid": "dellEstimateTimeoutAddNoteUUID",
+                        "required": true,
+                        "submitable": true,
+                        "value": "#dellEstimateTimeoutNotes.addNote",
+                        "actions": [
+                          {
+                            "type": "updateComponent",
+                            "config": {
+                              "key": "dellEstimateDoneTimeOutUUID",
+                              "properties": {
+                                "disabled": false
+                              }
+                            },
+                            "eventSource": "onLoad"
+                          }
+                        ]
+                      }
+                    ],
+                    "footer": [
+                      {
+                        "ctype": "button",
+                        "color": "primary",
+                        "text": "Cancel",
+                        "uuid": "dellPackoutBerCancelTimeOutUUID",
+                        "closeType": "close",
+                        "disableClose": true,
+                        "visibility": true,
+                        "dialogButton": true,
+                        "type": "",
+                        "hooks": [],
+                        "validations": [],
+                        "actions": []
+                      },
+                      {
+                        "ctype": "button",
+                        "color": "primary",
+                        "text": "Done",
+                        "uuid": "dellEstimateDoneTimeOutUUID",
+                        "dialogButton": true,
+                        "visibility": true,
+                        "disabled": true,
+                        "type": "submit",
+                        "closeType": "success",
+                        "hooks": [],
+                        "validations": [],
+                        "actions": []
+                      }
+                    ]
+                  },
+                  "eventSource": "click",
+                  "responseDependents": {
+                    "onSuccess": {
+                      "actions": [
+                        {
+                          "type": "context",
+                          "config": {
+                            "key": "dellEstimationTimeOutNotes",
+                            "data": "formData",
+                            "requestMethod": "add",
+                            "value": "addNote"
+                          },
+                          "eventSource": "click"
+                        },
+                        {
+                          "type": "microservice",
+                          "eventSource": "click",
+                          "config": {
+                            "microserviceId": "pwcPerformTimeOutTrigger",
+                            "requestMethod": "post",
+                            "body": {
+                              "actionType": "PerformTimeOut",
+                              "geography": "#discrepancyUnitInfo.GEONAME",
+                              "client": "#repairUnitInfo.CLIENTNAME",
+                              "contact": "#repairUnitInfo.CONTRACTNAME",
+                              "workCenter": "#repairUnitInfo.WORKCENTER",
+                              "pwxXml": {
+                                "timeOutTab": {
+                                  "selectedResultCode": "#dellEstimationSelectedDropdownValue"
+                                },
+                                "bcnDetail": {
+                                  "bcn": "#repairUnitInfo.ITEM_BCN",
+                                  "PartNumber": "#discrepancyUnitInfo.PART_NO",
+                                  "loginID": "#userAccountInfo.PersonalDetails.USERID",
+                                  "workOrderID": "#repairUnitInfo.WORKORDER_ID",
+                                  "itemID": "#repairUnitInfo.ITEM_ID",
+                                  "serialNumber": "#repairUnitInfo.SERIAL_NO"
+                                }
+                              }
+                            },
+                            "toBeStringified": true
+                          },
+                          "responseDependents": {
+                            "onSuccess": {
+                              "actions": [
+                                {
+                                  "type": "microservice",
+                                  "config": {
+                                    "microserviceId": "performTimeOut",
+                                    "requestMethod": "post",
+                                    "body": {
+                                      "timeOutRequest": {
+                                        "location": "#repairUnitInfo.GEONAME",
+                                        "bcn": "#repairUnitInfo.ITEM_BCN",
+                                        "workCenter": "#repairUnitInfo.WORKCENTER",
+                                        "password": "#loginUUID.password",
+                                        "warrantyInd": "false",
+                                        "notes": "#dellEstimationTimeOutNotes.addNote",
+                                        "resultCode": "#dellEstimationSelectedDropdownValue"
+                                      },
+                                      "modifyWarranty": 0,
+                                      "timeOutType": "ProcessImmediate",
+                                      "clientName": "#repairUnitInfo.CLIENTNAME",
+                                      "contractName": "#repairUnitInfo.CONTRACTNAME",
+                                      "userName": "#loginUUID.username",
+                                      "userPass": "#loginUUID.password",
+                                      "ip": "::1",
+                                      "callSource": "FrontEnd",
+                                      "apiUsage_LocationName": "#repairUnitInfo.GEONAME",
+                                      "apiUsage_ClientName": "#repairUnitInfo.CLIENTNAME"
+                                    },
+                                    "toBeStringified": true
+                                  },
+                                  "responseDependents": {
+                                    "onSuccess": {
+                                      "actions": [
+                                        {
+                                          "type": "handleDellEstimateActions",
+                                          "methodType": "updateReplaceIconStatus",
+                                          "iconStatus": false
+                                        },
+                                        {
+                                          "type": "clearScreenData"
+                                        },
+                                        {
+                                          "type": "renderTemplate",
+                                          "config": {
+                                            "templateId": "dashboard.json",
+                                            "mode": "local"
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "onFailure": {
+                                      "actions": [
+                                        {
+                                          "type": "handleCommonServices",
+                                          "config": {
+                                            "type": "errorRenderTemplate",
+                                            "contextKey": "errorMsg",
+                                            "updateKey": "errorTitleUUID"
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  }
+                                }
+                              ]
+                            },
+                            "onFailure": {
+                              "actions": [
+                                {
+                                  "type": "handleCommonServices",
+                                  "config": {
+                                    "type": "errorRenderTemplate",
+                                    "contextKey": "errorMsg",
+                                    "updateKey": "errorTitleUUID"
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    "onFailure": {
+                      "actions": []
+                    }
+                  }
+                }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "Result": "SUCCESS"
+}

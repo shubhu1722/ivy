@@ -1,0 +1,412 @@
+<div *ngIf="isWikiAdmin && !isWikiDraft">
+  <label class="subtitle1  w-25" *ngIf="context">Context </label>
+  <label *ngIf="matchingInstructions"><a href="#" class="greyish-black subtitle1 text-underline">Context</a> > <a
+      href="#" class="ml-3 greyish-black subtitle1">Matching Instruction(s)</a> </label>
+  <label *ngIf="textEditor"><a href="#" class="greyish-black subtitle1 text-underline">Context </a> > <a href="#"
+      class="ml-3 greyish-black subtitle1 text-underline">Matching Instruction(s)</a> > <a href="#"
+      class="ml-3 greyish-black subtitle1">Text Editor</a> </label>
+  <div class="create-wiki-box grey-border mb-2">
+    <p class="yellow-font grey-bottom-border m-0">Edit Wiki</p>
+    <form [formGroup]="wikiContextForm">
+      <div class="d-flex align-items-center p-3">
+        <label class="greyish-black subtitle1 mb-0">Title</label>
+        <input class="col-6 ml-5 p-2 grey-border br-rd-5px" type="text" placeholder="" formControlName="wikiTitle"
+          [(ngModel)]="selectedTitle">
+      </div>
+      <div>
+        <app-wiki-richtext [htmlContent]="adminHtmlContent" (editWikiTinyMce)="renderTinyMce($event)"></app-wiki-richtext>
+      </div>
+      <div class="context" *ngIf="context">
+        <mat-accordion class="wiki-accord">
+          <mat-expansion-panel class="grey-bg grey-bottom-border overflow-show" [expanded]="step === 0"
+            (opened)="setStep(0)" hideToggle>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <label class="font-bold m-0 pl-3 cust-arrow-icon">Context</label>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div [hidden]="hidden">
+              <div class="d-flex justify-content-between align-items-center p-3">
+                <label *ngIf="label !== ''" [class]="labelClass">Location </label>
+                <ng-multiselect-dropdown [placeholder]="'-Select-'" formControlName="wikiLocation" disabled="true"
+                  [(ngModel)]="selectedLocation" [settings]="getSettings('LOCATION_NAME', 'LOCATION_ID')"
+                  [data]="locationData" class="w-75">
+                </ng-multiselect-dropdown>
+              </div>
+              <div class="d-flex justify-content-between align-items-center p-3">
+                <label *ngIf="label !== ''" [class]="labelClass">Client </label>
+                <ng-multiselect-dropdown [placeholder]="'-Select-'" formControlName="wikiClient" disabled="true"
+                  [(ngModel)]="selectedClient" [settings]="getSettings('CLIENT_NAME','CLIENT_ID')" [data]="clientData" class="w-75">
+                </ng-multiselect-dropdown>
+              </div>
+              <div class="d-flex justify-content-between align-items-center p-3">
+                <label *ngIf="label !== ''" [class]="labelClass">Contract </label>
+                <ng-multiselect-dropdown [placeholder]="'-Select-'" formControlName="wikiContract" disabled="true"
+                  [(ngModel)]="selectedContract" [settings]="getSettings('CONTRACT_NAME','CONTRACT_ID')" [data]="contractData"
+                  class="w-75">
+                </ng-multiselect-dropdown>
+              </div>
+              <div class="d-flex justify-content-between align-items-center p-3">
+                <label *ngIf="label !== ''" [class]="labelClass">Work Center </label>
+                <ng-multiselect-dropdown [placeholder]="'-Select-'" formControlName="wikiWorkCenter"
+                  [(ngModel)]="selectedWorkCenter" [settings]="getSettings('WORKCENTER_NAME', 'WORKCENTER_ID')"
+                  [data]="workCenterData" class="w-75">
+                </ng-multiselect-dropdown>
+              </div>
+            </div>
+          </mat-expansion-panel>
+          <mat-expansion-panel class="grey-bg grey-bottom-border overflow-show" [expanded]="step === 1"
+            (opened)="setStep(1)" hideToggle>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <label class="font-bold m-0 pl-3 cust-arrow-icon">Unit Details</label>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div [hidden]="hidden">
+              <div class="d-flex justify-content-between align-items-center p-3">
+                <label *ngIf="label !== ''" [class]="labelClass">Family </label>
+                <ng-multiselect-dropdown [placeholder]="'-Select-'" [(ngModel)]="selectedFamily"
+                  formControlName="wikiFamily" disabled="true" [settings]="getSettings('name', 'name')" [data]="unitFamilyData"
+                  class="w-75">
+                </ng-multiselect-dropdown>
+              </div>
+              <div class="d-flex justify-content-between align-items-center p-3">
+                <label *ngIf="label !== ''" [class]="labelClass">Platform </label>
+                <ng-multiselect-dropdown [placeholder]="'-Select-'" [(ngModel)]="selectedPlatform"
+                  formControlName="wikiPlatform" disabled="true" [settings]="getSettings('name', 'name')" [data]="unitPlatformData"
+                  class="w-75">
+                </ng-multiselect-dropdown>
+              </div>
+              <div class="d-flex justify-content-between align-items-center p-3">
+                <label *ngIf="label !== ''" [class]="labelClass">Model Name/PN </label>
+                <ng-multiselect-dropdown [placeholder]="'-Select-'" [(ngModel)]="selectedModel"
+                  formControlName="wikiModelNumber" disabled="true" [settings]="getSettings('name', 'name')" [data]="unitModelNameData"
+                  class="w-75">
+                </ng-multiselect-dropdown>
+              </div>
+              <div class="d-flex justify-content-between align-items-center p-3">
+                <label *ngIf="label !== ''" [class]="labelClass">Commodity </label>
+                <ng-multiselect-dropdown [placeholder]="'-Select-'" [(ngModel)]="selectedCommodity"
+                  formControlName="wikiCommodity" disabled="true" [settings]="getSettings('name', 'name')" [data]="unitCommodityData"
+                  class="w-75">
+                </ng-multiselect-dropdown>
+              </div>
+            </div>
+          </mat-expansion-panel>
+          <mat-expansion-panel class="grey-bg grey-bottom-border overflow-show" [expanded]="step === 2"
+            (opened)="setStep(2)" hideToggle>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <label class="font-bold m-0 pl-3 cust-arrow-icon">Defect</label>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div [hidden]="hidden">
+              <div class="d-flex justify-content-between align-items-center p-3">
+                <label *ngIf="label !== ''" [class]="labelClass">Defect Level</label>
+                <ng-multiselect-dropdown [placeholder]="'-Select-'" [(ngModel)]="selectedDefect1"
+                  formControlName="defectLevelData" disabled="true" [settings]="getSettings('description', 'name')" [data]="defectCodeData"
+                  class="w-75">
+                </ng-multiselect-dropdown>
+              </div>
+              <div class="d-flex justify-content-between align-items-center p-3">
+                <label *ngIf="label !== ''" [class]="labelClass">Defect Level 2 </label>
+                <ng-multiselect-dropdown [placeholder]="'-Select-'" [(ngModel)]="selectedDefect2"
+                  formControlName="defectLevelData2" disabled="true" [settings]="getSettings('description', 'name')" [data]="defectCodeData2"
+                  class="w-75">
+                </ng-multiselect-dropdown>
+              </div>
+              <div class="d-flex justify-content-between align-items-center p-3">
+                <label *ngIf="label !== ''" [class]="labelClass">Defect Level 3 </label>
+                <ng-multiselect-dropdown [placeholder]="'-Select-'" [(ngModel)]="selectedDefect3"
+                  formControlName="defectLevelData3" disabled="true" [settings]="getSettings('description', 'name')" [data]="defectCodeData3"
+                  class="w-75">
+                </ng-multiselect-dropdown>
+              </div>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
+    </form>
+    <form [formGroup]="wikiTextEditorForm">
+      <div class="text-editor">
+        <mat-accordion class="wiki-accord">
+          <mat-expansion-panel class="grey-bg grey-bottom-border overflow-show" [expanded]="step === 0"
+            (opened)="setStep(0)" hideToggle>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <label class="font-bold m-0 pl-3 cust-arrow-icon">About</label>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div [hidden]="hidden">
+              <div class="d-flex align-items-center p-3">
+                <label *ngIf="label !== ''" class="w-25">Author </label>
+                <label *ngIf="loginUserName">{{loginUserName}}</label>
+              </div>
+              <div class="d-flex align-items-center p-3">
+                <label *ngIf="label !== ''" class="w-25">Level of Experience </label>
+                <ng-multiselect-dropdown [placeholder]="'-Select-'" disabled="true" formControlName="levelOfExpData" [(ngModel)]="selectedExp"
+                  [settings]="aboutGetSettings('employee_level', 'employee_level')" [data]="expLevel" class="w-75">
+                </ng-multiselect-dropdown>
+              </div>
+              <div class="d-flex align-items-center p-3">
+                <label *ngIf="label !== ''" class="w-25">Type of Instruction</label>
+                <ng-multiselect-dropdown [placeholder]="'-Select-'" disabled="true" formControlName="typeOfInstData"  [(ngModel)]="selectedTypeInstr"
+                  [settings]="aboutGetSettings('value', 'viewValue')" [data]="typeOfInstData" class="w-75 ml-2"
+                  (onSelect)="typeInstrSelect()" (onDeSelect)="typeInstrDeSelect()">
+                </ng-multiselect-dropdown>
+              </div>
+              <div class="d-flex align-items-center p-3">
+                <label *ngIf="label !== ''" class="w-25">Instruction Language </label>
+                <ng-multiselect-dropdown [placeholder]="'-Select-'" disabled="true" formControlName="instrLangData"  [(ngModel)]="selectedInstrLang"
+                  [settings]="aboutGetSettings('value', 'viewValue')" [data]="instrLangData" class="w-75 ml-2"
+                  (onSelect)="langSelect()" (onDeSelect)="langDeSelect()">
+                </ng-multiselect-dropdown>
+              </div>
+              <div class="d-flex align-items-center p-3">
+                <label *ngIf="label !== ''" class="w-25">Timestamp </label>
+                <label>{{wikiDateTime}}</label>
+              </div>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
+    </form>
+    <mat-action-row class="border-0">
+      <button type="button" class="btn btn-light mr-2" (click)="cancelAdmin()">Cancel</button>
+      <button type="button" class="btn btn-outline-dark mr-2" (click)="updateEditWiki()">Save</button>
+    </mat-action-row>
+  </div>
+</div> 
+
+<div *ngIf="isWikiDraft">
+  <label class="subtitle1  w-25" *ngIf="context">Context </label>
+  <label *ngIf="matchingInstructions"><a (click)="contextLink()"
+      class="greyish-black subtitle1 text-underline">Context</a> > <a href="#"
+      class="ml-3 greyish-black subtitle1">Matching Instruction(s)</a> </label>
+      <label *ngIf="textEditor"><a (click)="contextLink()" class="greyish-black subtitle1 text-underline">Context </a> > <a (click)="matchingInstructLink()" *ngIf="similarInstrLabel" class="ml-3 greyish-black subtitle1 text-underline">Matching Instruction(s) > </a><a href="#" class="ml-3 greyish-black subtitle1">Text Editor</a> </label>
+  <div class="create-wiki-box grey-border mb-2">
+    <p class="yellow-font grey-bottom-border m-0">Edit Wiki</p>
+    <form [formGroup]="wikiContextForm">
+      <div class="d-flex align-items-center p-3">
+        <label class="greyish-black subtitle1 mb-0">Title</label>
+        <input class="col-6 ml-5 p-2 grey-border br-rd-5px" type="text" placeholder="" formControlName="wikiTitle"
+          [(ngModel)]="selectedTitle">
+      </div>
+      <div class="context" *ngIf="context">
+        <mat-accordion class="wiki-accord">
+          <mat-expansion-panel class="grey-bg grey-bottom-border overflow-show" [expanded]="step === 0"
+            (opened)="setStep(0)" hideToggle>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <label class="font-bold m-0 pl-3 cust-arrow-icon">Context</label>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div [hidden]="hidden">
+              <div class="d-flex justify-content-between align-items-center p-3">
+                <label *ngIf="label !== ''" [class]="labelClass">Location </label>
+                <ng-multiselect-dropdown [placeholder]="'-Select-'" formControlName="wikiLocation"
+                  [disabled]="!isWikiDraftAdmin" [(ngModel)]="selectedLocation"
+                  [settings]="wcSettings('LOCATION_NAME', 'LOCATION_ID')" [data]="locationData" class="w-75">
+                </ng-multiselect-dropdown>
+              </div>
+              <div class="d-flex justify-content-between align-items-center p-3">
+                <label *ngIf="label !== ''" [class]="labelClass">Client </label>
+                <ng-multiselect-dropdown [placeholder]="'-Select-'" formControlName="wikiClient" [disabled]="!isWikiDraftAdmin"
+                  [(ngModel)]="selectedClient" [settings]="wcSettings('CLIENT_NAME','CLIENT_ID')" [data]="clientData" class="w-75">
+                </ng-multiselect-dropdown>
+              </div>
+              <div class="d-flex justify-content-between align-items-center p-3">
+                <label *ngIf="label !== ''" [class]="labelClass">Contract </label>
+                <ng-multiselect-dropdown [placeholder]="'-Select-'" formControlName="wikiContract"
+                  [disabled]="!isWikiDraftAdmin" [(ngModel)]="selectedContract" [settings]="wcSettings('CONTRACT_NAME','CONTRACT_ID')"
+                  [data]="contractData" class="w-75">
+                </ng-multiselect-dropdown>
+              </div>
+              <div class="d-flex justify-content-between align-items-center p-3">
+                <label *ngIf="label !== ''" [class]="labelClass">Work Center </label>
+                <ng-multiselect-dropdown *ngIf="isWikiDraftAdmin" [placeholder]="'-Select-'"
+                  formControlName="wikiAdminWorkCenter" [settings]="getSettings('WORKCENTER_NAME', 'WORKCENTER_ID')"
+                  [data]="workCenterData" class="w-75" (onSelect)="workCenterSelect()">
+                </ng-multiselect-dropdown>
+                <ng-multiselect-dropdown *ngIf="!isWikiDraftAdmin" [placeholder]="'-Select-'" formControlName="wikiWorkCenter"
+                  [disabled]="!isWikiDraftAdmin" [(ngModel)]="selectedWorkCenter" [settings]="getSettings(workCenterDisplayKey)"
+                  [data]="workCenterData" class="w-75">
+                </ng-multiselect-dropdown>
+              </div>
+            </div>
+          </mat-expansion-panel>
+          <mat-expansion-panel class="grey-bg grey-bottom-border overflow-show" [expanded]="step === 1"
+            (opened)="setStep(1)" hideToggle>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <label class="font-bold m-0 pl-3 cust-arrow-icon">Unit Details</label>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div [hidden]="hidden">
+              <div class="d-flex justify-content-between align-items-center p-3">
+                <label *ngIf="label !== ''" [class]="labelClass">Family </label>
+                <ng-multiselect-dropdown [placeholder]="'-Select-'" [(ngModel)]="selectedFamily"
+                  formControlName="wikiFamily" [settings]="getSettings('name', 'name')" [data]="unitFamilyData"
+                  class="w-75">
+                </ng-multiselect-dropdown>
+              </div>
+              <div class="d-flex justify-content-between align-items-center p-3">
+                <label *ngIf="label !== ''" [class]="labelClass">Platform </label>
+                <ng-multiselect-dropdown [placeholder]="'-Select-'" [(ngModel)]="selectedPlatform"
+                  formControlName="wikiPlatform" [settings]="getSettings('name', 'name')" [data]="unitPlatformData"
+                  class="w-75">
+                </ng-multiselect-dropdown>
+              </div>
+              <div class="d-flex justify-content-between align-items-center p-3">
+                <label *ngIf="label !== ''" [class]="labelClass">Model Name/PN </label>
+                <ng-multiselect-dropdown [placeholder]="'-Select-'" [(ngModel)]="selectedModel"
+                  formControlName="wikiModelNumber" [settings]="getSettings('name', 'name')" [data]="unitModelNameData"
+                  class="w-75">
+                </ng-multiselect-dropdown>
+              </div>
+              <div class="d-flex justify-content-between align-items-center p-3">
+                <label *ngIf="label !== ''" [class]="labelClass">Commodity </label>
+                <ng-multiselect-dropdown [placeholder]="'-Select-'" [(ngModel)]="selectedCommodity"
+                  formControlName="wikiCommodity" [settings]="getSettings('name', 'name')" [data]="unitCommodityData"
+                  class="w-75">
+                </ng-multiselect-dropdown>
+              </div>
+            </div>
+          </mat-expansion-panel>
+          <mat-expansion-panel class="grey-bg grey-bottom-border overflow-show" [expanded]="step === 2"
+            (opened)="setStep(2)" hideToggle>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <label class="font-bold m-0 pl-3 cust-arrow-icon">Defect</label>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div [hidden]="hidden">
+              <div class="d-flex justify-content-between align-items-center p-3">
+                <label *ngIf="label !== ''" [class]="labelClass">Defect Level</label>
+                <ng-multiselect-dropdown [placeholder]="'-Select-'" [(ngModel)]="selectedDefect1"
+                  formControlName="defectLevelData" [settings]="getSettings('description', 'name')" [data]="defectCodeData"
+                  class="w-75">
+                </ng-multiselect-dropdown>
+              </div>
+              <div class="d-flex justify-content-between align-items-center p-3">
+                <label *ngIf="label !== ''" [class]="labelClass">Defect Level 2 </label>
+                <ng-multiselect-dropdown [placeholder]="'-Select-'" [(ngModel)]="selectedDefect2"
+                  formControlName="defectLevelData2" [settings]="getSettings('description', 'name')" [data]="defectCodeData2"
+                  class="w-75">
+                </ng-multiselect-dropdown>
+              </div>
+              <div class="d-flex justify-content-between align-items-center p-3">
+                <label *ngIf="label !== ''" [class]="labelClass">Defect Level 3 </label>
+                <ng-multiselect-dropdown [placeholder]="'-Select-'" [(ngModel)]="selectedDefect3"
+                  formControlName="defectLevelData3" [settings]="getSettings('description', 'name')" [data]="defectCodeData3"
+                  class="w-75">
+                </ng-multiselect-dropdown>
+              </div>
+            </div>
+          </mat-expansion-panel>
+          <mat-action-row class="border-0">
+            <button type="button" class="btn btn-light mr-2" (click)="cancel()">Cancel</button>
+            <button type="button" class="btn btn-outline-dark mr-2" (click)="saveDraft()">Save Draft</button>
+            <button type="button" class="btn btn-primary"  [disabled]="wikiContextForm.invalid || unitDeailsMandatoryCheck() || defectMandatoryCheck()" 
+              (click)="contextNext()">Next</button>
+          </mat-action-row>
+        </mat-accordion>
+      </div>
+    </form>
+    <div class="matching-instructions p-2" *ngIf="matchingInstructions">
+      <div class="instructions-alert d-flex align-items-center error-block p-2">
+        <label class="subtitle1 mb-0">
+          <mat-icon matSuffix class="error-status"><i class="fa fa-exclamation-circle" aria-hidden="true"></i></mat-icon>
+        </label>
+        <label class="ml-3 mb-0">MATCHING INSTRUCTION(S) FOUND</label>
+      </div>
+      <p class="pt-3 body-italic">Based on the context of this repair tip we have found (<span>{{duplicateWikisList.length}}</span>) similar repair tips. Please confirm that this tip is unique to those flagged</p>
+      <div class="d-flex justify-content-between align-items-center">
+        <label class="subtitle1">Context </label>
+        <label class="w-75"><span *ngIf="breadCrumbData.location">{{breadCrumbData.location}} > </span><span *ngIf="breadCrumbData.client">{{breadCrumbData.client}} > </span><span *ngIf="breadCrumbData.contract">{{breadCrumbData.contract}} > </span><span *ngIf="breadCrumbData.workCenter">{{breadCrumbData.workCenter}} > </span><span *ngIf="breadCrumbData.family">{{breadCrumbData.family}} > </span><span *ngIf="breadCrumbData.platform">{{breadCrumbData.platform}} > </span><span *ngIf="breadCrumbData.modelPart">{{breadCrumbData.modelPart}} > </span><span *ngIf="breadCrumbData.commodity">{{breadCrumbData.commodity}} > </span><span *ngIf="breadCrumbData.defect">{{breadCrumbData.defect}}</span></label>
+      </div>
+      <section class="example-section">
+        <mat-checkbox
+            class="example-margin"
+            [(indeterminate)]="indeterminate"
+            [labelPosition]="labelPosition"
+            [disabled]="disabled" (change)="changeCheck($event)">
+            I have read the bellow instructions and confirm my instruction is unique.
+        </mat-checkbox>
+      </section>
+      <mat-action-row class="border-0">
+        <button type="button" class="btn btn-light mr-2" (click)="cancel()">Cancel</button>
+          <button type="button" class="btn btn-outline-dark mr-2" (click)="saveDraft()">Save Draft</button>
+          <button type="button" class="btn btn-primary" [disabled]="confirm" (click)="matchingNext()">Next</button>
+      </mat-action-row>
+      <div class="Similar-instructions" *ngIf="duplicateWikisList.length">
+        <app-wiki-list isHideAddWiki="true" [wikisList]="duplicateWikisList"></app-wiki-list>
+      </div>
+    </div>
+    <form [formGroup]="wikiTextEditorForm">
+      <div class="text-editor" *ngIf="textEditor">
+        <div class="d-flex justify-content-between align-items-center p-2">
+          <label class="subtitle1">Context </label>
+          <label class="w-75"><span *ngIf="breadCrumbData.location">{{breadCrumbData.location}} > </span><span *ngIf="breadCrumbData.client">{{breadCrumbData.client}} > </span><span *ngIf="breadCrumbData.contract">{{breadCrumbData.contract}} > </span><span *ngIf="breadCrumbData.workCenter">{{breadCrumbData.workCenter}} > </span><span *ngIf="breadCrumbData.family">{{breadCrumbData.family}} > </span><span *ngIf="breadCrumbData.platform">{{breadCrumbData.platform}} > </span><span *ngIf="breadCrumbData.modelPart">{{breadCrumbData.modelPart}} > </span><span *ngIf="breadCrumbData.commodity">{{breadCrumbData.commodity}} > </span><span *ngIf="breadCrumbData.defect">{{breadCrumbData.defect}}</span></label>
+        </div>
+        <div class="d-flex align-items-center p-3">
+          <label *ngIf="label !== ''" class="w-25">Load From</label>
+          <ng-multiselect-dropdown [placeholder]="'-Select-'" formControlName="loadFromData" [settings]="aboutGetSettings('value', 'viewValue')" [data]="loadFromData" class="w-75 ml-2">
+          </ng-multiselect-dropdown>
+        </div>
+        <app-wiki-richtext [htmlContent]="htmlContent" (editWikiTinyMce)="renderTinyMce($event)" #tinyEditorData></app-wiki-richtext>
+        <mat-accordion class="wiki-accord">
+          <mat-expansion-panel class="grey-bg grey-bottom-border overflow-show" [expanded]="step === 0"
+            (opened)="setStep(0)" hideToggle>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <label class="font-bold m-0 cust-arrow-icon">About</label>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div [hidden]="hidden">
+              <div class="d-flex align-items-center p-3">
+                <label *ngIf="label !== ''" class="w-25">Author </label>
+                <label *ngIf="loginUserName">{{loginUserName}}</label>
+              </div>
+              <div class="d-flex align-items-center p-3">
+                <label *ngIf="label !== ''" class="w-25">Level of Experience </label>
+                <ng-multiselect-dropdown [placeholder]="'-Select-'" formControlName="levelOfExpData"
+                  [settings]="aboutGetSettings('employee_level', 'employee_level')" [data]="expLevel" class="w-75">
+                </ng-multiselect-dropdown>
+              </div>
+              <div class="d-flex align-items-center p-3">
+                <label *ngIf="label !== ''" class="w-25">Type of Instruction</label>
+                <ng-multiselect-dropdown [placeholder]="'-Select-'" formControlName="typeOfInstData"
+                  [settings]="aboutGetSettings('value', 'viewValue')" [data]="typeOfInstData" class="w-75 ml-2"
+                  (onSelect)="typeInstrSelect()" (onDeSelect)="typeInstrDeSelect()">
+                </ng-multiselect-dropdown>
+                <mat-icon class="cellGlassIcons" *ngIf="!instrSelected">hourglass_empty</mat-icon>
+                <mat-icon class="wiki-check-circle" *ngIf="instrSelected">check_circle</mat-icon>
+              </div>
+              <div class="d-flex align-items-center p-3">
+                <label *ngIf="label !== ''" class="w-25">Instruction Language </label>
+                <ng-multiselect-dropdown [placeholder]="'-Select-'" formControlName="instrLangData"
+                  [settings]="aboutGetSettings('value', 'viewValue')" [data]="instrLangData" class="w-75 ml-2"
+                  (onSelect)="langSelect()" (onDeSelect)="langDeSelect()">
+                </ng-multiselect-dropdown>
+                <mat-icon class="cellGlassIcons" *ngIf="!langSelected">hourglass_empty</mat-icon>
+                <mat-icon class="wiki-check-circle" *ngIf="langSelected">check_circle</mat-icon>
+              </div>
+              <div class="d-flex align-items-center p-3">
+                <label *ngIf="label !== ''" class="w-25">Timestamp </label>
+                <label>{{wikiDateTime}}</label>
+              </div>
+            </div>
+          </mat-expansion-panel>
+          <mat-action-row class="border-0">
+            <button type="button" class="btn btn-light mr-2" (click)="cancel()">Cancel</button>
+            <button type="button" class="btn btn-outline-dark mr-2" (click)="saveDraft()">Save Draft</button>
+            <button type="button" class="btn btn-primary"
+              [disabled]="wikiTextEditorForm.invalid || wikiContextForm.controls.wikiTitle.invalid || !htmlContent"
+              (click)="saveData()">Submit</button>
+          </mat-action-row>
+        </mat-accordion>
+      </div>
+    </form>
+  </div>
+</div>

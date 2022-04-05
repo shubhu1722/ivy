@@ -1,0 +1,13 @@
+<div [formGroup]="group" [class]="formGroupClass" [style]="formGroupStyles" [hidden]="hidden">
+  <label *ngIf="label !== ''" [class]="labelClass">{{label}} </label>
+  <mat-form-field [class]="autocompleteClass">
+    <input [formControlName]="name" [(ngModel)]="inputText" type="text" [placeholder]="placeholder" aria-label="Number" [maxlength]="maxLength"
+      [minlength]="minLength" matInput (focusout)="onFocusOut()" (keydown)="onKeyDown($event)" (input)="onInput($event)"
+      [ngClass]="isUpperCase ? 'uppercase' : ''" [matAutocomplete]="auto" #autoCompleteInput [required]="required">
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectionChanged($event)">
+      <mat-option *ngFor="let option of getOptions(options,inputText)" [value]="option">
+        {{option}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</div>

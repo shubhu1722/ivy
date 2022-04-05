@@ -1,0 +1,45 @@
+<app-toolbar toolbarClass="pagecontent-footer">
+  <app-iconbutton
+    [visibility]="true"
+    [disabled]="false"
+    text="Save & Exit"
+    icon="save"
+    iconButtonClass="footer-save body"
+    [clickInterceptor]="goToInitialScreen"
+  ></app-iconbutton>
+  <app-icon-text
+    icon="add_comment"
+    text="Add Note"
+    iconPosition="Before"
+    iconTextClass="footer-addNote body"
+    (click)="handleNotePopup()"
+  ></app-icon-text>
+  <app-spacer class="empty-space"></app-spacer>
+  <app-iconbutton
+    [visibility]="true"
+    [disabled]="false"
+    [disableRipple]="true"
+    icon="pause"
+    [clickInterceptor]="performHold"
+    iconButtonClass="footer-save body"
+  ></app-iconbutton>
+  <app-dropdown
+    [defaultValue]="dropdownDefaultValue"
+    [disabled]="dropdownDisabled"
+    [dataSource]="optionsContextKey"
+    name="ResultCodes"
+    code="resultCode"
+    displayValue="resultCode"
+    dropdownClass="footer-dropdown dropdown-container body2"
+    (change)="onChange($event)"
+  ></app-dropdown>
+  <app-button
+    color="primary"
+    text="Time Out"
+    [disabled]="timeoutDisabled"
+    type="submit"
+    buttonClass="footer-button primary-btn"
+    class="primary-btn"
+    [clickInterceptor]="performTimeOut"
+  ></app-button>
+</app-toolbar>

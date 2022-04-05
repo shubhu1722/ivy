@@ -1,0 +1,1402 @@
+{
+    "ResultData": {
+        "ctype": "page",
+        "uuid": "pageUUID",
+        "visibility": true,
+        "hooks": [
+            {
+                "type": "microservice",
+                "hookType": "afterInit",
+                "config": {
+                    "microserviceId": "getFFValue",
+                    "requestMethod": "get",
+                    "params": {
+                        "ffId": "#getReferenceDataKeys.subProcess.VERIFONE.blindReceivingProblemDesc",
+                        "userName": "#userAccountInfo.PersonalDetails.USERID"
+                    }
+                },
+                "responseDependents": {
+                    "onSuccess": {
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "getProblemDescription",
+                                    "data": "responseData"
+                                },
+                                "hookType": "afterInit"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "ProlemDescriptionDropdownUUID",
+                                  "dropDownProperties": {
+                                    "options": "#getProblemDescription"
+                                  }
+                                }
+                            }
+                        ]
+                    },
+                    "onFailure": {
+
+                    }
+                }
+            },
+            {
+                "type": "microservice",
+                "hookType": "afterInit",
+                "config": {
+                    "microserviceId": "getBlindReceiptCustomerPO",
+                    "requestMethod": "get",
+                    "params": {
+                        "userName": "#userAccountInfo.PersonalDetails.USERID"
+                    }
+                },
+                "responseDependents": {
+                    "onSuccess": {
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "customerPONumberResp",
+                                    "data": "responseData"
+                                }
+                            }
+                        ]
+                    },
+                    "onFailure": {
+                        "actions": [
+
+                        ]
+                    }
+                }
+            },
+            {
+                "type": "setDefaultValue",
+                "config": {
+                  "key": "unitDetaliSerialNumberScanUUID",
+                  "defaultValue": "N/A"
+                },
+                "hookType": "afterInit"
+            }
+        ],
+        "header": [
+            {
+                "ctype": "breadcrumb",
+                "style": "padding-left: 4px;",
+                "breadcrumbs": [
+                    {
+                        "label": "#userSelectedLocationName"
+                    },
+                    {
+                        "label": "#userSelectedClientName"
+                    },
+                    {
+                        "label": "#userSelectedContractName"
+                    }
+                ]
+            },
+            {
+                "ctype": "toolbar",
+                "css": "padding-top: 35px;",
+                "toolbarClass": "pagecontent-header",
+                "items": [
+                    {
+                        "ctype": "title",
+                        "uuid": "BlindReceivingHHeadertitleuuid",
+                        "titleValue": "Blind Receiving",
+                        "titleClass": "section-title",
+                        "css": "padding-bottom: 35px;padding-left: 4px;"
+                    },
+                    {
+                        "ctype": "spacer",
+                        "uuid": "emptySpaceUUID",
+                        "class": "empty-space"
+                    },
+                    {
+                        "ctype": "iconbutton",
+                        "iconButtonClass": "headeropen-button",
+                        "text": "",
+                        "uuid": "pageopenUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "hidden": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "icon": "menu_open",
+                        "disableRipple": true,
+                        "iconClass": "header-icon",
+                        "css": "padding-bottom: 35px;",
+                        "actions": [
+                            {
+                                "type": "toggle",
+                                "eventSource": "click",
+                                "name": "subProcessRightNavref"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "openUUID",
+                                    "properties": {
+                                        "hidden": false
+                                    }
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "pageopenUUID",
+                                    "properties": {
+                                        "hidden": true
+                                    }
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "items": [
+            {
+                "ctype": "title",
+                "uuid": "successTitleUUID",
+                "titleClass": "success-title",
+                "isShown": false,
+                "containerId": "prebodysectionone"
+            },
+            {
+                "ctype": "title",
+                "uuid": "errorTitleUUID",
+                "titleClass": "error-title",
+                "isShown": false,
+                "containerId": "prebodysectionone"
+            },
+            {
+                "ctype": "taskPanel",
+                "containerId": "prebodysectionone",
+                "header": {
+                    "title": "Problem Description",
+                    "svgIcon": "description_icon",
+                    "iconClass": "active-header",
+                    "class": "po-specific"
+                },
+                "expanded": true,
+                "hideToggle": true,
+                "uuid": "ProblemDescriptionUUID",
+                "visibility": false,
+                "disabled": false,
+                "hooks": [],
+                "validations": [],
+                "actions": [],
+                "items": [
+                    {
+                        "ctype": "title",
+                        "uuid": "ProblemDescriptionTextUUID",
+                        "titleValue": "Select the problem description",
+                        "titleValueClass": "body-italic text-secondary"
+                    },
+                    {
+                        "ctype": "nativeDropdown",
+                        "dropdownClass": "col-2 mb-3 footer-dropdown body2 reworkCommon verifoneProblemDescLayout",
+                        "formGroupClass": "d-flex",
+                        "uuid": "ProlemDescriptionDropdownUUID",
+                        "name": "ProlemDescriptionDropdown",
+                        "label": "Problem Description",
+                        "labelClass": "pl-0 pt-3 align-left",
+                        "dataSource": "",
+                        "code": "value",
+                        "displayValue": "value",
+                        "required": true,
+                        "options": [],
+                        "actions": [
+                        ]
+                    }
+                ],
+                "footer": [
+                    {
+                        "ctype": "button",
+                        "color": "primary",
+                        "text": "Complete",
+                        "class": "primary-btn",
+                        "uuid": "ProblemDescriptionSubmitUUID",
+                        "visibility": true,
+                        "disabled": true,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "problemDescriptionFormData",
+                                    "data": "formData"
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "ProblemDescriptionUUID",
+                                    "properties": {
+                                        "expanded": false,
+                                        "disabled": false,
+                                        "header": {
+                                            "title": "Problem Description",
+                                            "svgIcon": "description_icon",
+                                            "iconClass": "active-header",
+                                            "statusIcon": "check_circle",
+                                            "statusClass": "complete-status",
+                                            "class": "disable-text"
+                                        }
+                                    }
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key" : "ShippingDetailsUUID",
+                                    "properties": {
+                                        "expanded" : true,
+                                        "disabled": false
+                                    }
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "ctype": "taskPanel",
+                "containerId": "prebodysectionone",
+                "header": {
+                    "title": "Shipping Details",
+                    "svgIcon": "description_icon",
+                    "iconClass": "active-header",
+                    "class": "po-specific"
+                },
+                "expanded": false,
+                "hideToggle": true,
+                "uuid": "ShippingDetailsUUID",
+                "visibility": false,
+                "disabled": true,
+                "hooks": [],
+                "validations": [],
+                "actions": [],
+                "items": [
+                    {
+                        "ctype": "title",
+                        "uuid": "RecordUnitShippingTextUUID",
+                        "titleValue": "Record the Unit shipping details",
+                        "titleValueClass": "body-italic text-secondary"
+                    },
+                    {
+                        "ctype": "textField",
+                        "uuid": "shipToSiteIDScanUUID",
+                        "submitable": false,
+                        "disabled": false,
+                        "validations": [
+                            {
+                                "type": "regex",
+                                "script": "^.{1,50}$"
+                            }
+                        ],
+                        "inLine": true,
+                        "formGroupClass": "ppid-flexfield",
+                        "textfieldClass": "ppid-textfield",
+                        "hooks": [],
+                        "actions": [
+                        ],
+                        "name": "shipToSiteIDTextUUID",
+                        "label": "Ship to site ID (Optional)",
+                        "labelClass": "ppid-label font-bold",
+                        "labelPosition": "",
+                        "tooltip": "",
+                        "TooltipPosition": "",
+                        "defaultValue": "",
+                        "readonly": false,
+                        "type": "text",
+                        "required": false,
+                        "placeholder": "Scan #",
+                        "value": "",
+                        "prefix": false,
+                        "prefixIcon": "",
+                        "suffix": false,
+                        "suffixIcon": ""
+                    },
+                    {
+                        "ctype":"title",
+                        "titleClass": "ppid-flexfield"
+                    },
+                    {
+                        "ctype": "textField",
+                        "uuid": "shipToSiteNameScanUUID",
+                        "submitable": false,
+                        "disabled": false,
+                        "validations": [
+                            {
+                                "type": "regex",
+                                "script": "^.{1,50}$"
+                            }
+                        ],
+                        "inLine": true,
+                        "formGroupClass": "ppid-flexfield",
+                        "textfieldClass": "ppid-textfield",
+                        "hooks": [],
+                        "actions": [
+                        ],
+                        "name": "shipToSiteNameTextUUID",
+                        "label": "Ship to site Name",
+                        "labelClass": "ppid-label font-bold",
+                        "labelPosition": "",
+                        "tooltip": "",
+                        "TooltipPosition": "",
+                        "defaultValue": "",
+                        "readonly": false,
+                        "type": "text",
+                        "required": true,
+                        "placeholder": "Scan #",
+                        "value": "",
+                        "prefix": false,
+                        "prefixIcon": "",
+                        "suffix": false,
+                        "suffixIcon": ""
+                    },
+                    {
+                        "ctype":"title",
+                        "titleClass": "ppid-flexfield"
+                    },
+                    {
+                        "ctype": "textField",
+                        "uuid": "shippingCountryScanUUID",
+                        "submitable": false,
+                        "disabled": false,
+                        "validations": [
+                            {
+                                "type": "regex",
+                                "script": "^.{1,50}$"
+                            }
+                        ],
+                        "inLine": true,
+                        "formGroupClass": "ppid-flexfield",
+                        "textfieldClass": "ppid-textfield",
+                        "hooks": [],
+                        "actions": [
+                        ],
+                        "name": "shippingCountryTextUUID",
+                        "label": "Country",
+                        "labelClass": "ppid-label font-bold",
+                        "labelPosition": "",
+                        "tooltip": "",
+                        "TooltipPosition": "",
+                        "defaultValue": "",
+                        "readonly": false,
+                        "type": "text",
+                        "required": true,
+                        "placeholder": "Scan #",
+                        "value": "",
+                        "prefix": false,
+                        "prefixIcon": "",
+                        "suffix": false,
+                        "suffixIcon": ""
+                    },
+                    {
+                        "ctype":"title",
+                        "titleClass": "ppid-flexfield"
+                    },
+                    {
+                        "ctype": "textField",
+                        "uuid": "shippingRMAScanUUID",
+                        "submitable": false,
+                        "disabled": false,
+                        "validations": [
+                            {
+                                "type": "regex",
+                                "script": "^.{0,30}$"
+                            }
+                        ],
+                        "inLine": true,
+                        "formGroupClass": "ppid-flexfield",
+                        "textfieldClass": "ppid-textfield",
+                        "hooks": [],
+                        "actions": [
+                        ],
+                        "name": "shippingRMATextUUID",
+                        "label": "RMA",
+                        "labelClass": "ppid-label font-bold",
+                        "labelPosition": "",
+                        "tooltip": "",
+                        "TooltipPosition": "",
+                        "defaultValue": "",
+                        "readonly": false,
+                        "type": "text",
+                        "required": true,
+                        "placeholder": "Scan #",
+                        "value": "",
+                        "prefix": false,
+                        "prefixIcon": "",
+                        "suffix": false,
+                        "suffixIcon": ""
+                    },
+                    {
+                        "ctype": "checkbox",
+                        "name": "packingListNumberCheckbox",
+                        "uuid": "packingListNumberCheckboxUUID",
+                        "hooks": [],
+                        "required": false,
+                        "submittable": false,
+                        "checkVisibility": true,
+                        "isDisableNotReq": true,
+                        "label": "N/A",
+                        "labelPosition": "after",
+                        "checkboxContainer": "noppid1st-checkbox",
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                  "requestMethod": "add",
+                                  "key": "shippingRMASelection",
+                                  "data": "elementControlValue"
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "condition",
+                                "eventSource": "click",                               
+                                "config": {
+                                    "operation": "isEqualTo",
+                                    "lhs": "#shippingRMASelection",
+                                    "rhs": true
+                                  },
+                                  "responseDependents": {
+                                    "onSuccess": {
+                                      "actions": [                                        
+                                        {
+                                            "type": "setDefaultValue",
+                                            "config": {
+                                              "key": "shippingRMAScanUUID",
+                                              "defaultValue": "N/A"
+                                            },
+                                            "eventSource": "click"
+                                        }
+                                      ]
+                                    },
+                                    "onFailure": {
+                                      "actions": [
+                                        {
+                                            "type": "setDefaultValue",
+                                            "config": {
+                                              "key": "shippingRMAScanUUID",
+                                              "defaultValue": ""
+                                            },
+                                            "eventSource": "click"
+                                        },
+                                        {
+                                            "type": "updateComponent",
+                                            "config": {
+                                              "key": "RecordPackingListNumberSubmitUUID",
+                                              "properties": {
+                                                "disabled": true
+                                              }
+                                            },
+                                            "eventSource": "click"
+                                        }
+                                      ]
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ],
+                "footer": [
+                    {
+                        "ctype": "button",
+                        "color": "primary",
+                        "text": "Complete",
+                        "class": "primary-btn",
+                        "uuid": "RecordPackingListNumberSubmitUUID",
+                        "visibility": true,
+                        "disabled": true,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "shippingDetailsFormData",
+                                    "data": "formData"
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "ShippingDetailsUUID",
+                                    "properties": {
+                                        "expanded": false,
+                                        "disabled": false,
+                                        "header": {
+                                            "title": "Shipping Details",
+                                            "svgIcon": "description_icon",
+                                            "iconClass": "active-header",
+                                            "statusIcon": "check_circle",
+                                            "statusClass": "complete-status",
+                                            "class": "disable-text"
+                                        }
+                                    }
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key" : "UnitDetailsUUID",
+                                    "properties": {
+                                        "expanded" : true,
+                                        "disabled" : false
+                                    }
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "ctype": "taskPanel",
+                "containerId": "prebodysectionone",
+                "header": {
+                    "title": "Unit Details",
+                    "svgIcon": "description_icon",
+                    "iconClass": "active-header",
+                    "class": "po-specific"
+                },
+                "expanded": false,
+                "hideToggle": true,
+                "uuid": "UnitDetailsUUID",
+                "visibility": false,
+                "disabled": true,
+                "hooks": [],
+                "validations": [],
+                "actions": [],
+                "items": [
+                    {
+                        "ctype": "title",
+                        "uuid": "UnitDetailsTextUUID",
+                        "titleValue": "Record the Unit details",
+                        "titleValueClass": "body-italic text-secondary"
+                    },
+                    {
+                        "ctype": "textField",
+                        "uuid": "unitDetaliSerialNumberScanUUID",
+                        "submitable": false,
+                        "disabled": false,
+                        "validations": [
+                            {
+                                "type": "regex",
+                                "script": "^.{0,30}$"
+                            }
+                        ],
+                        "inLine": true,
+                        "formGroupClass": "ppid-flexfield",
+                        "textfieldClass": "ppid-textfield",
+                        "hooks": [],
+                        "actions": [
+                        ],
+                        "name": "unitDetaliSerialNumberTextUUID",
+                        "label": "Serial Number",
+                        "labelClass": "ppid-label font-bold",
+                        "labelPosition": "",
+                        "tooltip": "",
+                        "TooltipPosition": "",
+                        "defaultValue": "",
+                        "readonly": false,
+                        "type": "text",
+                        "required": true,
+                        "placeholder": "Scan #",
+                        "value": "",
+                        "prefix": false,
+                        "prefixIcon": "",
+                        "suffix": false,
+                        "suffixIcon": ""
+                        
+                    },
+                    {
+                        "ctype": "checkbox",
+                        "name": "unitSerialNumberCheckbox",
+                        "uuid": "unitSerialNumberCheckboxUUID",
+                        "hooks": [],
+                        "required": false,
+                        "submittable": false,
+                        "checkVisibility": true,
+                        "isDisableNotReq": true,
+                        "checked":true,
+                        "label": "N/A",
+                        "labelPosition": "after",
+                        "checkboxContainer": "noppid1st-checkbox",
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                  "requestMethod": "add",
+                                  "key": "unitSerialNumberSelection",
+                                  "data": "elementControlValue"
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "condition",
+                                "eventSource": "click",                               
+                                "config": {
+                                    "operation": "isEqualTo",
+                                    "lhs": "#unitSerialNumberSelection",
+                                    "rhs": true
+                                  },
+                                  "responseDependents": {
+                                    "onSuccess": {
+                                      "actions": [
+                                        {
+                                            "type": "setDefaultValue",
+                                            "config": {
+                                              "key": "unitDetaliSerialNumberScanUUID",
+                                              "defaultValue": "N/A"
+                                            },
+                                            "eventSource": "click"
+                                        }
+                                      ]
+                                    },
+                                    "onFailure": {
+                                      "actions": [
+                                        {
+                                            "type": "setDefaultValue",
+                                            "config": {
+                                              "key": "unitDetaliSerialNumberScanUUID",
+                                              "defaultValue": ""
+                                            },
+                                            "eventSource": "click"
+                                        }
+                                      ]
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "textField",
+                        "uuid": "unitDetailPartNumberScanUUID",
+                        "submitable": false,
+                        "disabled": false,
+                        "validations": [
+                            {
+                                "type": "regex",
+                                "script": "^.{1,50}$"
+                            }
+                        ],
+                        "inLine": true,
+                        "formGroupClass": "ppid-flexfield",
+                        "textfieldClass": "ppid-textfield",
+                        "hooks": [],
+                        "actions": [
+                        ],
+                        "name": "unitDetailPartNumberTextUUID",
+                        "label": "Part Number",
+                        "labelClass": "ppid-label font-bold",
+                        "labelPosition": "",
+                        "tooltip": "",
+                        "TooltipPosition": "",
+                        "defaultValue": "",
+                        "readonly": false,
+                        "type": "text",
+                        "required": false,
+                        "placeholder": "Scan #",
+                        "value": "",
+                        "prefix": false,
+                        "prefixIcon": "",
+                        "suffix": false,
+                        "suffixIcon": ""
+                    },    
+                    {
+                        "ctype": "checkbox",
+                        "name": "unitDetailPartNumberCheckbox",
+                        "uuid": "unitDetailPartNumberCheckboxUUID",
+                        "hooks": [],
+                        "required": false,
+                        "submittable": false,
+                        "checkVisibility": true,
+                        "isDisableNotReq": true,
+                        "label": "N/A",
+                        "labelPosition": "after",
+                        "checkboxContainer": "noppid1st-checkbox",
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                  "requestMethod": "add",
+                                  "key": "unitDetailPartNumberSelection",
+                                  "data": "elementControlValue"
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "condition",
+                                "eventSource": "click",                               
+                                "config": {
+                                    "operation": "isEqualTo",
+                                    "lhs": "#unitDetailPartNumberSelection",
+                                    "rhs": true
+                                  },
+                                  "responseDependents": {
+                                    "onSuccess": {
+                                      "actions": [
+                                        {
+                                            "type": "setDefaultValue",
+                                            "config": {
+                                              "key": "unitDetailPartNumberScanUUID",
+                                              "defaultValue": "N/A"
+                                            },
+                                            "eventSource": "click"
+                                        }
+                                      ]
+                                    },
+                                    "onFailure": {
+                                      "actions": [
+                                        {
+                                            "type": "setDefaultValue",
+                                            "config": {
+                                              "key": "unitDetailPartNumberScanUUID",
+                                              "defaultValue": ""
+                                            },
+                                            "eventSource": "click"
+                                        }
+                                      ]
+                                    }
+                                }
+                            }
+                        ]
+                    },                
+                    {
+                        "ctype": "textField",
+                        "uuid": "unitDetailPTIDScanUUID",
+                        "submitable": false,
+                        "disabled": false,
+                        "validations": [
+                            {
+                                "type": "regex",
+                                "script": "^.{1,50}$"
+                            }
+                        ],
+                        "inLine": true,
+                        "formGroupClass": "ppid-flexfield",
+                        "textfieldClass": "ppid-textfield",
+                        "hooks": [],
+                        "actions": [
+                        ],
+                        "name": "unitDetailPTIDTextUUID",
+                        "label": "PTID (Optional)",
+                        "labelClass": "ppid-label font-bold",
+                        "labelPosition": "",
+                        "tooltip": "",
+                        "TooltipPosition": "",
+                        "defaultValue": "",
+                        "readonly": false,
+                        "type": "text",
+                        "required": false,
+                        "placeholder": "Scan #",
+                        "value": "",
+                        "prefix": false,
+                        "prefixIcon": "",
+                        "suffix": false,
+                        "suffixIcon": ""
+                    },
+                    {
+                        "ctype":"title",
+                        "titleClass": "ppid-flexfield"
+                    },
+                    {
+                        "ctype": "textField",
+                        "uuid": "unitDetailBTMACScanUUID",
+                        "submitable": false,
+                        "disabled": false,
+                        "validations": [
+                        ],
+                        "inLine": true,
+                        "formGroupClass": "ppid-flexfield",
+                        "textfieldClass": "ppid-textfield",
+                        "hooks": [],
+                        "actions": [
+                        ],
+                        "name": "unitDetailBTMACTextUUID",
+                        "label": "BT MAC (Optional)",
+                        "labelClass": "ppid-label font-bold",
+                        "labelPosition": "",
+                        "tooltip": "",
+                        "TooltipPosition": "",
+                        "defaultValue": "",
+                        "readonly": false,
+                        "type": "text",
+                        "required": false,
+                        "placeholder": "Scan #",
+                        "value": "",
+                        "prefix": false,
+                        "prefixIcon": "",
+                        "suffix": false,
+                        "suffixIcon": ""
+                    },
+                    {
+                        "ctype":"title",
+                        "titleClass": "ppid-flexfield"
+                    },
+                    {
+                        "ctype": "textField",
+                        "uuid": "unitDetailWIFIMACScanUUID",
+                        "submitable": false,
+                        "disabled": false,
+                        "validations": [
+                        ],
+                        "inLine": true,
+                        "formGroupClass": "ppid-flexfield",
+                        "textfieldClass": "ppid-textfield",
+                        "hooks": [],
+                        "actions": [
+                        ],
+                        "name": "unitDetailWIFIMACTextUUID",
+                        "label": "WIFI MAC (Optional)",
+                        "labelClass": "ppid-label font-bold",
+                        "labelPosition": "",
+                        "tooltip": "",
+                        "TooltipPosition": "",
+                        "defaultValue": "",
+                        "readonly": false,
+                        "type": "text",
+                        "required": false,
+                        "placeholder": "Scan #",
+                        "value": "",
+                        "prefix": false,
+                        "prefixIcon": "",
+                        "suffix": false,
+                        "suffixIcon": ""
+                    }
+                ],
+                "footer": [
+                    {
+                        "ctype": "button",
+                        "color": "primary",
+                        "text": "Complete",
+                        "class": "primary-btn",
+                        "uuid": "unitDetailsNumberSubmitUUID",
+                        "visibility": true,
+                        "disabled": true,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "unitDetailsFormData",
+                                    "data": "formData"
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "microservice",
+                                "eventSource": "click",
+                                "config": {
+                                    "microserviceId": "isPartPresentReceiptTrigger",
+                                    "requestMethod": "get",
+                                    "params": {
+                                        "partNo":"#unitDetailsFormData.unitDetailPartNumberTextUUID",
+                                        "locationName":"#userSelectedLocationName",
+                                        "ownerName":"#userSelectedClientName",
+                                        "ConditionName":"Defective"
+                                    }
+                                },
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "UnitDetailsUUID",
+                                                    "properties": {
+                                                        "expanded": false,
+                                                        "disabled": false,
+                                                        "header": {
+                                                            "title": "Unit Details",
+                                                            "svgIcon": "description_icon",
+                                                            "iconClass": "active-header",
+                                                            "statusIcon": "check_circle",
+                                                            "statusClass": "complete-status",
+                                                            "class": "disable-text"
+                                                        }
+                                                    }
+                                                },
+                                                "eventSource": "click"
+                                            },
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key" : "RecordBinUUID",
+                                                    "properties": {
+                                                        "expanded" : true,
+                                                        "disabled" : false
+                                                    }
+                                                },
+                                                "eventSource": "click"
+                                            },
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "errorResp",
+                                                    "data": ""
+                                                },
+                                                "eventSource": "click"
+                                            },
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "errorTitleUUID",
+                                                    "properties": {
+                                                        "titleValue": "#errorResp",
+                                                        "isShown": true
+                                                    },
+                                                    "eventSource": "click"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "errorResp",
+                                                    "data": "responseData"
+                                                },
+                                                "eventSource": "click"
+                                            },
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "errorTitleUUID",
+                                                    "properties": {
+                                                        "titleValue": "#errorResp",
+                                                        "isShown": true
+                                                    },
+                                                    "eventSource": "click"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "ctype": "taskPanel",
+                "containerId": "prebodysectionone",
+                "header": {
+                    "title": "Record Bin",
+                    "svgIcon": "description_icon",
+                    "iconClass": "active-header",
+                    "class": "po-specific"
+                },
+                "expanded": false,
+                "hideToggle": true,
+                "uuid": "RecordBinUUID",
+                "visibility": false,
+                "disabled": true,
+                "hooks": [],
+                "validations": [],
+                "actions": [],
+                "items": [
+                    {
+                        "ctype": "title",
+                        "uuid": "RecordBinTextUUID",
+                        "titleValue": "Record the unit BIN",
+                        "titleValueClass": "body-italic text-secondary"
+                    },
+                    {
+                        "ctype": "textField",
+                        "uuid": "RecordBinDetailsUUID",
+                        "submitable": false,
+                        "disabled": false,
+                        "validations": [
+                            {
+                                "type": "regex",
+                                "script": "^.{0,20}$"
+                            }
+                        ],
+                        "inLine": true,
+                        "formGroupClass": "flex-container flex-container-half-width",
+                        "textfieldClass": "textfield-container-field",
+                        "hooks": [],
+                        "actions": [
+                        ],
+                        "name": "RecordBinTextUUID",
+                        "label": "BIN",
+                        "labelClass": "font-bold",
+                        "labelPosition": "",
+                        "tooltip": "",
+                        "TooltipPosition": "",
+                        "defaultValue": "",
+                        "readonly": false,
+                        "type": "text",
+                        "required": true,
+                        "placeholder": "Enter Text",
+                        "value": "",
+                        "prefix": false,
+                        "prefixIcon": "",
+                        "suffix": false,
+                        "suffixIcon": ""
+                    }
+                ],
+                "footer": [
+                    {
+                        "ctype": "button",
+                        "color": "primary",
+                        "text": "Complete",
+                        "class": "primary-btn",
+                        "uuid": "RecordBinSubmitUUID",
+                        "visibility": true,
+                        "disabled": true,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "recordBinFormData",
+                                    "data": "formData"
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "RecordBinUUID",
+                                    "properties": {
+                                        "expanded": false,
+                                        "disabled": false,
+                                        "header": {
+                                            "title": "Record BIN",
+                                            "svgIcon": "description_icon",
+                                            "iconClass": "active-header",
+                                            "statusIcon": "check_circle",
+                                            "statusClass": "complete-status",
+                                            "class": "disable-text"
+                                        }
+                                    }
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key" : "BlindReceipttimeoutUUID",
+                                    "properties": {
+                                        "disabled" : false
+                                    }
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "footer": [
+            {
+                "ctype": "toolbar",
+                "toolbarClass": "pagecontent-footer",
+                "items": [
+                    {
+                        "ctype": "iconbutton",
+                        "iconButtonClass": "footer-save body primary-btn",
+                        "text": "Exit",
+                        "uuid": "saveUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "icon": "close",
+                        "actions": [
+                            {
+                                "type": "clearAllContext",
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "renderTemplate",
+                                "config": {
+                                    "templateId": "dashboard.json",
+                                    "mode": "local"
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "spacer",
+                        "uuid": "emptySpaceUUID",
+                        "class": "empty-space"
+                    },
+                    {
+                        "ctype": "spacer",
+                        "uuid": "emptySpaceUUID",
+                        "class": "empty-space"
+                    },
+                    {
+                        "ctype": "spacer",
+                        "uuid": "emptySpaceUUID",
+                        "class": "empty-space"
+                    },
+                    {
+                        "ctype": "spacer",
+                        "uuid": "emptySpaceUUID",
+                        "class": "empty-space"
+                    },
+                    {
+                        "ctype": "button",
+                        "color": "primary",
+                        "buttonClass": "footer-button",
+                        "text": "Blind Receipt",
+                        "uuid": "BlindReceipttimeoutUUID",
+                        "visibility": true,
+                        "checkGroupValidity": false,
+                        "disabled": true,
+                        "hidden": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "actions": [
+                            {
+                                "type": "getVerifoneBlindReceivingFlexField",
+                                "config": {
+                                    "key": "verifoneBlindReceivingFlexFieldsData",
+                                    "flexdata": {
+                                        "Serial_Number": "#unitDetailsFormData.unitDetaliSerialNumberTextUUID",
+                                        "Bin_location": "#recordBinFormData.RecordBinTextUUID",
+                                        "Ship_to_site_id": "#shippingDetailsFormData.shipToSiteIDTextUUID",
+                                        "Ship_to_site_Name": "#shippingDetailsFormData.shipToSiteNameTextUUID",
+                                        "Country": "#shippingDetailsFormData.shippingCountryTextUUID",
+                                        "Part_Number":"#unitDetailsFormData.unitDetailPartNumberTextUUID",
+                                        "PTID_Number":"#unitDetailsFormData.unitDetailPTIDTextUUID",
+                                        "RMA_Number": "#shippingDetailsFormData.shippingRMATextUUID",
+                                        "Problem_Description": "#problemDescriptionFormData.ProlemDescriptionDropdown",
+                                        "BT_MAC":"#unitDetailsFormData.unitDetailBTMACTextUUID",
+                                        "WIFI_MAC":"#unitDetailsFormData.unitDetailWIFIMACTextUUID"
+
+                                    }
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "microservice",
+                                "config": {
+                                    "microserviceId": "createROReceiptV2",
+                                    "requestMethod": "post",
+                                    "body": {
+                                        "createReferenceOrderInfo": {
+                                            "systemId": "1",
+                                            "UserName": "#userAccountInfo.PersonalDetails.USERID",
+                                            "Password": "#loginUUID.password",
+                                            "OrderInfo": {
+                                                "billToDo": {},
+                                                "billingTermsAbbr": "",
+                                                "btType": "CR-SCRN",
+                                                "clientAbbr": "#userSelectedClientName",
+                                                "clientRefNo1": "",
+                                                "clientRefNo2": "",
+                                                "contract": "#userSelectedContractName",
+                                                "custOrderNo": "#customerPONumberResp.CustomerPONumber",
+                                                "customerAbbr": "#userSelectedClientName",
+                                                "dfltPOAbbrv": "",
+                                                "dfltPaymentTermsAbbrv": "",
+                                                "documentNo": "",
+                                                "geography": "#userSelectedLocationName",
+                                                "headerFlexFields": {
+                                                    "FlexFields": []
+                                                },
+                                                "id": "",
+                                                "inboundAddressAbbr": "",
+                                                "newLineList": [
+                                                    {
+                                                        "ABomPN": "",
+                                                        "condition": "",
+                                                        "currency": "USD",
+                                                        "custOrderLineNo": "",
+                                                        "custPartNo": "",
+                                                        "lineFlexFields": "",
+                                                        "manufacturer": "",
+                                                        "manufacturerPartNo": "",
+                                                        "notes": "Problem Shelf",
+                                                        "orderLineNo": "1",
+                                                        "partList": "",
+                                                        "partNo": "PROBLEM SHELF",
+                                                        "priority": "",
+                                                        "quantity": "1 ",
+                                                        "reonCode": "",
+                                                        "reonNotes": "",
+                                                        "shippingTermsAbbr": "",
+                                                        "status": "",
+                                                        "taxableFlag": "",
+                                                        "unitPrice": "0",
+                                                        "warrantyFlag": "",
+                                                        "ordShipTermName": "",
+                                                        "ordShipTermAllowPartialShipment": "",
+                                                        "ordShipTermCarrier": "",
+                                                        "ordShipTermCarrierType": "",
+                                                        "ordShipTermFobCode": "",
+                                                        "ordShipTermFreightAccountCode": "",
+                                                        "ordShipTermServiceType": ""
+                                                    }
+                                                ],
+                                                "notes": "Problem Shelf",
+                                                "outboundAddressAbbr": "",
+                                                "shipToDo": {},
+                                                "status": "Released",
+                                                "systemId": "1",
+                                                "warehouse": "SZO-BUILDING1",
+                                                "wsFlexFields": {
+                                                    "FlexFields": []
+                                                },
+                                                "OrdTradPart_Name": "",
+                                                "OrdTradPart_Note": "",
+                                                "OrdTradPart_OrderPaymentTerms": "",
+                                                "OrdTradPart_BillShipToSameContactAndAddress": "",
+                                                "NonValidatedTradingPartner": ""
+                                            },
+                                            "IP": "::1",
+                                            "CallSource": "FrontEnd",
+                                            "APIUsage_LocationName": "#userSelectedLocationName",
+                                            "APIUsage_ClientName": "#userSelectedClientName"
+                                        },
+                                        "ReceiptInfo": {
+                                            "User": "#userAccountInfo.PersonalDetails.USERID",
+                                            "Pwd": "#loginUUID.password",
+                                            "CarrierName": "",
+                                            "PackingListNo": "",
+                                            "PackingListNoPackingListNo": "",
+                                            "TrackingNo": "",
+                                            "Lines": {
+                                                "Line": {
+                                                    "LineNo": "1",
+                                                    "Items": {
+                                                        "Item": {                                                            
+                                                            "Quantity": "1",
+                                                            "ReasonNotes": "Test Reason",
+                                                            "ResultCode": "Problem Shelf",
+                                                            "Warranty": "false",
+                                                            "Notes": "Blind",
+                                                            "FlexFields": {
+                                                                "FlexField": "#verifoneBlindReceivingFlexFieldsData"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            "ExternalReceiptData": {
+                                                "ReceiptNumber": "",
+                                                "Application": "",
+                                                "Warehouse": ""
+                                            },
+                                            "IP": ":1",
+                                            "CallSource": "FrontEnd",
+                                            "APIUsage_LocationName": "#userSelectedLocationName",
+                                            "APIUsage_ClientName": "#userSelectedClientName"
+                                        },
+                                        "justReturnXML": "false"
+                                    },
+                                    "toBeStringified": true
+                                },
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [                                            
+                                            {
+                                                "type": "clearScreenData",
+                                                "eventSource": "click"
+                                            },
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "receiptId",
+                                                    "data": "responseData"
+                                                },
+                                                "eventSource": "click"
+                                            },
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "successTitleUUID",
+                                                    "properties": {
+                                                        "title": "Receipt Successfull : ",
+                                                        "titleValue": "#receiptId.ReceiptRONumber",
+                                                        "isShown": true
+                                                    },
+                                                    "eventSource": "click"
+                                                }
+                                            },                                           
+                                            {
+                                                "type": "renderTemplate",
+                                                "config": {
+                                                    "templateId": "dashboard.json",
+                                                    "mode": "local"
+                                                },
+                                                "eventSource": "click"
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "errorResp",
+                                                    "data": "responseData"
+                                                },
+                                                "eventSource": "click"
+                                            },
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "errorTitleUUID",
+                                                    "properties": {
+                                                        "titleValue": "#errorResp",
+                                                        "isShown": true
+                                                    },
+                                                    "eventSource": "click"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+
+                    }
+                ]
+            }
+        ]
+    },
+    "Result": "SUCCESS"
+}

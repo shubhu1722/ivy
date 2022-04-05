@@ -1,0 +1,350 @@
+{
+  "ResultData": {
+    "ctype": "page",
+    "uuid": "pageUUID",
+    "css": "",
+    "visibility": true,
+    "hooks": [
+      {
+        "type":"condition",
+        "config":{
+          "operation":"isEqualTo",
+          "lhs":"#isBlindReceipt",
+          "rhs":true
+        },
+        "hookType":"afterInit",
+        "responseDependents":{
+          "onSuccess":{
+            "actions":[
+              {
+                "type":"condition",
+                "config": {
+                  "operation": "isValid",
+                  "lhs": "#dellCarReceiptId"
+                  },
+                  "hookType": "afterInit",
+                  "responseDependents":{
+                    "onSuccess":{
+                      "actions":[
+                        {
+                          "type":"updateComponent",
+                          "config":{
+                            "key":"dellCarBlindReceiptNumberUUID",
+                            "properties":{
+                              "isShown":true,
+                              "title": "Blind Receipt Successfull : ",
+                              "titleValue": "#dellCarReceiptId"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    "onFailure":{
+                      "actions":[{}]
+                    }
+                  }
+              }
+            ]
+          },
+          "onFailure":{
+            "actions":[
+              {
+                "type":"condition",
+                "hookType":"afterInit",
+                "config": {
+                  "operation": "isValid",
+                  "lhs":"#dellCarReceiptId"
+                  },
+                  "responseDependents":{
+                    "onSuccess":{
+                      "actions":[
+                        {
+                          "type":"updateComponent",
+                          "config":{
+                            "key":"dellCarReceivingreceiptNumberUUID",
+                            "properties":{
+                              "isShown":true,
+                              "titleValue": "#dellCarReceiptId"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    "onFailure":{
+                      "actions":[{}]
+                    }
+                  }
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "validations": [],
+    "action": [],
+    "header": [
+      {
+        "ctype": "toolbar",
+        "toolbarClass": "searchCriteria-toolbar section-title",
+        "items": [
+          {
+            "ctype": "title",
+            "title": "Receiving"
+          }
+        ]
+      }
+    ],
+    "items": [
+      {
+        "ctype": "title",
+        "uuid": "searchCriteriaErrorTitleUUID",
+        "titleClass": "error-title",
+        "isShown": false
+      },
+      {
+        "ctype": "title",
+        "title": "Blind Receipt Successfull : ",
+        "uuid": "dellCarBlindReceiptNumberUUID",
+        "titleClass": "success-title",
+        "titleValue": "#dellCarReceiptId",
+        "isShown": false
+      },
+      {
+        "ctype": "title",
+        "title": "Receipt Successfull : ",
+        "uuid": "dellCarReceivingreceiptNumberUUID",
+        "titleClass": "success-title",
+        "titleValue": "#dellCarReceiptId",
+        "isShown": false
+      },
+      {
+        "ctype": "formPanel",
+        "title": "dellReceivingHomeScreen",
+        "header": "",
+        "uuid": "dellCarReceivingHomeScreenUUID",
+        "formPanelClass": "searchCriteria-panel",
+        "visibility": true,
+        "hooks": [],
+        "validations": [],
+        "actions": [],
+        "items": [
+          {
+            "ctype": "nativeDropdown",
+            "uuid": "identificatorTypeUUID",
+            "hooks": [],
+            "validations": [],
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "userOptionIdentifierType",
+                  "data": "elementControlValue"
+                },
+                "eventSource": "change"
+              }
+            ],
+            "type": "text",
+            "required": true,
+            "placeholder": "Identificator Type",
+            "submitable": true,
+            "label": "",
+            "labelPosition": "",
+            "name": "identificatorType",
+            "defaultValue": "Tracking No",
+            "dropdownClass": "searchcriteris-drpdwn",
+            "disabled": true,
+            "options": [
+              {
+                "code": "Tracking No",
+                "displayValue": "Tracking No",
+                "isDefault": true
+              }
+            ]
+          },
+          {
+            "ctype": "textField",
+            "uuid": "unitIdentificationValueUUID",
+            "hooks": [],
+            "validations": [
+              {
+                "type": "regex",
+                "script": "^[a-zA-Z0-9]{8,40}$"
+              }
+            ],
+            "textfieldClass": "searchcriteris-text",
+            "type": "text",
+            "required": true,
+            "placeholder": "Scan Tracking Number",
+            "submitable": true,
+            "isUpperCase": true,
+            "label": "",
+            "labelPosition": "",
+            "name": "unitIdentificationValue",
+            "prefix": "true",
+            "prefixIcon": "qr_code_scanner",
+            "suffix": true,
+            "suffixIcon": "arrow_forward",
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "addToGlobalContext",
+                  "key": "dellCarReceiptId",
+                  "data": ""
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "context",
+                "config": {
+                  "key": "userSearchCriteria",
+                  "data": "formData",
+                  "requestMethod": "add"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "dellCarReceivingreceiptNumberUUID",
+                  "properties": {
+                    "isShown": false
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "dellCarBlindReceiptNumberUUID",
+                  "properties": {
+                    "isShown": false
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "microservice",
+                "eventSource": "click",
+                "config": {
+                  "microserviceId": "getSubProcessMenu",
+                  "isLocal": false,
+                  "LocalService": "assets/Responses/getSubProcessMenu.json",
+                  "requestMethod": "get",
+                  "params": {
+                    "userId": "#loginUUID.username",
+                    "locationId": "#userSelectedLocation",
+                    "clientId": "#userSelectedClient",
+                    "contractId": "#userSelectedContract",
+                    "wcId": 1,
+                    "optId": 1,
+                    "btt": 1,
+                    "whId": "1",
+                    "operationType": "#userSelectedSubProcessType",
+                    "workCenterName": ""
+                  }
+                },
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "SubprocessMenu",
+                          "data": "responseData"
+                        }
+                      },
+                      {
+                        "type": "microservice",
+                        "config": {
+                          "microserviceId": "getProcess",
+                          "requestMethod": "get",
+                          "parseJson": true,
+                          "params": {
+                            "locationId": "#userSelectedLocation",
+                            "clientId": "#userSelectedClient",
+                            "contractId": "#userSelectedContract",
+                            "btt": 1,
+                            "optId": 1,
+                            "whId": 1,
+                            "userId": "#userAccountInfo.PersonalDetails.USERID",
+                            "wcId": 1,
+                            "operationType": "#userSelectedSubProcessType",
+                            "workCenterName": ""
+                          },
+                          "isLocal": false,
+                          "LocalService": "assets/Responses/getProcessDellCar.json"
+                        },
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "context",
+                                "config": {
+                                  "requestMethod": "add",
+                                  "key": "getProcessData",
+                                  "data": "responseData"
+                                }
+                              },
+                              {
+                                "type": "renderTemplate",
+                                "config": {
+                                  "templateId": "dellCarReceiving.json",
+                                  "mode": "local"
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": [
+                              {
+                                "type": "context",
+                                "config": {
+                                  "requestMethod": "add",
+                                  "key": "getProcessData",
+                                  "data": "responseData"
+                                }
+                              },
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "searchCriteriaErrorTitleUUID",
+                                  "properties": {
+                                    "titleValue": "#getProcessData",
+                                    "isShown": true
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "searchCriteriaErrorTitleUUID",
+                          "properties": {
+                            "titleValue": "Failed to fetch getSubprocess Menu.",
+                            "isShown": true
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "footer": []
+  },
+  "Result": "SUCCESS"
+}

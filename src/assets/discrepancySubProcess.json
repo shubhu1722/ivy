@@ -1,0 +1,46 @@
+{
+    "ctype": "subProcess",
+    "title": "DISCREPANCY",
+    "uuid": "discrepancyUUID",
+    "subMenuIndex": 0,
+    "clientName": "HP",
+    "openRightNav": false,
+    "hooks": [
+        {
+            "type": "microservice",
+            "hookType": "beforeInit",
+            "config": {
+                "microserviceId": "getSubProcessPageBody",
+                "requestMethod": "get",
+                "params": {
+                    "subProcessId": "#wcSubprocess.DISCREPANCY.subProcessID",
+                    "userName": "#userAccountInfo.PersonalDetails.USERID"
+                },
+                "isLocal": false,
+                "LocalService": "assets/Responses/SubProcess/HP/discrepancySubProcess.json"
+            },
+            "responseDependents": {
+                "onSuccess": {
+                    "actions": [
+                        {
+                            "type": "renderTemplate",
+                            "config": {
+                                "mode": "remote",
+                                "targetId": "mainPageContentBodysp",
+                                "templateId": "getSubProcessPageBody"
+                            }
+                        }
+                    ]
+                },
+                "onFailure": {
+                    "actions": [
+                        {
+                            "type": "toast",
+                            "message": "Failed to fetch Discrepancy SubProcess JSON"
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}

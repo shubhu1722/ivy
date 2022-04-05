@@ -1,0 +1,258 @@
+{
+    "ctype": "sidenav",
+    "_comment": " This is the dashboard metadata json which has a sidenav and main content",
+    "title": "Dashboard",
+    "uuid": "CiscoprocessUUID",
+    "visibility": true,
+    "hooks": [],
+    "validations": [],
+    "action": [],
+    "mode": "side",
+    "fixedInViewport": "",
+    "pcBodyClass": "ciscoECOBooking",
+    "leftsideNav": {
+        "position": "start",
+        "opened": "true",
+        "sideNavHeader": [
+            {
+                "ctype": "title",
+                "title": "SN: ",
+                "titleValue": "#UnitInfo.SERIAL_NO",
+                "uuid": "SNUUID",
+                "titleClass": "sidenav-header heading1"
+            },
+            {
+                "ctype": "title",
+                "title": "PID-",
+                "titleValue": "#UnitInfo.PART_NO",
+                "uuid": "PIDUUID",
+                "titleClass": "sidenav-title body2"
+            },
+            {
+                "ctype": "title",
+                "title": "BCN-",
+                "titleValue": "#UnitInfo.ITEM_BCN",
+                "uuid": "titleUUID",
+                "titleClass": "sidenav-title body2"
+            }
+        ],
+        "sideNavBody": [
+            {
+                "ctype": "menutree",
+                "uuid": "menuTreeUUID",
+                "menuListClass": "body2",
+                "menuData": "#SubprocessMenu",
+                "childIndex": 1
+            }
+        ],
+        "sideNavFooter": [
+            {
+                "ctype": "iconText",
+                "text": "#userAccountInfo.PersonalDetails.USERID",
+                "iconTextClass": "user-cls",
+                "textClass": "body2",
+                "icon": "account_circle"
+            },
+            {
+                "ctype": "iconText",
+                "text": "Logout",
+                "iconTextClass": "logout-cls",
+                "icon": "power_settings_new",
+                "textClass": "body2",
+                "actions": [
+                    {
+                        "type": "renderTemplate",
+                        "config": {
+                            "templateId": "login.json",
+                            "mode": "local",
+                            "clearContext": true
+                        },
+                        "eventSource": "click"
+                    }
+                ]
+            }
+        ]
+    },
+    "rightsidenav": {
+        "position": "end",
+        "opened": "true",
+        "sideNavHeader": [
+            {
+                "ctype": "toolbar",
+                "toolbarClass": "rightside-header",
+                "items": [
+                    {
+                        "ctype": "title",
+                        "title": "Work Instructions",
+                        "titleClass": "section-title"
+                    },
+                    {
+                        "ctype": "textField",
+                        "uuid": "searchUUID",
+                        "submitable": false,
+                        "disabled": false,
+                        "visibility": true,
+                        "validations": [],
+                        "formGroupClass": "search-container",
+                        "textfieldClass": "rightside-search",
+                        "hooks": [],
+                        "actions": [],
+                        "name": "string",
+                        "label": "",
+                        "labelPosition": "",
+                        "tooltip": "",
+                        "TooltipPosition": "",
+                        "defaultvalue": "",
+                        "readonly": false,
+                        "type": "text",
+                        "required": false,
+                        "placeholder": "Search",
+                        "value": "",
+                        "prefix": false,
+                        "prefixIcon": "",
+                        "suffix": false,
+                        "suffixIcon": ""
+                    },
+                    {
+                        "ctype": "iconbutton",
+                        "iconButtonClass": "headeropen-button",
+                        "text": "",
+                        "uuid": "openUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "hidden": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "icon": "menu",
+                        "disableRipple": true,
+                        "iconClass": "header-icon",
+                        "actions": [
+                            {
+                                "type": "toggle",
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "pageopenUUID",
+                                    "properties": {
+                                        "hidden": false
+                                    }
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "sideNavBody": [],
+        "sideNavFooter": []
+    },
+    "pageContentBody": [
+        {
+            "ctype": "page",
+            "uuid": "WS-X4992=",
+            "css": "",
+            "visibility": true,
+            "hooks": [],
+            "validations": [],
+            "action": [],
+            "header": [],
+            "errorTitle": "Eco Not Found",
+            "items": [
+                {
+                    "ctype": "taskPanel",
+                    "title": "",
+                    "header": {
+                        "title": "Record unit parts information",
+                        "icon": "description"
+                    },
+                    "expanded": "true",
+                    "hideToggle": "true",
+                    "uuid": "recordUnitPartsUUID",
+                    "visibility": false,
+                    "hooks": [],
+                    "validations": [],
+                    "actions": [],
+                    "items": [],
+                    "footer": [
+                        {
+                            "ctype": "button",
+                            "color": "primary",
+                            "text": "Complete",
+                            "uuid": "rupiSubmitUUID",
+                            "name": "rupiSubmit",
+                            "visibility": true,
+                            "disabled": false,
+                            "type": "submit",
+                            "hooks": [],
+                            "validations": [],
+                            "actions": [
+                                {
+                                    "type": "microservice",
+                                    "config": {
+                                        "microserviceId": "getSearchCriteria",
+                                        "isLocal": true,
+                                        "LocalService": "assets/base_Test/compEcoTasks.json",
+                                        "requestMethod": "get",
+                                        "params": {
+                                            "locationId": "#userSelectedLocation",
+                                            "clientId": "#userSelectedClient",
+                                            "contractId": "#userSelectedContract",
+                                            "searchType": "#userSelectedSubProcessType",
+                                            "userName": "#userAccountInfo.PersonalDetails.USERID"
+                                        }
+                                    },
+                                    "eventSource": "click",
+                                    "responseDependents": {
+                                        "onSuccess": {
+                                            "actions": [
+                                                {
+                                                    "type": "context",
+                                                    "config": {
+                                                        "requestMethod": "add",
+                                                        "key": "testCompData",
+                                                        "data": "responseData"
+                                                    }
+                                                },
+                                                {
+                                                    "type": "renderTemplate",
+                                                    "config": {
+                                                        "mode": "remote",
+                                                        "targetId": "compTemplate",
+                                                        "templateId": "testCompData",
+                                                        "targetUUID":"compTemplateUUID1"
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "onFailure": {
+                                            "actions": [
+                                                {
+                                                    "type": "updateComponent",
+                                                    "config": {
+                                                        "key": "errorTitleUUID",
+                                                        "properties": {
+                                                            "titleValue": "Data Rendering Problem",
+                                                            "isShown": true
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "ctype":"contentRenderer",
+                    "uuid":"compTemplateUUID1"
+                }
+            ]
+        }
+    ]
+}

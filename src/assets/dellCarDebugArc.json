@@ -1,0 +1,47 @@
+{
+    "ctype": "subProcess",
+    "title": "DEBUG_ARC",
+    "slWcName": "DELL_CAR_DEBUG_ARC",
+    "uuid": "dellDebugUUID",
+    "subMenuIndex": 2,
+    "clientName": "DELL_CAR",
+    "openRightNav": false,
+    "hooks": [
+        {
+            "type": "microservice",
+            "hookType": "beforeInit",
+            "config": {
+                "microserviceId": "getSubProcessPageBody",
+                "requestMethod": "get",
+                "params": {
+                    "subProcessId": "#dellCarwcSubprocess.DEBUG_ARC.subProcessID",
+                    "userName": "#userAccountInfo.PersonalDetails.USERID"
+                },
+                "isLocal": false,
+                "LocalService": "assets/Responses/SubProcess/DELL_CAR/dellCarDebugArcSubProcess.json"
+            },
+            "responseDependents": {
+                "onSuccess": {
+                    "actions": [
+                        {
+                            "type": "renderTemplate",
+                            "config": {
+                                "mode": "remote",
+                                "targetId": "mainPageContentBodysp",
+                                "templateId": "getSubProcessPageBody"
+                            }
+                        }
+                    ]
+                },
+                "onFailure": {
+                    "actions": [
+                        {
+                            "type": "toast",
+                            "message": "Failed to fetch Dell Debug JSON"
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}

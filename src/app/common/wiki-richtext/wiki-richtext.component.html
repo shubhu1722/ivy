@@ -1,0 +1,3 @@
+<form [formGroup]="wikiTinyEditorForm">
+  <editor class="p-2" name="wikiTinymce" (ngModelChange)="tinyChangeEvent($event)" [(ngModel)]="htmlContent" formControlName="wikiTinymce" id="file-picker" [init]="editorConfig"></editor>
+</form>

@@ -1,0 +1,54 @@
+{
+    "ctype": "subProcess",
+    "title": "BGA_REWORK",
+    "uuid": "ciscobgareworkUUID",
+    "subMenuIndex": 0,
+    "clientName": "CISCO",
+    "openRightNav": false,
+    "hooks": [
+      {
+        "type": "microservice",
+        "hookType": "beforeInit",
+        "config": {
+          "microserviceId": "getSubProcessPageBody",
+          "requestMethod": "get",
+          "params": {
+            "subProcessId": "#getReferenceDataKeys.subProcess.Cisco.BGA_REWORK",
+            "userName": "#userAccountInfo.PersonalDetails.USERID"
+          },
+          "isLocal": false,
+          "LocalService": "assets/Responses/SubProcess/CISCO/BGAReworkSubProcess.json"
+        },
+        "responseDependents": {
+          "onSuccess": {
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "CiscoBGAReworkData",
+                  "data": "responseData"
+                }
+              },
+              {
+                "type": "renderTemplate",
+                "config": {
+                  "mode": "remote",
+                  "targetId": "mainPageContentBodysp",
+                  "templateId": "CiscoBGAReworkData"
+                }
+              }
+            ]
+          },
+          "onFailure": {
+            "actions": [
+              {
+                "type": "toast",
+                "message": "Failed to fetch Cisco BGA Rework JSON"
+              }
+            ]
+          }
+        }
+      }
+    ]
+}

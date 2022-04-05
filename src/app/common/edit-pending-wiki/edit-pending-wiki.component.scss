@@ -1,0 +1,68 @@
+.create-wiki-box {
+    background: white;
+    .btn-outline-dark:hover {
+        color: #343a40;
+        background-color: #fff;
+    }
+    .btn-secondary {
+        color: rgba(80, 80, 80, 0.498);
+        background-color: rgba(117, 117, 117, 0.098);
+        border: 1px solid rgba(117, 117, 117, 0.098)
+    }
+    .btn-secondary:hover {
+        color: rgba(80, 80, 80, 0.498);
+        background-color: rgba(117, 117, 117, 0.098);
+        border: 1px solid rgba(117, 117, 117, 0.098)
+    }
+}
+.grey-border {
+    border: 1px solid rgba(80, 80, 80, 0.2980392156862745);
+}
+.yellow-font {
+    color: #FFCE4B;
+    font-weight: 700;
+    font-style: italic;
+    padding: 12px 12px 12px 8px;
+} 
+.grey-bottom-border {
+    border-bottom: 1px solid rgba(80, 80, 80, 0.2980392156862745);
+}
+.br-rd-5px {
+    border-radius: 5px;
+}
+.grey-bg {
+    background: #eee !important;
+    .mat-expansion-panel-header {
+        height: 44px !important;
+    }
+}
+.cellGlassIcons{
+    background-color: #d7d7d7;
+    color: black;
+    border-radius: 50%;
+    text-align: center;
+    padding: 1px;
+    margin-left: 5px;
+    line-height: 28px;
+    width: 30px !important;
+    height: 30px !important;
+}
+.wiki-check-circle {
+    align-self: center;
+    color: #30c76f;
+    margin-left: 5px;
+    position: relative;
+    text-align: center;
+    &:after {
+        background: rgba(48, 199, 111, 0.3);
+        border-radius: 50%;
+        content: "";
+        height: 24px;
+        left: 0px;
+        position: absolute;
+        top: 1px;
+        transform: scale(1.2);
+        transform-origin: bottom;
+        width: 24px;
+    }
+}

@@ -1,0 +1,163 @@
+{
+    "createReferenceOrderInfo": {
+       "systemId": "1",
+       "UserName": "Bhupendra.Singh4",
+       "Password": "Changeme@143",
+       "OrderInfo": {
+           "billToDo": {},
+           "billingTermsAbbr": "",
+           "btType": "CR",   #orderDetails.BUSINESS_TRX_TYPE_ID
+           "clientAbbr": "HP ", #orderDetails.BUSINESS_TRX_TYPE_ID
+           "clientRefNo1": "1Z0V352Y6W09477948",   #orderDetails.CLIENT_REFERENCE_NO1
+           "clientRefNo2": "", #orderDetails.CLIENT_REFERENCE_NO
+           "contract": "Quarantine",  #orderDetails.CONTRACT_NAME
+           "custOrderNo": "",
+           "customerAbbr": " HEWLETT PACKARD ",#orderDetails.TRADING_PARTNER_NAME
+           "dfltPOAbbrv": "",
+           "dfltPaymentTermsAbbrv": "",
+           "documentNo": "",
+           "geography": "Bydgoszcz",  #orderDetails.LOCATION_NAME
+           "headerFlexFields": {
+               "FlexFields": []
+           },
+           "id": "",
+           "inboundAddressAbbr": " ul. Fordonska 248 G",
+           "newLineList": [{
+               "ABomPN":"",
+               "condition":"",
+               "currency":"USD",
+               "custOrderLineNo":"",
+               "custPartNo":"",
+               "lineFlexFields":"",
+               "manufacturer":"",
+               "manufacturerPartNo":"",
+               "notes":"",
+               "orderLineNo":"1",
+               "partList":"",
+               "partNo":"HP_EMPTY",
+               "priority":"",
+               "quantity":"1 ",
+               "reonCode":"",
+               "reonNotes":"",
+               "shippingTermsAbbr":"",
+               "status":"",
+               "taxableFlag":"",
+               "unitPrice":"1",
+               "warrantyFlag":"",
+               "ordShipTermName":"",
+               "ordShipTermAllowPartialShipment":"",
+               "ordShipTermCarrier":"",
+               "ordShipTermCarrierType":"",
+               "ordShipTermFobCode":"",
+               "ordShipTermFreightAccountCode":"",
+               "ordShipTermServiceType":""
+           }],
+           "notes": "Testing",
+           "outboundAddressAbbr": "",
+           "shipToDo": {},
+           "status": "Released",
+           "systemId": "1",
+           "warehouse": "HP LAPTOP WUR",   #orderDetails.INBOUND_WAREHOUSE_NAME
+           "wsFlexFields": {
+               "FlexFields": []
+           },
+           "OrdTradPart_Name": "",
+           "OrdTradPart_Note": "",
+           "OrdTradPart_OrderPaymentTerms": "",
+           "OrdTradPart_BillShipToSameContactAndAddress": "",
+           "NonValidatedTradingPartner": ""
+       },
+       "IP": "::1",
+       "CallSource": "1Click-MVCReceiving",
+       "APIUsage_LocationName": "Bydgoszcz", #orderDetails.LOCATION_NAME
+       "APIUsage_ClientName": "HP" #orderDetails.CLIENT_NAME
+   }, 
+   "ReceiptInfo":{
+   "User": "Bhupendra.Singh4",
+   "Pwd": "Changeme@143",
+   "CarrierName": "",
+   "PackingListNo": "",
+   "PackingListNoPackingListNo": "",
+   "TrackingNo": "4567890123",
+   "Lines": {
+       "Line": {
+           "LineNo": "1",
+           "Items": {
+               "Item": {
+                   "PartNum": "Y3J80AV",
+                   "Quantity": "1",
+                   "OriginalSerialNumber": "",
+                   "OriginalBCN": "",
+                   "SerialNum": "4567890123",
+                   "BCN": {
+                       "_Number": ""
+                   },
+                   "FixedAssetTag": "",
+                   "ReasonCode": "",
+                   "ReasonNotes": "",
+                   "ResultCode": "Process Unit",
+                   "Warranty": "true",
+                   "Notes": "",
+                   "RevisionLevel": "",
+                   "FlexFields": {
+                       "FlexField": [
+                           {
+                               "Name": "BOX",
+                               "Value": "BYD BOX - ACC NOT OK"
+                               
+                           },
+                           {
+                               "Name": "SN Mismatch",
+                               "Value": "SNM"
+                               
+                           },
+                           {
+                               "Name": "CSO Mismatch",
+                               "Value": "NA"
+                               
+                           },
+                           {
+                               "Name": "Battery SN",
+                               "Value": "4567890123"
+                               
+                           },
+                           {
+                               "Name": "AC Adapter SN",
+                               "Value": "4567890123"								
+                           }
+                       ]
+                   }
+               }
+           }
+       }
+   },
+   "ReceiptFlexFields": {
+       "FlexFields":{
+          "FlexField":  [
+           {
+               "Name": "",
+               "Value": ""
+           },
+           {
+               "Name": "",
+               "Value": ""
+           }
+       ]
+       }
+   },
+   "ExternalReceiptData": {
+       "ReceiptNumber": "",
+       "Application": "",
+       "Warehouse": ""
+   },
+   "IP": ":1",
+   "CallSource": "FrontEnd",
+   "APIUsage_LocationName": "Bydgoszcz",
+   "APIUsage_ClientName": "HP"
+},
+"justReturnXML": "false"
+
+}
+
+
+

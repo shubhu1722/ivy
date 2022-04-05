@@ -1,0 +1,2642 @@
+{
+	"css": "",
+	"ctype": "page",
+	"visibility": true,
+	"action": [],
+	"header": [
+		{
+			"ctype": "breadcrumb",
+			"breadcrumbs": [
+				{
+					"label": "#userSelectedLocationName"
+				},
+				{
+					"label": "#userSelectedClientName"
+				},
+				{
+					"label": "#userSelectedContractName"
+				}
+			]
+		},
+		{
+			"ctype": "toolbar",
+			"toolbarClass": "pagecontent-header",
+			"items": [
+				{
+					"ctype": "title",
+					"titleValue": "IQA-ECO Booking",
+					"uuid": "subProcessTitleUUID",
+					"titleClass": "section-title"
+				}
+			]
+		}
+	],
+	"validations": [],
+	"uuid": "ASA5506-K9",
+	"hooks": [],
+	"items": [
+		{
+			"ctype": "title",
+			"isShown": false,
+			"uuid": "errorTitleUUID",
+			"titleClass": "error-title"
+		},
+		{
+			"hideToggle": true,
+			"hidden": false,
+			"footer": [
+				{
+					"ctype": "button",
+					"color": "primary",
+					"visibility": true,
+					"disabled": true,
+					"text": "Complete",
+					"validations": [],
+					"type": "",
+					"uuid": "daa35221-9fe9-4b59-a29c-adc83e443233",
+					"hooks": [],
+					"actions": [
+						{
+							"responseDependents": {
+								"onFailure": {
+									"actions": [
+										{
+											"responseDependents": {
+												"onFailure": {
+													"actions": [
+														{
+															"type": "context",
+															"config": {
+																"data": "responseData",
+																"requestMethod": "add",
+																"key": "erroMsg"
+															}
+														},
+														{
+															"type": "updateComponent",
+															"config": {
+																"key": "errorTitleUUID",
+																"properties": {
+																	"isShown": true,
+																	"titleValue": "#erroMsg"
+																}
+															}
+														}
+													]
+												},
+												"onSuccess": {
+													"actions": [
+														{
+															"eventSource": "click",
+															"type": "updateComponent",
+															"config": {
+																"key": "b0742ca7-b7a6-4f89-bf8a-3e4bdfe1f33b",
+																"properties": {
+																	"expanded": false,
+																	"header": {
+																		"statusClass": "complete-status",
+																		"icon": "description",
+																		"statusIcon": "check_circle",
+																		"title": "Test ECO- EA543998 Az ECO -t akkor kell végrehajtani ha a készülék verziója  73-16139-05 A0-nál kisebb ",
+																		"class": "complete-task",
+																		"iconClass": "complete-task",
+																		"status": "#EA543998-action"
+																	},
+																	"disabled": false
+																}
+															}
+														},
+														{
+															"eventSource": "click",
+															"type": "updateComponent",
+															"config": {
+																"key": "33c00340-2e67-4a89-94c8-c239a63c46ce",
+																"properties": {
+																	"expanded": true,
+																	"hidden": false,
+																	"disabled": false
+																}
+															}
+														},
+														{
+															"eventSource": "click",
+															"type": "updateComponent",
+															"config": {
+																"key": "daa35221-9fe9-4b59-a29c-adc83e443233",
+																"properties": {
+																	"disabled": false
+																}
+															}
+														},
+														{
+															"eventSource": "click",
+															"type": "updateComponent",
+															"config": {
+																"key": "ddb5a870-5cbc-4797-b6e7-8a35f448b5ef",
+																"properties": {
+																	"disabledClass": "disabledTrue"
+																}
+															}
+														}
+													]
+												}
+											},
+											"eventSource": "click",
+											"type": "microservice",
+											"config": {
+												"microserviceId": "performFA",
+												"toBeStringified": true,
+												"requestMethod": "post",
+												"body": {
+													"callSource": "FrontEnd",
+													"ip": "::1",
+													"apiUsage_LocationName": "#UnitInfo.GEONAME",
+													"userPwd": {
+														"password": "#loginUUID.password",
+														"username": "#loginUUID.username"
+													},
+													"apiUsage_ClientName": "#UnitInfo.CLIENTNAME",
+													"updateFailureAnalysisRequest": {
+														"actionCodeChangeList": {
+															"actionCodeChange": [
+																{
+																	"actionCode": "#EA543998-action",
+																	"operation": "Add",
+																	"ecoCode": {
+																		"occurrence": 1,
+																		"value": "ASA5506-K9--EA543998"
+																	}
+																}
+															]
+														},
+														"ecoCodeChangeList": {
+															"ecoCodeChange": [
+																{
+																	"operation": "Add",
+																	"ecoCode": "ASA5506-K9--EA543998"
+																}
+															]
+														},
+														"bcn": "#UnitInfo.ITEM_BCN"
+													},
+													"operationTypes": "ProcessImmediate"
+												}
+											}
+										}
+									]
+								},
+								"onSuccess": {
+									"actions": [
+										{
+											"eventSource": "click",
+											"type": "updateComponent",
+											"config": {
+												"key": "b0742ca7-b7a6-4f89-bf8a-3e4bdfe1f33b",
+												"properties": {
+													"expanded": false,
+													"header": {
+														"statusClass": "complete-status",
+														"icon": "description",
+														"statusIcon": "check_circle",
+														"title": "Test ECO- EA543998 Az ECO -t akkor kell végrehajtani ha a készülék verziója  73-16139-05 A0-nál kisebb ",
+														"class": "complete-task",
+														"iconClass": "complete-task",
+														"status": "#EA543998-action"
+													},
+													"disabled": false
+												}
+											}
+										},
+										{
+											"eventSource": "click",
+											"type": "updateComponent",
+											"config": {
+												"key": "33c00340-2e67-4a89-94c8-c239a63c46ce",
+												"properties": {
+													"expanded": true,
+													"hidden": false,
+													"disabled": false
+												}
+											}
+										},
+										{
+											"eventSource": "click",
+											"type": "updateComponent",
+											"config": {
+												"key": "daa35221-9fe9-4b59-a29c-adc83e443233",
+												"properties": {
+													"disabled": false
+												}
+											}
+										},
+										{
+											"eventSource": "click",
+											"type": "updateComponent",
+											"config": {
+												"key": "ddb5a870-5cbc-4797-b6e7-8a35f448b5ef",
+												"properties": {
+													"disabledClass": "disabledTrue"
+												}
+											}
+										}
+									]
+								}
+							},
+							"eventSource": "click",
+							"type": "condition",
+							"config": {
+								"lhs": "#EA543998-action",
+								"rhs": "REJECT",
+								"operation": "isEqualToIgnoreCase"
+							}
+						}
+					]
+				}
+			],
+			"title": "",
+			"uuid": "b0742ca7-b7a6-4f89-bf8a-3e4bdfe1f33b",
+			"expanded": true,
+			"ctype": "taskPanel",
+			"header": {
+				"icon": "description",
+				"title": "Test ECO- EA543998 Az ECO -t akkor kell végrehajtani ha a készülék verziója  73-16139-05 A0-nál kisebb ",
+				"class": "title-normal",
+				"status": ""
+			},
+			"disabled": false,
+			"validations": [],
+			"hooks": [],
+			"actions": [],
+			"items": [
+				{
+					"ctype": "disabled",
+					"disabledClass": "disabledFalse",
+					"uuid": "ddb5a870-5cbc-4797-b6e7-8a35f448b5ef"
+				},
+				{
+					"ctype": "title",
+					"titleValue": "Rommon és Firmware frissítés - Teszten automatikusan történik",
+					"uuid": "be477910-d88b-4dfe-af53-34727e89d86c"
+				},
+				{
+					"ctype": "title",
+					"titleValue": "Vegye fel és zárja le az ECO -t.",
+					"uuid": "c84fef69-5ea6-4552-9f31-a0d620e62a94"
+				},
+				{
+					"ctype": "title",
+					"titleValue": "Szükséges fájlok:",
+					"uuid": "e59f43c3-0b0c-41b3-abae-f19d1bb162e2"
+				},
+				{
+					"ctype": "title",
+					"titleValue": "asa_release.SPA",
+					"uuid": "2fc8b059-daf7-4f27-8e7f-d835c1cd2cf9"
+				},
+				{
+					"ctype": "title",
+					"titleValue": "asa5500-firmware-1108.SPA",
+					"uuid": "003e56eb-37b9-4f06-8b2c-8e00446954b0"
+				},
+				{
+					"ctype": "title",
+					"titleValue": "kenton_pseq_v2_07.s19",
+					"uuid": "4fe7bd9c-6c4e-4789-8897-7f17f42b7d3e"
+				},
+				{
+					"ctype": "title",
+					"titleValue": "kenton-diag-v114_released",
+					"uuid": "417c1486-f3fc-4812-99e9-5bba943a1bcf"
+				},
+				{
+					"ctype": "title",
+					"titleValue": "Special ASA image for ROMMON upgrade",
+					"uuid": "e2e4f5b6-64ef-454d-a32d-d7b081ca6bd8"
+				},
+				{
+					"ctype": "title",
+					"titleValue": "ROMMON v1.1.08 upgrade image",
+					"uuid": "8007f4eb-7c18-45f7-b6b4-a219a6f9cf94"
+				},
+				{
+					"ctype": "title",
+					"titleValue": "Power Sequencer Programming Image",
+					"uuid": "ea403226-5efb-4f28-a8b8-9e457b43e4b1"
+				},
+				{
+					"ctype": "title",
+					"titleValue": "Kenton Diag Image",
+					"uuid": "31f41792-337e-4e66-a461-9d62035cb6fd"
+				},
+				{
+					"formGroupClass": "buttoon-toggle-cls body2 action-position",
+					"ctype": "actionToggle",
+					"labelPosition": "before",
+					"name": "moroccanCEMark",
+					"options": [
+						{
+							"bgcolor": "light-blue",
+							"color": "white",
+							"text": "REJECT",
+							"value": "REJECT"
+						},
+						{
+							"bgcolor": "light-blue",
+							"color": "white",
+							"text": "CLOSE",
+							"value": "CLOSE"
+						},
+						{
+							"bgcolor": "light-blue",
+							"color": "white",
+							"text": "OPEN",
+							"value": "OPEN"
+						}
+					],
+					"validations": [],
+					"label": "",
+					"uuid": "5e3a5950-db28-4136-98d4-202430ff4538",
+					"hooks": [],
+					"actions": [
+						{
+							"eventSource": "change",
+							"type": "context",
+							"config": {
+								"data": "elementControlValue",
+								"requestMethod": "add",
+								"key": "EA543998-action"
+							}
+						},
+						{
+							"eventSource": "change",
+							"type": "updateComponent",
+							"config": {
+								"key": "daa35221-9fe9-4b59-a29c-adc83e443233",
+								"properties": {
+									"disabled": false
+								}
+							}
+						},
+						{
+							"eventSource": "change",
+							"type": "updateComponent",
+							"config": {
+								"key": "b0742ca7-b7a6-4f89-bf8a-3e4bdfe1f33b",
+								"properties": {
+									"header": {
+										"icon": "description",
+										"title": "Test ECO- EA543998 Az ECO -t akkor kell végrehajtani ha a készülék verziója  73-16139-05 A0-nál kisebb ",
+										"class": "title-normal",
+										"status": "#EA543998-action"
+									}
+								}
+							}
+						}
+					],
+					"required": true,
+					"submitable": true
+				}
+			]
+		},
+		{
+			"hideToggle": true,
+			"hidden": false,
+			"footer": [
+				{
+					"ctype": "button",
+					"color": "primary",
+					"visibility": true,
+					"disabled": true,
+					"text": "Complete",
+					"validations": [],
+					"type": "",
+					"uuid": "134025a0-a47e-4ac0-aeaf-349f64a8205f",
+					"hooks": [],
+					"actions": [
+						{
+							"responseDependents": {
+								"onFailure": {
+									"actions": [
+										{
+											"responseDependents": {
+												"onFailure": {
+													"actions": [
+														{
+															"type": "context",
+															"config": {
+																"data": "responseData",
+																"requestMethod": "add",
+																"key": "erroMsg"
+															}
+														},
+														{
+															"type": "updateComponent",
+															"config": {
+																"key": "errorTitleUUID",
+																"properties": {
+																	"isShown": true,
+																	"titleValue": "#erroMsg"
+																}
+															}
+														}
+													]
+												},
+												"onSuccess": {
+													"actions": [
+														{
+															"eventSource": "click",
+															"type": "updateComponent",
+															"config": {
+																"key": "33c00340-2e67-4a89-94c8-c239a63c46ce",
+																"properties": {
+																	"expanded": false,
+																	"header": {
+																		"statusClass": "complete-status",
+																		"icon": "description",
+																		"statusIcon": "check_circle",
+																		"title": "Rework ECO-EA544764 Az ECO-t akkor kell végrehajtani ha a készülék revíziója  73-16139-06 A0-nál kisebb",
+																		"class": "complete-task",
+																		"iconClass": "complete-task",
+																		"status": "#EA544764-action"
+																	},
+																	"disabled": false
+																}
+															}
+														},
+														{
+															"eventSource": "click",
+															"type": "updateComponent",
+															"config": {
+																"properties": {
+																	"expanded": true,
+																	"hidden": false,
+																	"disabled": false
+																},
+																"key": "64bb5d20-7028-43cb-a08e-313d804b3bd0"
+															}
+														},
+														{
+															"eventSource": "click",
+															"type": "updateComponent",
+															"config": {
+																"key": "134025a0-a47e-4ac0-aeaf-349f64a8205f",
+																"properties": {
+																	"disabled": false
+																}
+															}
+														},
+														{
+															"eventSource": "click",
+															"type": "updateComponent",
+															"config": {
+																"key": "9283abd9-6542-45bc-9b30-a752660a3810",
+																"properties": {
+																	"disabledClass": "disabledTrue"
+																}
+															}
+														}
+													]
+												}
+											},
+											"eventSource": "click",
+											"type": "microservice",
+											"config": {
+												"microserviceId": "performFA",
+												"toBeStringified": true,
+												"requestMethod": "post",
+												"body": {
+													"callSource": "FrontEnd",
+													"ip": "::1",
+													"apiUsage_LocationName": "#UnitInfo.GEONAME",
+													"userPwd": {
+														"password": "#loginUUID.password",
+														"username": "#loginUUID.username"
+													},
+													"apiUsage_ClientName": "#UnitInfo.CLIENTNAME",
+													"updateFailureAnalysisRequest": {
+														"actionCodeChangeList": {
+															"actionCodeChange": [
+																{
+																	"actionCode": "#EA544764-action",
+																	"operation": "Add",
+																	"ecoCode": {
+																		"occurrence": 1,
+																		"value": "ASA5506-K9--EA544764"
+																	}
+																}
+															]
+														},
+														"ecoCodeChangeList": {
+															"ecoCodeChange": [
+																{
+																	"operation": "Add",
+																	"ecoCode": "ASA5506-K9--EA544764"
+																}
+															]
+														},
+														"bcn": "#UnitInfo.ITEM_BCN"
+													},
+													"operationTypes": "ProcessImmediate"
+												}
+											}
+										}
+									]
+								},
+								"onSuccess": {
+									"actions": [
+										{
+											"eventSource": "click",
+											"type": "updateComponent",
+											"config": {
+												"key": "33c00340-2e67-4a89-94c8-c239a63c46ce",
+												"properties": {
+													"expanded": false,
+													"header": {
+														"statusClass": "complete-status",
+														"icon": "description",
+														"statusIcon": "check_circle",
+														"title": "Rework ECO-EA544764 Az ECO-t akkor kell végrehajtani ha a készülék revíziója  73-16139-06 A0-nál kisebb",
+														"class": "complete-task",
+														"iconClass": "complete-task",
+														"status": "#EA544764-action"
+													},
+													"disabled": false
+												}
+											}
+										},
+										{
+											"eventSource": "click",
+											"type": "updateComponent",
+											"config": {
+												"properties": {
+													"expanded": true,
+													"hidden": false,
+													"disabled": false
+												},
+												"key": "64bb5d20-7028-43cb-a08e-313d804b3bd0"
+											}
+										},
+										{
+											"eventSource": "click",
+											"type": "updateComponent",
+											"config": {
+												"key": "134025a0-a47e-4ac0-aeaf-349f64a8205f",
+												"properties": {
+													"disabled": false
+												}
+											}
+										},
+										{
+											"eventSource": "click",
+											"type": "updateComponent",
+											"config": {
+												"key": "9283abd9-6542-45bc-9b30-a752660a3810",
+												"properties": {
+													"disabledClass": "disabledTrue"
+												}
+											}
+										}
+									]
+								}
+							},
+							"eventSource": "click",
+							"type": "condition",
+							"config": {
+								"lhs": "#EA544764-action",
+								"rhs": "REJECT",
+								"operation": "isEqualToIgnoreCase"
+							}
+						}
+					]
+				}
+			],
+			"title": "",
+			"uuid": "33c00340-2e67-4a89-94c8-c239a63c46ce",
+			"expanded": false,
+			"ctype": "taskPanel",
+			"header": {
+				"icon": "description",
+				"title": "Rework ECO-EA544764 Az ECO-t akkor kell végrehajtani ha a készülék revíziója  73-16139-06 A0-nál kisebb",
+				"class": "title-normal",
+				"status": ""
+			},
+			"disabled": true,
+			"validations": [],
+			"hooks": [],
+			"actions": [],
+			"items": [
+				{
+					"ctype": "disabled",
+					"disabledClass": "disabledFalse",
+					"uuid": "9283abd9-6542-45bc-9b30-a752660a3810"
+				},
+				{
+					"ctype": "title",
+					"titleValue": " ",
+					"uuid": "f1229bd7-55b5-45ec-a267-8e4e5ae38df4"
+				},
+				{
+					"textfieldClass": "textfield-container",
+					"formGroupClass": "flex-container",
+					"visibility": true,
+					"labelClass": "body2",
+					"isTrimRequired": false,
+					"label": "",
+					"type": "text",
+					"uuid": "42583860-f872-43dd-8eb5-4b71e4678eab",
+					"required": false,
+					"submitable": true,
+					"validateGroup": false,
+					"ctype": "textField",
+					"readonly": false,
+					"labelPosition": "left",
+					"name": "0f37bd46-dc32-4338-a278-8d5ac8961749",
+					"placeholder": "Search for...",
+					"actions": [
+						{
+							"eventSource": "input",
+							"type": "context",
+							"config": {
+								"data": "elementControlValue",
+								"requestMethod": "add",
+								"key": "EA544764searchVal"
+							}
+						},
+						{
+							"eventSource": "input",
+							"type": "updateComponent",
+							"config": {
+								"key": "13b9ac83-cc73-4599-8157-d736ba0665a0",
+								"properties": {
+									"disabled": false
+								}
+							}
+						}
+					]
+				},
+				{
+					"ctype": "button",
+					"color": "primary",
+					"visibility": true,
+					"disabled": true,
+					"text": "Search",
+					"validations": [],
+					"type": "submit",
+					"uuid": "13b9ac83-cc73-4599-8157-d736ba0665a0",
+					"hooks": [],
+					"actions": [
+						{
+							"responseDependents": {
+								"onFailure": {
+									"actions": [
+										{
+											"type": "toast",
+											"message": "Oops.. There is no associated template"
+										},
+										{
+											"eventSource": "click",
+											"type": "updateComponent",
+											"config": {
+												"properties": {
+													"formGroupClass": "buttoon-toggle-cls body2 action-position"
+												},
+												"Key": "c478b0ea-6110-4ddf-8eb0-93792d2104bd"
+											}
+										},
+										{
+											"eventSource": "click",
+											"type": "updateComponent",
+											"config": {
+												"properties": {
+													"disabled": false
+												},
+												"key": "c478b0ea-6110-4ddf-8eb0-93792d2104bd"
+											}
+										}
+									]
+								},
+								"onSuccess": {
+									"actions": [
+										{
+											"type": "context",
+											"config": {
+												"data": "responseData",
+												"requestMethod": "add",
+												"key": "EA544764searchResponse"
+											}
+										},
+										{
+											"eventSource": "click",
+											"type": "updateComponent",
+											"config": {
+												"properties": {
+													"formGroupClass": "buttoon-toggle-cls body2 action-position"
+												},
+												"Key": "c478b0ea-6110-4ddf-8eb0-93792d2104bd"
+											}
+										},
+										{
+											"responseDependents": {
+												"onFailure": {
+													"actions": [
+														{
+															"responseDependents": {
+																"onFailure": {
+																	"actions": [
+																		{
+																			"responseDependents": {
+																				"onSuccess": {
+																					"actions": [
+																						{
+																							"type": "errorPrepareAndRender",
+																							"config": {
+																								"valueArray": [
+																									"#EA544764searchVal"
+																								],
+																								"key": "df97b0e1-fc15-455e-9da5-8d88f845af00",
+																								"properties": {
+																									"isShown": true,
+																									"titleValue": "Szkenneld be a szériaszámot! {0}",
+																									"titleClass": "error-title"
+																								}
+																							}
+																						}
+																					]
+																				}
+																			},
+																			"type": "condition",
+																			"config": {
+																				"lhs": "#EA544764searchResponse.result",
+																				"rhs": "",
+																				"operation": "isEqualTo"
+																			}
+																		}
+																	]
+																},
+																"onSuccess": {
+																	"actions": [
+																		{
+																			"type": "errorPrepareAndRender",
+																			"config": {
+																				"valueArray": [
+																					"#EA544764searchVal"
+																				],
+																				"key": "df97b0e1-fc15-455e-9da5-8d88f845af00",
+																				"properties": {
+																					"isShown": true,
+																					"titleValue": "Az ECO-t nem kell végre hajtani!  {0}",
+																					"titleClass": "success-title"
+																				}
+																			}
+																		}
+																	]
+																}
+															},
+															"type": "condition",
+															"config": {
+																"lhs": "#EA544764searchResponse.result",
+																"rhs": "SnIsOk",
+																"operation": "isEqualTo"
+															}
+														}
+													]
+												},
+												"onSuccess": {
+													"actions": [
+														{
+															"type": "errorPrepareAndRender",
+															"config": {
+																"valueArray": [
+																	"#EA544764searchVal"
+																],
+																"key": "df97b0e1-fc15-455e-9da5-8d88f845af00",
+																"properties": {
+																	"isShown": true,
+																	"titleValue": "Az ECO-t végre kell hajtani!  {0}",
+																	"titleClass": "error-title"
+																}
+															}
+														}
+													]
+												}
+											},
+											"type": "condition",
+											"config": {
+												"lhs": "#EA544764searchResponse.result",
+												"rhs": "SnIsBad",
+												"operation": "isEqualTo"
+											}
+										},
+										{
+											"eventSource": "click",
+											"type": "updateComponent",
+											"config": {
+												"properties": {
+													"disabled": false
+												},
+												"key": "c478b0ea-6110-4ddf-8eb0-93792d2104bd"
+											}
+										}
+									]
+								}
+							},
+							"eventSource": "click",
+							"type": "microservice",
+							"config": {
+								"microserviceId": "getsnbypid",
+								"requestMethod": "get",
+								"LocalService": "",
+								"params": {
+									"searchId": 1,
+									"serial": "#EA544764searchVal",
+									"pid": "#UnitInfo.PART_NO",
+									"userName": "#userAccountInfo.PersonalDetails.USERID"
+								},
+								"isLocal": false
+							}
+						}
+					],
+					"checkGroupValidity": false
+				},
+				{
+					"ctype": "title",
+					"isShown": false,
+					"uuid": "df97b0e1-fc15-455e-9da5-8d88f845af00",
+					"titleClass": "error-title"
+				},
+				{
+					"ctype": "title",
+					"titleValue": " 1) Ha az ECO-t  Nem kell végrehajtani , vagy a készüléken megtalálható",
+					"uuid": "64ccf20c-3de0-4262-831c-5d7918f88eec"
+				},
+				{
+					"ctype": "title",
+					"titleValue": "a  D524625  vagy a  D524122  címke, zárja le az ECO-t   2) Ha az ECO-t  Végre kell hajtani  :",
+					"uuid": "23d57989-72ee-4736-bac0-da0f2a8ad0b7"
+				},
+				{
+					"ctype": "title",
+					"titleValue": "Távolítsa el a hűtőbordát az  U62-68  poziciókban található memóriákról",
+					"uuid": "edb82745-c49e-4c5f-b0c8-34066088cd94"
+				},
+				{
+					"ctype": "title",
+					"titleValue": "és az  U1  -es pozicióban található CPU -ról   3) Helyezzen egy PN:  12-1436-01  ellenállást az R850  és  R182 -es pozíciók közé",
+					"uuid": "cb373f44-2491-4309-a9b7-13d6c533c309"
+				},
+				{
+					"ctype": "title",
+					"titleValue": "A képen látható módon: [ 4) Távolítsa el az U1 -es pozícióban található CPU-ról, az U62-68 -as memóriákról",
+					"uuid": "6bff37f0-dd28-4d36-9590-d8fa04e16329"
+				},
+				{
+					"ctype": "title",
+					"titleValue": "és a levett hűtőbordákról a maradék hűtőpasztát.",
+					"uuid": "010c5352-3caf-4cd1-88d5-c6856eee0bf3"
+				},
+				{
+					"ctype": "title",
+					"titleValue": "A régi hűtőbordákat gyüjtjük, ne dobd el!    5) Rakjon egy új PN: 700-46020-01  hűtőbordát az  U1  -es pozicióban található CPU -ra",
+					"uuid": "9312f8d0-f442-457e-ae09-7136ea0033b3"
+				},
+				{
+					"ctype": "title",
+					"titleValue": "Rakjon egy új PN: 700-46021-01  hűtőbordát az  U62-68 -as poziciókban",
+					"uuid": "99adddcf-4e36-435b-825b-f89f1ce334e9"
+				},
+				{
+					"ctype": "title",
+					"titleValue": "található memóriákra. ",
+					"uuid": "085ad0df-c6ad-4812-a62e-91698494e1d7"
+				},
+				{
+					"formGroupClass": "buttoon-toggle-cls body2 action-position",
+					"label": "",
+					"uuid": "c478b0ea-6110-4ddf-8eb0-93792d2104bd",
+					"required": true,
+					"submitable": true,
+					"ctype": "actionToggle",
+					"labelPosition": "before",
+					"name": "moroccanCEMark",
+					"options": [
+						{
+							"bgcolor": "light-blue",
+							"color": "white",
+							"text": "CLOSE",
+							"value": "CLOSE"
+						},
+						{
+							"bgcolor": "light-blue",
+							"color": "white",
+							"text": "REJECT",
+							"value": "REJECT"
+						},
+						{
+							"bgcolor": "light-blue",
+							"color": "white",
+							"text": "OPEN",
+							"value": "OPEN"
+						}
+					],
+					"disabled": true,
+					"validations": [],
+					"hooks": [],
+					"actions": [
+						{
+							"eventSource": "change",
+							"type": "context",
+							"config": {
+								"data": "elementControlValue",
+								"requestMethod": "add",
+								"key": "EA544764-action"
+							}
+						},
+						{
+							"eventSource": "change",
+							"type": "updateComponent",
+							"config": {
+								"key": "134025a0-a47e-4ac0-aeaf-349f64a8205f",
+								"properties": {
+									"disabled": false
+								}
+							}
+						},
+						{
+							"eventSource": "change",
+							"type": "updateComponent",
+							"config": {
+								"key": "33c00340-2e67-4a89-94c8-c239a63c46ce",
+								"properties": {
+									"header": {
+										"icon": "description",
+										"title": "Rework ECO-EA544764 Az ECO-t akkor kell végrehajtani ha a készülék revíziója  73-16139-06 A0-nál kisebb",
+										"class": "title-normal",
+										"status": "#EA544764-action"
+									}
+								}
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"hideToggle": true,
+			"hidden": false,
+			"footer": [
+				{
+					"ctype": "button",
+					"color": "primary",
+					"visibility": true,
+					"disabled": true,
+					"text": "Complete",
+					"validations": [],
+					"type": "",
+					"uuid": "5da71cea-7355-4b8b-8fcf-55a200cad3af",
+					"hooks": [],
+					"actions": [
+						{
+							"responseDependents": {
+								"onFailure": {
+									"actions": [
+										{
+											"responseDependents": {
+												"onFailure": {
+													"actions": [
+														{
+															"type": "context",
+															"config": {
+																"data": "responseData",
+																"requestMethod": "add",
+																"key": "erroMsg"
+															}
+														},
+														{
+															"type": "updateComponent",
+															"config": {
+																"key": "errorTitleUUID",
+																"properties": {
+																	"isShown": true,
+																	"titleValue": "#erroMsg"
+																}
+															}
+														}
+													]
+												},
+												"onSuccess": {
+													"actions": [
+														{
+															"eventSource": "click",
+															"type": "updateComponent",
+															"config": {
+																"key": "64bb5d20-7028-43cb-a08e-313d804b3bd0",
+																"properties": {
+																	"expanded": false,
+																	"header": {
+																		"statusClass": "complete-status",
+																		"icon": "description",
+																		"statusIcon": "check_circle",
+																		"title": "Test ECO-EA556058 Az ECO -t akkor kell végrehajtani ha a készülék verziója  73-16139-07 A0 -nál kisebb",
+																		"class": "complete-task",
+																		"iconClass": "complete-task",
+																		"status": "#EA556058-action"
+																	},
+																	"disabled": false
+																}
+															}
+														},
+														{
+															"eventSource": "click",
+															"type": "updateComponent",
+															"config": {
+																"properties": {
+																	"expanded": true,
+																	"hidden": false,
+																	"disabled": false
+																},
+																"key": "b3bbca57-c6ee-4719-bc62-e2bc321ea2be"
+															}
+														},
+														{
+															"eventSource": "click",
+															"type": "updateComponent",
+															"config": {
+																"key": "5da71cea-7355-4b8b-8fcf-55a200cad3af",
+																"properties": {
+																	"disabled": false
+																}
+															}
+														},
+														{
+															"eventSource": "click",
+															"type": "updateComponent",
+															"config": {
+																"key": "b0954197-830e-4b50-96c8-63d5888dfcbf",
+																"properties": {
+																	"disabledClass": "disabledTrue"
+																}
+															}
+														}
+													]
+												}
+											},
+											"eventSource": "click",
+											"type": "microservice",
+											"config": {
+												"microserviceId": "performFA",
+												"toBeStringified": true,
+												"requestMethod": "post",
+												"body": {
+													"callSource": "FrontEnd",
+													"ip": "::1",
+													"apiUsage_LocationName": "#UnitInfo.GEONAME",
+													"userPwd": {
+														"password": "#loginUUID.password",
+														"username": "#loginUUID.username"
+													},
+													"apiUsage_ClientName": "#UnitInfo.CLIENTNAME",
+													"updateFailureAnalysisRequest": {
+														"actionCodeChangeList": {
+															"actionCodeChange": [
+																{
+																	"actionCode": "#EA556058-action",
+																	"operation": "Add",
+																	"ecoCode": {
+																		"occurrence": 1,
+																		"value": "ASA5506-K9--EA556058"
+																	}
+																}
+															]
+														},
+														"ecoCodeChangeList": {
+															"ecoCodeChange": [
+																{
+																	"operation": "Add",
+																	"ecoCode": "ASA5506-K9--EA556058"
+																}
+															]
+														},
+														"bcn": "#UnitInfo.ITEM_BCN"
+													},
+													"operationTypes": "ProcessImmediate"
+												}
+											}
+										}
+									]
+								},
+								"onSuccess": {
+									"actions": [
+										{
+											"eventSource": "click",
+											"type": "updateComponent",
+											"config": {
+												"key": "64bb5d20-7028-43cb-a08e-313d804b3bd0",
+												"properties": {
+													"expanded": false,
+													"header": {
+														"statusClass": "complete-status",
+														"icon": "description",
+														"statusIcon": "check_circle",
+														"title": "Test ECO-EA556058 Az ECO -t akkor kell végrehajtani ha a készülék verziója  73-16139-07 A0 -nál kisebb",
+														"class": "complete-task",
+														"iconClass": "complete-task",
+														"status": "#EA556058-action"
+													},
+													"disabled": false
+												}
+											}
+										},
+										{
+											"eventSource": "click",
+											"type": "updateComponent",
+											"config": {
+												"properties": {
+													"expanded": true,
+													"hidden": false,
+													"disabled": false
+												},
+												"key": "b3bbca57-c6ee-4719-bc62-e2bc321ea2be"
+											}
+										},
+										{
+											"eventSource": "click",
+											"type": "updateComponent",
+											"config": {
+												"key": "5da71cea-7355-4b8b-8fcf-55a200cad3af",
+												"properties": {
+													"disabled": false
+												}
+											}
+										},
+										{
+											"eventSource": "click",
+											"type": "updateComponent",
+											"config": {
+												"key": "b0954197-830e-4b50-96c8-63d5888dfcbf",
+												"properties": {
+													"disabledClass": "disabledTrue"
+												}
+											}
+										}
+									]
+								}
+							},
+							"eventSource": "click",
+							"type": "condition",
+							"config": {
+								"lhs": "#EA556058-action",
+								"rhs": "REJECT",
+								"operation": "isEqualToIgnoreCase"
+							}
+						}
+					]
+				}
+			],
+			"title": "",
+			"uuid": "64bb5d20-7028-43cb-a08e-313d804b3bd0",
+			"expanded": false,
+			"ctype": "taskPanel",
+			"header": {
+				"icon": "description",
+				"title": "Test ECO-EA556058 Az ECO -t akkor kell végrehajtani ha a készülék verziója  73-16139-07 A0 -nál kisebb",
+				"class": "title-normal",
+				"status": ""
+			},
+			"disabled": true,
+			"validations": [],
+			"hooks": [],
+			"actions": [],
+			"items": [
+				{
+					"ctype": "disabled",
+					"disabledClass": "disabledFalse",
+					"uuid": "b0954197-830e-4b50-96c8-63d5888dfcbf"
+				},
+				{
+					"ctype": "title",
+					"titleValue": "   Rommon és Firmware frissítés - Teszten automatikusan történik",
+					"uuid": "787f1248-c1bd-4015-b21a-b2c3c01dfff5"
+				},
+				{
+					"ctype": "title",
+					"titleValue": "Vegye fel és zárja le az ECO -t. ",
+					"uuid": "9b4711e7-e16c-46d4-8720-dfaef13f46c4"
+				},
+				{
+					"formGroupClass": "buttoon-toggle-cls body2 action-position",
+					"ctype": "actionToggle",
+					"labelPosition": "before",
+					"name": "moroccanCEMark",
+					"options": [
+						{
+							"bgcolor": "light-blue",
+							"color": "white",
+							"text": "OPEN",
+							"value": "OPEN"
+						},
+						{
+							"bgcolor": "light-blue",
+							"color": "white",
+							"text": "CLOSE",
+							"value": "CLOSE"
+						},
+						{
+							"bgcolor": "light-blue",
+							"color": "white",
+							"text": "REJECT",
+							"value": "REJECT"
+						}
+					],
+					"validations": [],
+					"label": "",
+					"uuid": "09626de7-e177-4f8a-927f-9345bb644df4",
+					"hooks": [],
+					"actions": [
+						{
+							"eventSource": "change",
+							"type": "context",
+							"config": {
+								"data": "elementControlValue",
+								"requestMethod": "add",
+								"key": "EA556058-action"
+							}
+						},
+						{
+							"eventSource": "change",
+							"type": "updateComponent",
+							"config": {
+								"key": "5da71cea-7355-4b8b-8fcf-55a200cad3af",
+								"properties": {
+									"disabled": false
+								}
+							}
+						},
+						{
+							"eventSource": "change",
+							"type": "updateComponent",
+							"config": {
+								"key": "64bb5d20-7028-43cb-a08e-313d804b3bd0",
+								"properties": {
+									"header": {
+										"icon": "description",
+										"title": "Test ECO-EA556058 Az ECO -t akkor kell végrehajtani ha a készülék verziója  73-16139-07 A0 -nál kisebb",
+										"class": "title-normal",
+										"status": "#EA556058-action"
+									}
+								}
+							}
+						}
+					],
+					"required": true,
+					"submitable": true
+				}
+			]
+		},
+		{
+			"hideToggle": true,
+			"hidden": false,
+			"footer": [
+				{
+					"ctype": "button",
+					"color": "primary",
+					"visibility": true,
+					"disabled": true,
+					"text": "Complete",
+					"validations": [],
+					"type": "",
+					"uuid": "fdcf99b8-af84-4cc7-a75b-df9ab8aa69ce",
+					"hooks": [],
+					"actions": [
+						{
+							"responseDependents": {
+								"onFailure": {
+									"actions": [
+										{
+											"responseDependents": {
+												"onFailure": {
+													"actions": [
+														{
+															"type": "context",
+															"config": {
+																"data": "responseData",
+																"requestMethod": "add",
+																"key": "erroMsg"
+															}
+														},
+														{
+															"type": "updateComponent",
+															"config": {
+																"key": "errorTitleUUID",
+																"properties": {
+																	"isShown": true,
+																	"titleValue": "#erroMsg"
+																}
+															}
+														}
+													]
+												},
+												"onSuccess": {
+													"actions": [
+														{
+															"eventSource": "click",
+															"type": "updateComponent",
+															"config": {
+																"key": "b3bbca57-c6ee-4719-bc62-e2bc321ea2be",
+																"properties": {
+																	"expanded": false,
+																	"header": {
+																		"statusClass": "complete-status",
+																		"icon": "description",
+																		"statusIcon": "check_circle",
+																		"title": "T&C ECO-EA559447 Az ECO -t akkor kell végrehajtani ha a készülék verziója  68-5234-07 A1-nél kisebb",
+																		"class": "complete-task",
+																		"iconClass": "complete-task",
+																		"status": "#EA559447-action"
+																	},
+																	"disabled": false
+																}
+															}
+														},
+														{
+															"eventSource": "click",
+															"type": "updateComponent",
+															"config": {
+																"properties": {
+																	"expanded": true,
+																	"hidden": false,
+																	"disabled": false
+																},
+																"key": "84e54ea3-2e77-4701-abfe-3c9ed81dacf1"
+															}
+														},
+														{
+															"eventSource": "click",
+															"type": "updateComponent",
+															"config": {
+																"key": "fdcf99b8-af84-4cc7-a75b-df9ab8aa69ce",
+																"properties": {
+																	"disabled": false
+																}
+															}
+														},
+														{
+															"eventSource": "click",
+															"type": "updateComponent",
+															"config": {
+																"key": "a1cbefd7-ccfa-439b-9abe-a06f47fb2ec7",
+																"properties": {
+																	"disabledClass": "disabledTrue"
+																}
+															}
+														}
+													]
+												}
+											},
+											"eventSource": "click",
+											"type": "microservice",
+											"config": {
+												"microserviceId": "performFA",
+												"toBeStringified": true,
+												"requestMethod": "post",
+												"body": {
+													"callSource": "FrontEnd",
+													"ip": "::1",
+													"apiUsage_LocationName": "#UnitInfo.GEONAME",
+													"userPwd": {
+														"password": "#loginUUID.password",
+														"username": "#loginUUID.username"
+													},
+													"apiUsage_ClientName": "#UnitInfo.CLIENTNAME",
+													"updateFailureAnalysisRequest": {
+														"actionCodeChangeList": {
+															"actionCodeChange": [
+																{
+																	"actionCode": "#EA559447-action",
+																	"operation": "Add",
+																	"ecoCode": {
+																		"occurrence": 1,
+																		"value": "ASA5506-K9--EA559447"
+																	}
+																}
+															]
+														},
+														"ecoCodeChangeList": {
+															"ecoCodeChange": [
+																{
+																	"operation": "Add",
+																	"ecoCode": "ASA5506-K9--EA559447"
+																}
+															]
+														},
+														"bcn": "#UnitInfo.ITEM_BCN"
+													},
+													"operationTypes": "ProcessImmediate"
+												}
+											}
+										}
+									]
+								},
+								"onSuccess": {
+									"actions": [
+										{
+											"eventSource": "click",
+											"type": "updateComponent",
+											"config": {
+												"key": "b3bbca57-c6ee-4719-bc62-e2bc321ea2be",
+												"properties": {
+													"expanded": false,
+													"header": {
+														"statusClass": "complete-status",
+														"icon": "description",
+														"statusIcon": "check_circle",
+														"title": "T&C ECO-EA559447 Az ECO -t akkor kell végrehajtani ha a készülék verziója  68-5234-07 A1-nél kisebb",
+														"class": "complete-task",
+														"iconClass": "complete-task",
+														"status": "#EA559447-action"
+													},
+													"disabled": false
+												}
+											}
+										},
+										{
+											"eventSource": "click",
+											"type": "updateComponent",
+											"config": {
+												"properties": {
+													"expanded": true,
+													"hidden": false,
+													"disabled": false
+												},
+												"key": "84e54ea3-2e77-4701-abfe-3c9ed81dacf1"
+											}
+										},
+										{
+											"eventSource": "click",
+											"type": "updateComponent",
+											"config": {
+												"key": "fdcf99b8-af84-4cc7-a75b-df9ab8aa69ce",
+												"properties": {
+													"disabled": false
+												}
+											}
+										},
+										{
+											"eventSource": "click",
+											"type": "updateComponent",
+											"config": {
+												"key": "a1cbefd7-ccfa-439b-9abe-a06f47fb2ec7",
+												"properties": {
+													"disabledClass": "disabledTrue"
+												}
+											}
+										}
+									]
+								}
+							},
+							"eventSource": "click",
+							"type": "condition",
+							"config": {
+								"lhs": "#EA559447-action",
+								"rhs": "REJECT",
+								"operation": "isEqualToIgnoreCase"
+							}
+						}
+					]
+				}
+			],
+			"title": "",
+			"uuid": "b3bbca57-c6ee-4719-bc62-e2bc321ea2be",
+			"expanded": false,
+			"ctype": "taskPanel",
+			"header": {
+				"icon": "description",
+				"title": "T&C ECO-EA559447 Az ECO -t akkor kell végrehajtani ha a készülék verziója  68-5234-07 A1-nél kisebb",
+				"class": "title-normal",
+				"status": ""
+			},
+			"disabled": true,
+			"validations": [],
+			"hooks": [],
+			"actions": [],
+			"items": [
+				{
+					"ctype": "disabled",
+					"disabledClass": "disabledFalse",
+					"uuid": "a1cbefd7-ccfa-439b-9abe-a06f47fb2ec7"
+				},
+				{
+					"ctype": "title",
+					"titleValue": "   Rögzítse a készülék előlapját 2 darab PN.:  48-101316-01  csavarral",
+					"uuid": "2ddbae5c-af40-4bb8-b246-dc1128f3c63f"
+				},
+				{
+					"ctype": "title",
+					"titleValue": "",
+					"uuid": "5f0e5cb3-3354-4c25-a7ee-f2907e0f90c6"
+				},
+				{
+					"formGroupClass": "buttoon-toggle-cls body2 action-position",
+					"ctype": "actionToggle",
+					"labelPosition": "before",
+					"name": "moroccanCEMark",
+					"options": [
+						{
+							"bgcolor": "light-blue",
+							"color": "white",
+							"text": "OPEN",
+							"value": "OPEN"
+						},
+						{
+							"bgcolor": "light-blue",
+							"color": "white",
+							"text": "CLOSE",
+							"value": "CLOSE"
+						},
+						{
+							"bgcolor": "light-blue",
+							"color": "white",
+							"text": "REJECT",
+							"value": "REJECT"
+						}
+					],
+					"validations": [],
+					"label": "",
+					"uuid": "f2c14e4d-b65f-48bf-be1c-2c08cec5b4f5",
+					"hooks": [],
+					"actions": [
+						{
+							"eventSource": "change",
+							"type": "context",
+							"config": {
+								"data": "elementControlValue",
+								"requestMethod": "add",
+								"key": "EA559447-action"
+							}
+						},
+						{
+							"eventSource": "change",
+							"type": "updateComponent",
+							"config": {
+								"key": "fdcf99b8-af84-4cc7-a75b-df9ab8aa69ce",
+								"properties": {
+									"disabled": false
+								}
+							}
+						},
+						{
+							"eventSource": "change",
+							"type": "updateComponent",
+							"config": {
+								"key": "b3bbca57-c6ee-4719-bc62-e2bc321ea2be",
+								"properties": {
+									"header": {
+										"icon": "description",
+										"title": "T&C ECO-EA559447 Az ECO -t akkor kell végrehajtani ha a készülék verziója  68-5234-07 A1-nél kisebb",
+										"class": "title-normal",
+										"status": "#EA559447-action"
+									}
+								}
+							}
+						}
+					],
+					"required": true,
+					"submitable": true
+				}
+			]
+		},
+		{
+			"hideToggle": true,
+			"hidden": false,
+			"footer": [
+				{
+					"ctype": "button",
+					"color": "primary",
+					"visibility": true,
+					"disabled": true,
+					"text": "Complete",
+					"validations": [],
+					"type": "",
+					"uuid": "80acdb01-e279-4600-8e61-3ba29c33a681",
+					"hooks": [],
+					"actions": [
+						{
+							"responseDependents": {
+								"onFailure": {
+									"actions": [
+										{
+											"responseDependents": {
+												"onFailure": {
+													"actions": [
+														{
+															"type": "context",
+															"config": {
+																"data": "responseData",
+																"requestMethod": "add",
+																"key": "erroMsg"
+															}
+														},
+														{
+															"type": "updateComponent",
+															"config": {
+																"key": "errorTitleUUID",
+																"properties": {
+																	"isShown": true,
+																	"titleValue": "#erroMsg"
+																}
+															}
+														}
+													]
+												},
+												"onSuccess": {
+													"actions": [
+														{
+															"eventSource": "click",
+															"type": "updateComponent",
+															"config": {
+																"key": "84e54ea3-2e77-4701-abfe-3c9ed81dacf1",
+																"properties": {
+																	"expanded": false,
+																	"header": {
+																		"statusClass": "complete-status",
+																		"icon": "description",
+																		"statusIcon": "check_circle",
+																		"title": "Test ECO-EA562882 Az ECO -t akkor kell végrehajtani ha a készülék verziója  73-16139-09 A0-nál kisebb",
+																		"class": "complete-task",
+																		"iconClass": "complete-task",
+																		"status": "#EA562882-action"
+																	},
+																	"disabled": false
+																}
+															}
+														},
+														{
+															"eventSource": "click",
+															"type": "updateComponent",
+															"config": {
+																"properties": {
+																	"expanded": true,
+																	"hidden": false,
+																	"disabled": false
+																},
+																"key": "6e358fc7-caad-49e8-b570-4b1a019f6d70"
+															}
+														},
+														{
+															"eventSource": "click",
+															"type": "updateComponent",
+															"config": {
+																"key": "80acdb01-e279-4600-8e61-3ba29c33a681",
+																"properties": {
+																	"disabled": false
+																}
+															}
+														},
+														{
+															"eventSource": "click",
+															"type": "updateComponent",
+															"config": {
+																"key": "5f752b9c-0d25-4b9b-a202-03a827a2d443",
+																"properties": {
+																	"disabledClass": "disabledTrue"
+																}
+															}
+														}
+													]
+												}
+											},
+											"eventSource": "click",
+											"type": "microservice",
+											"config": {
+												"microserviceId": "performFA",
+												"toBeStringified": true,
+												"requestMethod": "post",
+												"body": {
+													"callSource": "FrontEnd",
+													"ip": "::1",
+													"apiUsage_LocationName": "#UnitInfo.GEONAME",
+													"userPwd": {
+														"password": "#loginUUID.password",
+														"username": "#loginUUID.username"
+													},
+													"apiUsage_ClientName": "#UnitInfo.CLIENTNAME",
+													"updateFailureAnalysisRequest": {
+														"actionCodeChangeList": {
+															"actionCodeChange": [
+																{
+																	"actionCode": "#EA562882-action",
+																	"operation": "Add",
+																	"ecoCode": {
+																		"occurrence": 1,
+																		"value": "ASA5506-K9--EA562882"
+																	}
+																}
+															]
+														},
+														"ecoCodeChangeList": {
+															"ecoCodeChange": [
+																{
+																	"operation": "Add",
+																	"ecoCode": "ASA5506-K9--EA562882"
+																}
+															]
+														},
+														"bcn": "#UnitInfo.ITEM_BCN"
+													},
+													"operationTypes": "ProcessImmediate"
+												}
+											}
+										}
+									]
+								},
+								"onSuccess": {
+									"actions": [
+										{
+											"eventSource": "click",
+											"type": "updateComponent",
+											"config": {
+												"key": "84e54ea3-2e77-4701-abfe-3c9ed81dacf1",
+												"properties": {
+													"expanded": false,
+													"header": {
+														"statusClass": "complete-status",
+														"icon": "description",
+														"statusIcon": "check_circle",
+														"title": "Test ECO-EA562882 Az ECO -t akkor kell végrehajtani ha a készülék verziója  73-16139-09 A0-nál kisebb",
+														"class": "complete-task",
+														"iconClass": "complete-task",
+														"status": "#EA562882-action"
+													},
+													"disabled": false
+												}
+											}
+										},
+										{
+											"eventSource": "click",
+											"type": "updateComponent",
+											"config": {
+												"properties": {
+													"expanded": true,
+													"hidden": false,
+													"disabled": false
+												},
+												"key": "6e358fc7-caad-49e8-b570-4b1a019f6d70"
+											}
+										},
+										{
+											"eventSource": "click",
+											"type": "updateComponent",
+											"config": {
+												"key": "80acdb01-e279-4600-8e61-3ba29c33a681",
+												"properties": {
+													"disabled": false
+												}
+											}
+										},
+										{
+											"eventSource": "click",
+											"type": "updateComponent",
+											"config": {
+												"key": "5f752b9c-0d25-4b9b-a202-03a827a2d443",
+												"properties": {
+													"disabledClass": "disabledTrue"
+												}
+											}
+										}
+									]
+								}
+							},
+							"eventSource": "click",
+							"type": "condition",
+							"config": {
+								"lhs": "#EA562882-action",
+								"rhs": "REJECT",
+								"operation": "isEqualToIgnoreCase"
+							}
+						}
+					]
+				}
+			],
+			"title": "",
+			"uuid": "84e54ea3-2e77-4701-abfe-3c9ed81dacf1",
+			"expanded": false,
+			"ctype": "taskPanel",
+			"header": {
+				"icon": "description",
+				"title": "Test ECO-EA562882 Az ECO -t akkor kell végrehajtani ha a készülék verziója  73-16139-09 A0-nál kisebb",
+				"class": "title-normal",
+				"status": ""
+			},
+			"disabled": true,
+			"validations": [],
+			"hooks": [],
+			"actions": [],
+			"items": [
+				{
+					"ctype": "disabled",
+					"disabledClass": "disabledFalse",
+					"uuid": "5f752b9c-0d25-4b9b-a202-03a827a2d443"
+				},
+				{
+					"ctype": "title",
+					"titleValue": "Rommon és Firmware frissítés -  Teszten automatikusan történik ",
+					"uuid": "2a6144f6-e626-4235-a2b9-6cc86fc9972c"
+				},
+				{
+					"ctype": "title",
+					"titleValue": "Vegye fel és zárja le az ECO -t",
+					"uuid": "b884a5f7-e074-4326-82d0-78a7dbd1c4c5"
+				},
+				{
+					"formGroupClass": "buttoon-toggle-cls body2 action-position",
+					"ctype": "actionToggle",
+					"labelPosition": "before",
+					"name": "moroccanCEMark",
+					"options": [
+						{
+							"bgcolor": "light-blue",
+							"color": "white",
+							"text": "REJECT",
+							"value": "REJECT"
+						},
+						{
+							"bgcolor": "light-blue",
+							"color": "white",
+							"text": "CLOSE",
+							"value": "CLOSE"
+						},
+						{
+							"bgcolor": "light-blue",
+							"color": "white",
+							"text": "OPEN",
+							"value": "OPEN"
+						}
+					],
+					"validations": [],
+					"label": "",
+					"uuid": "9d5dcb41-39b3-4ab2-9026-cec3d28d1640",
+					"hooks": [],
+					"actions": [
+						{
+							"eventSource": "change",
+							"type": "context",
+							"config": {
+								"data": "elementControlValue",
+								"requestMethod": "add",
+								"key": "EA562882-action"
+							}
+						},
+						{
+							"eventSource": "change",
+							"type": "updateComponent",
+							"config": {
+								"key": "80acdb01-e279-4600-8e61-3ba29c33a681",
+								"properties": {
+									"disabled": false
+								}
+							}
+						},
+						{
+							"eventSource": "change",
+							"type": "updateComponent",
+							"config": {
+								"key": "84e54ea3-2e77-4701-abfe-3c9ed81dacf1",
+								"properties": {
+									"header": {
+										"icon": "description",
+										"title": "Test ECO-EA562882 Az ECO -t akkor kell végrehajtani ha a készülék verziója  73-16139-09 A0-nál kisebb",
+										"class": "title-normal",
+										"status": "#EA562882-action"
+									}
+								}
+							}
+						}
+					],
+					"required": true,
+					"submitable": true
+				}
+			]
+		},
+		{
+			"hideToggle": true,
+			"hidden": false,
+			"footer": [
+				{
+					"ctype": "button",
+					"color": "primary",
+					"visibility": true,
+					"disabled": true,
+					"text": "Complete",
+					"validations": [],
+					"type": "",
+					"uuid": "0ec43dfc-b356-4329-9a5c-cb4a5aa2427a",
+					"hooks": [],
+					"actions": [
+						{
+							"responseDependents": {
+								"onFailure": {
+									"actions": [
+										{
+											"responseDependents": {
+												"onFailure": {
+													"actions": [
+														{
+															"type": "context",
+															"config": {
+																"data": "responseData",
+																"requestMethod": "add",
+																"key": "erroMsg"
+															}
+														},
+														{
+															"type": "updateComponent",
+															"config": {
+																"key": "errorTitleUUID",
+																"properties": {
+																	"isShown": true,
+																	"titleValue": "#erroMsg"
+																}
+															}
+														}
+													]
+												},
+												"onSuccess": {
+													"actions": [
+														{
+															"eventSource": "click",
+															"type": "updateComponent",
+															"config": {
+																"key": "6e358fc7-caad-49e8-b570-4b1a019f6d70",
+																"properties": {
+																	"expanded": false,
+																	"header": {
+																		"statusClass": "complete-status",
+																		"icon": "description",
+																		"statusIcon": "check_circle",
+																		"title": "T&C ECO-EA571759 Az ECO-t miden esetben végre kell hajtani",
+																		"class": "complete-task",
+																		"iconClass": "complete-task",
+																		"status": "#EA571759-action"
+																	},
+																	"disabled": false
+																}
+															}
+														},
+														{
+															"eventSource": "click",
+															"type": "updateComponent",
+															"config": {
+																"properties": {
+																	"expanded": true,
+																	"hidden": false,
+																	"disabled": false
+																},
+																"key": "f8ee6790-0ee1-4b12-b121-a9a1f50e0c4b"
+															}
+														},
+														{
+															"eventSource": "click",
+															"type": "updateComponent",
+															"config": {
+																"key": "0ec43dfc-b356-4329-9a5c-cb4a5aa2427a",
+																"properties": {
+																	"disabled": false
+																}
+															}
+														},
+														{
+															"eventSource": "click",
+															"type": "updateComponent",
+															"config": {
+																"key": "6bf16ba7-3676-4847-9dc6-498e3e0f272f",
+																"properties": {
+																	"disabledClass": "disabledTrue"
+																}
+															}
+														}
+													]
+												}
+											},
+											"eventSource": "click",
+											"type": "microservice",
+											"config": {
+												"microserviceId": "performFA",
+												"toBeStringified": true,
+												"requestMethod": "post",
+												"body": {
+													"callSource": "FrontEnd",
+													"ip": "::1",
+													"apiUsage_LocationName": "#UnitInfo.GEONAME",
+													"userPwd": {
+														"password": "#loginUUID.password",
+														"username": "#loginUUID.username"
+													},
+													"apiUsage_ClientName": "#UnitInfo.CLIENTNAME",
+													"updateFailureAnalysisRequest": {
+														"actionCodeChangeList": {
+															"actionCodeChange": [
+																{
+																	"actionCode": "#EA571759-action",
+																	"operation": "Add",
+																	"ecoCode": {
+																		"occurrence": 1,
+																		"value": "ASA5506-K9--EA571759"
+																	}
+																}
+															]
+														},
+														"ecoCodeChangeList": {
+															"ecoCodeChange": [
+																{
+																	"operation": "Add",
+																	"ecoCode": "ASA5506-K9--EA571759"
+																}
+															]
+														},
+														"bcn": "#UnitInfo.ITEM_BCN"
+													},
+													"operationTypes": "ProcessImmediate"
+												}
+											}
+										}
+									]
+								},
+								"onSuccess": {
+									"actions": [
+										{
+											"eventSource": "click",
+											"type": "updateComponent",
+											"config": {
+												"key": "6e358fc7-caad-49e8-b570-4b1a019f6d70",
+												"properties": {
+													"expanded": false,
+													"header": {
+														"statusClass": "complete-status",
+														"icon": "description",
+														"statusIcon": "check_circle",
+														"title": "T&C ECO-EA571759 Az ECO-t miden esetben végre kell hajtani",
+														"class": "complete-task",
+														"iconClass": "complete-task",
+														"status": "#EA571759-action"
+													},
+													"disabled": false
+												}
+											}
+										},
+										{
+											"eventSource": "click",
+											"type": "updateComponent",
+											"config": {
+												"properties": {
+													"expanded": true,
+													"hidden": false,
+													"disabled": false
+												},
+												"key": "f8ee6790-0ee1-4b12-b121-a9a1f50e0c4b"
+											}
+										},
+										{
+											"eventSource": "click",
+											"type": "updateComponent",
+											"config": {
+												"key": "0ec43dfc-b356-4329-9a5c-cb4a5aa2427a",
+												"properties": {
+													"disabled": false
+												}
+											}
+										},
+										{
+											"eventSource": "click",
+											"type": "updateComponent",
+											"config": {
+												"key": "6bf16ba7-3676-4847-9dc6-498e3e0f272f",
+												"properties": {
+													"disabledClass": "disabledTrue"
+												}
+											}
+										}
+									]
+								}
+							},
+							"eventSource": "click",
+							"type": "condition",
+							"config": {
+								"lhs": "#EA571759-action",
+								"rhs": "REJECT",
+								"operation": "isEqualToIgnoreCase"
+							}
+						}
+					]
+				}
+			],
+			"title": "",
+			"uuid": "6e358fc7-caad-49e8-b570-4b1a019f6d70",
+			"expanded": false,
+			"ctype": "taskPanel",
+			"header": {
+				"icon": "description",
+				"title": "T&C ECO-EA571759 Az ECO-t miden esetben végre kell hajtani",
+				"class": "title-normal",
+				"status": ""
+			},
+			"disabled": true,
+			"validations": [],
+			"hooks": [],
+			"actions": [],
+			"items": [
+				{
+					"ctype": "disabled",
+					"disabledClass": "disabledFalse",
+					"uuid": "6bf16ba7-3676-4847-9dc6-498e3e0f272f"
+				},
+				{
+					"ctype": "title",
+					"titleValue": "Amennyiben a termékcímkén nem található meg a \"Marokkói CE\" jelölés:",
+					"uuid": "87ff4b2a-1fcd-461b-8d62-16c49b2058eb"
+				},
+				{
+					"ctype": "title",
+					"titleValue": "Ragasszon egy PN.: 47-106179-01  -et a \"CE\" logó mellé.",
+					"uuid": "cd01c90a-45b1-4fbb-9593-99e383b70f65"
+				},
+				{
+					"formGroupClass": "buttoon-toggle-cls body2 action-position",
+					"ctype": "actionToggle",
+					"labelPosition": "before",
+					"name": "moroccanCEMark",
+					"options": [
+						{
+							"bgcolor": "light-blue",
+							"color": "white",
+							"text": "CLOSE",
+							"value": "CLOSE"
+						},
+						{
+							"bgcolor": "light-blue",
+							"color": "white",
+							"text": "REJECT",
+							"value": "REJECT"
+						},
+						{
+							"bgcolor": "light-blue",
+							"color": "white",
+							"text": "OPEN",
+							"value": "OPEN"
+						}
+					],
+					"validations": [],
+					"label": "",
+					"uuid": "d6a1b5aa-83bd-4798-bdcb-cd5bf462c9a9",
+					"hooks": [],
+					"actions": [
+						{
+							"eventSource": "change",
+							"type": "context",
+							"config": {
+								"data": "elementControlValue",
+								"requestMethod": "add",
+								"key": "EA571759-action"
+							}
+						},
+						{
+							"eventSource": "change",
+							"type": "updateComponent",
+							"config": {
+								"key": "0ec43dfc-b356-4329-9a5c-cb4a5aa2427a",
+								"properties": {
+									"disabled": false
+								}
+							}
+						},
+						{
+							"eventSource": "change",
+							"type": "updateComponent",
+							"config": {
+								"key": "6e358fc7-caad-49e8-b570-4b1a019f6d70",
+								"properties": {
+									"header": {
+										"icon": "description",
+										"title": "T&C ECO-EA571759 Az ECO-t miden esetben végre kell hajtani",
+										"class": "title-normal",
+										"status": "#EA571759-action"
+									}
+								}
+							}
+						}
+					],
+					"required": true,
+					"submitable": true
+				}
+			]
+		},
+		{
+			"hideToggle": true,
+			"hidden": false,
+			"footer": [
+				{
+					"ctype": "button",
+					"color": "primary",
+					"visibility": true,
+					"disabled": true,
+					"text": "Complete",
+					"validations": [],
+					"type": "",
+					"uuid": "fc418b5a-32f8-4c2f-9025-f3610f30e63a",
+					"hooks": [],
+					"actions": [
+						{
+							"responseDependents": {
+								"onFailure": {
+									"actions": [
+										{
+											"responseDependents": {
+												"onFailure": {
+													"actions": [
+														{
+															"type": "context",
+															"config": {
+																"data": "responseData",
+																"requestMethod": "add",
+																"key": "erroMsg"
+															}
+														},
+														{
+															"type": "updateComponent",
+															"config": {
+																"key": "errorTitleUUID",
+																"properties": {
+																	"isShown": true,
+																	"titleValue": "#erroMsg"
+																}
+															}
+														}
+													]
+												},
+												"onSuccess": {
+													"actions": [
+														{
+															"eventSource": "click",
+															"type": "updateComponent",
+															"config": {
+																"key": "f8ee6790-0ee1-4b12-b121-a9a1f50e0c4b",
+																"properties": {
+																	"expanded": false,
+																	"header": {
+																		"statusClass": "complete-status",
+																		"icon": "description",
+																		"statusIcon": "check_circle",
+																		"title": "Test ECO-EA571494 Az ECO -t akkor kell végrehajtani ha a készülék verziója 73-16139-10 A0 -nál kisebb",
+																		"class": "complete-task",
+																		"iconClass": "complete-task",
+																		"status": "#EA571494-action"
+																	},
+																	"disabled": false
+																}
+															}
+														},
+														{
+															"eventSource": "click",
+															"type": "updateComponent",
+															"config": {
+																"key": null,
+																"properties": {
+																	"disabled": false
+																}
+															}
+														},
+														{
+															"eventSource": "click",
+															"type": "updateComponent",
+															"config": {
+																"key": "b37fef56-9efd-41a0-8c32-357214e294a6",
+																"properties": {
+																	"disabledClass": "disabledTrue"
+																}
+															}
+														},
+														{
+															"eventSource": "click",
+															"type": "updateComponent",
+															"config": {
+																"key": "revisedBarcodeUUID",
+																"properties": {
+																	"expanded": true,
+																	"disabled": false
+																}
+															}
+														}
+													]
+												}
+											},
+											"eventSource": "click",
+											"type": "microservice",
+											"config": {
+												"microserviceId": "performFA",
+												"toBeStringified": true,
+												"requestMethod": "post",
+												"body": {
+													"callSource": "FrontEnd",
+													"ip": "::1",
+													"apiUsage_LocationName": "#UnitInfo.GEONAME",
+													"userPwd": {
+														"password": "#loginUUID.password",
+														"username": "#loginUUID.username"
+													},
+													"apiUsage_ClientName": "#UnitInfo.CLIENTNAME",
+													"updateFailureAnalysisRequest": {
+														"actionCodeChangeList": {
+															"actionCodeChange": [
+																{
+																	"actionCode": "#EA571494-action",
+																	"operation": "Add",
+																	"ecoCode": {
+																		"occurrence": 1,
+																		"value": "ASA5506-K9--EA571494"
+																	}
+																}
+															]
+														},
+														"ecoCodeChangeList": {
+															"ecoCodeChange": [
+																{
+																	"operation": "Add",
+																	"ecoCode": "ASA5506-K9--EA571494"
+																}
+															]
+														},
+														"bcn": "#UnitInfo.ITEM_BCN"
+													},
+													"operationTypes": "ProcessImmediate"
+												}
+											}
+										}
+									]
+								},
+								"onSuccess": {
+									"actions": [
+										{
+											"eventSource": "click",
+											"type": "updateComponent",
+											"config": {
+												"key": "f8ee6790-0ee1-4b12-b121-a9a1f50e0c4b",
+												"properties": {
+													"expanded": false,
+													"header": {
+														"statusClass": "complete-status",
+														"icon": "description",
+														"statusIcon": "check_circle",
+														"title": "Test ECO-EA571494 Az ECO -t akkor kell végrehajtani ha a készülék verziója 73-16139-10 A0 -nál kisebb",
+														"class": "complete-task",
+														"iconClass": "complete-task",
+														"status": "#EA571494-action"
+													},
+													"disabled": false
+												}
+											}
+										},
+										{
+											"eventSource": "click",
+											"type": "updateComponent",
+											"config": {
+												"key": "fc418b5a-32f8-4c2f-9025-f3610f30e63a",
+												"properties": {
+													"disabled": false
+												}
+											}
+										},
+										{
+											"eventSource": "click",
+											"type": "updateComponent",
+											"config": {
+												"key": "b37fef56-9efd-41a0-8c32-357214e294a6",
+												"properties": {
+													"disabledClass": "disabledTrue"
+												}
+											}
+										},
+										{
+											"eventSource": "click",
+											"type": "updateComponent",
+											"config": {
+												"key": "revisedBarcodeUUID",
+												"properties": {
+													"expanded": true,
+													"disabled": false
+												}
+											}
+										}
+									]
+								}
+							},
+							"eventSource": "click",
+							"type": "condition",
+							"config": {
+								"lhs": "#EA571494-action",
+								"rhs": "REJECT",
+								"operation": "isEqualToIgnoreCase"
+							}
+						},
+						{
+							"eventSource": "click",
+							"type": "updateComponent",
+							"config": {
+								"properties": {
+									"expanded": true,
+									"disabled": false
+								}
+							}
+						}
+					]
+				}
+			],
+			"title": "",
+			"uuid": "f8ee6790-0ee1-4b12-b121-a9a1f50e0c4b",
+			"expanded": false,
+			"ctype": "taskPanel",
+			"header": {
+				"icon": "description",
+				"title": "Test ECO-EA571494 Az ECO -t akkor kell végrehajtani ha a készülék verziója 73-16139-10 A0 -nál kisebb",
+				"class": "title-normal",
+				"status": ""
+			},
+			"disabled": true,
+			"validations": [],
+			"hooks": [],
+			"actions": [],
+			"items": [
+				{
+					"ctype": "disabled",
+					"disabledClass": "disabledFalse",
+					"uuid": "b37fef56-9efd-41a0-8c32-357214e294a6"
+				},
+				{
+					"ctype": "title",
+					"titleValue": "Szoftver frissítés - teszten automatikusan megtörténik",
+					"uuid": "4e95f697-b70b-42c4-b547-45c85a08764f"
+				},
+				{
+					"ctype": "title",
+					"titleValue": "ROMMON v1.1.15/FPGA v3.00.00",
+					"uuid": "167564cc-0e5b-4377-8eed-9ea687e072b6"
+				},
+				{
+					"ctype": "title",
+					"titleValue": "SSD élettartam ellenőrzés",
+					"uuid": "936fe714-b4ff-43a7-8a1c-b601b6825126"
+				},
+				{
+					"ctype": "title",
+					"titleValue": "A PreTeszt ellenőrzi a készülékben található SSD élettartamát, kb 20 percnél.",
+					"uuid": "568a4765-89f3-4bfe-8e49-9143708d62d3"
+				},
+				{
+					"ctype": "title",
+					"titleValue": "Ha nagyobb mint 30% az SSD-t ki kell cserélni  16-4297-04  -re",
+					"uuid": "fa9c4956-6e6a-4ad5-bbcc-191f950c8acc"
+				},
+				{
+					"ctype": "title",
+					"titleValue": "Ebben az esetben SSD needs to Replace hibával fog kiesni a készülék",
+					"uuid": "bade40d1-e4dc-4de4-abfb-95b33094fe62"
+				},
+				{
+					"ctype": "title",
+					"titleValue": "Cimkézze át a készüléket",
+					"uuid": "7b4defff-21b6-46a5-b052-04782af06411"
+				},
+				{
+					"ctype": "title",
+					"titleValue": "Új alaplap revízió:",
+					"uuid": "e622cdcc-45ae-4a51-add0-0963fc074981"
+				},
+				{
+					"ctype": "title",
+					"titleValue": "Új TAN revízió:",
+					"uuid": "2c023880-fcab-4615-bccf-54ed381ce5fc"
+				},
+				{
+					"ctype": "title",
+					"titleValue": "Új PIDVID:",
+					"uuid": "486acd9e-52b4-43b3-b0ac-91e17251c123"
+				},
+				{
+					"ctype": "title",
+					"titleValue": "Új CLEI:",
+					"uuid": "d8c8ef93-292d-4fa5-bd01-7c347b8576a6"
+				},
+				{
+					"ctype": "title",
+					"titleValue": "Új ECI:",
+					"uuid": "f80c544a-cb3f-4349-adc6-73bfec3c2616"
+				},
+				{
+					"ctype": "title",
+					"titleValue": "Új FRU revízió:",
+					"uuid": "5d026f41-5c12-43d4-9b89-88cedbcd9c3e"
+				},
+				{
+					"ctype": "title",
+					"titleValue": "73-16139-10 A0",
+					"uuid": "604c9799-0987-45dd-ae67-cb5a5abfd89f"
+				},
+				{
+					"ctype": "title",
+					"titleValue": "68-5234-09 A0",
+					"uuid": "248a12f7-b9b0-4e98-9fd4-5c5838199cc0"
+				},
+				{
+					"ctype": "title",
+					"titleValue": "ASA5506 V07",
+					"uuid": "1cc02c47-7cc9-4f98-8765-96174488cf53"
+				},
+				{
+					"ctype": "title",
+					"titleValue": "FWMB400ARB",
+					"uuid": "a7be22ef-dce8-4c2f-8823-8c9afda93cbe"
+				},
+				{
+					"ctype": "title",
+					"titleValue": "474416",
+					"uuid": "af28c699-e0c2-4169-babe-44bce9cdbe98"
+				},
+				{
+					"ctype": "title",
+					"titleValue": "S0",
+					"uuid": "ca470047-2cb2-4bae-949b-0348821e2d0e"
+				},
+				{
+					"ctype": "title",
+					"titleValue": "",
+					"uuid": "5336feed-38c9-4087-a31f-29a54a3f5d3c"
+				},
+				{
+					"formGroupClass": "buttoon-toggle-cls body2 action-position",
+					"ctype": "actionToggle",
+					"labelPosition": "before",
+					"name": "moroccanCEMark",
+					"options": [
+						{
+							"bgcolor": "light-blue",
+							"color": "white",
+							"text": "OPEN",
+							"value": "OPEN"
+						},
+						{
+							"bgcolor": "light-blue",
+							"color": "white",
+							"text": "CLOSE",
+							"value": "CLOSE"
+						},
+						{
+							"bgcolor": "light-blue",
+							"color": "white",
+							"text": "REJECT",
+							"value": "REJECT"
+						}
+					],
+					"validations": [],
+					"label": "",
+					"uuid": "badb748d-cbbd-4111-9c79-bfd47ee920b8",
+					"hooks": [],
+					"actions": [
+						{
+							"eventSource": "change",
+							"type": "context",
+							"config": {
+								"data": "elementControlValue",
+								"requestMethod": "add",
+								"key": "EA571494-action"
+							}
+						},
+						{
+							"eventSource": "change",
+							"type": "updateComponent",
+							"config": {
+								"key": "fc418b5a-32f8-4c2f-9025-f3610f30e63a",
+								"properties": {
+									"disabled": false
+								}
+							}
+						},
+						{
+							"eventSource": "change",
+							"type": "updateComponent",
+							"config": {
+								"key": "f8ee6790-0ee1-4b12-b121-a9a1f50e0c4b",
+								"properties": {
+									"header": {
+										"icon": "description",
+										"title": "Test ECO-EA571494 Az ECO -t akkor kell végrehajtani ha a készülék verziója 73-16139-10 A0 -nál kisebb",
+										"class": "title-normal",
+										"status": "#EA571494-action"
+									}
+								}
+							}
+						}
+					],
+					"required": true,
+					"submitable": true
+				}
+			]
+		}
+	]
+}

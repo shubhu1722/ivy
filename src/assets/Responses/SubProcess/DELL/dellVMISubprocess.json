@@ -1,0 +1,1084 @@
+{
+  "ResultData": {
+    "ctype": "page",
+    "uuid": "pageUUID",
+    "css": "",
+    "visibility": true,
+    "hooks": [
+      {
+        "type": "microservice",
+        "hookType": "afterInit",
+        "config": {
+          "microserviceId": "getCurrPrevRODetailsBySN",
+          "requestMethod": "get",
+          "params": {
+            "serialNo": "#repairUnitInfo.SERIAL_NO",
+            "locationId": "#userSelectedLocation",
+            "clientId": "#userSelectedClient",
+            "contractId": "#userSelectedContract",
+            "userName": "#loginUUID.username"
+          }
+        },
+        "responseDependents": {
+          "onSuccess": {
+            "actions": [
+              {
+                "type": "condition",
+                "config": {
+                  "operation": "isValid",
+                  "lhs": "#getCurrPrevRODetailsBySN.lastNote"
+                },
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellCommonlastNoteTaskUUID",
+                          "properties": {
+                            "expanded": true,
+                            "hidden": false
+                          }
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "lastNoteTextUUID",
+                          "properties": {
+                            "title": "#getCurrPrevRODetailsBySN.lastNote"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellCommonlastNoteTaskUUID",
+                          "properties": {
+                            "hidden": true
+                          }
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "vmiRepairInformationTaskUUID",
+                          "properties": {
+                            "expanded": true
+                          }
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "lastNoteTextUUID",
+                          "properties": {
+                            "title": ""
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "repairInformationTextUUID",
+                  "properties": {
+                    "title": "#getCurrPrevRODetailsBySN.repairInformation"
+                  }
+                }
+              },
+              {
+                "type": "condition",
+                "config": {
+                  "operation": "isValid",
+                  "lhs": "#specialMessageData"
+                },
+                "responseDependents":{
+                  "onSuccess": {
+                    "actions" : [
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "specialMessageData",
+                          "data": "responseData"
+                        }
+                      },
+                      {
+                        "type": "condition",
+                        "config": {
+                          "operation": "isValid",
+                          "lhs": "#specialMessageData.moreInfo"
+                        },
+                        "eventSource":"click",
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions":[
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "repairInformationSMUUID",
+                                  "properties": {
+                                    "title": "#specialMessageData.moreInfo",
+                                    "isShown": true
+                                  }
+                                }
+                              },
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "repairInformationSMSpacerUUID",
+                                  "properties": {
+                                    "isShown": true
+                                  }
+                                }
+                              },
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "repairInformationSMHeadingUUID",
+                                  "properties": {
+                                    "isShown": true
+                                  }
+                                }
+                              },
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "dellVmiCheckboxUUID",
+                                  "properties": {
+                                    "checkVisibility": true
+                                  }
+                                }
+                              },
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "repairInformationCompleteUID",
+                                  "properties": {
+                                    "hidden": false
+                                  }
+                                }
+                              },
+                              {
+                                "type": "disableComponent",
+                                "config": {
+                                  "key": "vmiResultCodesUUID",
+                                  "property": "ResultCodes"
+                                },
+                                "eventSource": "click"
+                              },
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "vmiTimeoutUUID",
+                                  "properties": {
+                                    "disabled": true
+                                  }
+                                },
+                                "eventSource": "click"
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": [
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "dellVmiCheckboxUUID",
+                                  "properties": {
+                                    "checkVisibility": false
+                                  }
+                                }
+                              },
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "repairInformationCompleteUID",
+                                  "properties": {
+                                    "hidden": true
+                                  }
+                                }
+                              },
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "vmiRepairInformationTaskUUID",                                
+                                  "properties": {
+                                    "taskPanelHeaderClass":"background-white",
+                                    "expanded": false,
+                                    "disabled": true,
+                                    "header": {
+                                      "title": "Repair Information",
+                                      "svgIcon": "description_icon",
+                                      "statusIcon": "check_circle",
+                                      "statusClass": "complete-status",
+                                      "class": "complete-task ",
+                                      "iconClass": "complete-task"
+                                    }
+                                  }
+                                },
+                                "eventSource": "click"
+                              },
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "dellVmiUnitBinTaskUUID",
+                                  "properties": {
+                                    "expanded": true,
+                                    "disabled": false,
+                                    "header": {
+                                      "title": "Unit Bin",
+                                      "svgIcon": "description_icon",
+                                      "iconClass": "active-header",
+                                      "statusIcon": "hourglass_empty",
+                                      "statusClass": "incomplete-status",
+                                      "class": "greyish-black"
+                                    }
+                                  }
+                                },
+                                "eventSource": "click"
+                              }                     
+                            ]
+                          }
+                        }
+                      }
+        
+                    ]
+                  },
+                  "onFailure" : {
+                    "actions" : [
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellVmiCheckboxUUID",
+                          "properties": {
+                            "checkVisibility": false
+                          }
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "repairInformationCompleteUID",
+                          "properties": {
+                            "hidden": true
+                          }
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "vmiRepairInformationTaskUUID",                  
+                          "properties": {
+                            "taskPanelHeaderClass":"background-white",
+                            "expanded": false,
+                            "disabled": true,
+                            "header": {
+                              "title": "Repair Information",
+                              "svgIcon": "description_icon",
+                              "statusIcon": "check_circle",
+                              "statusClass": "complete-status",
+                              "class": "complete-task ",
+                              "iconClass": "complete-task"
+                            }
+                          }
+                        },
+                        "eventSource": "click"
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                            "key": "dellVmiUnitBinTaskUUID",
+                            "properties": {
+                                "expanded": true,
+                                "disabled": false,
+                                "header": {
+                                    "title": "Unit Bin",
+                                    "svgIcon": "description_icon",
+                                    "iconClass": "active-header",
+                                    "statusIcon": "hourglass_empty",
+                                    "statusClass": "incomplete-status",
+                                    "class": "greyish-black"
+                                }
+                            }
+                        },
+                        "eventSource": "click"
+                    }
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "onFailure": {
+            "actions": [
+              {
+                "type": "handleCommonServices",
+                "config": {
+                  "type": "errorRenderTemplate",
+                  "contextKey": "errorMsg",
+                  "updateKey": "errorTitleUUID"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "type": "condition",
+        "hookType": "afterInit",
+        "config": {
+          "operation": "isValid",
+          "lhs": "#getResultCodeForDiscrepancy",
+          "lhsKeyName": "resultCode",
+          "lhsKeyValue": "PASS",
+          "lhsSecondKeyName": "resultCode"
+        },
+        "responseDependents": {
+          "onSuccess": {
+            "actions": [
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "vmiResultCodesUUID",
+                  "fieldProperties": {
+                    "ResultCodes": "PASS"
+                  }
+                }
+              },
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "SelectedDescripencyResultcode",
+                  "data": "PASS"
+                }
+              }
+            ]
+          },
+          "onFailure": {
+            "actions": []
+          }
+        }
+      }
+    ],
+    "validations": [],
+    "action": [],
+    "header": [
+      {
+        "ctype": "breadcrumb",
+        "breadcrumbs": [
+          {
+            "label": "#userSelectedLocationName"
+          },
+          {
+            "label": "#userSelectedClientName"
+          },
+          {
+            "label": "#userSelectedContractName"
+          }
+        ]
+      },
+      {
+        "ctype": "toolbar",
+        "toolbarClass": "pagecontent-header",
+        "items": [
+          {
+            "ctype": "title",
+            "uuid": "subProcessTitleUUID",
+            "titleValue": "VMI",
+            "titleClass": "section-title"
+          },
+          {
+            "ctype": "iconbutton",
+            "iconButtonClass": "headeropen-button",
+            "text": "",
+            "uuid": "pageopenUUID",
+            "visibility": true,
+            "disabled": false,
+            "hidden": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "icon": "menu_open",
+            "disableRipple": true,
+            "iconClass": "header-icon",
+            "actions": [
+              {
+                "type": "toggle",
+                "eventSource": "click",
+                "name": "subProcessRightNavref"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "openUUID",
+                  "properties": {
+                    "hidden": false
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "pageopenUUID",
+                  "properties": {
+                    "hidden": true
+                  }
+                },
+                "eventSource": "click"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "items": [
+      {
+        "ctype": "title",
+        "uuid": "successTitleUUID",
+        "titleClass": "success-title",
+        "isShown": false
+      },
+      {
+        "ctype": "title",
+        "uuid": "errorTitleUUID",
+        "containerId": "prebodysectionone",
+        "titleClass": "error-title",
+        "isShown": false
+      },
+      {
+        "ctype": "taskPanel",
+        "isblueBorder": true,
+        "uuid": "dellCommonlastNoteTaskUUID",
+        "title": "",
+        "header": {
+          "title": "Last note",
+          "icon": "description",
+          "iconClass": "active-header",
+          "class": "greyish-black subtitle1 font-weight-700"
+        },
+        "isMandatory": false,
+        "expanded": true,
+        "disabled": false,
+        "hideToggle": true,
+        "panelClass": "margin-top-10",
+        "hidden": true,
+        "hooks": [],
+        "validations": [],
+        "actions": [],
+        "items": [
+          {
+            "ctype": "title",
+            "uuid": "lastNoteTextUUID",
+            "titleClass": "greyish-black body-italic assessment-alert",
+            "title": ""
+          }
+        ],
+        "footer": []
+      },
+      {
+        "ctype": "taskPanel",
+        "isblueBorder": true,
+        "uuid": "vmiRepairInformationTaskUUID",
+        "title": "",
+        "header": {
+          "title": "Repair Information",
+          "svgIcon": "description_icon",
+          "iconClass": "active-header",
+          "statusIcon": "hourglass_empty",
+          "statusClass": "incomplete-status",
+          "class": "greyish-black"
+        },
+        "expanded": false,
+        "disabled": false,
+        "hideToggle": true,
+        "panelClass": "margin-top-10",
+        "hidden": false,
+        "isEditable": true,
+        "isMandatory": true,
+        "hooks": [],
+        "validations": [],
+        "actions": [],
+        "items": [
+          {
+            "ctype": "title",
+            "uuid": "repairInformationTextUUID",
+            "titleClass": "greyish-black body-italic assessment-alert",
+            "title": ""
+          },
+          {
+            "ctype": "title",
+            "uuid": "repairInformationSMSpacerUUID",
+            "titleClass": "greyish-black body-italic assessment-alert",
+            "isShown": false,
+            "title": ""
+          },
+          {
+            "ctype": "title",
+            "uuid": "repairInformationSMHeadingUUID",
+            "titleClass": "greyish-black heading2",
+            "isShown": false,
+            "title": "Special Message"
+          },
+          {
+            "ctype": "title",
+            "uuid": "repairInformationSMUUID",
+            "titleClass": "greyish-black body-italic",
+            "isShown": false,
+            "title": ""
+          },
+          {
+            "ctype": "checkbox",
+            "name": "repairInformationMessageReadCheckbox",
+            "uuid": "dellVmiCheckboxUUID",
+            "hooks": [],
+            "validations": [],
+            "required": false,
+            "isDisableNotReq": true,
+            "submitable": true,
+            "label": "I have read this message",
+            "labelClass": "rework-lable-width pl-0 align-left",
+            "labelPosition": "after",
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "repairInformationCheckboxValue",
+                  "data": "formData"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "condition",
+                "config": {
+                  "operation": "isValid",
+                  "lhs": "#repairInformationCheckboxValue.repairInformationMessageReadCheckbox"
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "repairInformationCompleteUID",
+                          "properties": {
+                            "disabled": false
+                          }
+                        },
+                        "eventSource": "click"
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "repairInformationCompleteUID",
+                          "properties": {
+                            "disabled": true
+                          }
+                        },
+                        "eventSource": "click"
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "footer": [
+          {
+            "ctype": "button",
+            "color": "primary",
+            "text": "Complete",
+            "uuid": "repairInformationCompleteUID",
+            "class": "primary-btn",
+            "visibility": true,
+            "disabled": true,
+            "type": "submit",
+            "name": "repairInformationCompleteBtnName",
+            "isDisableNotReq": true,
+            "hooks": [],
+            "validations": [],
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "repairInfoData",
+                  "data": "rawFormData"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "vmiRepairInformationTaskUUID",
+                  "properties": {
+                    "taskPanelHeaderClass":"background-white",
+                    "expanded": false,
+                    "disabled": true,
+                    "header": {
+                      "title": "Repair Information",
+                      "svgIcon": "description_icon",
+                      "statusIcon": "check_circle",
+                      "statusClass": "complete-status",
+                      "class": "complete-task ",
+                      "iconClass": "complete-task"
+                    }
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "repairInformationCompleteUID",
+                  "properties": {
+                    "disabled": true
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "condition",
+                "config": {
+                  "operation": "isEqualTo",
+                  "lhs": "#repairInfoData.repairInformationMessageReadCheckbox",
+                  "rhs": true
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "submitablemsgRead",
+                          "data": "Yes"
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "submitablemsgRead",
+                          "data": "No"
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+          "ctype": "taskPanel",
+          "isblueBorder": true,
+          "title": "",
+          "header": {
+            "title": "Unit Bin",
+            "svgIcon": "description_icon",
+            "iconClass": "active-header",
+            "statusIcon": "hourglass_empty",
+            "statusClass": "incomplete-status",
+            "class": "greyish-black"
+          },
+          "expanded": "false",
+          "disabled" : false,
+          "hideToggle": "true",
+          "taskPanelHeaderClass": "background-white",
+          "uuid": "dellVmiUnitBinTaskUUID",
+          "visibility": true,
+          "isEditable": true,
+          "isMandatory": true,
+          "hooks": [],
+          "validations": [],
+          "actions": [],
+          "items": [
+              {
+                  "ctype": "textField",
+                  "uuid": "dellVmiUnitBinUUID",
+                  "hooks": [],
+                  "actions": [],
+                  "type": "text",
+                  "placeholder": "",
+                  "submitable": true,
+                  "visibility": true,
+                  "disabled" : false,
+                  "label": "Bin: ",
+                  "labelPosition": "left",
+                  "textfieldClass": "col-10 p-0",
+                  "name": "dellVmiUnitBinValue",
+                  "required" : true,
+                  "labelClass": "dell-greyish-black col-2 heading2 vmi-bin",
+                  "formGroupClass": "flex-container-one-fourth-width body",
+                  "validations": []
+              }
+          ],
+          "footer": [
+              {
+                  "ctype": "button",
+                  "color": "primary",
+                  "text": "Complete",
+                  "class": "primary-btn",
+                  "uuid": "dellVmiUnitBinCompleteUUID",
+                  "name": "dellVmiUnitBinCompleteBtnName",
+                  "visibility": true,
+                  "disabled": true,
+                  "type": "submit",
+                  "tooltip": "",
+                  "hooks": [],
+                  "validations": [],
+                  "actions": [
+                      {
+                          "type": "context",
+                          "config": {
+                              "key": "dellVmiUnitBinFormData",
+                              "data": "formData",
+                              "requestMethod": "add"
+                          },
+                          "eventSource": "click"
+                      },
+                      {
+                          "type": "updateComponent",
+                          "eventSource": "click",
+                          "config": {
+                              "key": "dellVmiUnitBinCompleteUUID",
+                              "properties": {
+                                  "disabled": true
+                              }
+                          }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "dellVmiUnitBinTaskUUID",
+                          "properties": {
+                            "expanded": false,
+                            "disabled": false,
+                            "header": {
+                              "title": "Unit Bin",
+                              "svgIcon": "description_icon",
+                              "statusIcon": "check_circle",
+                              "statusClass": "complete-status",
+                              "class": "complete-task ",
+                              "iconClass": "complete-task"
+                            }
+                          }
+                        },
+                        "eventSource": "click"
+                      },
+                      {
+                        "type": "updateComponent",
+                        "eventSource": "click",
+                        "config": {
+                            "key": "vmiResultCodesUUID",
+                            "properties": {
+                                "disabled": false
+                            }
+                        }
+                      }
+                  ]
+              }
+          ]
+      }
+    ],
+    "footer": [
+      {
+        "ctype": "toolbar",
+        "toolbarClass": "pagecontent-footer",
+        "items": [
+          {
+            "ctype": "iconbutton",
+            "iconButtonClass": "footer-save body",
+            "text": "Exit",
+            "uuid": "vmiExitUUID",
+            "visibility": true,
+            "disabled": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "icon": "close",
+            "actions": [
+              {
+                "type": "renderTemplate",
+                "config": {
+                  "templateId": "dashboard.json",
+                  "mode": "local"
+                },
+                "eventSource": "click"
+              }
+            ]
+          },
+          {
+            "ctype": "iconText",
+            "uuid": "vmiAddNoteUUID",
+            "icon": "add_comment",
+            "disabled": false,
+            "text": "Add Note",
+            "textCss": "",
+            "iconPosition": "Before",
+            "iconTextClass": "footer-addNote body",
+            "actions": [
+              {
+                "type": "dialog",
+                "uuid": "vmiAddNoteDialogUUID",
+                "config": {
+                  "title": "Add Note",
+                  "items": [
+                    {
+                      "ctype": "textarea",
+                      "name": "addNote",
+                      "textareaClass": "note-class",
+                      "uuid": "vmiAddNoteUUID",
+                      "required": true,
+                      "disabled": false,
+                      "value": "#dellTimeoutNotes.addNote",
+                      "actions": []
+                    }
+                  ],
+                  "footer": [
+                    {
+                      "ctype": "button",
+                      "color": "primary",
+                      "text": "Cancel",
+                      "uuid": "vmiCancelAddNoteUUID",
+                      "closeType": "close",
+                      "disableClose": true,
+                      "visibility": true,
+                      "disabled": false,
+                      "dialogButton": true,
+                      "type": "",
+                      "hooks": [],
+                      "validations": [],
+                      "actions": []
+                    },
+                    {
+                      "ctype": "button",
+                      "color": "primary",
+                      "text": "Done",
+                      "uuid": "vmiDoneAddNoteUUID",
+                      "dialogButton": true,
+                      "visibility": true,
+                      "disabled": true,
+                      "type": "submit",
+                      "closeType": "success",
+                      "hooks": [],
+                      "validations": [],
+                      "actions": []
+                    }
+                  ]
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "key": "dellTimeoutNotes",
+                          "data": "formData",
+                          "requestMethod": "add",
+                          "value": "addNote"
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": []
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "ctype": "spacer",
+            "uuid": "emptySpaceUUID",
+            "class": "empty-space"
+          },
+          {
+            "ctype": "nativeDropdown",
+            "dropdownClass": "footer-dropdown dropdown-container body2",
+            "uuid": "vmiResultCodesUUID",
+            "name": "ResultCodes",
+            "dataSource": "#getResultCodeForDiscrepancy",
+            "code": "resultCode",
+            "displayValue": "resultCode",
+            "disabled": true,
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "SelectedDescripencyResultcode",
+                  "data": "elementControlValue"
+                },
+                "eventSource": "change"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "vmiTimeoutUUID",
+                  "properties": {
+                    "disabled": false
+                  }
+                },
+                "eventSource": "change"
+              }
+            ]
+          },
+          {
+            "ctype": "button",
+            "color": "primary",
+            "text": "Time Out",
+            "uuid": "vmiTimeoutUUID",
+            "visibility": true,
+            "disabled": true,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "buttonClass": "footer-button primary-btn",
+            "class": "primary-btn",
+            "actions": [
+              {
+                "type": "microservice",
+                "eventSource": "click",
+                "config": {
+                  "microserviceId": "pwcPerformTimeOutTrigger",
+                  "requestMethod": "post",
+                  "body": {
+                    "actionType": "PerformTimeOut",
+                    "geography": "#discrepancyUnitInfo.GEONAME",
+                    "client": "#repairUnitInfo.CLIENTNAME",
+                    "contract": "#repairUnitInfo.CONTRACTNAME",
+                    "workCenter": "#repairUnitInfo.WORKCENTER",
+                    "pwxXml": {
+                      "timeOutTab": {
+                        "selectedResultCode": "#SelectedDescripencyResultcode"
+                      },
+                      "bcnDetail": {
+                        "bcn": "#repairUnitInfo.ITEM_BCN",
+                        "partNumber": "#discrepancyUnitInfo.PART_NO",
+                        "loginID": "#userAccountInfo.PersonalDetails.USERID",
+                        "workOrderID": "#repairUnitInfo.WORKORDER_ID",
+                        "itemID": "#repairUnitInfo.ITEM_ID",
+                        "serialNumber": "#repairUnitInfo.SERIAL_NO"
+                      }
+                    }
+                  },
+                  "toBeStringified": true
+                },
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [ 
+                      {
+                        "type": "microservice",
+                        "config": {
+                          "microserviceId": "performTimeOut",
+                          "requestMethod": "post",
+                          "body": {
+                            "timeOutRequest": {
+                              "location": "#repairUnitInfo.GEONAME",
+                              "bcn": "#repairUnitInfo.ITEM_BCN",
+                              "workCenter": "#repairUnitInfo.WORKCENTER",
+                              "password": "#loginUUID.password",
+                              "warrantyInd": "false",
+                              "notes": "#dellTimeoutNotes.addNote",
+                              "resultCode": "#SelectedDescripencyResultcode",
+                              "workCenterFlexFieldList": {
+                                "flexField": [
+                                    {
+                                        "name": "BIN",
+                                        "value": "#dellVmiUnitBinFormData.dellVmiUnitBinValue"
+                                    }
+                                ]
+                            }                    
+                            },
+                            "modifyWarranty": 0,
+                            "timeOutType": "ProcessImmediate",
+                            "clientName": "#repairUnitInfo.CLIENTNAME",
+                            "contractName": "#repairUnitInfo.CONTRACTNAME",
+                            "userName": "#loginUUID.username",
+                            "userPass": "#loginUUID.password",
+                            "ip": "::1",
+                            "callSource": "FrontEnd",
+                            "apiUsage_LocationName": "#repairUnitInfo.GEONAME",
+                            "apiUsage_ClientName": "#repairUnitInfo.CLIENTNAME"
+                          },
+                          "toBeStringified": true
+                        },
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "clearScreenData"
+                              },
+                              {
+                                "type": "renderTemplate",
+                                "config": {
+                                  "templateId": "dashboard.json",
+                                  "mode": "local"
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": [
+                              {
+                                "type": "handleCommonServices",
+                                "config": {
+                                  "type": "errorRenderTemplate",
+                                  "contextKey": "errorMsg",
+                                  "updateKey": "errorTitleUUID"
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "handleCommonServices",
+                        "config": {
+                          "type": "errorRenderTemplate",
+                          "contextKey": "errorMsg",
+                          "updateKey": "errorTitleUUID"
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "Result": "SUCCESS"
+}

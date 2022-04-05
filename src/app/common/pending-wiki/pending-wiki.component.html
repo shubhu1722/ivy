@@ -1,0 +1,48 @@
+<mat-accordion *ngIf="isWikiAdmin && !editable" class="example-headers-align wiki-panel">
+	<mat-expansion-panel class="grey-border" [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+		<mat-expansion-panel-header>
+			<mat-panel-title>
+				WIKI ( {{wikiTilesList?.length}})
+			</mat-panel-title>
+		</mat-expansion-panel-header>
+
+		<mat-accordion class="wiki-tiles">
+			<mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" *ngFor="let wkData of wikiTilesList; let i = index" class="grey-border m-2">
+				<mat-expansion-panel-header class="">
+					<mat-panel-title>
+						<span class="yellow-font">WIKI:</span> {{wkData.Title}}
+					</mat-panel-title>
+				</mat-expansion-panel-header>
+				<div [innerHtml]="wkData.wikiData"></div>
+				
+				<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+					<ol class="breadcrumb p-0">
+						<li class="breadcrumb-item active" *ngIf="wkData.locationId" aria-current="page">{{wkData.locationId}}</li>
+						<li class="breadcrumb-item active" *ngIf="wkData.clientId" aria-current="page">{{wkData.clientId}}</li>
+						<li class="breadcrumb-item active" *ngIf="wkData.contractId" aria-current="page">{{wkData.contractId}}</li>
+						<li class="breadcrumb-item active" *ngIf="wkData.workCenterId" aria-current="page">{{wkData.workCenterId}}</li>
+						<li class="breadcrumb-item active" *ngIf="wkData.Family" aria-current="page"><a href="#">{{wkData.Family}}</a></li>
+						<li class="breadcrumb-item active" *ngIf="wkData.Platform" aria-current="page"><a href="#">{{wkData.Platform}}</a></li>
+						<li class="breadcrumb-item active" *ngIf="wkData.modelPart" aria-current="page"><a href="#">{{wkData.modelPart}}</a></li>
+						<!-- <li class="breadcrumb-item"><a href="#">{{wkData.wikiCommodity[0].value}}</a></li> -->
+					</ol>
+				</nav>
+				<div>
+					<span>Created by:  {{wkData.Author}} , Last Updated: {{wkData.Date}}</span>
+				</div>
+				<mat-action-row>
+					<button *ngIf="wkData.panelType !== 'SUBMIT'" type="button" class="btn btn-outline-primary btn-edit mr-2" (click)="editable = true" [disabled]="disableEdit">
+						<mat-icon>edit</mat-icon>Edit
+					</button>
+					<button type="button" class="btn btn-outline-dark mr-2" (click)="openDialog(wkData, 'comments')">
+						<mat-icon> chat_bubble</mat-icon> <span *ngIf="wkData?.comments?.length">({{wkData?.comments?.length}})</span> Comment(s)
+					</button>
+
+				</mat-action-row>
+			</mat-expansion-panel>
+		</mat-accordion>
+	</mat-expansion-panel>
+</mat-accordion>
+<div *ngIf="editable">
+    <app-edit-pending-wiki [isWikiAdmin]="isWikiAdmin" [editPendingWiki]="wikiTilesList" (cancelWiki)="renderCancelWiki($event)"></app-edit-pending-wiki>
+</div>

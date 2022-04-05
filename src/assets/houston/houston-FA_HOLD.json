@@ -1,0 +1,54 @@
+{
+    "ctype": "subProcess",
+    "title": "FA-HOLD",
+    "uuid": "HoustonFAHOLDUUID",
+    "subMenuIndex": 0,
+    "clientName": "HOUSTON",
+    "openRightNav": false,
+    "hooks": [
+      {
+        "type": "microservice",
+        "hookType": "beforeInit",
+        "config": {
+          "microserviceId": "getSubProcessPageBody",
+          "requestMethod": "get",
+          "params": {
+            "subProcessId": "#getReferenceDataKeys.subProcess.HOUSTON.FA_HOLD",
+            "userName": "#userAccountInfo.PersonalDetails.USERID"
+          },
+          "isLocal": false,
+          "LocalService": "assets/Responses/SubProcess/HOUSTON/hou_FA_HOLDSubprocess.json"
+        },
+        "responseDependents": {
+          "onSuccess": {
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "FA_HOLDData",
+                  "data": "responseData"
+                }
+              },
+              {
+                "type": "renderTemplate",
+                "config": {
+                  "mode": "remote",
+                  "targetId": "mainPageContentBodysp",
+                  "templateId": "FA_HOLDData"
+                }
+              }
+            ]
+          },
+          "onFailure": {
+            "actions": [
+              {
+                "type": "toast",
+                "message": "Failed to fetch FA_HOLD JSON"
+              }
+            ]
+          }
+        }
+      }
+    ]
+}

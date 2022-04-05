@@ -1,0 +1,54 @@
+{
+    "ctype": "subProcess",
+    "title": "REP_SCRAP_CHK",
+    "uuid": "HoustonREPSCRPCHKUUID",
+    "subMenuIndex": 0,
+    "clientName": "HOUSTON",
+    "openRightNav": false,
+    "hooks": [
+      {
+        "type": "microservice",
+        "hookType": "beforeInit",
+        "config": {
+          "microserviceId": "getSubProcessPageBody",
+          "requestMethod": "get",
+          "params": {
+            "subProcessId": "#getReferenceDataKeys.subProcess.HOUSTON.REP_SCRP_CHK",
+            "userName": "#userAccountInfo.PersonalDetails.USERID"
+          },
+          "isLocal": false,
+          "LocalService": "assets/Responses/SubProcess/HOUSTON/hou_REP_SCRP_CHKSubprocess.json"
+        },
+        "responseDependents": {
+          "onSuccess": {
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "REP_SCRP_CHKData",
+                  "data": "responseData"
+                }
+              },
+              {
+                "type": "renderTemplate",
+                "config": {
+                  "mode": "remote",
+                  "targetId": "mainPageContentBodysp",
+                  "templateId": "REP_SCRP_CHKData"
+                }
+              }
+            ]
+          },
+          "onFailure": {
+            "actions": [
+              {
+                "type": "toast",
+                "message": "Failed to fetch REP_SCRP_CHK JSON"
+              }
+            ]
+          }
+        }
+      }
+    ]
+}

@@ -1,0 +1,490 @@
+{
+  "ctype": "page",
+  "uuid": "pageUUID",
+  "css": "",
+  "visibility": true,
+  "hooks": [
+    {
+      "type": "condition",
+      "hookType": "afterInit",
+      "config": {
+          "operation": "isEqualTo",
+          "lhs": "#isTimeOutFromCiscoWC",
+          "rhs": true
+      },
+      "responseDependents": {
+          "onSuccess": {
+              "actions": [
+                {
+                  "type": "microservice",
+                  "config": {
+                    "microserviceId": "getUnitInfo",
+                    "requestMethod": "get",
+                    "params": {
+                      "unitIdentificationValue": "#userSearchCriteriaCisco.unitIdentificationValue",
+                      "identificatorType": "#userSearchCriteriaCisco.identificatorType",
+                      "locationId": "#userSelectedLocation",
+                      "clientId": "#userSelectedClient",
+                      "contractId": "#userSelectedContract"
+                    }
+                  },
+                  "eventSource": "click",
+                  "responseDependents": {
+                    "onSuccess": {
+                      "actions": [
+                        {
+                          "type": "context",
+                          "config": {
+                            "requestMethod": "add",
+                            "key": "UnitInfo",
+                            "data": "responseData"
+                          }
+                        },
+                        {
+                          "type": "condition",
+                          "config": {
+                            "operation": "isValid",
+                            "lhs": "#UnitInfo.DESTINATIONWC"
+                          },
+                          "responseDependents": {
+                            "onSuccess": {
+                              "actions": [
+                                {
+                                  "type": "concatContexts",
+                                  "config": {
+                                      "contextKey": "nextWorkCenterMessage",
+                                      "contexts": [
+                                          "Unit has been Timed Out to",
+                                          "'",
+                                          "#UnitInfo.DESTINATIONWC",
+                                          "'"
+                                      ]
+                                  }
+                                },
+                                {
+                                  "type": "updateComponent",
+                                  "config": {
+                                      "key": "searchCriteriaErrorTitleUUID",
+                                      "properties": {
+                                          "titleValue": "#nextWorkCenterMessage",
+                                          "titleClass": "success-title",
+                                          "isShown": true
+                                      }
+                                  }
+                                }
+                              ]
+                            },
+                            "onFailure": {
+                              "actions": [
+                                {
+                                  "type": "concatContexts",
+                                  "config": {
+                                      "contextKey": "nextWorkCenterMessage",
+                                      "contexts": [
+                                          "Unit has been Timed Out to",
+                                          "'",
+                                          "#UnitInfo.WORKCENTER",
+                                          "'"
+                                      ]
+                                  }
+                                },
+                                {
+                                  "type": "updateComponent",
+                                  "config": {
+                                      "key": "searchCriteriaErrorTitleUUID",
+                                      "properties": {
+                                          "titleValue": "#nextWorkCenterMessage",
+                                          "titleClass": "success-title",
+                                          "isShown": true
+                                      }
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    "onFailure": {
+                      "actions": [
+                        {
+                          "type": "context",
+                          "config": {
+                            "requestMethod": "add",
+                            "key": "errorMsg",
+                            "data": "responseData"
+                          }
+                        },
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "searchCriteriaErrorTitleUUID",
+                            "properties": {
+                              "titleValue": "#errorMsg",
+                              "isShown": true
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+          },
+          "onFailure": {
+              "actions": []
+          }
+      }
+  }
+  ],
+  "validations": [],
+  "action": [],
+  "header": [
+    {
+      "ctype": "toolbar",
+      "toolbarClass": "searchCriteria-toolbar section-title",
+      "items": [
+        {
+          "ctype": "title",
+          "title": "WC Operation"
+        }
+      ]
+    }
+  ],
+  "items": [
+    {
+      "ctype": "title",
+      "uuid": "searchCriteriaErrorTitleUUID",
+      "titleClass": "error-title",
+      "isShown": false
+    },
+    {
+      "ctype": "formPanel",
+      "title": "IQAPreScreen",
+      "header": "",
+      "uuid": "IQAPreScreenUUID",
+      "formPanelClass": "searchCriteria-panel-full",
+      "visibility": true,
+      "hooks": [],
+      "validations": [],
+      "actions": [],
+      "items": [
+        {
+          "ctype": "textField",
+          "uuid": "unitIdentificationValueUUID",
+          "hooks": [],
+          "validations": [],
+          "textfieldClass": "searchcriteris-text-full",
+          "type": "text",
+          "required": true,
+          "placeholder": "Scan Number",
+          "submitable": true,
+          "isUpperCase": true,
+          "label": "",
+          "labelPosition": "",
+          "name": "unitIdentificationValue",
+          "prefix": "true",
+          "prefixIcon": "qr_code_scanner",
+          "suffix": true,
+          "suffixIcon": "arrow_forward",
+          "actions": [
+            {
+              "type": "context",
+              "config": {
+                "key": "userSearchCriteriaCisco",
+                "data": "formData",
+                "requestMethod": "add"
+              },
+              "eventSource": "click"
+            },
+            {
+              "type": "findIdentificatorType",
+              "eventSource": "click",
+              "config": {
+                "wc": "CISCO",
+                "key": "userSearchCriteriaCisco",
+                "unitIdentificationValue": "#userSearchCriteriaCisco.unitIdentificationValue",
+                "objectKey": "identificatorType"
+              }
+            },
+            {
+              "type": "microservice",
+              "config": {
+                "microserviceId": "getUnitInfo",
+                "requestMethod": "get",
+                "params": {
+                  "unitIdentificationValue": "#userSearchCriteriaCisco.unitIdentificationValue",
+                  "identificatorType": "#userSearchCriteriaCisco.identificatorType",
+                  "locationId": "#userSelectedLocation",
+                  "clientId": "#userSelectedClient",
+                  "contractId": "#userSelectedContract"
+                }
+              },
+              "eventSource": "click",
+              "responseDependents": {
+                "onSuccess": {
+                  "actions": [
+                    {
+                      "type": "context",
+                      "config": {
+                        "requestMethod": "add",
+                        "key": "UnitInfo",
+                        "data": "responseData"
+                      }
+                    },
+                    {
+                      "type": "olehandsOnapiprocess",
+                      "config": {
+                      "itemId": "#UnitInfo.ITEM_ID"
+                      }
+                    },
+                    {
+                      "type": "condition",
+                      "config": {
+                        "operation": "isEqualTo",
+                        "lhs": "#UnitInfo.WORKCENTER",
+                        "rhs": "FQA"
+                      },
+                      "responseDependents": {
+                        "onSuccess": {
+                          "actions": [
+                            {
+                              "type": "microservice",
+                              "config": {
+                                "microserviceId": "getFlexFieldsWithValues",
+                                "requestMethod": "get",
+                                "isLocal": false,
+                                "LocalService": "assets/Responses/getHPFAHistory.json",
+                                "params": {
+                                  "itemId": "#UnitInfo.ITEM_ID",
+                                  "ffId": "109571,109572,109576,109573,109574,109575"
+                                  
+                                }
+                              },
+                              "responseDependents": {
+                                "onSuccess": {
+                                  "actions": [
+                                    {
+                                      "type": "context",
+                                      "config": {
+                                        "requestMethod": "add",
+                                        "key": "resultCodesForFQA",
+                                        "data": "responseData"
+                                      }
+                                    },
+                                    {
+                                      "type": "handleArray",
+                                      "config": {
+                                        "action": "filterByProperty",
+                                        "arrayName": "#resultCodesForFQA",
+                                        "objectKeys": "flexFieldName",
+                                        "objectValues": "Cosmetic Damage",
+                                        "contextKey": "cosmeticDamage"
+                                      }
+                                    },
+                                    {
+                                      "type": "handleArray",
+                                      "config": {
+                                        "action": "filterByProperty",
+                                        "arrayName": "#resultCodesForFQA",
+                                        "objectKeys": "flexFieldName",
+                                        "objectValues": "Cosmetic Damage Part",
+                                        "contextKey": "cosmeticDamagePart"
+                                      }
+                                    },
+                                    {
+                                      "type": "handleArray",
+                                      "config": {
+                                        "action": "filterByProperty",
+                                        "arrayName": "#resultCodesForFQA",
+                                        "objectKeys": "flexFieldName",
+                                        "objectValues": "Boot Test",
+                                        "contextKey": "bootTestToggleValues"
+                                      }
+                                    },
+                                    {
+                                      "type": "handleArray",
+                                      "config": {
+                                        "action": "filterByProperty",
+                                        "arrayName": "#resultCodesForFQA",
+                                        "objectKeys": "flexFieldName",
+                                        "objectValues": "LED Test",
+                                        "contextKey": "ledTestToggleValues"
+                                      }
+                                    },
+                                    {
+                                      "type": "handleArray",
+                                      "config": {
+                                        "action": "filterByProperty",
+                                        "arrayName": "#resultCodesForFQA",
+                                        "objectKeys": "flexFieldName",
+                                        "objectValues": "SVT Test",
+                                        "contextKey": "svtTestToggleValues"
+                                      }
+                                    },
+                                    {
+                                      "type": "updateComponent",
+                                      "config": {
+                                        "key": "ledTestToggleUUID",
+                                        "properties": {
+                                          "options": "#ledTestToggleValues"
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "type": "updateComponent",
+                                      "config": {
+                                        "key": "cosmeticDamageUUID",
+                                        "dropDownProperties": {
+                                          "options": "#cosmeticDamage"
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "type": "updateComponent",
+                                      "config": {
+                                        "key": "cosmeticDamagePartUUID",
+                                        "dropDownProperties": {
+                                          "options": "#cosmeticDamagePart"
+                                        }
+                                      }
+                                    }
+                                  ]
+                                },
+                                "onFailure": {
+                                  "actions": [
+                                    {
+                                      "type": "context",
+                                      "config": {
+                                        "requestMethod": "add",
+                                        "key": "errorDisp",
+                                        "data": "responseData"
+                                      }
+                                    },
+                                    {
+                                      "type": "updateComponent",
+                                      "config": {
+                                        "key": "errorTitleUUID",
+                                        "properties": {
+                                          "titleValue": "#errorDisp",
+                                          "isShown": true
+                                        }
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            },
+                            {
+                              "type": "microservice",
+                              "hookType": "afterInit",
+                              "config": {
+                                "microserviceId": "getLoopingFlexFieldValues",
+                                "requestMethod": "get",
+                                "isLocal": false,
+                                "LocalService": "assets/Responses/ciso_FQA_Dummyreponse.json",
+                                "params": {
+                                  "itemId": "#UnitInfo.ITEM_ID"
+                                }
+                              },
+                              "responseDependents": {
+                                "onSuccess": {
+                                  "actions": [
+                                    {
+                                      "type": "context",
+                                      "config": {
+                                        "requestMethod": "add",
+                                        "key": "getLoopingFlexFieldValuesData",
+                                        "data": "responseData"
+                                      },
+                                      "eventSource": "click"
+                                    }
+                                  ]
+                                },
+                                "onFailure": {
+                                  "actions": [
+                                    {
+                                      "type": "context",
+                                      "config": {
+                                        "requestMethod": "add",
+                                        "key": "errorResp",
+                                        "data": "responseData"
+                                      },
+                                      "eventSource": "click"
+                                    },
+                                    {
+                                      "type": "updateComponent",
+                                      "config": {
+                                        "key": "errorTitleUUID",
+                                        "properties": {
+                                          "titleValue": "#errorResp",
+                                          "isShown": true
+                                        },
+                                        "eventSource": "click"
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            }
+                          ]
+                        },
+                        "onFailure": {
+                          "actions": [
+                            {
+                              "type": "context",
+                              "config": {
+                                "requestMethod": "add",
+                                "key": "errorResp",
+                                "data": "responseData"
+                              },
+                              "eventSource": "click"
+                            },
+                            {
+                              "type": "updateComponent",
+                              "config": {
+                                "key": "errorTitleUUID",
+                                "properties": {
+                                  "titleValue": "No FQA Workcenter Found",
+                                  "isShown": true
+                                },
+                                "eventSource": "click"
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                },
+                "onFailure": {
+                  "actions": [
+                    {
+                      "type": "context",
+                      "config": {
+                        "requestMethod": "add",
+                        "key": "errorMsg",
+                        "data": "responseData"
+                      }
+                    },
+                    {
+                      "type": "updateComponent",
+                      "config": {
+                        "key": "searchCriteriaErrorTitleUUID",
+                        "properties": {
+                          "titleValue": "#errorMsg",
+                          "isShown": true
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "footer": []
+}

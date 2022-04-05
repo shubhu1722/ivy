@@ -1,0 +1,54 @@
+{
+	"ctype": "subProcess",
+	"title": "Admin",
+	"uuid": "verifoneAdminProcessUUID",
+	"subMenuIndex": 0,
+	"clientName": "VeriFone",
+	"openRightNav": false,
+	"hooks": [
+	  {
+		"type": "microservice",
+		"hookType": "beforeInit",
+		"config": {
+		  "microserviceId": "getSubProcessPageBody",
+		  "requestMethod": "get",
+		  "params": {
+			"subProcessId": "#getReferenceDataKeys.subProcess.VERIFONE.Debug_PHOTO",
+			"userName": "#userAccountInfo.PersonalDetails.USERID"
+		  },
+		  "isLocal": true,
+		  "LocalService": "assets/Responses/SubProcess/VERIFONE/verifoneAdminSubprocess.json"
+		},
+		"responseDependents": {
+		  "onSuccess": {
+			"actions": [
+			  {
+				"type": "context",
+				"config": {
+				  "requestMethod": "add",
+				  "key": "loadStationData",
+				  "data": "responseData"
+				}
+			  },
+			  {
+				"type": "renderTemplate",
+				"config": {
+				  "mode": "remote",
+				  "targetId": "mainPageContentBodysp",
+				  "templateId": "loadStationData"
+				}
+			  }
+			]
+		  },
+		  "onFailure": {
+			"actions": [
+			  {
+				"type": "toast",
+				"message": "Failed to fetch Load Station JSON"
+			  }
+			]
+		  }
+		}
+	  }
+	]
+}

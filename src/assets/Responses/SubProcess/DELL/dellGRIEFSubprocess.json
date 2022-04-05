@@ -1,0 +1,768 @@
+{
+  "ResultData": {
+    "ctype": "page",
+    "uuid": "pageUUID",
+    "visibility": true,
+    "hooks":[],
+    "header": [
+      {
+        "ctype": "breadcrumb",
+        "breadcrumbs": [
+          {
+            "label": "#userSelectedLocationName"
+          },
+          {
+            "label": "#userSelectedClientName"
+          },
+          {
+            "label": "#userSelectedContractName"
+          }
+        ]
+      },
+      {
+        "ctype": "toolbar",
+        "toolbarClass": "pagecontent-header",
+        "items": [
+          {
+            "ctype": "title",
+            "uuid": "subProcessTitleUUID",
+            "titleValue": "Grief"
+          },
+          {
+            "ctype": "iconbutton",
+            "iconButtonClass": "headeropen-button",
+            "text": "",
+            "uuid": "pageopenUUID",
+            "visibility": true,
+            "disabled": false,
+            "hidden": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "icon": "menu_open",
+            "disableRipple": true,
+            "iconClass": "header-icon",
+            "actions": [
+              {
+                "type": "toggle",
+                "eventSource": "click",
+                "name": "subProcessRightNavref"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "openUUID",
+                  "properties": {
+                    "hidden": false
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "pageopenUUID",
+                  "properties": {
+                    "hidden": true
+                  }
+                },
+                "eventSource": "click"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "items": [
+      {
+        "ctype": "title",
+        "uuid": "successTitleUUID",
+        "titleClass": "success-title",
+        "isShown": false
+      },
+      {
+        "ctype": "title",
+        "uuid": "errorTitleUUID",
+        "containerId": "prebodysectionone",
+        "titleClass": "error-title",
+        "isShown": false
+      }
+    ],
+    "footer": [
+      {
+        "ctype": "toolbar",
+        "toolbarClass": "pagecontent-footer",
+        "items": [
+          {
+            "ctype": "iconbutton",
+            "iconButtonClass": "footer-save body",
+            "text": "Exit",
+            "uuid": "dellGriefExitUUID",
+            "visibility": true,
+            "disabled": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "icon": "close",
+            "actions": [
+              {
+                "type": "renderTemplate",
+                "config": {
+                  "templateId": "dashboard.json",
+                  "mode": "local"
+                },
+                "eventSource": "click"
+              }
+            ]
+          },
+          {
+            "ctype": "iconText",
+            "uuid": "dellGriefAddNoteUUID",
+            "icon": "add_comment",
+            "disabled": false,
+            "text": "Add Note",
+            "textCss": "",
+            "iconPosition": "Before",
+            "iconTextClass": "footer-addNote body",
+            "actions": [
+              {
+                "type": "dialog",
+                "uuid": "dellGriefAddNoteDialogUUID",
+                "config": {
+                  "title": "Add Note",
+                  "items": [
+                    {
+                      "ctype": "textarea",
+                      "name": "addNote",
+                      "textareaClass": "note-class",
+                      "uuid": "dellGriefAddNoteUUID",
+                      "required": true,
+                      "disabled": false,
+                      "value": "#dellTimeoutNotes.addNote",
+                      "actions": []
+                    }
+                  ],
+                  "footer": [
+                    {
+                      "ctype": "button",
+                      "color": "primary",
+                      "text": "Cancel",
+                      "uuid": "dellGriefCancelAddNoteUUID",
+                      "closeType": "close",
+                      "disableClose": true,
+                      "visibility": true,
+                      "disabled": false,
+                      "dialogButton": true,
+                      "type": "",
+                      "hooks": [],
+                      "validations": [],
+                      "actions": []
+                    },
+                    {
+                      "ctype": "button",
+                      "color": "primary",
+                      "text": "Done",
+                      "uuid": "dellGriefDoneAddNoteUUID",
+                      "dialogButton": true,
+                      "visibility": true,
+                      "disabled": true,
+                      "type": "submit",
+                      "closeType": "success",
+                      "hooks": [],
+                      "validations": [],
+                      "actions": []
+                    }
+                  ]
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "key": "dellTimeoutNotes",
+                          "data": "formData",
+                          "requestMethod": "add",
+                          "value": "addNote"
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": []
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "ctype": "spacer",
+            "uuid": "dellGriefEmptySpaceUUID",
+            "class": "empty-space"
+          },
+          {
+            "ctype": "iconbutton",
+            "uuid": "dellGriefPauseUUID",
+            "visibility": true,
+            "disabled": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "icon": "pause",
+            "iconClass": "footer-btnas",
+            "disableRipple": true,
+            "actions": [
+              {
+                "type": "dialog",
+                "uuid": "dellGriefPauseDialogUUID",
+                "config": {
+                  "title": "Hold",
+                  "disableClose": true,
+                  "items": [
+                    {
+                      "ctype": "nativeDropdown",
+                      "formGroupClass": "discrepancy-holddrpdwn",
+                      "uuid": "dellGriefHoldTypeUUID",
+                      "label": "Hold Type",
+                      "name": "dellGriefHoldType",
+                      "dataSource": "#holdCodesForDiscrepancy",
+                      "code": "storageHoldCode",
+                      "displayValue": "storageHoldCode",
+                      "defaultValue": "",
+                      "required": true,
+                      "actions": [
+                        {
+                          "type": "context",
+                          "config": {
+                            "requestMethod": "add",
+                            "key": "storageHoldCode",
+                            "data": "elementControlValue"
+                          },
+                          "eventSource": "change"
+                        },
+                        {
+                          "type": "condition",
+                          "eventSource": "change",
+                          "config": {
+                            "operation": "isEqualTo",
+                            "lhs": "#storageHoldCode",
+                            "rhs": "Awaiting Part"
+                          },
+                          "responseDependents": {
+                            "onSuccess": {
+                              "actions": [
+                                {
+                                  "type": "updateComponent",
+                                  "config": {
+                                    "key": "dellGriefHoldPartUUID",
+                                    "properties": {
+                                      "hidden": false,
+                                      "required": true
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "updateComponent",
+                                  "config": {
+                                    "key": "holdCodeUUID",
+                                    "properties": {
+                                      "hidden": true,
+                                      "required": false
+                                    }
+                                  }
+                                }
+                              ]
+                            },
+                            "onFailure": {
+                              "actions": [
+                                {
+                                  "type": "updateComponent",
+                                  "config": {
+                                    "key": "dellGriefHoldPartUUID",
+                                    "properties": {
+                                      "hidden": true,
+                                      "required": false
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "updateComponent",
+                                  "config": {
+                                    "key": "holdCodeUUID",
+                                    "properties": {
+                                      "hidden": false,
+                                      "required": true
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "ctype": "nativeDropdown",
+                      "formGroupClass": "discrepancy-holddrpdwn",
+                      "uuid": "holdCodeUUID",
+                      "label": "Hold Code",
+                      "name": "holdCodes",
+                      "dataSource": "#holdCodesForDiscrepancy",
+                      "code": "storageHoldSubCode",
+                      "displayValue": "storageHoldSubCode",
+                      "defaultValue": "",
+                      "required": true,
+                      "actions": []
+                    },
+                    {
+                      "ctype": "textField",
+                      "uuid": "dellGriefHoldPartUUID",
+                      "submitable": false,
+                      "disabled": false,
+                      "validations": [],
+                      "hidden": true,
+                      "inLine": true,
+                      "formGroupClass": "flex-container",
+                      "textfieldClass": "hold-textfield-container",
+                      "labelClass": "hold-tf-label",
+                      "hooks": [],
+                      "name": "holdCode",
+                      "label": "Part Number(s)",
+                      "labelPosition": "left",
+                      "tooltip": "",
+                      "TooltipPosition": "",
+                      "defaultValue": "",
+                      "readonly": false,
+                      "type": "text",
+                      "required": false,
+                      "placeholder": "Enter Value",
+                      "value": "",
+                      "prefix": false,
+                      "prefixIcon": "",
+                      "suffix": false,
+                      "suffixIcon": "",
+                      "actions": []
+                    },
+                    {
+                      "ctype": "textField",
+                      "uuid": "dellgriefBinUUID",
+                      "submitable": false,
+                      "disabled": false,
+                      "validations": [],
+                      "hidden": false,
+                      "inLine": true,
+                      "formGroupClass": "flex-container",
+                      "textfieldClass": "hold-textfield-container",
+                      "labelClass": "hold-tf-label",
+                      "hooks": [],
+                      "name": "storageBin",
+                      "label": "Hold Bin",
+                      "labelPosition": "left",
+                      "tooltip": "",
+                      "TooltipPosition": "",
+                      "defaultValue": "",
+                      "readonly": false,
+                      "type": "text",
+                      "required": false,
+                      "placeholder": "Enter Value",
+                      "value": "",
+                      "prefix": false,
+                      "prefixIcon": "",
+                      "suffix": false,
+                      "suffixIcon": "",
+                      "actions": []
+                    },
+                    {
+                      "ctype": "textarea",
+                      "label": "Add note",
+                      "name": "dellGriefHoldAddNote",
+                      "value": "",
+                      "textareaContainer": "timeout-class required-note",
+                      "uuid": "dellGriefHoldNodeUUID",
+                      "required": true,
+                      "submitable": true,
+                      "actions": []
+                    }
+                  ],
+                  "footer": [
+                    {
+                      "ctype": "button",
+                      "color": "primary",
+                      "text": "Cancel",
+                      "uuid": "dellGriefCancelHoldUUID",
+                      "closeType": "close",
+                      "disableClose": true,
+                      "visibility": true,
+                      "dialogButton": true,
+                      "type": "",
+                      "hooks": [],
+                      "validations": [],
+                      "actions": []
+                    },
+                    {
+                      "ctype": "button",
+                      "color": "primary",
+                      "text": "Done",
+                      "uuid": "dellGriefDoneHoldUUID",
+                      "dialogButton": true,
+                      "visibility": true,
+                      "disabled": true,
+                      "type": "submit",
+                      "closeType": "success",
+                      "hooks": [],
+                      "validations": [],
+                      "actions": [
+                        {
+                          "type": "context",
+                          "config": {
+                            "key": "dellGriefTimeoutNotes",
+                            "data": "formData",
+                            "requestMethod": "add",
+                            "value": "dellGriefHoldAddNote"
+                          },
+                          "eventSource": "click"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "key": "holdDialogData",
+                          "data": "formData",
+                          "requestMethod": "add"
+                        },
+                        "eventSource": "click"
+                      },
+                      {
+                        "type": "condition",
+                        "config": {
+                          "operation": "isValid",
+                          "lhs": "#holdDialogData.holdCodes"
+                        },
+                        "eventSource": "click",
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "context",
+                                "config": {
+                                  "requestMethod": "add",
+                                  "key": "subHoldCode",
+                                  "data": "#holdDialogData.holdCodes"
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": [
+                              {
+                                "type": "context",
+                                "config": {
+                                  "requestMethod": "add",
+                                  "key": "subHoldCode",
+                                  "data": "#holdDialogData.holdCode"
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      },
+                      {
+                        "type": "microservice",
+                        "config": {
+                          "microserviceId": "validateBin",
+                          "requestMethod": "get",
+                          "params": {
+                            "locationId": "#repairUnitInfo.LOCATION_ID",
+                            "wareHouseId":"#repairUnitInfo.WAREHOUSE_ID",
+                            "binName":"#holdDialogData.storageBin",
+                            "userName":"#loginUUID.username"
+                          },
+                          "toBeStringified": true,
+                          "isLocal": false,
+                          "LocalService": "assets/Responses/mockHoldSubCode.json"
+                        },
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "microservice",
+                                "config": {
+                                  "microserviceId": "moveinventory",
+                                  "requestMethod": "post",
+                                  "body": {
+                                    "apiUsageClientName": "#discrepancyUnitInfo.CLIENTNAME",
+                                    "apiUsageLocationName": "#discrepancyUnitInfo.GEONAME",
+                                    "callSource": "FrontEnd",
+                                    "ip": "::1",
+                                    "items": {
+                                      "addtionalDetails": {
+                                        "comments": "#holdDialogData.dellGriefHoldAddNote",
+                                        "fixedAssetTag": "#discrepancyUnitInfo.FAT",
+                                        "storageHoldCode": "#holdDialogData.dellGriefHoldType",
+                                        "storageHoldSubCode": "#subHoldCode"
+                                      },
+                                      "destinationLocation": {
+                                        "bin": "#holdDialogData.storageBin",
+                                        "geography": "#discrepancyUnitInfo.GEONAME",
+                                        "stockingLocation": "DELL_AIO_GRIEF_HOLD",
+                                        "warehouse": "#discrepancyUnitInfo.WAREHOUSE_NAME"
+                                      },
+                                      "item": [
+                                        {
+                                          "bcn": "#discrepancyUnitInfo.ITEM_BCN",
+                                          "owner": "#discrepancyUnitInfo.CLIENTNAME",
+                                          "partNo": "#discrepancyUnitInfo.PART_NO",
+                                          "quantity": "1",
+                                          "serialNo": "#discrepancyUnitInfo.SERIAL_NO",
+                                          "condition": "Defective"
+                                        }
+                                      ],
+                                      "notes": "#holdDialogData.dellGriefHoldAddNote",
+                                      "sourceLocation": {
+                                        "bin": "#holdDialogData.storageBin",
+                                        "geography": "#discrepancyUnitInfo.GEONAME",
+                                        "stockingLocation": "DELL_AIO_GRIEF_WIP",
+                                        "warehouse": "#discrepancyUnitInfo.WAREHOUSE_NAME"
+                                      }
+                                    },
+                                    "usrPwd": {
+                                      "userName": "#loginUUID.username",
+                                      "password": "#loginUUID.password"
+                                    }
+                                  },
+                                  "toBeStringified": true
+                                },
+                                "responseDependents": {
+                                  "onSuccess": {
+                                    "actions": [
+                                      {
+                                        "type": "renderTemplate",
+                                        "config": {
+                                          "templateId": "dashboard.json",
+                                          "mode": "local"
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "onFailure": {
+                                    "actions": [
+                                      {
+                                        "type": "context",
+                                        "config": {
+                                          "requestMethod": "add",
+                                          "key": "moveinventoryForDiscrepancy",
+                                          "data": "responseData"
+                                        }
+                                      },
+                                      {
+                                        "type": "updateComponent",
+                                        "config": {
+                                          "key": "errorTitleUUID",
+                                          "properties": {
+                                            "titleValue": "#moveinventoryForDiscrepancy",
+                                            "isShown": true
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                },
+                                "eventSource": "click"
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": [
+                              {
+                                "type": "context",
+                                "config": {
+                                  "requestMethod": "add",
+                                  "key": "moveinventoryForDiscrepancy",
+                                  "data": "responseData"
+                                }
+                              },
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "errorTitleUUID",
+                                  "properties": {
+                                    "titleValue": "#moveinventoryForDiscrepancy",
+                                    "isShown": true
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        "eventSource": "click"
+                      }
+                    ]
+                  },
+                  "onFailure": {}
+                }
+              }
+            ]
+          },
+          {
+            "ctype": "nativeDropdown",
+            "dropdownClass": "footer-dropdown dropdown-container body2",
+            "uuid": "dellGriefResultCodesUUID",
+            "name": "ResultCodes",
+            "dataSource": "#getResultCodeForDiscrepancy",
+            "code": "resultCode",
+            "displayValue": "resultCode",
+            "disabled": false,
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "SelectedDescripencyResultcode",
+                  "data": "elementControlValue"
+                },
+                "eventSource": "change"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "dellGriefTimeoutUUID",
+                  "properties": {
+                    "disabled": false
+                  }
+                },
+                "eventSource": "change"
+              }
+            ]
+          },
+          {
+            "ctype": "button",
+            "color": "primary",
+            "text": "Time out",
+            "uuid": "dellGriefTimeoutUUID",
+            "visibility": true,
+            "disabled": true,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "buttonClass": "footer-button primary-btn",
+            "class": "primary-btn",
+            "actions": [
+                {
+                  "type": "microservice",
+                  "eventSource": "click",
+                  "config": {
+                    "microserviceId": "performTimeOut",
+                    "requestMethod": "post",
+                    "body": {
+                      "timeOutRequest": {
+                        "location": "#repairUnitInfo.GEONAME",
+                        "bcn": "#repairUnitInfo.ITEM_BCN",
+                        "workCenter": "#repairUnitInfo.WORKCENTER",
+                        "password": "#loginUUID.password",
+                        "warrantyInd": "false",
+                        "notes": "#dellTimeoutNotes.addNote",
+                        "resultCode": "#SelectedDescripencyResultcode"
+                      },
+                      "modifyWarranty": 0,
+                      "timeOutType": "ProcessImmediate",
+                      "clientName": "#repairUnitInfo.CLIENTNAME",
+                      "contractName": "#repairUnitInfo.CONTRACTNAME",
+                      "userName": "#loginUUID.username",
+                      "userPass": "#loginUUID.password",
+                      "ip": "::1",
+                      "callSource": "FrontEnd",
+                      "apiUsage_LocationName": "#repairUnitInfo.GEONAME",
+                      "apiUsage_ClientName": "#repairUnitInfo.CLIENTNAME"
+                    },
+                    "toBeStringified": true
+                  },
+                  "responseDependents": {
+                    "onSuccess": {
+                      "actions": [
+                        {
+                          "type": "microservice",
+                          "eventSource": "click",
+                          "config": {
+                            "microserviceId": "serialisedOut",
+                            "requestMethod": "post",
+                            "body": {
+                              "issueSerializedRequest": {
+                                "bcn": "#repairUnitInfo.ITEM_BCN",
+                                "adjustmentData": {
+                                  "adjustmentCode": "BCN Adjustment",
+                                  "financialCode": "#locationDependentFFIDDetails.financialCode",
+                                  "referenceNote": "FrontEnd Grief Adjustment"
+                                }
+                              },
+                              "userPwd": {
+                                "userName": "#loginUUID.username",
+                                "password": "#loginUUID.password"
+                              },
+                              "callSource": "FrontEnd",
+                              "apiUsageLocationName": "#discrepancyUnitInfo.GEONAME",
+                              "apiUsageClientName": "#discrepancyUnitInfo.CLIENTNAME",
+                              "ip":"::1"
+                            },
+                            "toBeStringified": true
+                          },
+                          "responseDependents": {
+                            "onSuccess": {
+                              "actions": [
+                                {
+                                  "type": "clearScreenData"
+                                },
+                                {
+                                  "type": "renderTemplate",
+                                  "config": {
+                                    "templateId": "dashboard.json",
+                                    "mode": "local"
+                                  }
+                                }
+                              ]
+                            },
+                            "onFailure": {
+                              "actions": [
+                                {
+                                  "type": "handleCommonServices",
+                                  "config": {
+                                    "type": "errorRenderTemplate",
+                                    "contextKey": "errorMsg",
+                                    "updateKey": "errorTitleUUID"
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    "onFailure": {
+                      "actions": [
+                        {
+                          "type": "handleCommonServices",
+                          "config": {
+                            "type": "errorRenderTemplate",
+                            "contextKey": "errorMsg",
+                            "updateKey": "errorTitleUUID"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "Result": "SUCCESS"
+}

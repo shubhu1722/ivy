@@ -1,0 +1,48 @@
+{
+  "ctype": "subProcess",
+  "title": "DEBUG",
+  "slWcName" : "HP_DEBUG",
+  "fetchDataFromPrevWC":true,
+  "uuid": "debugUUID",
+  "subMenuIndex": 1,
+  "clientName": "HP",
+  "openRightNav": false,
+  "hooks": [
+    {
+      "type": "microservice",
+      "hookType": "beforeInit",
+      "config": {
+        "microserviceId": "getSubProcessPageBody",
+        "requestMethod": "get",
+        "params": {
+          "subProcessId": "#wcSubprocess.DEBUG.subProcessID",
+          "userName": "#userAccountInfo.PersonalDetails.USERID"
+        },
+        "isLocal": false,
+        "LocalService": "assets/Responses/SubProcess/HP/repairDebugSubProcess.json"
+      },
+      "responseDependents": {
+        "onSuccess": {
+          "actions": [
+            {
+              "type": "renderTemplate",
+              "config": {
+                "mode": "remote",
+                "targetId": "mainPageContentBodysp",
+                "templateId": "getSubProcessPageBody"
+              }
+            }
+          ]
+        },
+        "onFailure": {
+          "actions": [
+            {
+              "type": "toast",
+              "message": "Failed to fetch Repair Debug JSON"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

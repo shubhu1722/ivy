@@ -1,0 +1,1191 @@
+{
+  "ctype": "sidenav",
+  "_comment": " This is the dashboard metadata json which has a sidenav and main content",
+  "title": "Dashboard",
+  "uuid": "dashboardPageUUID",
+  "css": "",
+  "sidenavContainerClass": "sidenav-container",
+  "visibility": true,
+  "validations": [],
+  "hooks": [
+    {
+      "type": "updateMenuList",
+      "hookType": "afterInit",
+      "config": {
+        "updateUUID": "menuListItemUUID",
+        "data": "HomeMenu",
+        "keyToSave": "kardexHomeMenu"
+      }
+    },
+    {
+      "type": "updateComponent",
+      "hookType": "afterInit",
+      "config": {
+        "key": "menuListItemUUID",
+        "properties": {
+          "isVisible": true,
+          "items": "#kardexHomeMenu"
+        }
+      }
+    },
+    {
+      "type": "hideLastNoteInDashboard",
+      "hookType": "afterInit"
+    }
+  ],
+  "action": [],
+  "mode": "side",
+  "fixedInViewport": true,
+  "leftsideNav": {
+    "position": "start",
+    "opened": "true",
+    "sideNavHeader": [
+      {
+        "ctype": "image",
+        "title": "",
+        "uuid": "imageUUID",
+        "imageClass": "dashbord-img",
+        "imageSrc": "../../../assets/Images/logo.png"
+      }
+    ],
+    "sideNavBody": [
+      {
+        "ctype": "menuListItem",
+        "uuid": "menuListItemUUID",
+        "menuListClass": "body2 left-sidenav-menu",
+        "iconList": [
+          "home",
+          "description",
+          "description",
+          "description",
+          "description",
+          "description"
+        ],
+        "dataSource": "#HomeMenu",
+        "isVisible": false
+      }
+    ],
+    "sideNavFooter": [
+      {
+        "ctype": "iconText",
+        "uuid": "dashboardPersonalDetailsIcon",
+        "text": "#userAccountInfo.PersonalDetails.USERID",
+        "iconTextClass": "user-cls",
+        "textClass": "subtitle1",
+        "icon": "account_circle"
+      },
+      {
+        "ctype": "nativeDropdown",
+        "dropdownClass": "body2 dashbord-dropdown",
+        "name": "Location",
+        "uuid": "Location",
+        "dataSource": "#userAccountInfo.LocationDetails",
+        "code": "LOCATION_ID",
+        "displayValue": "LOCATION_NAME",
+        "defaultValue": "#userSelectedLocation",
+        "actions": [
+          {
+            "type": "context",
+            "config": {
+              "requestMethod": "add",
+              "key": "userSelectedLocation",
+              "data": "elementControlValue"
+            },
+            "eventSource": "change"
+          },
+          {
+            "type": "context",
+            "config": {
+              "requestMethod": "add",
+              "key": "userSelectedLocationName",
+              "data": "elementControlName"
+            },
+            "eventSource": "change"
+          },
+          {
+            "type": "updateComponent",
+            "hookType": "afterInit",
+            "config": {
+              "key": "menuListItemUUID",
+              "properties": {
+                "defaultMenu": "Home"
+              }
+            },
+            "eventSource": "change"
+          },
+          {
+            "type": "sessionStorageOperation",
+            "mode": "write",
+            "eventSource": "change",
+            "config": {
+              "localKey": "userSelectedLocation",
+              "localData": "#userSelectedLocation"
+            }
+          },
+          {
+            "type": "sessionStorageOperation",
+            "mode": "write",
+            "eventSource": "change",
+            "config": {
+              "localKey": "userSelectedLocationName",
+              "localData": "#userSelectedLocationName"
+            }
+          },
+          {
+            "type": "filterData",
+            "config": {
+              "data": "#userAccountInfo.ClientDetails",
+              "targetId": "Client",
+              "filterKeys": {
+                "LOCATION_ID": "#userSelectedLocation"
+              }
+            },
+            "eventSource": "change"
+          },
+          {
+            "type": "filterData",
+            "config": {
+              "data": "#userAccountInfo.ContractDetails",
+              "targetId": "Contract",
+              "isEnabled": true,
+              "filterKeys": {
+                "LOCATION_ID": "#userSelectedLocation",
+                "CLIENT_ID": "#userSelectedClient"
+              }
+            },
+            "eventSource": "change"
+          },
+          {
+            "type": "filterData",
+            "config": {
+              "data": "#userAccountInfo.SubProcessType",
+              "targetId": "SubProcessType",
+              "afterFilterValue": "WC OPERATION",
+              "isEnabled": true,
+              "filterKeys": {
+                "LOCATION_ID": "#userSelectedLocation",
+                "CLIENT_ID": "#userSelectedClient",
+                "CONTRACT_ID": "#userSelectedContract"
+              }
+            },
+            "eventSource": "change"
+          },
+          {
+            "type": "multipleCondition",
+            "eventSource": "change",
+            "config": {
+              "multi": true,
+              "operator": "AND",
+              "conditions": [
+                {
+                  "operation": "isValid",
+                  "lhs": "#userSelectedLocation"
+                },
+                {
+                  "operation": "isValid",
+                  "lhs": "#userSelectedClient"
+                },
+                {
+                  "operation": "isValid",
+                  "lhs": "#userSelectedContract"
+                },
+                {
+                  "operation": "isValid",
+                  "lhs": "#userSelectedSubProcessType"
+                }
+              ]
+            },
+            "responseDependents": {
+              "onSuccess": {
+                "actions": [
+                  {
+                    "type": "microservice",
+                    "config": {
+                      "microserviceId": "getSearchCriteria",
+                      "isLocal": false,
+                      "LocalService": "assets/Responses/getSearchCriteria.json",
+                      "requestMethod": "get",
+                      "params": {
+                        "locationId": "#userSelectedLocation",
+                        "clientId": "#userSelectedClient",
+                        "contractId": "#userSelectedContract",
+                        "searchType": "#userSelectedSubProcessType",
+                        "userName": "#userAccountInfo.PersonalDetails.USERID"
+                      }
+                    },
+                    "eventSource": "change",
+                    "responseDependents": {
+                      "onSuccess": {
+                        "actions": [
+                          {
+                            "type": "context",
+                            "config": {
+                              "requestMethod": "add",
+                              "key": "getSearchCriteriaData",
+                              "data": "responseData"
+                            }
+                          },
+                          {
+                            "type": "renderTemplate",
+                            "config": {
+                              "mode": "remote",
+                              "targetId": "mainPageContentBody",
+                              "templateId": "getSearchCriteriaData"
+                            }
+                          }
+                        ]
+                      },
+                      "onFailure": {
+                        "actions": [
+                          {
+                            "type": "updateComponent",
+                            "config": {
+                              "key": "dashboardErrorTitleUUID",
+                              "properties": {
+                                "titleValue": "Search Criteria is not configured",
+                                "isShown": true
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "type": "updateMenuList",
+                    "eventSource": "change",
+                    "config": {
+                      "updateUUID": "menuListItemUUID",
+                      "data": "HomeMenu",
+                      "keyToSave": "verifoneHomeMenu"
+                    }
+                  },
+                  {
+                    "type": "updateComponent",
+                    "eventSource": "change",
+                    "config": {
+                      "key": "menuListItemUUID",
+                      "properties": {
+                        "isVisible": true,
+                        "items": "#verifoneHomeMenu"
+                      }
+                    }
+                  }
+                ]
+              },
+              "onFailure": {
+                "actions": [
+                  {
+                    "type": "disableComponent",
+                    "config": {
+                      "key": "SubProcessType",
+                      "property": "SubProcessType"
+                    },
+                    "hookType": "beforeInit"
+                  },
+                  {
+                    "type": "updateMenuList",
+                    "eventSource": "change",
+                    "config": {
+                      "updateUUID": "menuListItemUUID",
+                      "data": "HomeMenu",
+                      "keyToSave": "verifoneHomeMenu"
+                    }
+                  },
+                  {
+                    "type": "updateComponent",
+                    "eventSource": "change",
+                    "config": {
+                      "key": "menuListItemUUID",
+                      "properties": {
+                        "isVisible": true,
+                        "items": "#verifoneHomeMenu"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      {
+        "ctype": "nativeDropdown",
+        "dropdownClass": "body2 dashbord-dropdown",
+        "uuid": "Client",
+        "name": "Client",
+        "dataSource": "#userAccountInfo.ClientDetails",
+        "code": "CLIENT_ID",
+        "displayValue": "CLIENT_NAME",
+        "defaultValue": "#userSelectedClient",
+        "defaultFilterValue": "#userSelectedLocation",
+        "defaultFilterKey": "LOCATION_ID",
+        "actions": [
+          {
+            "type": "context",
+            "config": {
+              "requestMethod": "add",
+              "key": "userSelectedClient",
+              "data": "elementControlValue"
+            },
+            "eventSource": "change"
+          },
+          {
+            "type": "context",
+            "config": {
+              "requestMethod": "add",
+              "key": "userSelectedClientName",
+              "data": "elementControlName"
+            },
+            "eventSource": "change"
+          },
+          {
+            "type": "updateComponent",
+            "hookType": "afterInit",
+            "config": {
+              "key": "menuListItemUUID",
+              "properties": {
+                "defaultMenu": "Home"
+              }
+            },
+            "eventSource": "change"
+          },
+          {
+            "type": "filterData",
+            "config": {
+              "data": "#userAccountInfo.ContractDetails",
+              "targetId": "Contract",
+              "isEnabled": true,
+              "filterKeys": {
+                "LOCATION_ID": "#userSelectedLocation",
+                "CLIENT_ID": "#userSelectedClient"
+              }
+            },
+            "eventSource": "change"
+          },
+          {
+            "type": "updateMenuList",
+            "eventSource": "change",
+            "config": {
+              "updateUUID": "menuListItemUUID",
+              "data": "HomeMenu",
+              "keyToSave": "verifoneHomeMenu"
+            }
+          },
+          {
+            "type": "updateComponent",
+            "eventSource": "change",
+            "config": {
+              "key": "menuListItemUUID",
+              "properties": {
+                "isVisible": true,
+                "items": "#verifoneHomeMenu"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "ctype": "nativeDropdown",
+        "dropdownClass": "body2 dashbord-dropdown",
+        "uuid": "Contract",
+        "name": "Contract",
+        "dataSource": "#userAccountInfo.ContractDetails",
+        "code": "CONTRACT_ID",
+        "displayValue": "CONTRACT_NAME",
+        "defaultValue": "#userSelectedContract",
+        "defaultFilterValue": "#userSelectedLocation",
+        "defaultFilterKey": "LOCATION_ID",
+        "hooks": [
+          {
+            "type": "updateComponent",
+            "hookType": "afterInit",
+            "config": {
+              "key": "menuListItemUUID",
+              "properties": {
+                "defaultMenu": "Home"
+              }
+            },
+            "eventSource": "change"
+          },
+          {
+            "type": "condition",
+            "hookType": "beforeInit",
+            "config": {
+              "operation": "isValid",
+              "lhs": "#userSelectedContract"
+            },
+            "eventSource": "click",
+            "responseDependents": {
+              "onSuccess": {
+                "actions": [
+                  {
+                    "type": "filterData",
+                    "config": {
+                      "data": "#userAccountInfo.ContractDetails",
+                      "targetId": "Contract",
+                      "isEnabled": true,
+                      "filterValue": "#userSelectedContract",
+                      "filterKeys": {
+                        "LOCATION_ID": "#userSelectedLocation",
+                        "CLIENT_ID": "#userSelectedClient"
+                      }
+                    },
+                    "eventSource": "change"
+                  }
+                ]
+              },
+              "onFailure": {
+                "actions": [
+                  {
+                    "type": "disableComponent",
+                    "config": {
+                      "key": "Contract",
+                      "property": "Contract"
+                    },
+                    "hookType": "beforeInit"
+                  }
+                ]
+              }
+            }
+          }
+        ],
+        "actions": [
+          {
+            "type": "context",
+            "config": {
+              "requestMethod": "add",
+              "key": "userSelectedContract",
+              "data": "elementControlValue"
+            },
+            "eventSource": "change"
+          },
+          {
+            "type": "context",
+            "config": {
+              "requestMethod": "add",
+              "key": "userSelectedContractName",
+              "data": "elementControlName"
+            },
+            "eventSource": "change"
+          },
+          {
+            "type": "microservice",
+            "eventSource": "change",
+            "config": {
+              "microserviceId": "getBatchWC",
+              "isLocal": false,
+              "LocalService": "assets/Responses/repairMockRamResponse.json",
+              "requestMethod": "get",
+              "params": {
+                "locationId": "#userSelectedLocation",
+                "clientId": "#userSelectedClient",
+                "contractId": "#userSelectedContract",
+                "processId": "#HomeMenu.0.id",
+                "appId": "#HomeMenu.0.id",
+                "userName": "#loginUUID.username"
+              }
+            },
+            "responseDependents": {
+              "onSuccess": {
+                "actions": [
+                  {
+                    "type": "updateComponent",
+                    "config": {
+                      "key": "verifoneWCTypeUUID",
+                      "dropDownProperties": {
+                        "options": "#getBatchWC"
+                      }
+                    }
+                  },
+                  {
+                    "type": "updateMenuList",
+                    "eventSource": "change",
+                    "config": {
+                      "updateUUID": "menuListItemUUID",
+                      "data": "HomeMenu",
+                      "keyToSave": "verifoneHomeMenu"
+                    }
+                  }
+                ]
+              },
+              "onFailure": {
+                "actions": [
+                  {
+                    "type": "updateComponent",
+                    "config": {
+                      "key": "verifoneWCTypeUUID",
+                      "dropDownProperties": {
+                        "options": []
+                      }
+                    }
+                  },
+                  {
+                    "type": "context",
+                    "config": {
+                      "requestMethod": "add",
+                      "key": "getBatchWC",
+                      "data": []
+                    }
+                  },
+                  {
+                    "type": "updateMenuList",
+                    "eventSource": "change",
+                    "config": {
+                      "updateUUID": "menuListItemUUID",
+                      "data": "HomeMenu",
+                      "keyToSave": "verifoneHomeMenu"
+                    }
+                  },
+                  {
+                    "type": "handleCommonServices",
+                    "config": {
+                      "type": "errorRenderTemplate",
+                      "contextKey": "errorMsg",
+                      "updateKey": "errorTitleUUID"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "type": "filterData",
+            "config": {
+              "data": "#userAccountInfo.SubProcessType",
+              "targetId": "SubProcessType",
+              "afterFilterValue": "WC OPERATION",
+              "isEnabled": true,
+              "filterKeys": {
+                "LOCATION_ID": "#userSelectedLocation",
+                "CLIENT_ID": "#userSelectedClient",
+                "CONTRACT_ID": "#userSelectedContract"
+              }
+            },
+            "eventSource": "change"
+          },
+          {
+            "type": "updateComponent",
+            "eventSource": "change",
+            "config": {
+              "key": "menuListItemUUID",
+              "properties": {
+                "isVisible": true,
+                "items": "#verifoneHomeMenu"
+              }
+            }
+          },
+          {
+            "type": "microservice",
+            "config": {
+              "microserviceId": "getSearchCriteria",
+              "isLocal": false,
+              "LocalService": "assets/Responses/getSearchCriteria.json",
+              "requestMethod": "get",
+              "params": {
+                "locationId": "#userSelectedLocation",
+                "clientId": "#userSelectedClient",
+                "contractId": "#userSelectedContract",
+                "searchType": "#userSelectedSubProcessType",
+                "userName": "#userAccountInfo.PersonalDetails.USERID"
+              }
+            },
+            "eventSource": "change",
+            "responseDependents": {
+              "onSuccess": {
+                "actions": [
+                  {
+                    "type": "context",
+                    "config": {
+                      "requestMethod": "add",
+                      "key": "getSearchCriteriaData",
+                      "data": "responseData"
+                    }
+                  },
+                  {
+                    "type": "renderTemplate",
+                    "config": {
+                      "mode": "remote",
+                      "targetId": "mainPageContentBody",
+                      "templateId": "getSearchCriteriaData"
+                    }
+                  }
+                ]
+              },
+              "onFailure": {
+                "actions": [
+                  {
+                    "type": "updateComponent",
+                    "config": {
+                      "key": "dashboardErrorTitleUUID",
+                      "properties": {
+                        "titleValue": "Search Criteria is not configured",
+                        "isShown": true
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "type": "multipleCondition",
+            "eventSource": "change",
+            "config": {
+              "multi": true,
+              "operator": "AND",
+              "conditions": [
+                {
+                  "operation": "isValid",
+                  "lhs": "#userSelectedClient"
+                },
+                {
+                  "operation": "isValid",
+                  "lhs": "#userSelectedContract"
+                }
+              ]
+            },
+            "responseDependents": {
+              "onSuccess": {
+                "actions": [
+                  {
+                    "type": "updateMenuList",
+                    "eventSource": "change",
+                    "config": {
+                      "updateUUID": "menuListItemUUID",
+                      "data": "HomeMenu"
+                    }
+                  },
+                  {
+                    "type": "updateComponent",
+                    "eventSource": "change",
+                    "config": {
+                      "key": "menuListItemUUID",
+                      "properties": {
+                        "isVisible": true,
+                        "items": "#HomeMenu"
+                      }
+                    }
+                  },
+                  {
+                    "type": "updateMenuList",
+                    "eventSource": "change",
+                    "config": {
+                      "updateUUID": "menuListItemUUID",
+                      "data": "HomeMenu",
+                      "keyToSave": "verifoneHomeMenu"
+                    }
+                  },
+                  {
+                    "type": "updateComponent",
+                    "eventSource": "change",
+                    "config": {
+                      "key": "menuListItemUUID",
+                      "properties": {
+                        "isVisible": true,
+                        "items": "#verifoneHomeMenu"
+                      }
+                    }
+                  },
+                  {
+                    "type": "setDefaultMenuToHome",
+                    "eventSource": "change"
+                  }
+                ]
+              },
+              "onFailure": {
+                "actions": []
+              }
+            }
+          }
+        ]
+      },
+      {
+        "ctype": "nativeDropdown",
+        "dropdownClass": "body2 dashbord-dropdown",
+        "uuid": "SubProcessType",
+        "name": "SubProcessType",
+        "dataSource": "#userAccountInfo.SubProcessType",
+        "code": "SEARCH_CRITERIA_TYPE",
+        "displayValue": "SEARCH_CRITERIA_TYPE",
+        "defaultValue": "#userSelectedSubProcessType",
+        "defaultFilterValue": "#userSelectedLocation",
+        "defaultFilterKey": "LOCATION_ID",
+        "actions": [          
+          {
+            "type": "context",
+            "config": {
+              "requestMethod": "add",
+              "key": "userSelectedSubProcessType",
+              "data": "elementControlValue"
+            },
+            "eventSource": "change"
+          },
+          {
+            "type": "context",
+            "config": {
+              "requestMethod": "add",
+              "key": "userSelectedSubProcessTypeName",
+              "data": "elementControlName"
+            },
+            "eventSource": "change"
+          },
+          {
+            "type": "setDefaultMenuToHome",
+            "eventSource": "change"
+          },
+          {
+            "type": "sessionStorageOperation",
+            "mode": "write",
+            "eventSource": "change",
+            "config": {
+              "localKey": "userSelectedSubProcessType",
+              "localData": "#userSelectedSubProcessType"
+            }
+          },
+          {
+            "type": "sessionStorageOperation",
+            "mode": "write",
+            "eventSource": "change",
+            "config": {
+              "localKey": "userSelectedSubProcessTypeName",
+              "localData": "#userSelectedSubProcessTypeName"
+            }
+          },          
+          {
+            "type": "microservice",
+            "config": {
+              "microserviceId": "getSearchCriteria",
+              "isLocal": false,
+              "LocalService": "assets/Responses/getSearchCriteria.json",
+              "requestMethod": "get",
+              "params": {
+                "locationId": "#userSelectedLocation",
+                "clientId": "#userSelectedClient",
+                "contractId": "#userSelectedContract",
+                "searchType": "#userSelectedSubProcessType",
+                "userName": "#userAccountInfo.PersonalDetails.USERID"
+              }
+            },
+            "eventSource": "change",
+            "responseDependents": {
+              "onSuccess": {
+                "actions": [
+                  {
+                    "type": "context",
+                    "config": {
+                      "requestMethod": "add",
+                      "key": "getSearchCriteriaData",
+                      "data": "responseData"
+                    }
+                  },
+                  {
+                    "type": "renderTemplate",
+                    "config": {
+                      "mode": "remote",
+                      "targetId": "mainPageContentBody",
+                      "templateId": "getSearchCriteriaData"
+                    }
+                  }
+                ]
+              },
+              "onFailure": {
+                "actions": [
+                  {
+                    "type": "updateComponent",
+                    "config": {
+                      "key": "dashboardErrorTitleUUID",
+                      "properties": {
+                        "titleValue": "Search Criteria is not configured",
+                        "isShown": true
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "type": "updateMenuList",
+            "eventSource": "change",
+            "config": {
+              "updateUUID": "menuListItemUUID",
+              "data": "HomeMenu"
+            }
+          },
+          {
+            "type": "updateComponent",
+            "eventSource": "change",
+            "config": {
+              "key": "menuListItemUUID",
+              "properties": {
+                "isVisible": true,
+                "items": "#HomeMenu"
+              }
+            }
+          },
+          {
+            "type": "updateMenuList",
+            "eventSource": "change",
+            "config": {
+              "updateUUID": "menuListItemUUID",
+              "data": "HomeMenu",
+              "keyToSave": "verifoneHomeMenu"
+            }
+          },
+          {
+            "type": "updateComponent",
+            "eventSource": "change",
+            "config": {
+              "key": "menuListItemUUID",
+              "properties": {
+                "isVisible": true,
+                "items": "#verifoneHomeMenu"
+              }
+            }
+          }
+        ],
+        "hooks": [
+          {
+            "type": "condition",
+            "hookType": "beforeInit",
+            "config": {
+              "operation": "isValid",
+              "lhs": "#userSelectedSubProcessType"
+            },
+            "eventSource": "click",
+            "responseDependents": {
+              "onSuccess": {
+                "actions": [
+                  {
+                    "type": "filterData",
+                    "config": {
+                      "data": "#userAccountInfo.SubProcessType",
+                      "targetId": "SubProcessType",
+                      "filterValue": "#userSelectedSubProcessType",
+                      "isEnabled": true,
+                      "filterKeys": {
+                        "LOCATION_ID": "#userSelectedLocation",
+                        "CLIENT_ID": "#userSelectedClient",
+                        "CONTRACT_ID": "#userSelectedContract"
+                      }
+                    },
+                    "eventSource": "change"
+                  }
+                ]
+              },
+              "onFailure": {
+                "actions": [
+                  {
+                    "type": "disableComponent",
+                    "config": {
+                      "key": "SubProcessType",
+                      "property": "SubProcessType"
+                    },
+                    "hookType": "beforeInit"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      {
+        "ctype": "iconText",
+        "uuid": "dashboardLogoutIcon",
+        "text": "Logout",
+        "iconTextClass": "logout-cls dashbord-logout",
+        "icon": "power_settings_new",
+        "textClass": "body2",
+        "actions": [
+          {
+            "type": "renderTemplate",
+            "config": {
+              "templateId": "login.json",
+              "mode": "local",
+              "clearContext": true
+            },
+            "eventSource": "click"
+          }
+        ]
+      }
+    ]
+  },
+  "rightsidenav": {
+    "position": "end"
+  },
+  "pageContentBody": [
+    {
+      "ctype": "page",
+      "uuid": "contentPageUUID",
+      "visibility": true,
+      "hooks": [
+        {
+          "type": "multipleCondition",
+          "hookType": "afterInit",
+          "config": {
+            "multi": true,
+            "operator": "AND",
+            "conditions": [
+              {
+                "operation": "isValid",
+                "lhs": "#loginExpiryMessage"
+              },
+              {
+                "operation": "isEqualTo",
+                "lhs": "#userClickedLoginToast",
+                "rhs": false
+              }
+            ]
+          },
+          "responseDependents": {
+            "onSuccess": {
+              "actions": [
+                {
+                  "type": "toast",
+                  "message": "#loginExpiryMessage",
+                  "duration": 50000000000,
+                  "horizontalPosition": "center",
+                  "verticalPosition": "bottom",
+                  "buttonText": "OK",
+                  "buttonActions": [
+                    {
+                      "type": "context",
+                      "config": {
+                        "requestMethod": "addToGlobalContext",
+                        "key": "userClickedLoginToast",
+                        "data": true
+                      },
+                      "eventSource": "click"
+                    }
+                  ]
+                }
+              ]
+            },
+            "onFailure": {
+              "actions": []
+            }
+          }
+        },
+        {
+          "type": "multipleCondition",
+          "hookType": "afterInit",
+          "config": {
+            "operation": "isNotValid",
+            "lhs": "idleTimeStarted"
+          },
+          "responseDependents": {
+            "onSuccess": {
+              "actions": [
+                {
+                  "type": "handleCommonServices",
+                  "config": {
+                    "type": "idleInitiative"
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "microservice",
+          "hookType": "afterInit",
+          "config": {
+            "microserviceId": "getReferenceDataKeys",
+            "isLocal": true,
+            "LocalService": "assets/core-assets/commonRefData.json",
+            "requestMethod": "get"
+          },
+          "eventSource": "change",
+          "responseDependents": {
+            "onSuccess": {
+              "actions": [
+                {
+                  "type": "context",
+                  "config": {
+                    "requestMethod": "add",
+                    "key": "getReferenceDataKeys",
+                    "data": "responseData"
+                  }
+                },
+                {
+                  "type": "context",
+                  "config": {
+                    "requestMethod": "add",
+                    "key": "getProcess",
+                    "data": "responseData"
+                  }
+                }
+              ]
+            },
+            "onFailure": {
+              "actions": [
+                {
+                  "type": "updateComponent",
+                  "config": {
+                    "key": "errorTitleUUID",
+                    "properties": {
+                      "titleValue": "No Data From Reference",
+                      "isShown": true
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "microservice",
+          "hookType": "afterInit",
+          "config": {
+            "microserviceId": "getHostName",
+            "isLocal": false,
+            "LocalService": "assets/Responses/mockBGA.json",
+            "requestMethod": "get",
+            "params": {}
+          },
+          "responseDependents": {
+            "onSuccess": {
+              "actions": [
+                {
+                  "type": "context",
+                  "config": {
+                    "requestMethod": "add",
+                    "key": "getHostNameResponse",
+                    "data": "responseData"
+                  }
+                }
+              ]
+            },
+            "onFailure": {
+              "actions": [
+                {
+                  "type": "context",
+                  "config": {
+                    "requestMethod": "add",
+                    "key": "errorMsg",
+                    "data": "responseData"
+                  }
+                },
+                {
+                  "type": "updateComponent",
+                  "config": {
+                    "key": "errorTitleUUID",
+                    "properties": {
+                      "titleValue": "#errorMsg",
+                      "isShown": true
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "condition",
+          "hookType": "afterInit",
+          "config": {
+            "operation": "isValid",
+            "lhs": "#userSelectedSubProcessType"
+          },
+          "responseDependents": {
+            "onSuccess": {
+              "actions": [
+                {
+                  "type": "microservice",
+                  "config": {
+                    "microserviceId": "getSearchCriteria",
+                    "isLocal": false,
+                    "LocalService": "assets/Responses/getSearchCriteria.json",
+                    "requestMethod": "get",
+                    "params": {
+                      "locationId": "#userSelectedLocation",
+                      "clientId": "#userSelectedClient",
+                      "contractId": "#userSelectedContract",
+                      "searchType": "#userSelectedSubProcessType",
+                      "userName": "#userAccountInfo.PersonalDetails.USERID"
+                    }
+                  },
+                  "responseDependents": {
+                    "onSuccess": {
+                      "actions": [
+                        {
+                          "type": "context",
+                          "config": {
+                            "requestMethod": "add",
+                            "key": "getSearchCriteriaData",
+                            "data": "responseData"
+                          }
+                        },
+                        {
+                          "type": "renderTemplate",
+                          "config": {
+                            "mode": "remote",
+                            "targetId": "mainPageContentBody",
+                            "templateId": "getSearchCriteriaData"
+                          }
+                        }
+                      ]
+                    },
+                    "onFailure": {
+                      "actions": [
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "dashboardErrorTitleUUID",
+                            "properties": {
+                              "titleValue": "Search Criteria is not configured",
+                              "isShown": true
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                },
+                {
+                  "type": "updateMenuList",
+                  "eventSource": "change",
+                  "config": {
+                    "updateUUID": "menuListItemUUID",
+                    "data": "HomeMenu",
+                    "keyToSave": "verifoneHomeMenu"
+                  }
+                },
+                {
+                  "type": "updateComponent",
+                  "eventSource": "change",
+                  "config": {
+                    "key": "menuListItemUUID",
+                    "properties": {
+                      "isVisible": true,
+                      "items": "#verifoneHomeMenu"
+                    }
+                  }
+                }
+              ]
+            },
+            "onFailure": {
+              "actions": []
+            }
+          }
+        }
+      ],
+      "header": [
+        {
+          "ctype": "toolbar",
+          "uuid": "dashboardHeaderToolbarUUID",
+          "toolbarClass": "pagecontent-header preScreen-header",
+          "items": [
+            {
+              "ctype": "title",
+              "uuid": "dashboardErrorTitleUUID",
+              "titleClass": "error-title",
+              "isShown": false
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,614 @@
+{
+    "ctype": "taskPanel",
+    "title": "",
+    "header": {
+        "title": "Confirm Accessories",
+        "icon": "description",
+        "css": "color:black",
+        "status": ""
+    },
+    "expanded": "true",
+    "hideToggle": "true",
+    "uuid": "confirmAccessoriesTaskPanelUUID",
+    "css": "width:50%;margin:auto;height:10vh",
+    "visibility": true,
+    "hidden": false,
+    "hooks": [],
+    "validations": [],
+    "actions": [],
+    "items": [
+        {
+            "ctype": "label",
+            "text": "Select Accessories"
+        },
+        {
+            "ctype": "grid",
+            "cols": "6",
+            "rowHeight": "100px",
+            "uuid": "confirmAccessoriesUUID",
+            "FlexFieldName": "Accessories",
+            "hooks": [],
+            "validations": [],
+            "actions": [
+                {
+                    "type": "createComponent",
+                    "config": {
+                        "targetId": "confirmAccessoriesTaskPanelUUID",
+                        "data": {
+                            "ctype": "formPanel",
+                            "_comment": " This will be a container in the center which will have 2 text fields username and password and a submit button",
+                            "header": "",
+                            "uuid": "",
+                            "css": "box-shadow:none;width:80%;margin:auto;",
+                            "visibility": true,
+                            "hooks": [],
+                            "validations": [],
+                            "actions": [],
+                            "items": [
+                                {
+                                    "ctype": "label",
+                                    "uuid": "AccessoriesvalueUUID",
+                                    "hooks": [],
+                                    "validations": [
+                                        {
+                                            "type": "regex",
+                                            "script": ""
+                                        }
+                                    ],
+                                    "actions": [],
+                                    "text": "",
+                                    "css": "float:left;width:30%;padding-top:10px"
+                                },
+                                {
+                                    "ctype": "textField",
+                                    "uuid": "ScanAccessoriesNumberUUID",
+                                    "hooks": [],
+                                    "validations": [
+                                        {
+                                            "type": "regex",
+                                            "script": ""
+                                        }
+                                    ],
+                                    "actions": [
+                                        {
+                                            "type": "checkAndApply",
+                                            "config": {
+                                                "source": "#Accessories"
+                                            },
+                                            "eventSource": "keyup"
+                                        }
+                                    ],
+                                    "type": "text",
+                                    "formGroupStyles": "float:left;width:40%;",
+                                    "required": true,
+                                    "placeholder": "Scan #",
+                                    "submitable": true,
+                                    "label": "",
+                                    "labelPosition": "",
+                                    "name": "ScanSerialNumber",
+                                    "inputStyles": "",
+                                    "value": ""
+                                },
+                                {
+                                    "ctype": "iconbutton",
+                                    "inputStyles": "border:none",
+                                    "text": "",
+                                    "uuid": "closeaccessoriesUUID",
+                                    "visibility": true,
+                                    "disabled": false,
+                                    "type": "submit",
+                                    "hooks": [],
+                                    "validations": [],
+                                    "actions": [
+                                        {
+                                            "type": "deleteComponent",
+                                            "config": {
+                                                "targetId": "",
+                                                "source": "#Accessories"
+                                            },
+                                            "eventSource": "click"
+                                        }
+                                    ],
+                                    "icon": "close",
+                                    "iconcss": "color:black;font-size:21px",
+                                    "disableRipple": true,
+                                    "css": "float:left"
+                                }
+                            ]
+                        }
+                    },
+                    "eventSource": "click"
+                },
+                {
+                    "type": "checkAndPush",
+                    "config": {
+                        "requestMethod": "add",
+                        "key": "",
+                        "source": "#Accessories"
+                    },
+                    "eventSource": "click"
+                }
+            ],
+            "tiles": [
+                {
+                    "cols": 1,
+                    "rows": 1,
+                    "imageSrc": "../../../assets/Images/Acadaptor.png",
+                    "css": "border:1px solid rgba(121, 121, 121, 1);height: 80px;width: 100px;",
+                    "uuid": "ACADAPTERSN",
+                    "targetuuid": "accessUUIDACADAPTERSNTarget",
+                    "tileActions": [
+                        {
+                            "uuid": "AccessoriesvalueUUID",
+                            "lableText": "AC ADAPTER SN"
+                        },
+                        {
+                            "uuid": "ScanAccessoriesNumberUUID",
+                            "disabled": false,
+                            "hidden": true
+                        }
+                    ]
+                },
+                {
+                    "cols": 1,
+                    "rows": 1,
+                    "imageSrc": "../../../assets/Images/battery.png",
+                    "css": "border:1px solid rgba(121, 121, 121, 1);height: 80px;width: 100px;",
+                    "uuid": "BATTERYSN",
+                    "targetuuid": "accessUUIDBATTERYSNTarget",
+                    "tileActions": [
+                        {
+                            "uuid": "AccessoriesvalueUUID",
+                            "lableText": "BATTERY SN"
+                        },
+                        {
+                            "uuid": "ScanAccessoriesNumberUUID",
+                            "disabled": false,
+                            "hidden": true
+                        }
+                    ]
+                },
+                {
+                    "cols": 1,
+                    "rows": 1,
+                    "imageSrc": "../../../assets/Images/Acadaptor.png",
+                    "css": "border:1px solid rgba(121, 121, 121, 1);height: 80px;width: 100px;",
+                    "tileValue": "AC Adapter",
+                    "uuid": "Accessories",
+                    "targetuuid": "accessUUIDACAdapterTarget",
+                    "tileActions": [
+                        {
+                            "uuid": "AccessoriesvalueUUID",
+                            "lableText": "AC Adapter"
+                        },
+                        {
+                            "uuid": "ScanAccessoriesNumberUUID",
+                            "disabled": false,
+                            "hidden": false
+                        }
+                    ]
+                },
+                {
+                    "cols": 1,
+                    "rows": 1,
+                    "imageSrc": "../../../assets/Images/carryingcase.jpg",
+                    "css": "border:1px solid rgba(121, 121, 121, 1);height: 80px;width: 100px;",
+                    "tileValue": "Carrying Case",
+                    "uuid": "Accessories",
+                    "targetuuid": "accessUUIDCarryingCaseTarget",
+                    "tileActions": [
+                        {
+                            "uuid": "AccessoriesvalueUUID",
+                            "lableText": "Carrying Case"
+                        },
+                        {
+                            "uuid": "ScanAccessoriesNumberUUID",
+                            "disabled": false,
+                            "hidden": false
+                        }
+                    ]
+                },
+                {
+                    "cols": 1,
+                    "rows": 1,
+                    "imageSrc": "../../../assets/Images/media.png",
+                    "css": "border:1px solid rgba(121, 121, 121, 1);height: 80px;width: 100px;",
+                    "tileValue": "Media/QRCD",
+                    "uuid": "Accessories",
+                    "targetuuid": "accessUUIDMediaQRCDTarget",
+                    "tileActions": [
+                        {
+                            "uuid": "AccessoriesvalueUUID",
+                            "lableText": "Media/QRCD"
+                        },
+                        {
+                            "uuid": "ScanAccessoriesNumberUUID",
+                            "disabled": false,
+                            "hidden": false
+                        }
+                    ]
+                },
+                {
+                    "cols": 1,
+                    "rows": 1,
+                    "imageSrc": "../../../assets/Images/pen.jpg",
+                    "css": "border:1px solid rgba(121, 121, 121, 1);height: 80px;width: 100px;",
+                    "tileValue": "Pen",
+                    "uuid": "Accessories",
+                    "targetuuid": "accessUUIDPenTarget",
+                    "tileActions": [
+                        {
+                            "uuid": "AccessoriesvalueUUID",
+                            "lableText": "Pen"
+                        },
+                        {
+                            "uuid": "ScanAccessoriesNumberUUID",
+                            "disabled": false,
+                            "hidden": false
+                        }
+                    ]
+                },
+                {
+                    "cols": 1,
+                    "rows": 1,
+                    "imageSrc": "../../../assets/Images/dummycard.jpg",
+                    "css": "border:1px solid rgba(121, 121, 121, 1);height: 80px;width: 100px;",
+                    "tileValue": "Dummy Card",
+                    "uuid": "Accessories",
+                    "targetuuid": "accessUUIDDummyCardTarget",
+                    "tileActions": [
+                        {
+                            "uuid": "AccessoriesvalueUUID",
+                            "lableText": "Dummy Card"
+                        },
+                        {
+                            "uuid": "ScanAccessoriesNumberUUID",
+                            "disabled": false,
+                            "hidden": false
+                        }
+                    ]
+                },
+                {
+                    "cols": 1,
+                    "rows": 1,
+                    "imageSrc": "../../../assets/Images/powercord.jpg",
+                    "css": "border:1px solid rgba(121, 121, 121, 1);height: 80px;width: 100px;",
+                    "tileValue": "Power Cord",
+                    "uuid": "Accessories",
+                    "targetuuid": "accessUUIDPowerCordTarget",
+                    "tileActions": [
+                        {
+                            "uuid": "AccessoriesvalueUUID",
+                            "lableText": "Power Cord"
+                        },
+                        {
+                            "uuid": "ScanAccessoriesNumberUUID",
+                            "disabled": false,
+                            "hidden": false
+                        }
+                    ]
+                },
+                {
+                    "cols": 1,
+                    "rows": 1,
+                    "imageSrc": "../../../assets/Images/sdcard.jpg",
+                    "css": "border:1px solid rgba(121, 121, 121, 1);height: 80px;width: 100px;",
+                    "tileValue": "SD Card",
+                    "uuid": "Accessories",
+                    "targetuuid": "accessUUIDSDCardTarget",
+                    "tileActions": [
+                        {
+                            "uuid": "AccessoriesvalueUUID",
+                            "lableText": "SD Card"
+                        },
+                        {
+                            "uuid": "ScanAccessoriesNumberUUID",
+                            "disabled": false,
+                            "hidden": false
+                        }
+                    ]
+                },
+                {
+                    "cols": 1,
+                    "rows": 1,
+                    "imageSrc": "../../../assets/Images/dockingstation.png",
+                    "css": "border:1px solid rgba(121, 121, 121, 1);height: 80px;width: 100px;",
+                    "tileValue": "Docking Station",
+                    "uuid": "Accessories",
+                    "targetuuid": "accessUUIDDockingStationTarget",
+                    "tileActions": [
+                        {
+                            "uuid": "AccessoriesvalueUUID",
+                            "lableText": "Docking Station"
+                        },
+                        {
+                            "uuid": "ScanAccessoriesNumberUUID",
+                            "disabled": false,
+                            "hidden": false
+                        }
+                    ]
+                },
+                {
+                    "cols": 1,
+                    "rows": 1,
+                    "imageSrc": "../../../assets/Images/mouse.png",
+                    "css": "border:1px solid rgba(121, 121, 121, 1);height: 80px;width: 100px;",
+                    "tileValue": "Mousee",
+                    "uuid": "Accessories",
+                    "targetuuid": "accessUUIDMouseTarget",
+                    "tileActions": [
+                        {
+                            "uuid": "AccessoriesvalueUUID",
+                            "lableText": "Mouse"
+                        },
+                        {
+                            "uuid": "ScanAccessoriesNumberUUID",
+                            "disabled": false,
+                            "hidden": false
+                        }
+                    ]
+                },
+                {
+                    "cols": 1,
+                    "rows": 1,
+                    "imageSrc": "../../../assets/Images/keyboard.jpg",
+                    "css": "border:1px solid rgba(121, 121, 121, 1);height: 80px;width: 100px;",
+                    "tileValue": "Keyboard",
+                    "uuid": "Accessories",
+                    "targetuuid": "accessUUIDKeyboardTarget",
+                    "tileActions": [
+                        {
+                            "uuid": "AccessoriesvalueUUID",
+                            "lableText": "Keyboard"
+                        },
+                        {
+                            "uuid": "ScanAccessoriesNumberUUID",
+                            "disabled": false,
+                            "hidden": false
+                        }
+                    ]
+                },
+                {
+                    "cols": 1,
+                    "rows": 1,
+                    "imageSrc": "../../../assets/Images/usbcable.png",
+                    "css": "border:1px solid rgba(121, 121, 121, 1);height: 80px;width: 100px;",
+                    "tileValue": "USB Cable",
+                    "uuid": "Accessories",
+                    "targetuuid": "accessUUIDUSBCableTarget",
+                    "tileActions": [
+                        {
+                            "uuid": "AccessoriesvalueUUID",
+                            "lableText": "USB Cable"
+                        },
+                        {
+                            "uuid": "ScanAccessoriesNumberUUID",
+                            "disabled": false,
+                            "hidden": false
+                        }
+                    ]
+                },
+                {
+                    "cols": 1,
+                    "rows": 1,
+                    "imageSrc": "../../../assets/Images/papers.svg",
+                    "css": "border:1px solid rgba(121, 121, 121, 1);height: 80px;width: 100px;",
+                    "tileValue": "Manuals",
+                    "uuid": "Accessories",
+                    "targetuuid": "accessUUIDManualsTarget",
+                    "tileActions": [
+                        {
+                            "uuid": "AccessoriesvalueUUID",
+                            "lableText": "Manuals"
+                        },
+                        {
+                            "uuid": "ScanAccessoriesNumberUUID",
+                            "disabled": false,
+                            "hidden": false
+                        }
+                    ]
+                },
+                {
+                    "cols": 1,
+                    "rows": 1,
+                    "imageSrc": "../../../assets/Images/headphones.jpg",
+                    "css": "border:1px solid rgba(121, 121, 121, 1);height: 80px;width: 100px;",
+                    "tileValue": "Headphones",
+                    "uuid": "Accessories",
+                    "targetuuid": "accessUUIDHeadphonesTarget",
+                    "tileActions": [
+                        {
+                            "uuid": "AccessoriesvalueUUID",
+                            "lableText": "Headphones"
+                        },
+                        {
+                            "uuid": "ScanAccessoriesNumberUUID",
+                            "disabled": false,
+                            "hidden": false
+                        }
+                    ]
+                },
+                {
+                    "cols": 1,
+                    "rows": 1,
+                    "imageSrc": "../../../assets/Images/miskcd.png",
+                    "css": "border:1px solid rgba(121, 121, 121, 1);height: 80px;width: 100px;",
+                    "tileValue": "Misc CD",
+                    "uuid": "Accessories",
+                    "targetuuid": "accessUUIDMiscCDTarget",
+                    "tileActions": [
+                        {
+                            "uuid": "AccessoriesvalueUUID",
+                            "lableText": "Misc CD"
+                        },
+                        {
+                            "uuid": "ScanAccessoriesNumberUUID",
+                            "disabled": false,
+                            "hidden": false
+                        }
+                    ]
+                },
+                {
+                    "cols": 1,
+                    "rows": 1,
+                    "imageSrc": "../../../assets/Images/flashdrive.png",
+                    "css": "border:1px solid rgba(121, 121, 121, 1);height: 80px;width: 100px;",
+                    "tileValue": "Flash drive",
+                    "uuid": "Accessories",
+                    "targetuuid": "accessUUIDFlashdriveTarget",
+                    "tileActions": [
+                        {
+                            "uuid": "AccessoriesvalueUUID",
+                            "lableText": "Flash drive"
+                        },
+                        {
+                            "uuid": "ScanAccessoriesNumberUUID",
+                            "disabled": false,
+                            "hidden": false
+                        }
+                    ]
+                },
+                {
+                    "cols": 1,
+                    "rows": 1,
+                    "imageSrc": "../../../assets/Images/simcard.jpg",
+                    "css": "border:1px solid rgba(121, 121, 121, 1);height: 80px;width: 100px;",
+                    "tileValue": "SIM CARD",
+                    "uuid": "Accessories",
+                    "targetuuid": "accessUUIDSIMCARDTarget",
+                    "tileActions": [
+                        {
+                            "uuid": "AccessoriesvalueUUID",
+                            "lableText": "SIM CARD"
+                        },
+                        {
+                            "uuid": "ScanAccessoriesNumberUUID",
+                            "disabled": false,
+                            "hidden": false
+                        }
+                    ]
+                },
+                {
+                    "cols": 1,
+                    "rows": 1,
+                    "text": "None",
+                    "css": "border: 1px solid rgb(121, 121, 121);padding: 26px 29px 35px 26px;",
+                    "tileValue": "None",
+                    "uuid": "None",
+                    "targetuuid": "accessUUIDNoneTarget",
+                    "tileActions": [
+                        {
+                            "uuid": "AccessoriesvalueUUID",
+                            "lableText": "None"
+                        },
+                        {
+                            "uuid": "ScanAccessoriesNumberUUID",
+                            "disabled": false,
+                            "hidden": false
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "footer": [
+        {
+            "ctype": "button",
+            "inputStyles": "float:right",
+            "text": "Complete",
+            "uuid": "CompleteUUID",
+            "visibility": true,
+            "disabled": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "actions": [
+                {
+                    "type": "context",
+                    "config": {
+                        "requestMethod": "add",
+                        "key": "scanSerialNumber",
+                        "data": "formData"
+                    },
+                    "eventSource": "click"
+                },
+                {
+                    "type": "microservice",
+                    "config": {
+                        "microserviceId": "scanValue",
+                        "requestMethod": "get",
+                        "params": {
+                            "serialNumber": "#scanSerialNumber"
+                        }
+                    },
+                    "eventSource": "click",
+                    "responseDependents": {
+                        "onSuccess": {
+                            "actions": [
+                                {
+                                    "type": "toast",
+                                    "message": "Successfull Logged In"
+                                },
+                                {
+                                    "type": "context",
+                                    "config": {
+                                        "requestMethod": "add",
+                                        "key": "userAccountInfo",
+                                        "data": "responseData"
+                                    }
+                                },
+                                {
+                                    "type": "microservice",
+                                    "config": {
+                                        "microserviceId": "getHomeMenu",
+                                        "requestMethod": "get",
+                                        "params": {
+                                            "userId": "#loginUUID.username"
+                                        }
+                                    },
+                                    "responseDependents": {
+                                        "onSuccess": {
+                                            "actions": [
+                                                {
+                                                    "type": "context",
+                                                    "config": {
+                                                        "requestMethod": "add",
+                                                        "key": "HomeMenu",
+                                                        "data": "responseData"
+                                                    }
+                                                },
+                                                {
+                                                    "type": "renderTemplate",
+                                                    "config": {
+                                                        "templateId": "dashboard.json",
+                                                        "mode": "local"
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "onFailure": {
+                                            "actions": [
+                                                {
+                                                    "type": "toast",
+                                                    "message": "get menu failed"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        "onFailure": {
+                            "actions": [
+                                {
+                                    "type": "toast",
+                                    "message": "Login Failed."
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}

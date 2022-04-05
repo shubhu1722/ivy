@@ -1,0 +1,3127 @@
+{
+  "ctype": "sidenav",
+  "_comment": " This is the dashboard metadata json which has a sidenav and main content",
+  "title": "Dashboard",
+  "uuid": "CiscoprocessUUID",
+  "visibility": true,
+  "hooks": [],
+  "validations": [],
+  "action": [],
+  "mode": "side",
+  "fixedInViewport": "",
+  "leftsideNav": {
+    "position": "start",
+    "opened": "true",
+    "sideNavHeader": [
+      {
+        "ctype": "title",
+        "title": "SN: ",
+        "titleValue": "#UnitInfo.SERIAL_NO",
+        "uuid": "SNUUID",
+        "titleClass": "sidenav-header heading1"
+      },
+      {
+        "ctype": "title",
+        "title": "PID-",
+        "titleValue": "#UnitInfo.PART_NO",
+        "uuid": "PIDUUID",
+        "titleClass": "sidenav-title body2"
+      },
+      {
+        "ctype": "title",
+        "title": "BCN-",
+        "titleValue": "#UnitInfo.ITEM_BCN",
+        "uuid": "titleUUID",
+        "titleClass": "sidenav-title body2"
+      }
+    ],
+    "sideNavBody": [
+      {
+        "ctype": "menutree",
+        "uuid": "menuTreeUUID",
+        "menuListClass": "body2",
+        "menuData": "#SubprocessMenu",
+        "childIndex": 0
+      }
+    ],
+    "sideNavFooter": [
+      {
+        "ctype": "iconText",
+        "text": "#userAccountInfo.PersonalDetails.USERID",
+        "iconTextClass": "user-cls",
+        "textClass": "body2",
+        "icon": "account_circle"
+      },
+      {
+        "ctype": "iconText",
+        "text": "Logout",
+        "iconTextClass": "logout-cls",
+        "icon": "power_settings_new",
+        "textClass": "body2",
+        "actions": [
+          {
+            "type": "renderTemplate",
+            "config": {
+              "templateId": "login.json",
+              "mode": "local",
+              "clearContext": true
+            },
+            "eventSource": "click"
+          }
+        ]
+      }
+    ]
+  },
+  "rightsidenav": {
+    "position": "end",
+    "opened": "true",
+    "sideNavHeader": [
+      {
+        "ctype": "toolbar",
+        "toolbarClass": "rightside-header",
+        "items": [
+          {
+            "ctype": "title",
+            "title": "Work Instructions",
+            "titleClass": "section-title"
+          },
+          {
+            "ctype": "textField",
+            "uuid": "searchUUID",
+            "submitable": false,
+            "disabled": false,
+            "visibility": true,
+            "validations": [],
+            "formGroupClass": "search-container",
+            "textfieldClass": "rightside-search",
+            "hooks": [],
+            "actions": [],
+            "name": "string",
+            "label": "",
+            "labelPosition": "",
+            "tooltip": "",
+            "TooltipPosition": "",
+            "defaultvalue": "",
+            "readonly": false,
+            "type": "text",
+            "required": false,
+            "placeholder": "Search",
+            "value": "",
+            "prefix": false,
+            "prefixIcon": "",
+            "suffix": false,
+            "suffixIcon": ""
+          },
+          {
+            "ctype": "iconbutton",
+            "iconButtonClass": "headeropen-button",
+            "text": "",
+            "uuid": "openUUID",
+            "visibility": true,
+            "disabled": false,
+            "hidden": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "icon": "menu",
+            "disableRipple": true,
+            "iconClass": "header-icon",
+            "actions": [
+              {
+                "type": "toggle",
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "pageopenUUID",
+                  "properties": {
+                    "hidden": false
+                  }
+                },
+                "eventSource": "click"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "sideNavBody": [],
+    "sideNavFooter": []
+  },
+  "pageContentBody": [
+    {
+      "ctype": "page",
+      "uuid": "pageUUID",
+      "visibility": true,
+      "hooks": [],
+      "validations": [],
+      "action": [],
+      "header": [
+        {
+          "ctype": "toolbar",
+          "toolbarClass": "pagecontent-header preScreen-header",
+          "items": [
+            {
+              "ctype": "title",
+              "uuid": "pageContentTitleUUID",
+              "titleClass": "section-title",
+              "title": "IQA Pre-Screen"
+            },
+            {
+              "ctype": "iconbutton",
+              "iconButtonClass": "headeropen-button",
+              "text": "",
+              "uuid": "pageopenUUID",
+              "visibility": true,
+              "disabled": false,
+              "hidden": true,
+              "type": "submit",
+              "hooks": [],
+              "validations": [],
+              "icon": "menu_open",
+              "disableRipple": true,
+              "iconClass": "header-icon",
+              "actions": [
+                {
+                  "type": "toggle",
+                  "eventSource": "click"
+                },
+                {
+                  "type": "updateComponent",
+                  "config": {
+                    "key": "openUUID",
+                    "properties": {
+                      "hidden": false
+                    }
+                  },
+                  "eventSource": "click"
+                },
+                {
+                  "type": "updateComponent",
+                  "config": {
+                    "key": "pageopenUUID",
+                    "properties": {
+                      "hidden": true
+                    }
+                  },
+                  "eventSource": "click"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "items": [
+        {
+          "ctype": "title",
+          "uuid": "errorTitleUUID",
+          "titleClass": "error-title",
+          "isShown": false
+        },
+        {
+          "ctype": "taskPanel",
+          "title": "",
+          "header": {
+            "title": "Record unit parts information",
+            "icon": "description"
+          },
+          "expanded": "true",
+          "hideToggle": "true",
+          "uuid": "recordUnitPartsUUID",
+          "visibility": false,
+          "hooks": [],
+          "validations": [],
+          "actions": [],
+          "items": [
+            {
+              "ctype": "disabled",
+              "uuid": "rupiDisabledUUID",
+              "disabledClass": "disabledFalse"
+            },
+            {
+              "ctype": "flexFields",
+              "uuid": "listTitleUUID",
+              "flexClass": "rupi-container",
+              "items": [
+                {
+                  "ctype": "label",
+                  "text": "Part Number",
+                  "labelClass": "part-label body2",
+                  "value": ""
+                },
+                {
+                  "ctype": "label",
+                  "text": "Serial Number",
+                  "labelClass": "serial-label body2",
+                  "value": ""
+                },
+                {
+                  "ctype": "label",
+                  "text": "Condition",
+                  "labelClass": "body2",
+                  "value": ""
+                }
+              ]
+            },
+            {
+              "ctype": "compoList",
+              "name": "clistUUID",
+              "uuid": "clistUUID",
+              "flexCount": "#BomCount",
+              "fieldData": "#BomsByMainPartNo.BOMLIST",
+              "contaxtArray": [
+                "performFA",
+                "pcbByMainPartParams"
+              ],
+              "disableFields": true,
+              "flexClass": "rupi-container",
+              "dataGrid": [
+                {
+                  "ctype": "textField",
+                  "uuid": "PCB_INUUID",
+                  "hooks": [],
+                  "type": "text",
+                  "textfieldClass": "partnum-cls body2",
+                  "placeholder": "73-",
+                  "submitable": true,
+                  "name": "PCB_IN",
+                  "value": "",
+                  "validations": [
+                    {
+                      "type": "regex",
+                      "script": "^.{13,21}$"
+                    }
+                  ],
+                  "actions": [
+                    {
+                      "type": "context",
+                      "config": {
+                        "key": "partno",
+                        "data": "formData",
+                        "requestMethod": "add"
+                      },
+                      "eventSource": "input"
+                    },
+                    {
+                      "type": "filterAndGetIndex",
+                      "config": {
+                        "data": "#BomsByMainPartNo.BOMLIST",
+                        "sourceKey": "compRegexp",
+                        "filterKey": "#partno",
+                        "contextKey": "filteredObject"
+                      },
+                      "eventSource": "input",
+                      "responseDependents": {
+                        "onSuccess": {
+                          "actions": [
+                            {
+                              "type": "enableByParant",
+                              "config": {
+                                "key": "serialNoUUID",
+                                "property": "SN_IN",
+                                "incriment": 0
+                              }
+                            },
+                            {
+                              "type": "checkAndPush",
+                              "config": {
+                                "requestMethod": "add",
+                                "key": "PartNumber",
+                                "source": "#flexfield",
+                                "compRegexp": "#filteredObject"
+                              },
+                              "responseDependents": {
+                                "onSuccess": {
+                                  "actions": [
+                                    {
+                                      "type": "microservice",
+                                      "config": {
+                                        "microserviceId": "isPartPresent",
+                                        "requestMethod": "post",
+                                        "body": {
+                                          "pidNo": "#filteredObject.partNo",
+                                          "userName": "#loginUUID.username"
+                                        },
+                                        "toBeStringified": true
+                                      },
+                                      "responseDependents": {
+                                        "onSuccess": {
+                                          "actions": [
+                                            {
+                                              "type": "context",
+                                              "config": {
+                                                "key": "isPartPresent",
+                                                "data": "responseData",
+                                                "requestMethod": "add"
+                                              }
+                                            },
+                                            {
+                                              "type": "condition",
+                                              "config": {
+                                                "operation": "isValid",
+                                                "lhs": "#isPartPresent"
+                                              },
+                                              "responseDependents": {
+                                                "onSuccess": {
+                                                  "actions": [
+                                                    {
+                                                      "type": "updateComponent",
+                                                      "config": {
+                                                        "key": "pcbUUID",
+                                                        "incriment": 0,
+                                                        "properties": {
+                                                          "text": "#filteredObject.compPartNo"
+                                                        }
+                                                      }
+                                                    },
+                                                    {
+                                                      "type": "handleArray",
+                                                      "config": {
+                                                        "objectKeys": [
+                                                          "assemblyCode",
+                                                          "operation",
+                                                          "FlexFieldList",
+                                                          "partNo"
+                                                        ],
+                                                        "objectValues": [
+                                                          "#filteredObject.assemblyCode",
+                                                          "Add",
+                                                          "#fa",
+                                                          "#partno"
+                                                        ],
+                                                        "arrayName": "#performFA",
+                                                        "uniqueKey": "assemblyCode",
+                                                        "action": "pushIndex"
+                                                      }
+                                                    },
+                                                    {
+                                                      "type": "handleArray",
+                                                      "config": {
+                                                        "objectKeys": [
+                                                          "compPartNo"
+                                                        ],
+                                                        "objectValues": [
+                                                          "#filteredObject.compPartNo"
+                                                        ],
+                                                        "arrayName": "#pcbByMainPartParams",
+                                                        "action": "pushIndex"
+                                                      }
+                                                    },
+                                                    {
+                                                      "type": "updateComponent",
+                                                      "config": {
+                                                        "key": "missingConditionUUID",
+                                                        "incriment": 0,
+                                                        "properties": {
+                                                          "hidden": true
+                                                        }
+                                                      }
+                                                    },
+                                                    {
+                                                      "type": "updateComponent",
+                                                      "config": {
+                                                        "key": "normalConditionUUID",
+                                                        "incriment": 0,
+                                                        "properties": {
+                                                          "hidden": false
+                                                        }
+                                                      }
+                                                    }
+                                                  ]
+                                                },
+                                                "onFailure": {
+                                                  "actions": [
+                                                    {
+                                                      "type": "updateComponent",
+                                                      "config": {
+                                                        "key": "pcbUUID",
+                                                        "incriment": 0,
+                                                        "properties": {
+                                                          "text": "-"
+                                                        }
+                                                      }
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            }
+                                          ]
+                                        },
+                                        "onFailure": {
+                                          "actions": [
+                                            {
+                                              "type": "filterResponseByKey",
+                                              "config": {
+                                                "data": "#BomsByMainPartNo.BOMLIST",
+                                                "sourceKey": "partNo",
+                                                "targetKey": "compPartNo",
+                                                "targetName": "pcbName",
+                                                "targetUUID": "pcbUUID"
+                                              }
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "type": "microservice",
+                                      "config": {
+                                        "microserviceId": "validatePcbOutRevision",
+                                        "requestMethod": "get",
+                                        "params": {
+                                          "pidNo": "#UnitInfo.PART_NO",
+                                          "partNo": "#partno.PCB_IN",
+                                          "flexFieldName": "REVISION LEVEL OUTBOUND",
+                                          "flexField": "#pcbOutBoundValue"
+                                        }
+                                      },
+                                      "eventSource": "input",
+                                      "responseDependents": {
+                                        "onSuccess": {
+                                          "actions": []
+                                        },
+                                        "onFailure": {
+                                          "actions": [
+                                            {
+                                              "type": "context",
+                                              "config": {
+                                                "requestMethod": "add",
+                                                "key": "MrbEcoCodeScrap",
+                                                "data": "responseData"
+                                              }
+                                            },
+                                            {
+                                              "type": "updateComponent",
+                                              "config": {
+                                                "key": "errorTitleUUID",
+                                                "properties": {
+                                                  "titleValue": "#MrbEcoCodeScrap",
+                                                  "isShown": true
+                                                }
+                                              }
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    }
+                                  ]
+                                },
+                                "onFailure": {
+                                  "actions": [
+                                    {
+                                      "type": "updateComponent",
+                                      "config": {
+                                        "key": "PCB_INUUID",
+                                        "incriment": 0,
+                                        "properties": {
+                                          "text": ""
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "type": "resetData"
+                                    }
+                                  ]
+                                }
+                              }
+                            }
+                          ]
+                        },
+                        "onFailure": {
+                          "actions": [
+                            {
+                              "type": "enableByParant",
+                              "config": {
+                                "key": "serialNoUUID",
+                                "property": "SN_IN",
+                                "incriment": 0
+                              }
+                            },
+                            {
+                              "type": "updateComponent",
+                              "config": {
+                                "key": "pcbUUID",
+                                "incriment": 0,
+                                "properties": {
+                                  "text": "-"
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "truncket",
+                      "config": {
+                        "position": "end",
+                        "count": 5,
+                        "key": "pcbOutBoundValue",
+                        "data": "#partno.PCB_IN"
+                      },
+                      "eventSource": "input"
+                    },
+                    {
+                      "type": "flexaction",
+                      "config": {
+                        "source": "#gridrecords"
+                      },
+                      "eventSource": "input"
+                    }
+                  ]
+                },
+                {
+                  "ctype": "label",
+                  "uuid": "pcbUUID",
+                  "labelClass": "pcb-cls body2",
+                  "value": "#partno.PartNumber",
+                  "name": "pcbName",
+                  "text": "-"
+                },
+                {
+                  "ctype": "textField",
+                  "uuid": "serialNoUUID",
+                  "hooks": [],
+                  "validations": [
+                    {
+                      "type": "regex",
+                      "script": "^[a-zA-Z0-9]{6,12}$"
+                    }
+                  ],
+                  "actions": [
+                    {
+                      "type": "flexaction",
+                      "config": {
+                        "source": "#gridrecords"
+                      },
+                      "eventSource": "input"
+                    },
+                    {
+                      "type": "context",
+                      "config": {
+                        "key": "scanSerialNo",
+                        "data": "formData",
+                        "requestMethod": "add"
+                      },
+                      "eventSource": "input"
+                    },
+                    {
+                      "type": "condition",
+                      "config": {
+                        "operation": "isEqualTo",
+                        "lhs": "#selectedDD",
+                        "rhs": "allConditionUUID"
+                      },
+                      "eventSource": "input",
+                      "responseDependents": {
+                        "onSuccess": {
+                          "actions": []
+                        },
+                        "onFailure": {
+                          "actions": [
+                            {
+                              "type": "enableByParant",
+                              "config": {
+                                "key": "PCB_INUUID",
+                                "property": "PCB_IN",
+                                "incriment": 1
+                              }
+                            },
+                            {
+                              "type": "enableByParant",
+                              "config": {
+                                "key": "missingConditionUUID",
+                                "property": "missingCondition",
+                                "incriment": 1
+                              },
+                              "eventSource": "input"
+                            },
+                            {
+                              "type": "enableByParant",
+                              "config": {
+                                "key": "normalConditionUUID",
+                                "property": "normalCondition",
+                                "incriment": 1
+                              },
+                              "eventSource": "input"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  ],
+                  "type": "text",
+                  "textfieldClass": "partnum-cls body2",
+                  "placeholder": "Scan Serial Number",
+                  "submitable": true,
+                  "name": "SN_IN",
+                  "value": ""
+                },
+                {
+                  "ctype": "nativeDropdown",
+                  "dropdownClass": "dropdown-container condition-dropdwn body2",
+                  "uuid": "missingConditionUUID",
+                  "name": "missingCondition",
+                  "dataSource": "#arrayOfMissing",
+                  "code": "flextFieldValue",
+                  "displayValue": "flextFieldValue",
+                  "submitable": true,
+                  "hooks": [],
+                  "hidden": false,
+                  "validations": [],
+                  "actions": [
+                    {
+                      "type": "context",
+                      "config": {
+                        "requestMethod": "add",
+                        "key": "selectedCondition",
+                        "data": "elementControlValue"
+                      },
+                      "eventSource": "change"
+                    },
+                    {
+                      "type": "flexaction",
+                      "config": {
+                        "source": "#gridrecords"
+                      },
+                      "eventSource": "change"
+                    },
+                    {
+                      "type": "context",
+                      "config": {
+                        "requestMethod": "add",
+                        "key": "selectedDD",
+                        "data": "allConditionUUID"
+                      },
+                      "eventSource": "change"
+                    },
+                    {
+                      "type": "condition",
+                      "config": {
+                        "operation": "isEqualTo",
+                        "lhs": "#selectedCondition",
+                        "rhs": "Missing"
+                      },
+                      "eventSource": "change",
+                      "responseDependents": {
+                        "onSuccess": {
+                          "actions": [
+                            {
+                              "type": "enableByParant",
+                              "config": {
+                                "action": "enableAllDropdown",
+                                "disable1": "PCB_INUUID",
+                                "bomList": "#BomsByMainPartNo.BOMLIST",
+                                "selectedBomList": "#performFA",
+                                "keyList": [
+                                  "missingConditionUUID",
+                                  "normalConditionUUID",
+                                  "allConditionUUID",
+                                  "PCB_INUUID",
+                                  "pcbUUID",
+                                  "serialNoUUID"
+                                ],
+                                "propertyList": [
+                                  "missingCondition",
+                                  "normalCondition",
+                                  "condition",
+                                  "PCB_IN",
+                                  "pcbName",
+                                  "SN_IN"
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "onFailure": {
+                          "actions": []
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "ctype": "nativeDropdown",
+                  "dropdownClass": "dropdown-container condition-dropdwn body2",
+                  "uuid": "normalConditionUUID",
+                  "name": "normalCondition",
+                  "dataSource": "#restOptions",
+                  "code": "flextFieldValue",
+                  "displayValue": "flextFieldValue",
+                  "submitable": true,
+                  "hooks": [],
+                  "hidden": true,
+                  "validations": [],
+                  "actions": [
+                    {
+                      "type": "context",
+                      "config": {
+                        "requestMethod": "add",
+                        "key": "selectedCondition",
+                        "data": "elementControlValue"
+                      },
+                      "eventSource": "change"
+                    },
+                    {
+                      "type": "flexaction",
+                      "config": {
+                        "source": "#gridrecords"
+                      },
+                      "eventSource": "change"
+                    },
+                    {
+                      "type": "condition",
+                      "config": {
+                        "operation": "isEqualTo",
+                        "lhs": "#selectedCondition",
+                        "rhs": "Missing"
+                      },
+                      "eventSource": "change",
+                      "responseDependents": {
+                        "onSuccess": {
+                          "actions": [
+                            {
+                              "type": "updateComponent",
+                              "config": {
+                                "key": "pcbUUID",
+                                "incriment": 0,
+                                "properties": {
+                                  "text": "-"
+                                }
+                              }
+                            }
+                          ]
+                        },
+                        "onFailure": {
+                          "actions": [
+                            {
+                              "type": "updateComponent",
+                              "config": {
+                                "key": "pcbUUID",
+                                "incriment": 0,
+                                "properties": {
+                                  "text": "#filteredObject.compPartNo"
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "condition",
+                      "config": {
+                        "operation": "isEqualTo",
+                        "incriment": 1,
+                        "lhs": "#selectedCondition",
+                        "rhs": "#BomCount"
+                      },
+                      "eventSource": "change",
+                      "responseDependents": {
+                        "onSuccess": {
+                          "actions": []
+                        },
+                        "onFailure": {
+                          "actions": []
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "ctype": "nativeDropdown",
+                  "dropdownClass": "dropdown-container condition-dropdwn body2",
+                  "uuid": "allConditionUUID",
+                  "name": "condition",
+                  "dataSource": "#conditionOptions",
+                  "code": "flextFieldValue",
+                  "displayValue": "flextFieldValue",
+                  "submitable": true,
+                  "hooks": [],
+                  "hidden": true,
+                  "validations": [],
+                  "actions": [
+                    {
+                      "type": "context",
+                      "config": {
+                        "requestMethod": "add",
+                        "key": "selectedCondition",
+                        "data": "elementControlValue"
+                      },
+                      "eventSource": "change"
+                    },
+                    {
+                      "type": "context",
+                      "config": {
+                        "requestMethod": "add",
+                        "key": "selectedDD",
+                        "data": "allConditionUUID"
+                      },
+                      "eventSource": "change"
+                    },
+                    {
+                      "type": "flexaction",
+                      "config": {
+                        "source": "#gridrecords"
+                      },
+                      "eventSource": "change"
+                    },
+                    {
+                      "type": "condition",
+                      "config": {
+                        "operation": "isEqualTo",
+                        "lhs": "#selectedCondition",
+                        "rhs": "Missing"
+                      },
+                      "eventSource": "change",
+                      "responseDependents": {
+                        "onSuccess": {
+                          "actions": [
+                            {
+                              "type": "disableComponent",
+                              "config": {
+                                "key": "serialNoUUID",
+                                "property": "SN_IN",
+                                "incriment": 0
+                              }
+                            },
+                            {
+                              "type": "updateComponent",
+                              "config": {
+                                "key": "serialNoUUID",
+                                "incriment": 0,
+                                "properties": {
+                                  "placeholder": "xxxxxxxxxxxx"
+                                }
+                              }
+                            }
+                          ]
+                        },
+                        "onFailure": {
+                          "actions": [
+                            {
+                              "type": "enableByParant",
+                              "config": {
+                                "key": "serialNoUUID",
+                                "property": "SN_IN",
+                                "incriment": 0
+                              }
+                            },
+                            {
+                              "type": "updateComponent",
+                              "config": {
+                                "key": "serialNoUUID",
+                                "incriment": 0,
+                                "properties": {
+                                  "placeholder": "Scan Serial Number"
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "condition",
+                      "config": {
+                        "operation": "isEqualTo",
+                        "incriment": 1,
+                        "lhs": "#selectedCondition",
+                        "rhs": "#BomCount"
+                      },
+                      "eventSource": "change",
+                      "responseDependents": {
+                        "onSuccess": {
+                          "actions": []
+                        },
+                        "onFailure": {
+                          "actions": []
+                        }
+                      }
+                    }
+                  ]
+                }
+              ],
+              "actions": []
+            }
+          ],
+          "footer": [
+            {
+              "ctype": "button",
+              "color": "primary",
+              "text": "Complete",
+              "uuid": "rupiSubmitUUID",
+              "name": "rupiSubmit",
+              "visibility": true,
+              "disabled": true,
+              "type": "submit",
+              "hooks": [],
+              "validations": [],
+              "actions": [
+                {
+                  "type": "updateComponent",
+                  "config": {
+                    "key": "recordUnitPartsUUID",
+                    "properties": {
+                      "expanded": false,
+                      "disabled": false,
+                      "header": {
+                        "title": "Record unit parts information",
+                        "icon": "description",
+                        "statusIcon": "check_circle",
+                        "statusClass": "complete-status",
+                        "class": "complete-task",
+                        "iconClass": "complete-task"
+                      }
+                    }
+                  },
+                  "eventSource": "click"
+                },
+                {
+                  "type": "updateComponent",
+                  "config": {
+                    "key": "rupiSubmitUUID",
+                    "properties": {
+                      "disabled": true
+                    }
+                  },
+                  "eventSource": "click"
+                },
+                {
+                  "type": "updateComponent",
+                  "config": {
+                    "key": "recordTanUUID",
+                    "properties": {
+                      "expanded": true,
+                      "disabled": false,
+                      "header": {
+                        "title": "Record TAN",
+                        "icon": "description",
+                        "class": "active-header"
+                      }
+                    }
+                  },
+                  "eventSource": "click"
+                },
+                {
+                  "type": "updateComponent",
+                  "config": {
+                    "key": "rupiDisabledUUID",
+                    "properties": {
+                      "disabledClass": "disabledTrue"
+                    }
+                  },
+                  "eventSource": "click"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ctype": "taskPanel",
+          "title": "",
+          "header": {
+            "title": "Record TAN",
+            "icon": "description",
+            "statusIcon": "hourglass_empty",
+            "statusClass": "incomplete-status"
+          },
+          "expanded": "false",
+          "hideToggle": "true",
+          "uuid": "recordTanUUID",
+          "visibility": false,
+          "disabled": true,
+          "hooks": [],
+          "validations": [],
+          "actions": [],
+          "items": [
+            {
+              "ctype": "disabled",
+              "uuid": "recordTanDisabledUUID",
+              "disabledClass": "disabledFalse"
+            },
+            {
+              "ctype": "textField",
+              "uuid": "partNumberUUID",
+              "hooks": [],
+              "validations": [
+                {
+                  "type": "regex",
+                  "script": "^/S$"
+                },
+                {
+                  "type": "regex",
+                  "script": "#BomsByMainPartNo.TAN_IN.compRegexp"
+                }
+              ],
+              "actions": [
+                {
+                  "type": "checkAndPush",
+                  "config": {
+                    "requestMethod": "add",
+                    "key": "TAN Revision",
+                    "source": "#recordTan"
+                  },
+                  "eventSource": "blur"
+                },
+                {
+                  "type": "flexaction",
+                  "config": {
+                    "source": "#gridrecords",
+                    "key": "TAN_IN"
+                  },
+                  "eventSource": "input"
+                }
+              ],
+              "type": "text",
+              "textfieldClass": "textfield-container body2",
+              "formGroupClass": "tan-flexContainer",
+              "labelClass": "subtitle1",
+              "placeholder": "#BomsByMainPartNo.TAN_IN.compRegexp",
+              "submitable": true,
+              "required": true,
+              "label": "TAN",
+              "labelPosition": "left",
+              "name": "PartNumber",
+              "value": ""
+            }
+          ],
+          "footer": [
+            {
+              "ctype": "button",
+              "color": "primary",
+              "text": "Complete",
+              "uuid": "recordTanCompleteUUID",
+              "visibility": true,
+              "disabled": true,
+              "type": "submit",
+              "hooks": [],
+              "validations": [],
+              "actions": [
+                {
+                  "type": "context",
+                  "config": {
+                    "requestMethod": "add",
+                    "key": "checkPartNumber",
+                    "data": "formData"
+                  },
+                  "eventSource": "click"
+                },
+                {
+                  "type": "microservice",
+                  "config": {
+                    "microserviceId": "isPartValid",
+                    "requestMethod": "post",
+                    "body": {
+                      "pidNo": "#BomsByMainPartNo.TAN_IN[0].partNo",
+                      "userName": "#userAccountInfo.PersonalDetails.USERID"
+                    },
+                    "toBeStringified": true
+                  },
+                  "eventSource": "click",
+                  "responseDependents": {
+                    "onSuccess": {
+                      "actions": [
+                        {
+                          "type": "context",
+                          "config": {
+                            "requestMethod": "add",
+                            "key": "validatePartNumberResp",
+                            "data": "responseData"
+                          }
+                        },
+                        {
+                          "type": "condition",
+                          "config": {
+                            "operation": "isValid",
+                            "lhs": "#validatePartNumberResp"
+                          },
+                          "responseDependents": {
+                            "onSuccess": {
+                              "actions": [
+                                {
+                                  "type": "updateComponent",
+                                  "config": {
+                                    "key": "recordTanUUID",
+                                    "properties": {
+                                      "expanded": false,
+                                      "disabled": false,
+                                      "header": {
+                                        "title": "Record TAN",
+                                        "icon": "description",
+                                        "statusIcon": "check_circle",
+                                        "statusClass": "complete-status",
+                                        "class": "complete-task",
+                                        "iconClass": "complete-task"
+                                      }
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "updateComponent",
+                                  "config": {
+                                    "key": "recordTanCompleteUUID",
+                                    "properties": {
+                                      "disabled": true
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "updateComponent",
+                                  "config": {
+                                    "key": "recordMacUUID",
+                                    "properties": {
+                                      "expanded": true,
+                                      "disabled": false,
+                                      "header": {
+                                        "title": "Record MAC",
+                                        "icon": "description",
+                                        "class": "active-header",
+                                        "statusIcon": ""
+                                      }
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "updateComponent",
+                                  "config": {
+                                    "key": "recordTanDisabledUUID",
+                                    "properties": {
+                                      "disabledClass": "disabledTrue"
+                                    }
+                                  },
+                                  "eventSource": "click"
+                                }
+                              ]
+                            },
+                            "onFailure": {
+                              "actions": []
+                            }
+                          }
+                        },
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "recordTanCompleteUUID",
+                            "properties": {
+                              "disabled": true
+                            }
+                          },
+                          "eventSource": "click"
+                        }
+                      ]
+                    },
+                    "onFailure": {
+                      "actions": [
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "errorTitleUUID",
+                            "properties": {
+                              "titleValue": "Validating part number failed.",
+                              "isShown": true
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                },
+                {
+                  "type": "microservice",
+                  "config": {
+                    "microserviceId": "validateTanFlexField",
+                    "requestMethod": "post",
+                    "body": {
+                      "pidNo": "#UnitInfo.PART_NO",
+                      "tanValue": "#checkPartNumber.PartNumber"
+                    },
+                    "toBeStringified": true
+                  },
+                  "eventSource": "input",
+                  "responseDependents": {
+                    "onSuccess": {
+                      "actions": []
+                    },
+                    "onFailure": {
+                      "actions": [
+                        {
+                          "type": "context",
+                          "config": {
+                            "requestMethod": "add",
+                            "key": "tanCodeScrap",
+                            "data": "responseData"
+                          }
+                        },
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "errorTitleUUID",
+                            "properties": {
+                              "titleValue": "#tanCodeScrap",
+                              "isShown": true
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ctype": "taskPanel",
+          "title": "",
+          "header": {
+            "title": "Record MAC",
+            "icon": "description",
+            "statusIcon": "hourglass_empty",
+            "statusClass": "incomplete-status"
+          },
+          "expanded": "false",
+          "hideToggle": "true",
+          "uuid": "recordMacUUID",
+          "visibility": false,
+          "disabled": true,
+          "hooks": [],
+          "validations": [],
+          "actions": [],
+          "items": [
+            {
+              "ctype": "disabled",
+              "uuid": "recordMacDisabledUUID",
+              "disabledClass": "disabledFalse"
+            },
+            {
+              "ctype": "textField",
+              "uuid": "MacUUID",
+              "hooks": [],
+              "validations": [
+                {
+                  "type": "regex",
+                  "script": "^([0-9a-fA-F]{12})+$"
+                }
+              ],
+              "actions": [
+                {
+                  "type": "flexaction",
+                  "config": {
+                    "source": "#gridrecords",
+                    "key": "MAC_IN"
+                  },
+                  "eventSource": "input"
+                }
+              ],
+              "type": "text",
+              "textfieldClass": "textfield-container body2",
+              "formGroupClass": "tan-flexContainer",
+              "labelClass": "subtitle1",
+              "placeholder": "Enter MAC",
+              "submitable": true,
+              "required": true,
+              "label": "MAC",
+              "labelPosition": "left",
+              "name": "MacDetails",
+              "value": ""
+            },
+            {
+              "ctype": "checkbox",
+              "name": "NoMacRequiredCheckbox",
+              "hooks": [],
+              "validations": [],
+              "required": false,
+              "submitable": true,
+              "label": "No Mac Required",
+              "labelPosition": "after",
+              "checkboxContainer": "mac-checkbox",
+              "actions": [
+                {
+                  "type": "context",
+                  "config": {
+                    "requestMethod": "add",
+                    "key": "NoMacRequired",
+                    "data": "formData"
+                  },
+                  "eventSource": "click"
+                },
+                {
+                  "type": "condition",
+                  "config": {
+                    "operation": "isValid",
+                    "lhs": "#NoMacRequired.NoMacRequiredCheckbox"
+                  },
+                  "eventSource": "click",
+                  "responseDependents": {
+                    "onSuccess": {
+                      "actions": [
+                        {
+                          "type": "disableComponent",
+                          "config": {
+                            "key": "MacUUID",
+                            "property": "MacDetails"
+                          }
+                        },
+                        {
+                          "type": "resetData"
+                        }
+                      ]
+                    },
+                    "onFailure": {
+                      "actions": [
+                        {
+                          "type": "enableComponent",
+                          "config": {
+                            "key": "MacUUID",
+                            "property": "MacDetails"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          ],
+          "footer": [
+            {
+              "ctype": "button",
+              "color": "primary",
+              "text": "Complete",
+              "uuid": "recordMacCompleteUUID",
+              "visibility": true,
+              "disabled": true,
+              "type": "submit",
+              "hooks": [],
+              "validations": [],
+              "actions": [
+                {
+                  "type": "context",
+                  "config": {
+                    "requestMethod": "add",
+                    "key": "macNumber",
+                    "data": "formData"
+                  },
+                  "eventSource": "click"
+                },
+                {
+                  "type": "updateComponent",
+                  "config": {
+                    "key": "recordMacUUID",
+                    "properties": {
+                      "expanded": false,
+                      "disabled": false,
+                      "header": {
+                        "title": "Record MAC",
+                        "icon": "description",
+                        "statusIcon": "check_circle",
+                        "statusClass": "complete-status",
+                        "class": "complete-task",
+                        "iconClass": "complete-task"
+                      }
+                    }
+                  },
+                  "eventSource": "click"
+                },
+                {
+                  "type": "updateComponent",
+                  "config": {
+                    "key": "recordMacCompleteUUID",
+                    "properties": {
+                      "disabled": true
+                    }
+                  },
+                  "eventSource": "click"
+                },
+                {
+                  "type": "updateComponent",
+                  "config": {
+                    "key": "NoMacRequiredCheckbox",
+                    "properties": {
+                      "disabled": true
+                    }
+                  },
+                  "eventSource": "click"
+                },
+                {
+                  "type": "updateComponent",
+                  "config": {
+                    "key": "recordMacDisabledUUID",
+                    "properties": {
+                      "disabledClass": "disabledTrue"
+                    }
+                  },
+                  "eventSource": "click"
+                },
+                {
+                  "type": "updateComponent",
+                  "config": {
+                    "key": "submitFAUUID",
+                    "properties": {
+                      "expanded": true,
+                      "disabled": false,
+                      "header": {
+                        "title": "Submit FA",
+                        "icon": "description",
+                        "class": "active-header",
+                        "statusIcon": ""
+                      }
+                    }
+                  },
+                  "eventSource": "click"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ctype": "taskPanel",
+          "title": "",
+          "header": {
+            "title": "Submit FA",
+            "icon": "description",
+            "statusIcon": "hourglass_empty",
+            "statusClass": "incomplete-status"
+          },
+          "expanded": "false",
+          "hideToggle": "true",
+          "uuid": "submitFAUUID",
+          "visibility": false,
+          "disabled": true,
+          "hooks": [],
+          "validations": [],
+          "actions": [],
+          "items": [
+            {
+              "ctype": "label",
+              "text": "Submit FA in order to Timeout",
+              "labelClass": "body-italic"
+            }
+          ],
+          "footer": [
+            {
+              "ctype": "button",
+              "color": "primary",
+              "text": "Complete",
+              "uuid": "submitFACompleteUUID",
+              "visibility": true,
+              "disabled": false,
+              "type": "submit",
+              "hooks": [],
+              "validations": [],
+              "actions": [
+                {
+                  "type": "updateComponent",
+                  "eventSource": "click",
+                  "config": {
+                    "key": "errorTitleUUID",
+                    "properties": {
+                      "titleValue": "",
+                      "isShown": false
+                    }
+                  }
+                },
+                {
+                  "type": "combineArray",
+                  "config": {
+                    "leftarray": "#gridrecords",
+                    "rightarray": "#BomsByMainPartNo.BOMLIST",
+                    "source": "#assemblyCodeChange"
+                  },
+                  "eventSource": "click"
+                },
+                {
+                  "type": "microservice",
+                  "eventSource": "click",
+                  "config": {
+                    "microserviceId": "performFA",
+                    "requestMethod": "post",
+                    "body": {
+                      "updateFailureAnalysisRequest": {
+                        "bcn": "#UnitInfo.ITEM_BCN",
+                        "assemblyCodeChangeList": {
+                          "assemblyCodeChange": "#assemblyCodeChange"
+                        }
+                      },
+                      "userPwd": {
+                        "username": "#loginUUID.username",
+                        "password": "#loginUUID.password"
+                      },
+                      "operationTypes": "ProcessImmediate",
+                      "ip": "::1",
+                      "callSource": "FrontEnd",
+                      "apiUsage_LocationName": "#UnitInfo.GEONAME",
+                      "apiUsage_ClientName": "#UnitInfo.CLIENTNAME"
+                    },
+                    "toBeStringified": true
+                  },
+                  "responseDependents": {
+                    "onSuccess": {
+                      "actions": [
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "ResultCodes",
+                            "properties": {
+                              "dropdownClass": "footer-dropdown dropdown-container body2"
+                            }
+                          },
+                          "eventSource": "click"
+                        },
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "submitFAUUID",
+                            "properties": {
+                              "expanded": false,
+                              "disabled": false,
+                              "header": {
+                                "title": "Submit FA",
+                                "icon": "description",
+                                "statusIcon": "check_circle",
+                                "statusClass": "complete-status",
+                                "class": "complete-task",
+                                "iconClass": "complete-task"
+                              }
+                            }
+                          },
+                          "eventSource": "click"
+                        },
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "submitFACompleteUUID",
+                            "properties": {
+                              "disabled": true
+                            }
+                          },
+                          "eventSource": "click"
+                        }
+                      ]
+                    },
+                    "onFailure": {
+                      "actions": [
+                        {
+                          "type": "context",
+                          "config": {
+                            "requestMethod": "add",
+                            "key": "preScreenperformFA",
+                            "data": "responseData"
+                          }
+                        },
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "errorTitleUUID",
+                            "properties": {
+                              "titleValue": "#preScreenperformFA",
+                              "isShown": true
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "footer": [
+        {
+          "ctype": "toolbar",
+          "toolbarClass": "pagecontent-footer",
+          "items": [
+            {
+              "ctype": "iconbutton",
+              "iconButtonClass": "footer-save body primary-btn",
+              "text": "Exit",
+              "uuid": "saveUUID",
+              "visibility": true,
+              "disabled": false,
+              "type": "submit",
+              "hooks": [],
+              "validations": [],
+              "icon": "save",
+              "actions": [
+                {
+                  "type": "context",
+                  "config": {
+                    "requestMethod": "add",
+                    "key": "iqaNotes",
+                    "data": ""
+                  },
+                  "eventSource": "click"
+                },
+                {
+                  "type": "context",
+                  "config": {
+                    "requestMethod": "add",
+                    "key": "recordTan",
+                    "data": []
+                  },
+                  "eventSource": "click"
+                },
+                {
+                  "type": "context",
+                  "config": {
+                    "requestMethod": "add",
+                    "key": "selectedDD",
+                    "data": ""
+                  },
+                  "eventSource": "click"
+                },
+                {
+                  "type": "context",
+                  "config": {
+                    "requestMethod": "add",
+                    "key": "flexfield",
+                    "data": []
+                  },
+                  "eventSource": "click"
+                },
+                {
+                  "type": "context",
+                  "config": {
+                    "requestMethod": "add",
+                    "key": "selectedCondition",
+                    "data": "Good"
+                  },
+                  "eventSource": "click"
+                },
+                {
+                  "type": "context",
+                  "config": {
+                    "requestMethod": "add",
+                    "key": "flexFieldsFormGroup",
+                    "data": []
+                  },
+                  "eventSource": "click"
+                },
+                {
+                  "type": "renderTemplate",
+                  "config": {
+                    "templateId": "dashboard.json",
+                    "mode": "local"
+                  },
+                  "eventSource": "click"
+                },
+                {
+                  "type": "microservice",
+                  "config": {
+                    "microserviceId": "getSearchCriteria",
+                    "isLocal": false,
+                    "LocalService": "assets/Responses/getSearchCriteria.json",
+                    "requestMethod": "get",
+                    "params": {
+                      "locationId": "#userSelectedLocation",
+                      "clientId": "#userSelectedClient",
+                      "contractId": "#userSelectedContract",
+                      "searchType": "#userSelectedSubProcessType",
+                      "userName": "#userAccountInfo.PersonalDetails.USERID"
+                    }
+                  },
+                  "eventSource": "click",
+                  "responseDependents": {
+                    "onSuccess": {
+                      "actions": [
+                        {
+                          "type": "context",
+                          "config": {
+                            "requestMethod": "add",
+                            "key": "getSearchCriteriaData",
+                            "data": "responseData"
+                          }
+                        },
+                        {
+                          "type": "renderTemplate",
+                          "config": {
+                            "mode": "remote",
+                            "targetId": "mainPageContentBody",
+                            "templateId": "getSearchCriteriaData"
+                          }
+                        }
+                      ]
+                    },
+                    "onFailure": {
+                      "actions": [
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "errorTitleUUID",
+                            "properties": {
+                              "titleValue": "Search Criteria is not Configured",
+                              "isShown": true
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "ctype": "iconText",
+              "uuid": "IconUUID",
+              "iconTextClass": "footer-addNote addNoteCls body",
+              "icon": "add_comment",
+              "text": "Add Note",
+              "iconPosition": "Before",
+              "actions": [
+                {
+                  "type": "dialog",
+                  "uuid": "addNoteDialogUUID",
+                  "config": {
+                    "title": "Add Note",
+                    "items": [
+                      {
+                        "ctype": "textarea",
+                        "name": "addNote",
+                        "textareaClass": "note-class",
+                        "uuid": "addNoteUUID",
+                        "required": true,
+                        "value": "#iqaNotes.addNote",
+                        "actions": []
+                      }
+                    ],
+                    "footer": [
+                      {
+                        "ctype": "button",
+                        "color": "primary",
+                        "text": "Close",
+                        "uuid": "closeButtonUUID",
+                        "closeType": "close",
+                        "inputClass": "close-button",
+                        "disableClose": true,
+                        "visibility": true,
+                        "dialogButton": true,
+                        "type": "",
+                        "hooks": [],
+                        "validations": [],
+                        "actions": []
+                      },
+                      {
+                        "ctype": "button",
+                        "color": "primary",
+                        "text": "Done",
+                        "uuid": "doneHoldUUID",
+                        "dialogButton": true,
+                        "visibility": true,
+                        "disabled": true,
+                        "type": "submit",
+                        "closeType": "success",
+                        "hooks": [],
+                        "validations": [],
+                        "actions": []
+                      }
+                    ]
+                  },
+                  "eventSource": "click",
+                  "responseDependents": {
+                    "onSuccess": {
+                      "actions": [
+                        {
+                          "type": "context",
+                          "config": {
+                            "requestMethod": "add",
+                            "key": "iqaNotes",
+                            "data": "formData"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "ctype": "nativeDropdown",
+              "dropdownClass": "footer-dropdown dropdown-container body2 disabled",
+              "uuid": "ResultCodes",
+              "name": "ResultCodes",
+              "dataSource": "#ResultCodes",
+              "code": "resultCode",
+              "displayValue": "resultCode",
+              "disabled": true,
+              "actions": [
+                {
+                  "type": "updateComponent",
+                  "config": {
+                    "key": "errorTitleUUID",
+                    "properties": {
+                      "titleValue": "",
+                      "isShown": false
+                    }
+                  },
+                  "eventSource": "change"
+                },
+                {
+                  "type": "context",
+                  "config": {
+                    "requestMethod": "add",
+                    "key": "SelectedResultcode",
+                    "data": "elementControlValue"
+                  },
+                  "eventSource": "change"
+                },
+                {
+                  "type": "condition",
+                  "config": {
+                    "operation": "isEqualTo",
+                    "lhs": "Fail MRB",
+                    "rhs": "#SelectedResultcode"
+                  },
+                  "eventSource": "change",
+                  "responseDependents": {
+                    "onSuccess": {
+                      "actions": [
+                        {
+                          "type": "condition",
+                          "config": {
+                            "operation": "isValid",
+                            "lhs": "#iqaNotes.addNote"
+                          },
+                          "responseDependents": {
+                            "onSuccess": {
+                              "actions": [
+                                {
+                                  "type": "microservice",
+                                  "config": {
+                                    "microserviceId": "getProcessFlexFieldValue",
+                                    "requestMethod": "get",
+                                    "params": {
+                                      "itemId": "#UnitInfo.ITEM_ID",
+                                      "ffName": "ORIG. LOCATION",
+                                      "resultCode": "#SelectedResultcode"
+                                    }
+                                  },
+                                  "responseDependents": {
+                                    "onSuccess": {
+                                      "actions": [
+                                        {
+                                          "type": "microservice",
+                                          "config": {
+                                            "microserviceId": "getMrbEcoCodeCheck",
+                                            "requestMethod": "get",
+                                            "params": {
+                                              "itemId": "#UnitInfo.ITEM_ID",
+                                              "workcenterId": "#UnitInfo.WORKCENTER_ID",
+                                              "resultCode": "#SelectedResultcode"
+                                            }
+                                          },
+                                          "responseDependents": {
+                                            "onSuccess": {
+                                              "actions": [
+                                                {
+                                                  "type": "microservice",
+                                                  "config": {
+                                                    "microserviceId": "getAllEcoCodeScrap",
+                                                    "requestMethod": "get",
+                                                    "params": {
+                                                      "itemId": "#UnitInfo.ITEM_ID",
+                                                      "workcenterId": "#UnitInfo.WORKCENTER_ID",
+                                                      "resultCode": "#SelectedResultcode",
+                                                      "partNumber": "#UnitInfo.PART_NO"
+                                                    }
+                                                  },
+                                                  "responseDependents": {
+                                                    "onSuccess": {
+                                                      "actions": [
+                                                        {
+                                                          "type": "microservice",
+                                                          "config": {
+                                                            "microserviceId": "getEcoFailureAnalsis",
+                                                            "requestMethod": "get",
+                                                            "params": {
+                                                              "itemId": "#UnitInfo.ITEM_ID",
+                                                              "workcenterId": "#UnitInfo.WORKCENTER_ID",
+                                                              "resultCode": "#SelectedResultcode",
+                                                              "notes": "#iqaNotes.addNote"
+                                                            }
+                                                          },
+                                                          "responseDependents": {
+                                                            "onSuccess": {
+                                                              "actions": [
+                                                                {
+                                                                  "type": "condition",
+                                                                  "config": {
+                                                                    "operation": "isGreaterThan",
+                                                                    "lhs": "#BomCount",
+                                                                    "rhs": "0"
+                                                                  },
+                                                                  "eventSource": "change",
+                                                                  "responseDependents": {
+                                                                    "onSuccess": {
+                                                                      "actions": [
+                                                                        {
+                                                                          "type": "updateComponent",
+                                                                          "config": {
+                                                                            "key": "IQATimeoutUUID",
+                                                                            "properties": {
+                                                                              "disabled": false
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      ]
+                                                                    }
+                                                                  }
+                                                                }
+                                                              ]
+                                                            },
+                                                            "onFailure": {
+                                                              "actions": [
+                                                                {
+                                                                  "type": "context",
+                                                                  "config": {
+                                                                    "requestMethod": "add",
+                                                                    "key": "MrbEcoFailureAnalsis",
+                                                                    "data": "responseData"
+                                                                  }
+                                                                },
+                                                                {
+                                                                  "type": "updateComponent",
+                                                                  "config": {
+                                                                    "key": "errorTitleUUID",
+                                                                    "properties": {
+                                                                      "titleValue": "#MrbEcoFailureAnalsis",
+                                                                      "isShown": true
+                                                                    }
+                                                                  }
+                                                                },
+                                                                {
+                                                                  "type": "resetData"
+                                                                },
+                                                                {
+                                                                  "type": "updateComponent",
+                                                                  "config": {
+                                                                    "key": "IQATimeoutUUID",
+                                                                    "properties": {
+                                                                      "disabled": true
+                                                                    }
+                                                                  }
+                                                                }
+                                                              ]
+                                                            }
+                                                          }
+                                                        }
+                                                      ]
+                                                    },
+                                                    "onFailure": {
+                                                      "actions": [
+                                                        {
+                                                          "type": "context",
+                                                          "config": {
+                                                            "requestMethod": "add",
+                                                            "key": "MrbEcoCodeScrap",
+                                                            "data": "responseData"
+                                                          }
+                                                        },
+                                                        {
+                                                          "type": "updateComponent",
+                                                          "config": {
+                                                            "key": "errorTitleUUID",
+                                                            "properties": {
+                                                              "titleValue": "#MrbEcoCodeScrap",
+                                                              "isShown": true
+                                                            }
+                                                          }
+                                                        },
+                                                        {
+                                                          "type": "resetData"
+                                                        },
+                                                        {
+                                                          "type": "updateComponent",
+                                                          "config": {
+                                                            "key": "IQATimeoutUUID",
+                                                            "properties": {
+                                                              "disabled": true
+                                                            }
+                                                          }
+                                                        }
+                                                      ]
+                                                    }
+                                                  }
+                                                }
+                                              ]
+                                            },
+                                            "onFailure": {
+                                              "actions": [
+                                                {
+                                                  "type": "context",
+                                                  "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "MrbEcoCodeCheck",
+                                                    "data": "responseData"
+                                                  }
+                                                },
+                                                {
+                                                  "type": "updateComponent",
+                                                  "config": {
+                                                    "key": "errorTitleUUID",
+                                                    "properties": {
+                                                      "titleValue": "#MrbEcoCodeCheck",
+                                                      "isShown": true
+                                                    }
+                                                  }
+                                                },
+                                                {
+                                                  "type": "resetData"
+                                                },
+                                                {
+                                                  "type": "updateComponent",
+                                                  "config": {
+                                                    "key": "IQATimeoutUUID",
+                                                    "properties": {
+                                                      "disabled": true
+                                                    }
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "onFailure": {
+                                      "actions": [
+                                        {
+                                          "type": "context",
+                                          "config": {
+                                            "requestMethod": "add",
+                                            "key": "FAILMRBFlexFieldValue",
+                                            "data": "responseData"
+                                          }
+                                        },
+                                        {
+                                          "type": "updateComponent",
+                                          "config": {
+                                            "key": "errorTitleUUID",
+                                            "properties": {
+                                              "titleValue": "#FAILMRBFlexFieldValue",
+                                              "isShown": true
+                                            }
+                                          }
+                                        },
+                                        {
+                                          "type": "resetData"
+                                        },
+                                        {
+                                          "type": "updateComponent",
+                                          "config": {
+                                            "key": "IQATimeoutUUID",
+                                            "properties": {
+                                              "disabled": true
+                                            }
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  }
+                                }
+                              ]
+                            },
+                            "onFailure": {
+                              "actions": [
+                                {
+                                  "type": "updateComponent",
+                                  "config": {
+                                    "key": "errorTitleUUID",
+                                    "properties": {
+                                      "titleValue": "Notes must be required",
+                                      "isShown": true
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "resetData"
+                                },
+                                {
+                                  "type": "updateComponent",
+                                  "config": {
+                                    "key": "IQATimeoutUUID",
+                                    "properties": {
+                                      "disabled": true
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    "onFailure": {
+                      "actions": [
+                        {
+                          "type": "condition",
+                          "config": {
+                            "operation": "isContains",
+                            "lhs": "#SelectedResultcode",
+                            "rhs": "fail"
+                          },
+                          "responseDependents": {
+                            "onSuccess": {
+                              "actions": [
+                                {
+                                  "type": "condition",
+                                  "config": {
+                                    "operation": "isValid",
+                                    "lhs": "#iqaNotes.addNote"
+                                  },
+                                  "responseDependents": {
+                                    "onSuccess": {
+                                      "actions": [
+                                        {
+                                          "type": "getCheckRevisionWithAutoScrap",
+                                          "config": {
+                                            "arrayName": "#performFA"
+                                          }
+                                        },
+                                        {
+                                          "type": "condition",
+                                          "config": {
+                                            "operation": "isEqualTo",
+                                            "lhs": "FAIL ENG",
+                                            "rhs": "#SelectedResultcode"
+                                          },
+                                          "eventSource": "change",
+                                          "responseDependents": {
+                                            "onSuccess": {
+                                              "actions": [
+                                                {
+                                                  "type": "microservice",
+                                                  "config": {
+                                                    "microserviceId": "getForceDetectCodeToFa",
+                                                    "requestMethod": "get",
+                                                    "params": {
+                                                      "itemId": "#UnitInfo.ITEM_ID",
+                                                      "code": "MRB_CODES",
+                                                      "workOrderId": "#UnitInfo.WORKORDER_ID",
+                                                      "depth": "1",
+                                                      "resultCode": "#SelectedResultcode"
+                                                    }
+                                                  },
+                                                  "responseDependents": {
+                                                    "onSuccess": {
+                                                      "actions": [
+                                                        {
+                                                          "type": "condition",
+                                                          "config": {
+                                                            "operation": "isGreaterThan",
+                                                            "lhs": "#BomCount",
+                                                            "rhs": "0"
+                                                          },
+                                                          "eventSource": "change",
+                                                          "responseDependents": {
+                                                            "onSuccess": {
+                                                              "actions": [
+                                                                {
+                                                                  "type": "updateComponent",
+                                                                  "config": {
+                                                                    "key": "IQATimeoutUUID",
+                                                                    "properties": {
+                                                                      "disabled": false
+                                                                    }
+                                                                  }
+                                                                }
+                                                              ]
+                                                            }
+                                                          }
+                                                        }
+                                                      ]
+                                                    },
+                                                    "onFailure": {
+                                                      "actions": [
+                                                        {
+                                                          "type": "context",
+                                                          "config": {
+                                                            "requestMethod": "add",
+                                                            "key": "ENGForceDetectCodeToFa",
+                                                            "data": "responseData"
+                                                          }
+                                                        },
+                                                        {
+                                                          "type": "updateComponent",
+                                                          "config": {
+                                                            "key": "errorTitleUUID",
+                                                            "properties": {
+                                                              "titleValue": "#ENGForceDetectCodeToFa",
+                                                              "isShown": true
+                                                            }
+                                                          }
+                                                        },
+                                                        {
+                                                          "type": "resetData"
+                                                        },
+                                                        {
+                                                          "type": "updateComponent",
+                                                          "config": {
+                                                            "key": "IQATimeoutUUID",
+                                                            "properties": {
+                                                              "disabled": true
+                                                            }
+                                                          }
+                                                        }
+                                                      ]
+                                                    }
+                                                  }
+                                                }
+                                              ]
+                                            },
+                                            "onFailure": {
+                                              "actions": [
+                                                {
+                                                  "type": "condition",
+                                                  "config": {
+                                                    "operation": "isGreaterThan",
+                                                    "lhs": "#BomCount",
+                                                    "rhs": "0"
+                                                  },
+                                                  "eventSource": "change",
+                                                  "responseDependents": {
+                                                    "onSuccess": {
+                                                      "actions": [
+                                                        {
+                                                          "type": "updateComponent",
+                                                          "config": {
+                                                            "key": "IQATimeoutUUID",
+                                                            "properties": {
+                                                              "disabled": false
+                                                            }
+                                                          }
+                                                        }
+                                                      ]
+                                                    }
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "onFailure": {
+                                      "actions": [
+                                        {
+                                          "type": "updateComponent",
+                                          "config": {
+                                            "key": "errorTitleUUID",
+                                            "properties": {
+                                              "titleValue": "Notes must be required",
+                                              "isShown": true
+                                            }
+                                          }
+                                        },
+                                        {
+                                          "type": "resetData"
+                                        },
+                                        {
+                                          "type": "updateComponent",
+                                          "config": {
+                                            "key": "IQATimeoutUUID",
+                                            "properties": {
+                                              "disabled": true
+                                            }
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  }
+                                }
+                              ]
+                            },
+                            "onFailure": {
+                              "actions": [
+                                {
+                                  "type": "condition",
+                                  "config": {
+                                    "operation": "isEqualTo",
+                                    "lhs": "PassPkg",
+                                    "rhs": "#SelectedResultcode"
+                                  },
+                                  "eventSource": "change",
+                                  "responseDependents": {
+                                    "onSuccess": {
+                                      "actions": [
+                                        {
+                                          "type": "microservice",
+                                          "config": {
+                                            "microserviceId": "getprocessffbycountry",
+                                            "requestMethod": "get",
+                                            "params": {
+                                              "itemId": "#UnitInfo.ITEM_ID",
+                                              "ffName": "Country of Origin",
+                                              "countryCode": "BR",
+                                              "resultCode": "#SelectedResultcode"
+                                            }
+                                          },
+                                          "responseDependents": {
+                                            "onSuccess": {
+                                              "actions": [
+                                                {
+                                                  "type": "microservice",
+                                                  "config": {
+                                                    "microserviceId": "getProcessFlexFieldValue",
+                                                    "requestMethod": "get",
+                                                    "params": {
+                                                      "itemId": "#UnitInfo.ITEM_ID",
+                                                      "ffName": "Country of Origin",
+                                                      "resultCode": "#SelectedResultcode"
+                                                    }
+                                                  },
+                                                  "responseDependents": {
+                                                    "onSuccess": {
+                                                      "actions": [
+                                                        {
+                                                          "type": "condition",
+                                                          "config": {
+                                                            "operation": "isGreaterThan",
+                                                            "lhs": "#BomCount",
+                                                            "rhs": "0"
+                                                          },
+                                                          "eventSource": "change",
+                                                          "responseDependents": {
+                                                            "onSuccess": {
+                                                              "actions": [
+                                                                {
+                                                                  "type": "updateComponent",
+                                                                  "config": {
+                                                                    "key": "IQATimeoutUUID",
+                                                                    "properties": {
+                                                                      "disabled": false
+                                                                    }
+                                                                  }
+                                                                }
+                                                              ]
+                                                            }
+                                                          }
+                                                        }
+                                                      ]
+                                                    },
+                                                    "onFailure": {
+                                                      "actions": [
+                                                        {
+                                                          "type": "context",
+                                                          "config": {
+                                                            "requestMethod": "add",
+                                                            "key": "getProcessFlexFieldValueCountryOrigin",
+                                                            "data": "responseData"
+                                                          }
+                                                        },
+                                                        {
+                                                          "type": "updateComponent",
+                                                          "config": {
+                                                            "key": "errorTitleUUID",
+                                                            "properties": {
+                                                              "titleValue": "#getProcessFlexFieldValueCountryOrigin",
+                                                              "isShown": true
+                                                            }
+                                                          }
+                                                        },
+                                                        {
+                                                          "type": "resetData"
+                                                        },
+                                                        {
+                                                          "type": "updateComponent",
+                                                          "config": {
+                                                            "key": "IQATimeoutUUID",
+                                                            "properties": {
+                                                              "disabled": true
+                                                            }
+                                                          }
+                                                        }
+                                                      ]
+                                                    }
+                                                  }
+                                                }
+                                              ]
+                                            },
+                                            "onFailure": {
+                                              "actions": [
+                                                {
+                                                  "type": "context",
+                                                  "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "getprocessffbycountry",
+                                                    "data": "responseData"
+                                                  }
+                                                },
+                                                {
+                                                  "type": "updateComponent",
+                                                  "config": {
+                                                    "key": "errorTitleUUID",
+                                                    "properties": {
+                                                      "titleValue": "#getprocessffbycountry",
+                                                      "isShown": true
+                                                    }
+                                                  }
+                                                },
+                                                {
+                                                  "type": "resetData"
+                                                },
+                                                {
+                                                  "type": "updateComponent",
+                                                  "config": {
+                                                    "key": "IQATimeoutUUID",
+                                                    "properties": {
+                                                      "disabled": true
+                                                    }
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "onFailure": {
+                                      "actions": [
+                                        {
+                                          "type": "condition",
+                                          "config": {
+                                            "operation": "isEqualTo",
+                                            "lhs": "PASS",
+                                            "rhs": "#SelectedResultcode"
+                                          },
+                                          "eventSource": "change",
+                                          "responseDependents": {
+                                            "onSuccess": {
+                                              "actions": [
+                                                {
+                                                  "type": "microservice",
+                                                  "config": {
+                                                    "microserviceId": "getforceecoupgradetofa",
+                                                    "requestMethod": "get",
+                                                    "params": {
+                                                      "itemId": "#UnitInfo.ITEM_ID",
+                                                      "workorderId": "#UnitInfo.WORKORDER_ID",
+                                                      "depth": "2",
+                                                      "partNumber": "#UnitInfo.PART_NO",
+                                                      "workCenter": "#UnitInfo.WORKCENTER",
+                                                      "resultCode": "#SelectedResultcode"
+                                                    }
+                                                  },
+                                                  "responseDependents": {
+                                                    "onSuccess": {
+                                                      "actions": [
+                                                        {
+                                                          "type": "condition",
+                                                          "config": {
+                                                            "operation": "isGreaterThan",
+                                                            "lhs": "#BomCount",
+                                                            "rhs": "0"
+                                                          },
+                                                          "eventSource": "change",
+                                                          "responseDependents": {
+                                                            "onSuccess": {
+                                                              "actions": [
+                                                                {
+                                                                  "type": "updateComponent",
+                                                                  "config": {
+                                                                    "key": "IQATimeoutUUID",
+                                                                    "properties": {
+                                                                      "disabled": false
+                                                                    }
+                                                                  }
+                                                                }
+                                                              ]
+                                                            }
+                                                          }
+                                                        }
+                                                      ]
+                                                    },
+                                                    "onFailure": {
+                                                      "actions": [
+                                                        {
+                                                          "type": "context",
+                                                          "config": {
+                                                            "requestMethod": "add",
+                                                            "key": "PASSforceecoupgradetofa",
+                                                            "data": "responseData"
+                                                          }
+                                                        },
+                                                        {
+                                                          "type": "updateComponent",
+                                                          "config": {
+                                                            "key": "errorTitleUUID",
+                                                            "properties": {
+                                                              "titleValue": "#PASSforceecoupgradetofa",
+                                                              "isShown": true
+                                                            }
+                                                          }
+                                                        },
+                                                        {
+                                                          "type": "resetData"
+                                                        },
+                                                        {
+                                                          "type": "updateComponent",
+                                                          "config": {
+                                                            "key": "IQATimeoutUUID",
+                                                            "properties": {
+                                                              "disabled": true
+                                                            }
+                                                          }
+                                                        }
+                                                      ]
+                                                    }
+                                                  }
+                                                }
+                                              ]
+                                            },
+                                            "onFailure": {
+                                              "actions": [
+                                                {
+                                                  "type": "condition",
+                                                  "config": {
+                                                    "operation": "isGreaterThan",
+                                                    "lhs": "#BomCount",
+                                                    "rhs": "0"
+                                                  },
+                                                  "eventSource": "change",
+                                                  "responseDependents": {
+                                                    "onSuccess": {
+                                                      "actions": [
+                                                        {
+                                                          "type": "updateComponent",
+                                                          "config": {
+                                                            "key": "IQATimeoutUUID",
+                                                            "properties": {
+                                                              "disabled": false
+                                                            }
+                                                          }
+                                                        }
+                                                      ]
+                                                    }
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "getCheckRevisionWithAutoScrap",
+                                  "config": {
+                                    "arrayName": "#performFA"
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "ctype": "button",
+              "color": "primary",
+              "buttonClass": "footer-button",
+              "text": "Time Out",
+              "uuid": "IQATimeoutUUID",
+              "visibility": true,
+              "disabled": true,
+              "hidden": false,
+              "type": "submit",
+              "hooks": [],
+              "validations": [],
+              "actions": [
+                {
+                  "type": "updateComponent",
+                  "config": {
+                    "key": "errorTitleUUID",
+                    "properties": {
+                      "titleValue": "",
+                      "isShown": false
+                    }
+                  }
+                },
+                {
+                  "type": "dialog",
+                  "uuid": "addNoteDialogUUID",
+                  "config": {
+                    "title": "Add Note",
+                    "items": [
+                      {
+                        "ctype": "textarea",
+                        "label": "Add note",
+                        "name": "addNote",
+                        "textareaContainer": "timeout-class",
+                        "uuid": "addNoteTimeoutUUID",
+                        "required": false,
+                        "value": "#iqaNotes.addNote",
+                        "actions": []
+                      }
+                    ],
+                    "footer": [
+                      {
+                        "ctype": "button",
+                        "color": "primary",
+                        "text": "Close",
+                        "uuid": "closeButtonUUID",
+                        "closeType": "close",
+                        "inputClass": "close-button",
+                        "disableClose": true,
+                        "visibility": true,
+                        "dialogButton": true,
+                        "type": "",
+                        "hooks": [],
+                        "validations": [],
+                        "actions": []
+                      },
+                      {
+                        "ctype": "button",
+                        "color": "primary",
+                        "text": "Done",
+                        "uuid": "doneHoldUUID",
+                        "dialogButton": true,
+                        "visibility": true,
+                        "disableClose": false,
+                        "type": "submit",
+                        "closeType": "success",
+                        "hooks": [],
+                        "validations": [],
+                        "actions": []
+                      }
+                    ]
+                  },
+                  "eventSource": "click",
+                  "responseDependents": {
+                    "onSuccess": {
+                      "actions": [
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "errorTitleUUID",
+                            "properties": {
+                              "titleValue": "",
+                              "isShown": false
+                            }
+                          }
+                        },
+                        {
+                          "type": "context",
+                          "config": {
+                            "requestMethod": "add",
+                            "key": "iqaNotes",
+                            "data": "formData"
+                          }
+                        },
+                        {
+                          "type": "condition",
+                          "config": {
+                            "operation": "isEqualTo",
+                            "lhs": "#subProcessMenuType",
+                            "rhs": "IQA-Pre-screen"
+                          },
+                          "eventSource": "click",
+                          "responseDependents": {
+                            "onSuccess": {
+                              "actions": [
+                                {
+                                  "type": "microservice",
+                                  "config": {
+                                    "microserviceId": "performTimeOut",
+                                    "requestMethod": "post",
+                                    "body": {
+                                      "timeOutRequest": {
+                                        "location": "#UnitInfo.GEONAME",
+                                        "bcn": "#UnitInfo.ITEM_BCN",
+                                        "workCenter": "#UnitInfo.WORKCENTER",
+                                        "password": "#loginUUID.password",
+                                        "warrantyInd": "false",
+                                        "notes": "#iqaNotes.addNote",
+                                        "resultCode": "#SelectedResultcode",
+                                        "workCenterFlexFieldList": {
+                                          "flexField": "#recordTan"
+                                        }
+                                      },
+                                      "modifyWarranty": 0,
+                                      "timeOutType": "ProcessImmediate",
+                                      "clientName": "#UnitInfo.CLIENTNAME",
+                                      "contractName": "#UnitInfo.CONTRACTNAME",
+                                      "userName": "#loginUUID.username",
+                                      "userPass": "#loginUUID.password",
+                                      "ip": "::1",
+                                      "callSource": "FrontEnd",
+                                      "apiUsage_LocationName": "#UnitInfo.GEONAME",
+                                      "apiUsage_ClientName": "#UnitInfo.CLIENTNAME"
+                                    },
+                                    "toBeStringified": true,
+                                    "removeUndefinedFields": "#iqaNotes.addNote"
+                                  },
+                                  "responseDependents": {
+                                    "onSuccess": {
+                                      "actions": [
+                                        {
+                                          "type": "microservice",
+                                          "config": {
+                                            "microserviceId": "getUnitInfo",
+                                            "requestMethod": "get",
+                                            "params": {
+                                              "unitIdentificationValue": "#userSearchCriteriaCisco.unitIdentificationValue",
+                                              "identificatorType": "#userSearchCriteriaCisco.identificatorType"
+                                            }
+                                          },
+                                          "eventSource": "click",
+                                          "responseDependents": {
+                                            "onSuccess": {
+                                              "actions": [
+                                                {
+                                                  "type": "context",
+                                                  "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "UnitInfo",
+                                                    "data": "responseData"
+                                                  }
+                                                },
+                                                {
+                                                  "type": "condition",
+                                                  "config": {
+                                                    "operation": "isValid",
+                                                    "lhs": "#UnitInfo.ROUTE_ID"
+                                                  },
+                                                  "responseDependents": {
+                                                    "onSuccess": {
+                                                      "actions": [
+                                                        {
+                                                          "type": "condition",
+                                                          "config": {
+                                                            "operation": "isValid",
+                                                            "lhs": "#UnitInfo.WORKCENTER_ID"
+                                                          },
+                                                          "responseDependents": {
+                                                            "onSuccess": {
+                                                              "actions": [
+                                                                {
+                                                                  "type": "microservice",
+                                                                  "config": {
+                                                                    "microserviceId": "getSubProcessMenu",
+                                                                    "requestMethod": "get",
+                                                                    "params": {
+                                                                      "userId": "#loginUUID.username",
+                                                                      "locationId": "#userSelectedLocation",
+                                                                      "clientId": "#userSelectedClient",
+                                                                      "contractId": "#userSelectedContract",
+                                                                      "wcId": "#UnitInfo.WORKCENTER_ID",
+                                                                      "optId": "#UnitInfo.ROUTE_ID",
+                                                                      "btt": "",
+                                                                      "whId": "#UnitInfo.WAREHOUSE_ID",
+                                                                      "operationType": "#userSelectedSubProcessType",
+                                                                      "workCenterName": "#UnitInfo.WORKCENTER"
+                                                                    }
+                                                                  },
+                                                                  "responseDependents": {
+                                                                    "onSuccess": {
+                                                                      "actions": [
+                                                                        {
+                                                                          "type": "context",
+                                                                          "config": {
+                                                                            "requestMethod": "add",
+                                                                            "key": "SubprocessMenu",
+                                                                            "data": "responseData"
+                                                                          }
+                                                                        },
+                                                                        {
+                                                                          "type": "microservice",
+                                                                          "config": {
+                                                                            "microserviceId": "getResultCodes",
+                                                                            "requestMethod": "get",
+                                                                            "params": {
+                                                                              "bcn": "#UnitInfo.ITEM_BCN",
+                                                                              "validateResult": 1
+                                                                            }
+                                                                          },
+                                                                          "responseDependents": {
+                                                                            "onSuccess": {
+                                                                              "actions": [
+                                                                                {
+                                                                                  "type": "context",
+                                                                                  "config": {
+                                                                                    "requestMethod": "add",
+                                                                                    "key": "ResultCodes",
+                                                                                    "data": "responseData"
+                                                                                  }
+                                                                                },
+                                                                                {
+                                                                                  "type": "microservice",
+                                                                                  "config": {
+                                                                                    "microserviceId": "getCustomInstruction",
+                                                                                    "requestMethod": "post",
+                                                                                    "body": {
+                                                                                      "customInstructionType": "ECO",
+                                                                                      "sourceType": "PID",
+                                                                                      "firstSource": "#UnitInfo.PART_NO",
+                                                                                      "secondSource": "#UnitInfo.SERIAL_NO",
+                                                                                      "username": "#loginUUID.username",
+                                                                                      "locationId": "#userSelectedLocation",
+                                                                                      "mainPartNo": "#UnitInfo.PART_NO",
+                                                                                      "itemId": "#UnitInfo.ITEM_ID",
+                                                                                      "clientId": "#userSelectedClient",
+                                                                                      "contractId": "#userSelectedContract"
+                                                                                    },
+                                                                                    "toBeStringified": true
+                                                                                  },
+                                                                                  "responseDependents": {
+                                                                                    "onSuccess": {
+                                                                                      "actions": [
+                                                                                        {
+                                                                                          "type": "context",
+                                                                                          "config": {
+                                                                                            "requestMethod": "add",
+                                                                                            "key": "flexFieldsFormGroup",
+                                                                                            "data": []
+                                                                                          },
+                                                                                          "eventSource": "click"
+                                                                                        },
+                                                                                        {
+                                                                                          "type": "context",
+                                                                                          "config": {
+                                                                                            "requestMethod": "add",
+                                                                                            "key": "ecoBookingData",
+                                                                                            "data": "responseData"
+                                                                                          }
+                                                                                        },
+                                                                                        {
+                                                                                          "type": "renderTemplate",
+                                                                                          "config": {
+                                                                                            "templateId": "cisco_ECO_booking.json",
+                                                                                            "mode": "local"
+                                                                                          }
+                                                                                        },
+                                                                                        {
+                                                                                          "type": "updateStage",
+                                                                                          "config": {
+                                                                                            "currentStage": "PRE-SCREEN",
+                                                                                            "currentSubProcess": "IQA",
+                                                                                            "nextStage": "ECO BOOKING",
+                                                                                            "targetId": "menuTreeUUID",
+                                                                                            "processId": "#SubprocessMenu"
+                                                                                          }
+                                                                                        },
+                                                                                        {
+                                                                                          "type": "context",
+                                                                                          "config": {
+                                                                                            "requestMethod": "add",
+                                                                                            "key": "subProcessMenuType",
+                                                                                            "data": "IQA-ECOBooking"
+                                                                                          }
+                                                                                        }
+                                                                                      ]
+                                                                                    },
+                                                                                    "onFailure": {
+                                                                                      "actions": [
+                                                                                        {
+                                                                                          "type": "context",
+                                                                                          "config": {
+                                                                                            "requestMethod": "add",
+                                                                                            "key": "flexFieldsFormGroup",
+                                                                                            "data": []
+                                                                                          },
+                                                                                          "eventSource": "click"
+                                                                                        },
+                                                                                        {
+                                                                                          "type": "context",
+                                                                                          "config": {
+                                                                                            "requestMethod": "add",
+                                                                                            "key": "ecoBookingData",
+                                                                                            "data": "responseData"
+                                                                                          }
+                                                                                        },
+                                                                                        {
+                                                                                          "type": "renderTemplate",
+                                                                                          "config": {
+                                                                                            "templateId": "cisco_ECO_booking.json",
+                                                                                            "mode": "local"
+                                                                                          }
+                                                                                        },
+                                                                                        {
+                                                                                          "type": "updateStage",
+                                                                                          "config": {
+                                                                                            "currentStage": "PRE-SCREEN",
+                                                                                            "currentSubProcess": "IQA",
+                                                                                            "nextStage": "ECO BOOKING",
+                                                                                            "targetId": "menuTreeUUID",
+                                                                                            "processId": "#SubprocessMenu"
+                                                                                          }
+                                                                                        },
+                                                                                        {
+                                                                                          "type": "context",
+                                                                                          "config": {
+                                                                                            "requestMethod": "add",
+                                                                                            "key": "subProcessMenuType",
+                                                                                            "data": "IQA-ECOBooking"
+                                                                                          }
+                                                                                        }
+                                                                                      ]
+                                                                                    }
+                                                                                  }
+                                                                                }
+                                                                              ]
+                                                                            },
+                                                                            "onFailure": {
+                                                                              "actions": [
+                                                                                {
+                                                                                  "type": "context",
+                                                                                  "config": {
+                                                                                    "requestMethod": "add",
+                                                                                    "key": "resultCodeFailed",
+                                                                                    "data": "responseData"
+                                                                                  }
+                                                                                },
+                                                                                {
+                                                                                  "type": "updateComponent",
+                                                                                  "config": {
+                                                                                    "key": "errorTitleUUID",
+                                                                                    "properties": {
+                                                                                      "titleValue": "#resultCodeFailed",
+                                                                                      "isShown": true
+                                                                                    }
+                                                                                  }
+                                                                                }
+                                                                              ]
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      ]
+                                                                    },
+                                                                    "onFailure": {
+                                                                      "actions": [
+                                                                        {
+                                                                          "type": "context",
+                                                                          "config": {
+                                                                            "requestMethod": "add",
+                                                                            "key": "subMenuFailed",
+                                                                            "data": "responseData"
+                                                                          }
+                                                                        },
+                                                                        {
+                                                                          "type": "updateComponent",
+                                                                          "config": {
+                                                                            "key": "errorTitleUUID",
+                                                                            "properties": {
+                                                                              "titleValue": "#subMenuFailed",
+                                                                              "isShown": true
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      ]
+                                                                    }
+                                                                  }
+                                                                }
+                                                              ]
+                                                            },
+                                                            "onFailure": {
+                                                              "actions": [
+                                                                {
+                                                                  "type": "context",
+                                                                  "config": {
+                                                                    "requestMethod": "add",
+                                                                    "key": "subMenuFailed",
+                                                                    "data": "responseData"
+                                                                  }
+                                                                },
+                                                                {
+                                                                  "type": "updateComponent",
+                                                                  "config": {
+                                                                    "key": "errorTitleUUID",
+                                                                    "properties": {
+                                                                      "titleValue": "Work Center Id is invalid",
+                                                                      "isShown": true
+                                                                    }
+                                                                  }
+                                                                }
+                                                              ]
+                                                            }
+                                                          }
+                                                        }
+                                                      ]
+                                                    },
+                                                    "onFailure": {
+                                                      "actions": [
+                                                        {
+                                                          "type": "updateComponent",
+                                                          "config": {
+                                                            "key": "errorTitleUUID",
+                                                            "properties": {
+                                                              "titleValue": "Order Process Type Is Empty.",
+                                                              "isShown": true
+                                                            }
+                                                          }
+                                                        }
+                                                      ]
+                                                    }
+                                                  }
+                                                }
+                                              ]
+                                            },
+                                            "onFailure": {
+                                              "actions": [
+                                                {
+                                                  "type": "updateComponent",
+                                                  "config": {
+                                                    "key": "errorTitleUUID",
+                                                    "properties": {
+                                                      "titleValue": "Failed to fetch getUnitInfo.",
+                                                      "isShown": true
+                                                    }
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "onFailure": {
+                                      "actions": [
+                                        {
+                                          "type": "context",
+                                          "config": {
+                                            "requestMethod": "add",
+                                            "key": "performTimeoutError",
+                                            "data": "responseData"
+                                          }
+                                        },
+                                        {
+                                          "type": "updateComponent",
+                                          "config": {
+                                            "key": "performTimeoutError",
+                                            "properties": {
+                                              "titleValue": "#performTimeoutError",
+                                              "isShown": true
+                                            }
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  }
+                                }
+                              ]
+                            },
+                            "onFailure": {
+                              "actions": []
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

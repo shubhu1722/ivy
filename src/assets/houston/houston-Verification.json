@@ -1,0 +1,54 @@
+{
+    "ctype": "subProcess",
+    "title": "VERIFICATION",
+    "uuid": "houVerificationUUID",
+    "subMenuIndex": 0,
+    "clientName": "HOUSTON",
+    "openRightNav": false,
+    "hooks": [
+        {
+            "type": "microservice",
+            "hookType": "beforeInit",
+            "config": {
+                "microserviceId": "getSubProcessPageBody",
+                "requestMethod": "get",
+                "params": {
+                    "subProcessId": "#getReferenceDataKeys.subProcess.HOUSTON.HOU_VERIFICATION",
+                    "userName": "#userAccountInfo.PersonalDetails.USERID"
+                },
+                "isLocal": false,
+                "LocalService": "assets/Responses/SubProcess/HOUSTON/hou_IQAVerificationSubprocess.json"
+            },
+            "responseDependents": {
+                "onSuccess": {
+                    "actions": [
+                        {
+                            "type": "context",
+                            "config": {
+                                "requestMethod": "add",
+                                "key": "iqaVerificationScreenData",
+                                "data": "responseData"
+                            }
+                        },
+                        {
+                            "type": "renderTemplate",
+                            "config": {
+                                "mode": "remote",
+                                "targetId": "mainPageContentBodysp",
+                                "templateId": "iqaVerificationScreenData"
+                            }
+                        }
+                    ]
+                },
+                "onFailure": {
+                    "actions": [
+                        {
+                            "type": "toast",
+                            "message": "Failed to fetch IQA Verification JSON"
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}

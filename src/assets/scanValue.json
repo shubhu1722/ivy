@@ -1,0 +1,155 @@
+{
+    "ctype": "ExpansionPanel",
+    "title": "",
+    "header": {
+        "title": "Scan Value",
+        "icon": "description",
+        "css": "color:black",
+        "status": ""
+    },
+    "expanded": "true",
+    "hideToggle": "true",
+    "uuid": "receivingUUID",
+    "css": "width:50%;margin:auto;height:10vh",
+    "visibility": true,
+    "hooks": [],
+    "validations": [],
+    "actions": [],
+    "Items": [
+        {
+            "ctype": "textField",
+            "uuid": "ScanSerialNumberUUID",
+            "hooks": [],
+            "validations": [
+                {
+                    "type": "regex",
+                    "script": ""
+                }
+            ],
+            "actions": [],
+            "type": "text",
+            "css": "width:50%",
+            "required": true,
+            "placeholder": "Scan #",
+            "submitable": true,
+            "label": "Scan Serial Number",
+            "labelPosition": "left",
+            "name": "ScanSerialNumber",
+            "inputStyles": "width: 50%",
+            "value": ""
+        },
+        {
+            "ctype": "checkbox",
+            "name": "No Serial Number",
+            "actions": [],
+            "hooks": [],
+            "validations": [],
+            "required": true,
+            "submitable": true,
+            "label": "Scan Serial Number",
+            "labelPosition": "after",
+            "inputStyles": "width: 50%",
+            "value": ""
+        }
+    ],
+    "footer": [
+        {
+            "ctype": "button",
+            "inputStyles": "float:right",
+            "text": "Complete",
+            "uuid": "CompleteUUID",
+            "visibility": true,
+            "disabled": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "actions": [
+                {
+                    "type": "context",
+                    "config": {
+                        "requestMethod": "add",
+                        "key": "scanSerialNumber",
+                        "data": "formData"
+                    },
+                    "eventSource": "click"
+                },
+                {
+                    "type": "microservice",
+                    "config": {
+                        "microserviceId": "scanValue",
+                        "requestMethod": "get",
+                        "params": {
+                            "serialNumber": "#scanSerialNumber"
+                        }
+                    },
+                    "eventSource": "click",
+                    "responseDependents": {
+                        "onSuccess": {
+                            "actions": [
+                                {
+                                    "type": "toast",
+                                    "message": "Successfully Logged In"
+                                },
+                                {
+                                    "type": "context",
+                                    "config": {
+                                        "requestMethod": "add",
+                                        "key": "userAccountInfo",
+                                        "data": "responseData"
+                                    }
+                                },
+                                {
+                                    "type": "microservice",
+                                    "config": {
+                                        "microserviceId": "getHomeMenu",
+                                        "requestMethod": "get",
+                                        "params": {
+                                            "userId": "#loginUUID.username"
+                                        }
+                                    },
+                                    "responseDependents": {
+                                        "onSuccess": {
+                                            "actions": [
+                                                {
+                                                    "type": "context",
+                                                    "config": {
+                                                        "requestMethod": "add",
+                                                        "key": "HomeMenu",
+                                                        "data": "responseData"
+                                                    }
+                                                },
+                                                {
+                                                    "type": "renderTemplate",
+                                                    "config": {
+                                                        "templateId": "dashboard.json",
+                                                        "mode": "local"
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "onFailure": {
+                                            "actions": [
+                                                {
+                                                    "type": "toast",
+                                                    "message": "get menu failed"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        "onFailure": {
+                            "actions": [
+                                {
+                                    "type": "toast",
+                                    "message": "Login Failed."
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}

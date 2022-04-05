@@ -1,0 +1,18 @@
+<table class="table multiRo">
+    <tbody>
+        <div *ngFor="let multiRoData of primaryData; let i = index">
+            <tr class="primaryData">
+                <td scope="row">
+                    <input class="form-check-input" style="margin-left: 2px;" type="radio" name="radioNoLabel"
+                        id="radioNoLabel1" value="multiRoData" aria-label="..."
+                        (change)="editMultiRoTable(multiRoData, i)">
+                </td>
+                <td *ngIf="i != checkIndex" class="custom-td">
+                    <p>RO-{{multiRoData.REFERENCE_ORDER_ID}}</p>
+                </td>
+                <td *ngIf="i == checkIndex" class="custom-td"><span class="greyish-black subtitle1">Primary Fault:
+                    </span>RO-{{defaultMultiRo}}</td>
+            </tr>
+        </div>
+    </tbody>
+</table>

@@ -1,0 +1,12 @@
+<div [class]="checkboxContainer" *ngIf="checkVisibility">
+  <mat-checkbox *ngIf="!checkdifferent"color="primary" [labelPosition]="labelPosition" [checked]="checked" [disabled]="disabled" [class]="labelClass" (change)="CheckFunction($event)" (click)="onClickCheckbox()" [matTooltip]="tooltip" [matTooltipPosition]="TooltipPosition">
+    <mat-icon *ngIf="isIcon" [attr.iconPosition]="iconPosition" [class]="iconClass" [svgIcon]="icon">{{
+      icon
+    }}</mat-icon>
+    {{ label | translate }}
+  </mat-checkbox>
+  <label *ngIf="label !== '' && checkdifferent" [style]="labelstyles" [class]="labelClass">{{ label | translate }}</label>
+  <mat-checkbox *ngIf="checkdifferent"color="primary"[checked]="checked" [disabled]="disabled" [class]="labelClass" (change)="CheckFunction($event)" (click)="onClickCheckbox()" [matTooltip]="tooltip" [matTooltipPosition]="TooltipPosition">
+    <mat-icon *ngIf="isIcon" [attr.iconPosition]="iconPosition" [class]="iconClass" [svgIcon]="icon">{{icon}}</mat-icon>
+  </mat-checkbox>
+</div>

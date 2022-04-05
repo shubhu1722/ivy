@@ -1,0 +1,46 @@
+{
+    "ctype": "subProcess",
+    "title": "MB REPAIR",
+    "uuid": "mbRepairUUID",
+    "subMenuIndex": 1,
+    "clientName": "HP",
+    "openRightNav": false,
+    "hooks": [
+        {
+          "type": "microservice",
+          "hookType": "beforeInit",
+          "config": {
+            "microserviceId": "getSubProcessPageBody",
+            "requestMethod": "get",
+            "params": {
+              "subProcessId": "#wcSubprocess.MB_REPAIR.subProcessID",
+              "userName": "#userAccountInfo.PersonalDetails.USERID"
+            },
+            "isLocal": false,
+            "LocalService": "assets/Responses/SubProcess/HP/mbRepairSubProcess.json"
+          },
+          "responseDependents": {
+            "onSuccess": {
+              "actions": [
+                {
+                  "type": "renderTemplate",
+                  "config": {
+                    "mode": "remote",
+                    "targetId": "mainPageContentBodysp",
+                    "templateId": "getSubProcessPageBody"
+                  }
+                }
+              ]
+            },
+            "onFailure": {
+              "actions": [
+                {
+                  "type": "toast",
+                  "message": "Failed to fetch mb repair JSON"
+                }
+              ]
+            }
+          }
+        }
+      ]
+}

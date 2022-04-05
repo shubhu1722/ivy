@@ -1,0 +1,15 @@
+<div  [formGroup]="group" [class]="formGroupClass" [style]="formGroupStyles" [hidden]="hidden">
+  <label *ngIf="label !== ''" [for]="name" [class]="labelClass">{{label}} </label>
+  <ng-multiselect-dropdown
+  [placeholder]="'-Select-'"
+  [class]="dropdownClass"
+  [settings]="dropdownSettings"
+  [data]="options"
+  [(ngModel)]="defaultValue"
+  (onSelect)="onItemSelect($event)"
+  (onDeSelect)="onItemSelect($event)"
+  (onSelectAll)="onSelectAll($event)"
+  [formControlName] = "name"
+>
+</ng-multiselect-dropdown>
+</div>

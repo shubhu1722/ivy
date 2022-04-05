@@ -1,0 +1,54 @@
+{
+	"ctype": "subProcess",
+	"title": "FPCBABT",
+	"uuid": "assesmentUUID",
+	"subMenuIndex": 0,
+	"clientName": "CISCO",
+	"openRightNav": false,
+	"hooks": [
+	  {
+		"type": "microservice",
+		"hookType": "beforeInit",
+		"config": {
+		  "microserviceId": "getSubProcessPageBody",
+		  "requestMethod": "get",
+		  "params": {
+			"subProcessId": "#getReferenceDataKeys.subProcess.Cisco.FPCBABT",
+			"userName": "#userAccountInfo.PersonalDetails.USERID"
+		  },
+		  "isLocal": false,
+		  "LocalService": "assets/Responses/SubProcess/CISCO/FPCBABTSubProcess.json"
+		},
+		"responseDependents": {
+		  "onSuccess": {
+			"actions": [
+			  {
+				"type": "context",
+				"config": {
+				  "requestMethod": "add",
+				  "key": "FPCBABTData",
+				  "data": "responseData"
+				}
+			  },
+			  {
+				"type": "renderTemplate",
+				"config": {
+				  "mode": "remote",
+				  "targetId": "mainPageContentBodysp",
+				  "templateId": "FPCBABTData"
+				}
+			  }
+			]
+		  },
+		  "onFailure": {
+			"actions": [
+			  {
+				"type": "toast",
+				"message": "Failed to fetch Cisco FPCBABT JSON"
+			  }
+			]
+		  }
+		}
+	  }
+	]
+  }

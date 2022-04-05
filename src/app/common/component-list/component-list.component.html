@@ -1,0 +1,4 @@
+<div *ngFor="let box of counter(flexCount); let i = index">
+    <app-flex-fields [items]="dataGrid" [uuid]="getuuid(i)" [class]="class" [parentuuid]="getuuid(i)" [rowData]="box" [disableFields]="disableFields"
+        [flexClass]="flexClass" [group]="group" [footerButtonUUID]="footerButtonUUID" [indexData]="getIndexData(i) | translate"></app-flex-fields>
+</div>

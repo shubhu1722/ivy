@@ -1,0 +1,1351 @@
+{
+    "ResultData": {
+        "ctype": "page",
+        "uuid": "pageUUID",
+        "css": "",
+        "visibility": true,
+        "hooks": [
+            {
+                "type": "condition",
+                "hookType": "afterInit",                               
+                "config": {
+                    "operation": "isEqualTo",
+                    "lhs": "#userSelectedClientName",
+                    "rhs": "DELL"
+                },
+                "responseDependents":{
+                    "onSuccess": {
+                        "actions": [
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "dropdownUUID",
+                                    "properties": {
+                                        "hidden":false
+                                    }
+                                },
+                                "hookType": "afterInit"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "scanUUID",
+                                    "properties": {
+                                        "textfieldClass": "searchcriteris-text"
+                                    }
+                                },
+                                "hookType": "afterInit"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "receivingUUID",
+                                    "properties": {
+                                        "formPanelClass": "searchCriteria-panel"
+                                    }
+                                },
+                                "hookType": "afterInit"
+                            },
+                            {
+                                "type": "context",
+                                "hookType": "afterInit",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "userOptionTrackingNo",
+                                    "data": "SerialNumber"
+                                }
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "dropdownUUID",
+                                    "fieldProperties": {
+                                        "homeSearchCriteria": "#userOptionTrackingNo"
+                                    }
+                                },
+                                "hookType": "afterInit"
+                            }
+                        ]
+                    },
+                    "onFailure": {
+                        "actions": [
+                            {
+                                "type": "condition",
+                                "hookType": "afterInit",                               
+                                "config": {
+                                    "operation": "isEqualTo",
+                                    "lhs": "#userSelectedClientName",
+                                    "rhs": "VeriFone"
+                                },
+                                "responseDependents":{
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "dropdownUUID",
+                                                    "properties": {
+                                                        "hidden":false
+                                                    }
+                                                },
+                                                "hookType": "afterInit"
+                                            },
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "scanUUID",
+                                                    "properties": {
+                                                        "textfieldClass": "searchcriteris-text"
+                                                    }
+                                                },
+                                                "hookType": "afterInit"
+                                            },
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "receivingUUID",
+                                                    "properties": {
+                                                        "formPanelClass": "searchCriteria-panel"
+                                                    }
+                                                },
+                                                "hookType": "afterInit"
+                                            },
+                                            {
+                                                "type": "context",
+                                                "hookType": "afterInit",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "userOptionTrackingNo",
+                                                    "data": "SerialNumber"
+                                                }
+                                            },
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "dropdownUUID",
+                                                    "fieldProperties": {
+                                                        "homeSearchCriteria": "#userOptionTrackingNo"
+                                                    }
+                                                },
+                                                "hookType": "afterInit"
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": [
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "dropdownUUID",
+                                                    "properties": {
+                                                        "hidden":true
+                                                    }
+                                                },
+                                                "hookType": "afterInit"
+                                            },
+                                            {
+                                                "type": "context",
+                                                "hookType": "afterInit",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "userOptionTrackingNo",
+                                                    "data": "BCN"
+                                                }
+                                            },
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "dropdownUUID",
+                                                    "fieldProperties": {
+                                                        "homeSearchCriteria": "#userOptionTrackingNo"
+                                                    }
+                                                },
+                                                "hookType": "afterInit"
+                                            },
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "receivingUUID",
+                                                    "properties": {
+                                                        "formPanelClass": "searchCriteria-panel-full"
+                                                    }
+                                                },
+                                                "hookType": "afterInit"
+                                            },
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "scanUUID",
+                                                    "properties": {
+                                                        "textfieldClass": "searchcriteris-text-full"
+                                                    }
+                                                },
+                                                "hookType": "afterInit"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+        ],
+        "validations": [],
+        "action": [],
+        "header": [
+            {
+                "ctype": "toolbar",
+                "toolbarClass": "searchCriteria-toolbar section-title",
+                "items": [
+                    {
+                        "ctype": "title",
+                        "title": "E-Traveller"
+                    }
+                ]
+            }
+        ],
+        "items": [
+            {
+                "ctype": "title",
+                "uuid": "searchCriteriaErrorTitleUUID",
+                "titleClass": "error-title",
+                "isShown": false
+            },
+            {
+                "ctype": "formPanel",
+                "title": "Receiving",
+                "header": "",
+                "uuid": "receivingUUID",
+                "formPanelClass": "searchCriteria-panel",
+                "visibility": true,
+                "hooks": [],
+                "validations": [],
+                "actions": [],
+                "items": [
+                    {
+                        "ctype": "nativeDropdown",
+                        "uuid": "dropdownUUID",
+                        "hooks": [                            
+                        ],
+                        "validations": [],
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "userOptionTrackingNo",
+                                    "data": "elementControlValue"
+                                },
+                                "eventSource": "change"
+                            }
+                        ],
+                        "type": "text",
+                        "required": true,
+                        "placeholder": "ReferenceOrderID",
+                        "submitable": true,
+                        "label": "",
+                        "labelPosition": "",
+                        "name": "identificatorType",
+                        "defaultValue": "SerialNumber",
+                        "dropdownClass": "searchcriteris-drpdwn",
+                        "hidden": true,
+                        "options": [
+                            {
+                                "code": "BCN",
+                                "displayValue": "BCN"
+                            },
+                            {
+                                "code": "SerialNumber",
+                                "displayValue": "Serial Number"
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "textField",
+                        "uuid": "scanUUID",
+                        "isUpperCase": true,
+                        "hooks": [],
+                        "validations": [],
+                        "textfieldClass": "searchcriteris-text",
+                        "type": "text",
+                        "required": true,
+                        "placeholder": "Scan",
+                        "submitable": true,
+                        "label": "",
+                        "labelPosition": "",
+                        "name": "unitIdentificationValue",
+                        "prefix": "true",
+                        "prefixIcon": "qr_code_scanner",
+                        "suffix": true,
+                        "suffixIcon": "arrow_forward",
+                        "actions": [
+                            {
+                                "type": "updateComponent",
+                                "eventSource": "click",
+                                "config": {
+                                    "key": "searchCriteriaErrorTitleUUID",
+                                    "properties": {
+                                        "titleValue": "",
+                                        "isShown": false
+                                    }
+                                }
+                            },
+                            {
+                                "type": "context",
+                                "config": {
+                                    "key": "userSearchCriteria",
+                                    "data": "formData",
+                                    "requestMethod": "add"
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                              "type": "findIdentificatorType",
+                              "eventSource": "click",
+                              "config": {
+                                  "key" : "identificatorTypeValue",
+                                  "unitIdentificationValue": "#userSearchCriteria.unitIdentificationValue"
+                              }
+                            },
+                            {
+                              "type": "condition",
+                              "eventSource": "click",                            
+                              "config": {
+                                  "operation": "isEqualTo",
+                                  "lhs": "#userSelectedSubProcessType",
+                                  "rhs": "SHIPPING"
+                              },
+                              "responseDependents": {
+                                "onSuccess": {
+                                  "actions": [
+                                    {
+                                      "type": "microservice",
+                                      "config": {
+                                        "microserviceId": "getRoOoDetails",
+                                        "requestMethod": "get",
+                                        "params": {
+                                          "OrderIdentificatorValue": "#userSearchCriteria.unitIdentificationValue",
+                                          "IdentificatorType": "#identificatorTypeValue",
+                                          "userName": "#loginUUID.username"
+                                        }
+                                      },                                      
+                                      "eventSource": "click",
+                                      "responseDependents": {
+                                          "onSuccess": {
+                                            "actions": [
+                                              {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "shippingFromDashboard",
+                                                    "data": true
+                                                }
+                                              },
+                                              {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "shippingRoOoResponse",
+                                                    "data": "responseData"
+                                                }
+                                              },                                              
+                                              {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "UnitInfo",
+                                                    "data": "responseData"
+                                                }
+                                              },
+                                              {
+                                                  "type": "context",
+                                                  "config": {
+                                                      "requestMethod": "add",
+                                                      "key": "discrepancyUnitInfo",
+                                                      "data": "responseData"
+                                                  }
+                                              },                                               
+                                              {
+                                                "type": "updateEtravellerDiscrepancyUnitInfo"
+                                              },
+                                              {
+                                                "type": "condition",                          
+                                                "config": {
+                                                    "operation": "isEqualTo",
+                                                    "lhs": "#userSelectedClientName",
+                                                    "rhs": "HP"
+                                                },
+                                                "responseDependents": {
+                                                  "onSuccess": {
+                                                    "actions": [
+                                                      {
+                                                        "type": "openEtravellerFromDashboard",
+                                                        "config": {
+                                                          "title": "E-Traveller",
+                                                          "keyDataVisible": true,
+                                                          "itemHistoryVisible": true,
+                                                          "flexFieldVisible": true,
+                                                          "partsVisible" : true,
+                                                          "repositoryVisible":true
+                                                        },   
+                                                        "items": [
+                                                          {
+                                                            "ctype": "keyData",
+                                                            "label": "key Data",
+                                                            "items": [
+                                                              {
+                                                                "unitDetailTitle": "Unit Details",
+                                                                "ctype": "keyDataUnitDetails",
+                                                                "UUID": "unitDetailsUUID",
+                                                                "unitDetailItems": [
+                                                                  {
+                                                                    "leftColumnData": [
+                                                                      {
+                                                                        "label": "Unit BCN",
+                                                                        "value": "#discrepancyUnitInfo.ITEM_BCN"
+                                                                      },
+                                                                      {
+                                                                        "label": "Serial number",
+                                                                        "value": "#discrepancyUnitInfo.SERIAL_NO"
+                                                                      },
+                                                                      {
+                                                                        "label": "FAT",
+                                                                        "value": "#discrepancyUnitInfo.FAT"
+                                                                      }, {
+                                                                        "label": "Model number",
+                                                                        "value": "#shippingRoOoResponse.partNo"
+                                                                      },{
+                                                                        "label": "Description",
+                                                                        "value": "#discrepancyPartAndWarrantyDetails.PART_DESC"
+                                                                      },
+                                                                      {
+                                                                        "label": "Platform",
+                                                                        "value": "#discrepancyPartAndWarrantyDetails.PRODUCT_PLATFORM"
+                                                                      }, {
+                                                                        "label": "RepairTypeCode",
+                                                                        "value": "#getRepairTypeCodeByRODetails"
+                                                                      }, {
+                                                                        "label": "RERepairCSOID",
+                                                                        "value": "#getRERepairCSOIDByRODetails"
+                                                                      },
+                                                                      {
+                                                                        "label": "RERepairDays",
+                                                                        "value": "#getRRERepairDaysByRODetails"
+                                                                      }
+                                                                    ]
+                                                                  },
+                                                                  {
+                                                                    "rightColumnData": [
+                                                                      {
+                                                                        "label": "Hold Status",
+                                                                        "value": "0"
+                                                                      },
+                                                                      {
+                                                                        "label": "Storage Hold code",
+                                                                        "value": "#getEtravellerHoldReleaseDetailService.storateHoldCode"
+                                                                      },
+                                                                      {
+                                                                        "label": "Storage Hold Code Desc",
+                                                                        "value": "#getEtravellerHoldReleaseDetailService.storateHoldSubCode"
+                                                                      },
+                                                                      {
+                                                                        "label": "Location",
+                                                                        "value": "#userSelectedLocationName"
+                                                                      },
+                                                                      {
+                                                                        "label": "Warehouse",
+                                                                        "value": "#getEtravellerHoldReleaseDetailService.wareHouseName"
+                                                                      },
+                                                                      {
+                                                                        "label": "Zone",
+                                                                        "value": "#getEtravellerHoldReleaseDetailService.destStkLocationName"
+                                                                      },
+                                                                      {
+                                                                        "label": "Bin",
+                                                                        "value": "#getEtravellerHoldReleaseDetailService.bin"
+                                                                      }, {
+                                                                        "label": "Client",
+                                                                        "value": "#userSelectedClientName"
+                                                                      },
+                                                                      {
+                                                                        "label": "Contract",
+                                                                        "value": "#shippingRoOoResponse.contractName"
+                                                                      },
+                                                                      {
+                                                                        "label": "Workcenter",
+                                                                        "value": "#getEtravellerHoldReleaseDetailService.workcenterName"
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                ]
+                                                              },
+                                                              {
+                                                                "label": "Customer Complaint",
+                                                                "UUID": "customerComplainUUID",
+                                                                "customerComplainTitle": "Customer Complaint",
+                                                                "customerComplainItems": [
+                                                                  {
+                                                                    "ctype": "title",
+                                                                    "uuid": "customerComplaintHeaderUUID",
+                                                                    "titleClass": "sidenav-title body2",
+                                                                    "title": "Customer Complaint",
+                                                                    "titleValue": ""
+                                                                  },
+                                                                  {
+                                                                    "ctype": "showMore",
+                                                                    "uuid": "customerComplaintTitleUUID",
+                                                                    "titleClass": "sidenav-title body2",
+                                                                    "text": "#customeDesc.customerComplaints",
+                                                                    "isShown": true
+                                                                  },
+                                                                  {
+                                                                    "ctype": "title",
+                                                                    "uuid": "failCodeUUID",
+                                                                    "titleClass": "sidenav-title body2 os-field",
+                                                                    "title": "Fail Code:",
+                                                                    "titleValue": "#customeDesc.failCode"
+                                                                  },
+                                                                  {
+                                                                    "ctype": "title",
+                                                                    "uuid": "osReinstallUUID",
+                                                                    "titleClass": "sidenav-title body2",
+                                                                    "title": "OS reinstall allowed:",
+                                                                    "titleValue": "#customeDesc.osReinstallAllowed"
+                                                                  },
+                                                                  {
+                                                                    "ctype": "title",
+                                                                    "uuid": "bsodFieldUUID",
+                                                                    "titleClass": "sidenav-title body2",
+                                                                    "title": "BSOD Problem:",
+                                                                    "titleValue": "#customeDesc.bsod"
+                                                                  },
+                                                                  {
+                                                                    "ctype": "title",
+                                                                    "uuid": "winPasswordUUID",
+                                                                    "titleClass": "sidenav-title body2",
+                                                                    "title": "Windows password:",
+                                                                    "titleValue": "#customeDesc.windowsPassword"
+                                                                  },
+                                                                  {
+                                                                    "ctype": "title",
+                                                                    "uuid": "biosVersionTitleUUID",
+                                                                    "titleClass": "sidenav-title body2",
+                                                                    "title": "Expected Bios Version:",
+                                                                    "titleValue": "#biosAlert.0.bios"
+                                                                  },
+                                                                  {
+                                                                    "ctype": "title",
+                                                                    "uuid": "osLanguageUUID",
+                                                                    "titleClass": "sidenav-title body2",
+                                                                    "title": "OS Language:",
+                                                                    "titleValue": "#customeDesc.osLanguage"
+                                                                  },
+                                                                  {
+                                                                    "ctype": "title",
+                                                                    "uuid": "softwareVersionTitleUUID",
+                                                                    "titleClass": "sidenav-title body2 os-field",
+                                                                    "title": "OS Version:",
+                                                                    "titleValue": "#softwareAlert.0.software"
+                                                                  }
+                                                                ]
+                                                              },
+                                                              {
+                                                                "UUID": "orderDetailsUUID",
+                                                                "orderDetailsTitle": "Order Details",
+                                                                "orderDetailsItems": [
+                                                                  {
+                                                                    "label": "Reference Order",
+                                                                    "value": "#getETravellerCurrPrevRODetailsBySN.0.referenceOrderId"
+                                                                  },
+                                                                  {
+                                                                    "label": "Create Date",
+                                                                    "value": "#getETravellerCurrPrevRODetailsBySN.0.roCreatedDate"
+                                                                  }, {
+                                                                    "label": "ServiceTypeCode",
+                                                                    "value": "#shippingTermsDetails.0.serviceTypeCode"
+                                                                  },
+                                                                  {
+                                                                    "space": true,
+                                                                    "spaceStyle": "padding:5%"
+                                                                  },
+                                                                  {
+                                                                    "label": "Receipt Date",
+                                                                    "value": "#getReceiptIdByItem.0.receiptTimeStamp"
+                                                                  },
+                                                                  {
+                                                                    "label": "Inbound AWB",
+                                                                    "value": "#getInboundAWBByRODetails"
+                                                                  },
+                                                                  {
+                                                                    "label": "Tracking No",
+                                                                    "value": "#getReceiptIdByItem.0.trackingNo"
+                                                                  },
+                                                                  {
+                                                                    "space": true,
+                                                                    "spaceStyle": "padding:3%"
+                                                                  },
+                                                                  {
+                                                                    "label": "Work Order No",
+                                                                    "value": "#discrepancyUnitInfo.WORKORDER_ID"
+                                                                  },
+                                                                  {
+                                                                    "label": "TransactionCommentText",
+                                                                    "value": "#getkeyDataCustomerResponse.tranCmntText"
+                                                                  },
+                                                                  {
+                                                                    "space": true,
+                                                                    "spaceStyle": "padding:3%"
+                                                                  },
+                                                                  {
+                                                                    "label": "Outbound order No",
+                                                                    "value": "#shippingRoOoResponse.outboundOrderId"
+                                                                  },
+                                                                  {
+                                                                    "label": "Packing List No",
+                                                                    "value": "#finalGetAllItemHistoryData.shipmentId"
+                                                                  },
+                                                                  {
+                                                                    "label": "Service Type",
+                                                                    "value": "#shippingTermsDetails.0.serviceTypeCode"
+                                                                  }, {
+                                                                    "label": "Tracking No",
+                                                                    "value": "#finalGetAllItemHistoryData.trackingNumber"
+                                                                  }
+                                        
+                                                                ]
+                                                              }
+                                                            ]
+                                        
+                                                          }
+                                                        ],  
+                                                        "eventSource": "click"
+                                                      }
+                                                    ]
+                                                  },
+                                                  "onFailure": {
+                                                    "actions": [
+                                                      {                                                        
+                                                        "type": "openEtravellerFromDashboard",
+                                                        "config": {
+                                                          "title": "E-Traveller",
+                                                          "keyDataVisible": false,
+                                                          "itemHistoryVisible": true,
+                                                          "flexFieldVisible": false,
+                                                          "partsVisible" : false,
+                                                          "repositoryVisible":false
+                                                        }
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              }
+                                              
+                                              
+                                            ]
+                                          },
+                                          "onFailure": {
+                                            "actions": [
+                                              {
+                                                "type": "microservice",
+                                                "config": {
+                                                  "microserviceId": "getRoOoDetailsLc",
+                                                  "requestMethod": "get",
+                                                  "params": {
+                                                    "OrderIdentificatorValue": "#userSearchCriteria.unitIdentificationValue",
+                                                    "IdentificatorType": "#identificatorTypeValue",
+                                                    "userName": "#loginUUID.username"
+                                                  }
+                                                },                                      
+                                                "eventSource": "click",
+                                                "responseDependents": {
+                                                    "onSuccess": {
+                                                      "actions": [
+                                                        {
+                                                          "type": "context",
+                                                          "config": {
+                                                              "requestMethod": "add",
+                                                              "key": "shippingFromDashboard",
+                                                              "data": true
+                                                          }
+                                                        },
+                                                        {
+                                                          "type": "context",
+                                                          "config": {
+                                                              "requestMethod": "add",
+                                                              "key": "shippingRoOoResponse",
+                                                              "data": "responseData"
+                                                          }
+                                                        },                                              
+                                                        {
+                                                          "type": "context",
+                                                          "config": {
+                                                              "requestMethod": "add",
+                                                              "key": "UnitInfo",
+                                                              "data": "responseData"
+                                                          }
+                                                        },
+                                                        {
+                                                            "type": "context",
+                                                            "config": {
+                                                                "requestMethod": "add",
+                                                                "key": "discrepancyUnitInfo",
+                                                                "data": "responseData"
+                                                            }
+                                                        },                                                         
+                                                        {
+                                                          "type": "updateEtravellerDiscrepancyUnitInfo"
+                                                        },
+                                                        {
+                                                          "type": "condition",                          
+                                                          "config": {
+                                                              "operation": "isEqualTo",
+                                                              "lhs": "#userSelectedClientName",
+                                                              "rhs": "HP"
+                                                          },
+                                                          "responseDependents": {
+                                                            "onSuccess": {
+                                                              "actions": [
+                                                                {
+                                                                  "type": "openEtravellerFromDashboard",
+                                                                  "config": {
+                                                                    "title": "E-Traveller",
+                                                                    "keyDataVisible": true,
+                                                                    "itemHistoryVisible": true,
+                                                                    "flexFieldVisible": true,
+                                                                    "partsVisible" : true,
+                                                                    "repositoryVisible":true
+                                                                  },   
+                                                                  "items": [
+                                                                    {
+                                                                      "ctype": "keyData",
+                                                                      "label": "key Data",
+                                                                      "items": [
+                                                                        {
+                                                                          "unitDetailTitle": "Unit Details",
+                                                                          "ctype": "keyDataUnitDetails",
+                                                                          "UUID": "unitDetailsUUID",
+                                                                          "unitDetailItems": [
+                                                                            {
+                                                                              "leftColumnData": [
+                                                                                {
+                                                                                  "label": "Unit BCN",
+                                                                                  "value": "#discrepancyUnitInfo.ITEM_BCN"
+                                                                                },
+                                                                                {
+                                                                                  "label": "Serial number",
+                                                                                  "value": "#discrepancyUnitInfo.SERIAL_NO"
+                                                                                },
+                                                                                {
+                                                                                  "label": "FAT",
+                                                                                  "value": "#discrepancyUnitInfo.FAT"
+                                                                                }, {
+                                                                                  "label": "Model number",
+                                                                                  "value": "#shippingRoOoResponse.partNo"
+                                                                                },{
+                                                                                  "label": "Description",
+                                                                                  "value": "#discrepancyPartAndWarrantyDetails.PART_DESC"
+                                                                                },
+                                                                                {
+                                                                                  "label": "Platform",
+                                                                                  "value": "#discrepancyPartAndWarrantyDetails.PRODUCT_PLATFORM"
+                                                                                }, {
+                                                                                  "label": "RepairTypeCode",
+                                                                                  "value": "#getRepairTypeCodeByRODetails"
+                                                                                }, {
+                                                                                  "label": "RERepairCSOID",
+                                                                                  "value": "#getRERepairCSOIDByRODetails"
+                                                                                },
+                                                                                {
+                                                                                  "label": "RERepairDays",
+                                                                                  "value": "#getRRERepairDaysByRODetails"
+                                                                                }
+                                                                              ]
+                                                                            },
+                                                                            {
+                                                                              "rightColumnData": [
+                                                                                {
+                                                                                  "label": "Hold Status",
+                                                                                  "value": "0"
+                                                                                },
+                                                                                {
+                                                                                  "label": "Storage Hold code",
+                                                                                  "value": "#getEtravellerHoldReleaseDetailService.storateHoldCode"
+                                                                                },
+                                                                                {
+                                                                                  "label": "Storage Hold Code Desc",
+                                                                                  "value": "#getEtravellerHoldReleaseDetailService.storateHoldSubCode"
+                                                                                },
+                                                                                {
+                                                                                  "label": "Location",
+                                                                                  "value": "#userSelectedLocationName"
+                                                                                },
+                                                                                {
+                                                                                  "label": "Warehouse",
+                                                                                  "value": "#getEtravellerHoldReleaseDetailService.wareHouseName"
+                                                                                },
+                                                                                {
+                                                                                  "label": "Zone",
+                                                                                  "value": "#getEtravellerHoldReleaseDetailService.destStkLocationName"
+                                                                                },
+                                                                                {
+                                                                                  "label": "Bin",
+                                                                                  "value": "#getEtravellerHoldReleaseDetailService.bin"
+                                                                                }, {
+                                                                                  "label": "Client",
+                                                                                  "value": "#userSelectedClientName"
+                                                                                },
+                                                                                {
+                                                                                  "label": "Contract",
+                                                                                  "value": "#shippingRoOoResponse.contractName"
+                                                                                },
+                                                                                {
+                                                                                  "label": "Workcenter",
+                                                                                  "value": "#getEtravellerHoldReleaseDetailService.workcenterName"
+                                                                                }
+                                                                              ]
+                                                                            }
+                                                                          ]
+                                                                        },
+                                                                        {
+                                                                          "label": "Customer Complaint",
+                                                                          "UUID": "customerComplainUUID",
+                                                                          "customerComplainTitle": "Customer Complaint",
+                                                                          "customerComplainItems": [
+                                                                            {
+                                                                              "ctype": "title",
+                                                                              "uuid": "customerComplaintHeaderUUID",
+                                                                              "titleClass": "sidenav-title body2",
+                                                                              "title": "Customer Complaint",
+                                                                              "titleValue": ""
+                                                                            },
+                                                                            {
+                                                                              "ctype": "showMore",
+                                                                              "uuid": "customerComplaintTitleUUID",
+                                                                              "titleClass": "sidenav-title body2",
+                                                                              "text": "#customeDesc.customerComplaints",
+                                                                              "isShown": true
+                                                                            },
+                                                                            {
+                                                                              "ctype": "title",
+                                                                              "uuid": "failCodeUUID",
+                                                                              "titleClass": "sidenav-title body2 os-field",
+                                                                              "title": "Fail Code:",
+                                                                              "titleValue": "#customeDesc.failCode"
+                                                                            },
+                                                                            {
+                                                                              "ctype": "title",
+                                                                              "uuid": "osReinstallUUID",
+                                                                              "titleClass": "sidenav-title body2",
+                                                                              "title": "OS reinstall allowed:",
+                                                                              "titleValue": "#customeDesc.osReinstallAllowed"
+                                                                            },
+                                                                            {
+                                                                              "ctype": "title",
+                                                                              "uuid": "bsodFieldUUID",
+                                                                              "titleClass": "sidenav-title body2",
+                                                                              "title": "BSOD Problem:",
+                                                                              "titleValue": "#customeDesc.bsod"
+                                                                            },
+                                                                            {
+                                                                              "ctype": "title",
+                                                                              "uuid": "winPasswordUUID",
+                                                                              "titleClass": "sidenav-title body2",
+                                                                              "title": "Windows password:",
+                                                                              "titleValue": "#customeDesc.windowsPassword"
+                                                                            },
+                                                                            {
+                                                                              "ctype": "title",
+                                                                              "uuid": "biosVersionTitleUUID",
+                                                                              "titleClass": "sidenav-title body2",
+                                                                              "title": "Expected Bios Version:",
+                                                                              "titleValue": "#biosAlert.0.bios"
+                                                                            },
+                                                                            {
+                                                                              "ctype": "title",
+                                                                              "uuid": "osLanguageUUID",
+                                                                              "titleClass": "sidenav-title body2",
+                                                                              "title": "OS Language:",
+                                                                              "titleValue": "#customeDesc.osLanguage"
+                                                                            },
+                                                                            {
+                                                                              "ctype": "title",
+                                                                              "uuid": "softwareVersionTitleUUID",
+                                                                              "titleClass": "sidenav-title body2 os-field",
+                                                                              "title": "OS Version:",
+                                                                              "titleValue": "#softwareAlert.0.software"
+                                                                            }
+                                                                          ]
+                                                                        },
+                                                                        {
+                                                                          "UUID": "orderDetailsUUID",
+                                                                          "orderDetailsTitle": "Order Details",
+                                                                          "orderDetailsItems": [
+                                                                            {
+                                                                              "label": "Reference Order",
+                                                                              "value": "#getETravellerCurrPrevRODetailsBySN.0.referenceOrderId"
+                                                                            },
+                                                                            {
+                                                                              "label": "Create Date",
+                                                                              "value": "#getETravellerCurrPrevRODetailsBySN.0.roCreatedDate"
+                                                                            }, {
+                                                                              "label": "ServiceTypeCode",
+                                                                              "value": "#shippingTermsDetails.0.serviceTypeCode"
+                                                                            },
+                                                                            {
+                                                                              "space": true,
+                                                                              "spaceStyle": "padding:5%"
+                                                                            },
+                                                                            {
+                                                                              "label": "Receipt Date",
+                                                                              "value": "#getReceiptIdByItem.0.receiptTimeStamp"
+                                                                            },
+                                                                            {
+                                                                              "label": "Inbound AWB",
+                                                                              "value": "#getInboundAWBByRODetails"
+                                                                            },
+                                                                            {
+                                                                              "label": "Tracking No",
+                                                                              "value": "#getReceiptIdByItem.0.trackingNo"
+                                                                            },
+                                                                            {
+                                                                              "space": true,
+                                                                              "spaceStyle": "padding:3%"
+                                                                            },
+                                                                            {
+                                                                              "label": "Work Order No",
+                                                                              "value": "#discrepancyUnitInfo.WORKORDER_ID"
+                                                                            },
+                                                                            {
+                                                                              "label": "TransactionCommentText",
+                                                                              "value": "#getkeyDataCustomerResponse.tranCmntText"
+                                                                            },
+                                                                            {
+                                                                              "space": true,
+                                                                              "spaceStyle": "padding:3%"
+                                                                            },
+                                                                            {
+                                                                              "label": "Outbound order No",
+                                                                              "value": "#shippingRoOoResponse.outboundOrderId"
+                                                                            },
+                                                                            {
+                                                                              "label": "Packing List No",
+                                                                              "value": "#finalGetAllItemHistoryData.shipmentId"
+                                                                            },
+                                                                            {
+                                                                              "label": "Service Type",
+                                                                              "value": "#shippingTermsDetails.0.serviceTypeCode"
+                                                                            }, {
+                                                                              "label": "Tracking No",
+                                                                              "value": "#finalGetAllItemHistoryData.trackingNumber"
+                                                                            }
+                                                  
+                                                                          ]
+                                                                        }
+                                                                      ]
+                                                  
+                                                                    }
+                                                                  ],  
+                                                                  "eventSource": "click"
+                                                                }
+                                                              ]
+                                                            },
+                                                            "onFailure": {
+                                                              "actions": [
+                                                                {                                                        
+                                                                  "type": "openEtravellerFromDashboard",
+                                                                  "config": {
+                                                                    "title": "E-Traveller",
+                                                                    "keyDataVisible": false,
+                                                                    "itemHistoryVisible": true,
+                                                                    "flexFieldVisible": false,
+                                                                    "partsVisible" : false,
+                                                                    "repositoryVisible":false
+                                                                  }
+                                                                }
+                                                              ]
+                                                            }
+                                                          }
+                                                        }
+                                                        
+                                                      ]
+                                                    },
+                                                    "onFailure": {
+                                                      "actions": [
+                                                        {
+                                                          "type": "context",
+                                                          "config": {
+                                                              "requestMethod": "add",
+                                                              "key": "errorMsg",
+                                                              "data": "responseData"
+                                                          }
+                                                        },
+                                                        {
+                                                            "type": "updateComponent",
+                                                            "config": {
+                                                                "key": "searchCriteriaErrorTitleUUID",
+                                                                "properties": {
+                                                                    "titleValue": "#errorMsg",
+                                                                    "isShown": true
+                                                                }
+                                                            }
+                                                        }
+                                                      ]
+                                                    }
+                                                }
+          
+                                              }
+                                            ]
+                                          }
+                                      }
+
+                                    }                                    
+                                  ]
+                                },
+                                "onFailure": {
+                                  "actions": [
+                                    {
+                                      "type": "microservice",
+                                      "config": {
+                                          "microserviceId": "getUnitInfo",
+                                          "requestMethod": "get",
+                                          "params": {
+                                              "unitIdentificationValue": "#userSearchCriteria.unitIdentificationValue",
+                                              "identificatorType": "#identificatorTypeValue",
+                                              "locationId": "#userSelectedLocation",
+                                              "clientId": "#userSelectedClient",
+                                              "contractId": "#userSelectedContract"
+                                          }
+                                      },
+                                      "eventSource": "click",
+                                      "responseDependents": {
+                                          "onSuccess": {
+                                              "actions": [
+                                                  {
+                                                      "type": "context",
+                                                      "config": {
+                                                          "requestMethod": "add",
+                                                          "key": "UnitInfo",
+                                                          "data": "responseData"
+                                                      }
+                                                  },
+                                                  {
+                                                      "type": "context",
+                                                      "config": {
+                                                          "requestMethod": "add",
+                                                          "key": "discrepancyUnitInfo",
+                                                          "data": "responseData"
+                                                      }
+                                                  }, 
+                                                  {
+                                                      "type": "condition",
+                                                      "hookType": "afterInit",                               
+                                                      "config": {
+                                                          "operation": "isEqualTo",
+                                                          "lhs": "#userSelectedClientName",
+                                                          "rhs": "HP"
+                                                      },
+                                                      "responseDependents": {
+                                                          "onSuccess": {
+                                                              "actions": [
+                                                                  {
+                                                                      "type": "openEtravellerFromDashboard",
+                                                                      "config": {
+                                                                        "title": "E-Traveller",
+                                                                        "keyDataVisible": true,
+                                                                        "itemHistoryVisible": true,
+                                                                        "flexFieldVisible": true,
+                                                                        "partsVisible" : true,
+                                                                        "repositoryVisible":true
+                                                                      },     
+                                                                      "items": [
+                                                                        {
+                                                                          "ctype": "keyData",
+                                                                          "label": "key Data",
+                                                                          "items": [
+                                                                            {
+                                                                              "unitDetailTitle": "Unit Details",
+                                                                              "ctype": "keyDataUnitDetails",
+                                                                              "UUID": "unitDetailsUUID",
+                                                                              "unitDetailItems": [
+                                                                                {
+                                                                                  "leftColumnData": [
+                                                                                    {
+                                                                                      "label": "Unit BCN",
+                                                                                      "value": "#discrepancyUnitInfo.ITEM_BCN"
+                                                                                    },
+                                                                                    {
+                                                                                      "label": "Serial number",
+                                                                                      "value": "#discrepancyUnitInfo.SERIAL_NO"
+                                                                                    },
+                                                                                    {
+                                                                                      "label": "FAT",
+                                                                                      "value": "#discrepancyUnitInfo.FAT"
+                                                                                    }, {
+                                                                                      "label": "Model number",
+                                                                                      "value": "#shippingRoOoResponse.partNo"
+                                                                                    },{
+                                                                                      "label": "Description",
+                                                                                      "value": "#discrepancyPartAndWarrantyDetails.PART_DESC"
+                                                                                    },
+                                                                                    {
+                                                                                      "label": "Platform",
+                                                                                      "value": "#discrepancyPartAndWarrantyDetails.PRODUCT_PLATFORM"
+                                                                                    }, {
+                                                                                      "label": "RepairTypeCode",
+                                                                                      "value": "#getRepairTypeCodeByRODetails"
+                                                                                    }, {
+                                                                                      "label": "RERepairCSOID",
+                                                                                      "value": "#getRERepairCSOIDByRODetails"
+                                                                                    },
+                                                                                    {
+                                                                                      "label": "RERepairDays",
+                                                                                      "value": "#getRRERepairDaysByRODetails"
+                                                                                    }
+                                                                                  ]
+                                                                                },
+                                                                                {
+                                                                                  "rightColumnData": [
+                                                                                    {
+                                                                                      "label": "Hold Status",
+                                                                                      "value": "0"
+                                                                                    },
+                                                                                    {
+                                                                                      "label": "Storage Hold code",
+                                                                                      "value": "#getEtravellerHoldReleaseDetailService.storateHoldCode"
+                                                                                    },
+                                                                                    {
+                                                                                      "label": "Storage Hold Code Desc",
+                                                                                      "value": "#getEtravellerHoldReleaseDetailService.storateHoldSubCode"
+                                                                                    },
+                                                                                    {
+                                                                                      "label": "Location",
+                                                                                      "value": "#userSelectedLocationName"
+                                                                                    },
+                                                                                    {
+                                                                                      "label": "Warehouse",
+                                                                                      "value": "#getEtravellerHoldReleaseDetailService.wareHouseName"
+                                                                                    },
+                                                                                    {
+                                                                                      "label": "Zone",
+                                                                                      "value": "#getEtravellerHoldReleaseDetailService.destStkLocationName"
+                                                                                    },
+                                                                                    {
+                                                                                      "label": "Bin",
+                                                                                      "value": "#getEtravellerHoldReleaseDetailService.bin"
+                                                                                    }, {
+                                                                                      "label": "Client",
+                                                                                      "value": "#userSelectedClientName"
+                                                                                    },
+                                                                                    {
+                                                                                      "label": "Contract",
+                                                                                      "value": "#shippingRoOoResponse.contractName"
+                                                                                    },
+                                                                                    {
+                                                                                      "label": "Workcenter",
+                                                                                      "value": "#getEtravellerHoldReleaseDetailService.workcenterName"
+                                                                                    }
+                                                                                  ]
+                                                                                }
+                                                                              ]
+                                                                            },
+                                                                            {
+                                                                              "label": "Customer Complaint",
+                                                                              "UUID": "customerComplainUUID",
+                                                                              "customerComplainTitle": "Customer Complaint",
+                                                                              "customerComplainItems": [
+                                                                                {
+                                                                                  "ctype": "title",
+                                                                                  "uuid": "customerComplaintHeaderUUID",
+                                                                                  "titleClass": "sidenav-title body2",
+                                                                                  "title": "Customer Complaint",
+                                                                                  "titleValue": ""
+                                                                                },
+                                                                                {
+                                                                                  "ctype": "showMore",
+                                                                                  "uuid": "customerComplaintTitleUUID",
+                                                                                  "titleClass": "sidenav-title body2",
+                                                                                  "text": "#customeDesc.customerComplaints",
+                                                                                  "isShown": true
+                                                                                },
+                                                                                {
+                                                                                  "ctype": "title",
+                                                                                  "uuid": "failCodeUUID",
+                                                                                  "titleClass": "sidenav-title body2 os-field",
+                                                                                  "title": "Fail Code:",
+                                                                                  "titleValue": "#customeDesc.failCode"
+                                                                                },
+                                                                                {
+                                                                                  "ctype": "title",
+                                                                                  "uuid": "osReinstallUUID",
+                                                                                  "titleClass": "sidenav-title body2",
+                                                                                  "title": "OS reinstall allowed:",
+                                                                                  "titleValue": "#customeDesc.osReinstallAllowed"
+                                                                                },
+                                                                                {
+                                                                                  "ctype": "title",
+                                                                                  "uuid": "bsodFieldUUID",
+                                                                                  "titleClass": "sidenav-title body2",
+                                                                                  "title": "BSOD Problem:",
+                                                                                  "titleValue": "#customeDesc.bsod"
+                                                                                },
+                                                                                {
+                                                                                  "ctype": "title",
+                                                                                  "uuid": "winPasswordUUID",
+                                                                                  "titleClass": "sidenav-title body2",
+                                                                                  "title": "Windows password:",
+                                                                                  "titleValue": "#customeDesc.windowsPassword"
+                                                                                },
+                                                                                {
+                                                                                  "ctype": "title",
+                                                                                  "uuid": "biosVersionTitleUUID",
+                                                                                  "titleClass": "sidenav-title body2",
+                                                                                  "title": "Expected Bios Version:",
+                                                                                  "titleValue": "#biosAlert.0.bios"
+                                                                                },
+                                                                                {
+                                                                                  "ctype": "title",
+                                                                                  "uuid": "osLanguageUUID",
+                                                                                  "titleClass": "sidenav-title body2",
+                                                                                  "title": "OS Language:",
+                                                                                  "titleValue": "#customeDesc.osLanguage"
+                                                                                },
+                                                                                {
+                                                                                  "ctype": "title",
+                                                                                  "uuid": "softwareVersionTitleUUID",
+                                                                                  "titleClass": "sidenav-title body2 os-field",
+                                                                                  "title": "OS Version:",
+                                                                                  "titleValue": "#softwareAlert.0.software"
+                                                                                }
+                                                                              ]
+                                                                            },
+                                                                            {
+                                                                              "UUID": "orderDetailsUUID",
+                                                                              "orderDetailsTitle": "Order Details",
+                                                                              "orderDetailsItems": [
+                                                                                {
+                                                                                  "label": "Reference Order",
+                                                                                  "value": "#getETravellerCurrPrevRODetailsBySN.0.referenceOrderId"
+                                                                                },
+                                                                                {
+                                                                                  "label": "Create Date",
+                                                                                  "value": "#getETravellerCurrPrevRODetailsBySN.0.roCreatedDate"
+                                                                                }, {
+                                                                                  "label": "ServiceTypeCode",
+                                                                                  "value": "#shippingTermsDetails.0.serviceTypeCode"
+                                                                                },
+                                                                                {
+                                                                                  "space": true,
+                                                                                  "spaceStyle": "padding:5%"
+                                                                                },
+                                                                                {
+                                                                                  "label": "Receipt Date",
+                                                                                  "value": "#getReceiptIdByItem.0.receiptTimeStamp"
+                                                                                },
+                                                                                {
+                                                                                  "label": "Inbound AWB",
+                                                                                  "value": "#getInboundAWBByRODetails"
+                                                                                },
+                                                                                {
+                                                                                  "label": "Tracking No",
+                                                                                  "value": "#getReceiptIdByItem.0.trackingNo"
+                                                                                },
+                                                                                {
+                                                                                  "space": true,
+                                                                                  "spaceStyle": "padding:3%"
+                                                                                },
+                                                                                {
+                                                                                  "label": "Work Order No",
+                                                                                  "value": "#discrepancyUnitInfo.WORKORDER_ID"
+                                                                                },
+                                                                                {
+                                                                                  "label": "TransactionCommentText",
+                                                                                  "value": "#getkeyDataCustomerResponse.tranCmntText"
+                                                                                },
+                                                                                {
+                                                                                  "space": true,
+                                                                                  "spaceStyle": "padding:3%"
+                                                                                },
+                                                                                {
+                                                                                  "label": "Outbound order No",
+                                                                                  "value": "#shippingRoOoResponse.outboundOrderId"
+                                                                                },
+                                                                                {
+                                                                                  "label": "Packing List No",
+                                                                                  "value": "#finalGetAllItemHistoryData.shipmentId"
+                                                                                },
+                                                                                {
+                                                                                  "label": "Service Type",
+                                                                                  "value": "#shippingTermsDetails.0.serviceTypeCode"
+                                                                                }, {
+                                                                                  "label": "Tracking No",
+                                                                                  "value": "#finalGetAllItemHistoryData.trackingNumber"
+                                                                                }
+                                                      
+                                                                              ]
+                                                                            }
+                                                                          ]
+                                                      
+                                                                        }
+                                                                      ],                           
+                                                                      "eventSource": "click"
+                                                                  }
+                                                              ]
+                                                          },
+                                                          "onFailure": {
+                                                              "actions": [
+                                                                  {
+                                                                      "type": "openEtravellerFromDashboard",
+                                                                      "config": {
+                                                                        "title": "E-Traveller",
+                                                                        "keyDataVisible": false,
+                                                                        "itemHistoryVisible": true,
+                                                                        "flexFieldVisible": false,
+                                                                        "partsVisible" : false,
+                                                                        "repositoryVisible":false
+                                                                      },    
+                                                                      "eventSource": "click"
+                                                                  }
+                                                              ]
+                                                          }
+                                                      }
+                                                  }                                           
+                                              ]
+                                          },
+                                          "onFailure": {
+                                              "actions": [
+                                                  {
+                                                      "type": "context",
+                                                      "config": {
+                                                          "requestMethod": "add",
+                                                          "key": "errorMsg",
+                                                          "data": "responseData"
+                                                      }
+                                                  },
+                                                  {
+                                                      "type": "updateComponent",
+                                                      "config": {
+                                                          "key": "searchCriteriaErrorTitleUUID",
+                                                          "properties": {
+                                                              "titleValue": "#errorMsg",
+                                                              "isShown": true
+                                                          }
+                                                      }
+                                                  }
+                                              ]
+                                          }
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            }                            
+                        ]
+                    }
+                ]
+            }
+        ],
+        "footer": []
+    },
+    "Result": "SUCCESS"
+  }

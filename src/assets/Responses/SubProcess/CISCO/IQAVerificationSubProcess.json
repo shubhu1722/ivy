@@ -1,0 +1,611 @@
+{
+  "ResultData": {
+    "ctype": "page",
+    "uuid": "pageUUID",
+    "visibility": true,
+    "hooks": [
+      {
+        "type": "updateStage",
+        "hookType": "afterInit",
+        "config": {
+          "currentStage": "PRE-SCREEN",
+          "currentSubProcess": "IQA",
+          "nextStage": "ECO BOOKING",
+          "targetId": "menuTreeUUID",
+          "processId": "#SubprocessMenu"
+        }
+      },
+      {
+        "type": "updateStage",
+        "hookType": "afterInit",
+        "config": {
+          "currentStage": "ECO BOOKING",
+          "currentSubProcess": "IQA",
+          "nextStage": "CONFIG DEBUG",
+          "targetId": "menuTreeUUID",
+          "processId": "#SubprocessMenu"
+        }
+      },
+      {
+        "type": "updateStage",
+        "hookType": "afterInit",
+        "config": {
+          "currentStage": "CONFIG DEBUG",
+          "currentSubProcess": "IQA",
+          "nextStage": "CONFIG REWORK",
+          "targetId": "menuTreeUUID",
+          "processId": "#SubprocessMenu"
+        }
+      },
+      {
+        "type": "updateStage",
+        "hookType": "afterInit",
+        "config": {
+          "currentStage": "CONFIG REWORK",
+          "currentSubProcess": "IQA",
+          "nextStage": "VERIFICATION",
+          "targetId": "menuTreeUUID",
+          "processId": "#SubprocessMenu"
+        }
+      },
+      {
+        "type": "microservice",
+        "hookType": "afterInit",
+        "config": {
+          "microserviceId": "getPCBByMainPart",
+          "requestMethod": "post",
+          "body": {
+            "mainPartNo": "#UnitInfo.PART_NO",
+            "locationId": "#userSelectedLocation",
+            "itemId": "#UnitInfo.ITEM_ID"
+          },
+          "toBeStringified": true
+        },
+        "responseDependents": {
+          "onSuccess": {
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "getPCBByMainPart",
+                  "data": "responseData"
+                }
+              },
+              {
+                "type": "prepareConfirmRevisedLabelFAData",
+                "config": {
+                  "data": "getPCBByMainPart"
+                }
+              }
+            ]
+          },
+          "onFailure": {
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "getPCBByMainPart",
+                  "data": "responseData"
+                }
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "errorTitleUUID",
+                  "properties": {
+                    "titleValue": "#getPCBByMainPart",
+                    "isShown": true
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "validations": [],
+    "action": [],
+    "header": [
+      {
+        "ctype": "toolbar",
+        "toolbarClass": "pagecontent-header preScreen-header",
+        "items": [
+          {
+            "ctype": "title",
+            "uuid": "pageContentTitleUUID",
+            "titleClass": "section-title",
+            "title": "IQA-Verification"
+          },
+          {
+            "ctype": "iconbutton",
+            "iconButtonClass": "headeropen-button",
+            "text": "",
+            "uuid": "pageopenUUID",
+            "visibility": true,
+            "disabled": false,
+            "hidden": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "icon": "menu_open",
+            "disableRipple": true,
+            "iconClass": "header-icon",
+            "actions": [
+              {
+                "type": "toggle",
+                "eventSource": "click",
+                "name": "subProcessRightNavref"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "openUUID",
+                  "properties": {
+                    "hidden": false
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "pageopenUUID",
+                  "properties": {
+                    "hidden": true
+                  }
+                },
+                "eventSource": "click"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "items": [
+      {
+        "ctype": "title",
+        "uuid": "errorTitleUUID",
+        "titleClass": "error-title",
+        "isShown": false
+      },
+      {
+        "ctype": "taskPanel",
+        "title": "",
+        "header": {
+          "title": "Print Paper Traveller",
+          "icon": "description"
+        },
+        "expanded": true,
+        "hideToggle": "true",
+        "uuid": "printTravellerUUID",
+        "visibility": true,
+        "disabled": false,
+        "hooks": [],
+        "validations": [],
+        "actions": [],
+        "items": [
+          {
+            "ctype": "disabled",
+            "uuid": "printPaperDisabledUUID",
+            "disabledClass": "disabledFalse"
+          },
+          {
+            "ctype": "disabled",
+            "uuid": "printTravellerDisabledUUID",
+            "disabledClass": "disabledFalse"
+          },
+          {
+            "ctype": "label",
+            "text": "Print Paper Traveller and Add it to the tray",
+            "labelClass": "body-italic2"
+          }
+        ],
+        "footer": [
+          {
+            "ctype": "button",
+            "color": "primary",
+            "text": "Complete",
+            "uuid": "printTravellerCompleteUUID",
+            "name": "rupiSubmit",
+            "visibility": true,
+            "disabled": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "actions": [
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "printTravellerDisabledUUID",
+                  "properties": {
+                    "disabledClass": "disabledTrue"
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "printTravellerCompleteUUID",
+                  "properties": {
+                    "disabled": true
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "printTravellerUUID",
+                  "properties": {
+                    "expanded": false,
+                    "disabled": false,
+                    "hidden": false,
+                    "header": {
+                      "title": "Print Paper Traveller",
+                      "icon": "description",
+                      "statusIcon": "check_circle",
+                      "statusClass": "complete-status",
+                      "class": "complete-task",
+                      "iconClass": "complete-task"
+                    }
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "errorTitleUUID",
+                  "properties": {
+                    "titleValue": "",
+                    "isShown": false
+                  }
+                }
+              },
+              {
+                "type": "microservice",
+                "config": {
+                  "microserviceId": "onePrint",
+                  "requestMethod": "post",
+                  "body": {
+                    "locationId": "#userSelectedLocation",
+                    "clientId": "#userSelectedClient",
+                    "contractId": "#userSelectedContract",
+                    "warehouseId": "#UnitInfo.WAREHOUSE_ID",
+                    "routeCode": "#UnitInfo.ROUTE",
+                    "workCenterId": "#UnitInfo.WORKCENTER_ID",
+                    "eventName": "SZO CISCO TRAV TMO HU2,SZO CISCO TRAV TMO TEFR1,SZO CISCO TRAV TMO TEFR2,SZO CISCO TRAV TMO TEFR3,SZO CISCO TRAV TMO Z26",
+                    "hostName": "#getHostNameResponse.hostName",
+                    "ip": "#getHostNameResponse.ip",
+                    "userName": "#userAccountInfo.PersonalDetails.USERID",
+                    "params": "#oneprintParams"
+                  },
+                  "toBeStringified": true
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "onePrintResponse",
+                          "data": "responseData"
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "onePrintResponse",
+                          "data": "responseData"
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "errorTitleUUID",
+                          "properties": {
+                            "titleValue": "#onePrintResponse",
+                            "isShown": true
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "verifyRevisedBarcodeUUID",
+                  "properties": {
+                    "hidden": false,
+                    "disabled": false,
+                    "expanded": true,
+                    "header": {
+                      "title": "Verify revised barcode labels",
+                      "icon": "description",
+                      "class": "active-header"
+                    }
+                  }
+                },
+                "eventSource": "click"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "ctype": "taskPanel",
+        "title": "",
+        "header": {
+          "title": "Verify revised barcode labels",
+          "icon": "description",
+          "statusIcon": "hourglass_empty",
+          "statusClass": "incomplete-status"
+        },
+        "expanded": false,
+        "hideToggle": "true",
+        "uuid": "verifyRevisedBarcodeUUID",
+        "visibility": true,
+        "disabled": true,
+        "hooks": [],
+        "validations": [],
+        "actions": [],
+        "items": [
+          {
+            "ctype": "disabled",
+            "uuid": "verifyRevisedDisabledUUID",
+            "disabledClass": "disabledFalse"
+          },
+          {
+            "ctype": "label",
+            "text": "Verify labels added to the tray.",
+            "labelClass": "body-italic2"
+          }
+        ],
+        "footer": [
+          {
+            "ctype": "button",
+            "color": "primary",
+            "text": "Complete",
+            "uuid": "verifyRevisedBarCodeCompleteUUID",
+            "name": "rupiSubmit",
+            "visibility": true,
+            "disabled": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "actions": [
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "verifyRevisedDisabledUUID",
+                  "properties": {
+                    "disabledClass": "disabledTrue"
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "verifyRevisedBarCodeCompleteUUID",
+                  "properties": {
+                    "disabled": true
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "verifyRevisedBarcodeUUID",
+                  "properties": {
+                    "expanded": false,
+                    "disabled": false,
+                    "hidden": false,
+                    "header": {
+                      "title": "Verify revised barcode labels",
+                      "icon": "description",
+                      "statusIcon": "check_circle",
+                      "statusClass": "complete-status",
+                      "class": "complete-task",
+                      "iconClass": "complete-task"
+                    }
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "IQACompleteUUID",
+                  "properties": {
+                    "disabled": false
+                  }
+                },
+                "eventSource": "click"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "footer": [
+      {
+        "ctype": "toolbar",
+        "toolbarClass": "pagecontent-footer",
+        "items": [
+          {
+            "ctype": "iconbutton",
+            "iconButtonClass": "footer-save body primary-btn",
+            "text": "Exit",
+            "uuid": "saveUUID",
+            "visibility": true,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "icon": "save",
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "varificationNotes",
+                  "data": ""
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "flexFieldsFormGroup",
+                  "data": []
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "renderTemplate",
+                "config": {
+                  "templateId": "dashboard.json",
+                  "mode": "local"
+                },
+                "eventSource": "click"
+              }
+            ]
+          },
+          {
+            "ctype": "iconText",
+            "uuid": "IconUUID",
+            "iconTextClass": "footer-addNote addNoteCls body",
+            "icon": "add_comment",
+            "text": "Add Note",
+            "iconPosition": "Before",
+            "actions": [
+              {
+                "type": "dialog",
+                "uuid": "addNoteDialogUUID",
+                "config": {
+                  "title": "Add Note",
+                  "items": [
+                    {
+                      "ctype": "textarea",
+                      "name": "addNote",
+                      "textareaClass": "note-class",
+                      "uuid": "addNoteUUID",
+                      "required": true,
+                      "value": "#varificationNotes.addNote",
+                      "actions": []
+                    }
+                  ],
+                  "footer": [
+                    {
+                      "ctype": "button",
+                      "color": "primary",
+                      "text": "Close",
+                      "uuid": "closeButtonUUID",
+                      "closeType": "close",
+                      "inputClass": "close-button",
+                      "disableClose": true,
+                      "visibility": true,
+                      "dialogButton": true,
+                      "type": "",
+                      "hooks": [],
+                      "validations": [],
+                      "actions": []
+                    },
+                    {
+                      "ctype": "button",
+                      "color": "primary",
+                      "text": "Done",
+                      "uuid": "doneHoldUUID",
+                      "dialogButton": true,
+                      "visibility": true,
+                      "disabled": true,
+                      "type": "submit",
+                      "closeType": "success",
+                      "hooks": [],
+                      "validations": [],
+                      "actions": []
+                    }
+                  ]
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "varificationNotes",
+                          "data": "formData"
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "ctype": "spacer",
+            "uuid": "emptySpaceUUID",
+            "class": "empty-space"
+          },
+          {
+            "ctype": "button",
+            "color": "primary",
+            "buttonClass": "footer-button",
+            "text": "Complete",
+            "uuid": "IQACompleteUUID",
+            "visibility": true,
+            "disabled": true,
+            "hidden": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "actions": [
+              {
+                "type": "clearAllContext",
+                "eventSource": "click"
+              },
+              {
+                "type": "clearScreenData",
+                "eventSource": "click"
+              },
+              {
+                "type": "context",
+                "eventSource": "click",
+                "config": {
+                  "requestMethod": "delete",
+                  "key": "currentWC"
+                }
+              },
+              {
+                "type": "renderTemplate",
+                "config": {
+                  "templateId": "dashboard.json",
+                  "mode": "local"
+                },
+                "eventSource": "click"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "Result": "SUCCESS"
+}

@@ -1,0 +1,91 @@
+<div class="tb2">
+    <div class="unitDetailsDiv">
+
+        <label class="keyDataLabel">{{ keyDataLabels['unitDetailTitle'] }}</label>
+
+        <div class="keyDataDivision">
+
+            <div class="leftColumns">
+        
+                <div class="keyDataLeftDivisionBlock" *ngFor="let key of leftColumnData">
+        
+                    <span class="keyDatavalueLabel">
+        
+                        {{ key.label | translate }}:
+        
+                    </span>
+        
+                    <span class="keyDatavalue">
+        
+                        {{ key.value | translate }}
+        
+                    </span>
+        
+                </div>
+        
+            </div>
+        
+            <div class="rightColumns">
+        
+                <div class="keyDataLeftDivisionBlock" *ngFor="let key of rightColumnData">
+        
+                    <span class="keyDatavalueLabel">
+        
+                        {{ key.label | translate }}:
+        
+                    </span>
+                    <span class="keyDatavalue">
+        
+                        {{ key.value | translate }}
+        
+                    </span>
+        
+                </div>
+        
+            </div>
+        
+        </div>
+
+    </div>
+
+    <div class="customerComplainDiv">
+    
+        <label class="keyDataLabel">{{ keyDataLabels['customerComplainTitle'] }}</label>
+    
+        <ng-container #keyDataCustomerComplaint></ng-container>
+    
+    </div>
+
+    <div class="orderDetailsDiv">
+    
+        <label class="keyDataLabel">{{ keyDataLabels['orderDetailsTitle'] }}</label>
+    
+        <div class="orderDetailsItemsDiv" *ngFor="let key of orderDetailsData">
+    
+            <ng-container *ngIf="key.space">
+    
+                <div class="spaceClass"></div>
+    
+            </ng-container>
+    
+            <ng-container *ngIf="!key.space">
+    
+                <span class="orderDetailsLabel">
+    
+                    {{ key.label | translate }}:
+    
+                </span>
+    
+                <span>
+    
+                    {{ key.value | translate }}
+    
+                </span>
+    
+            </ng-container>
+    
+        </div>
+    
+    </div>
+
+</div>

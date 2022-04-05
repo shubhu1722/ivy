@@ -1,0 +1,8 @@
+<form [formGroup]="form" novalidate>
+    <div *ngFor="let item of items; let i=index">
+        <input type="checkbox" [value]="item.name | translate" [class]='direction' (change)="onCheckboxChange($event)">
+        {{item.name | translate}}
+    </div>
+    <input type="submit" value="Submit">
+</form>
+<!-- {{form.value | json}} -->

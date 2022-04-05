@@ -1,0 +1,19 @@
+<p *ngIf="showError" class="error-title">{{error}}</p>
+<div [formGroup]="group" class="flex-container-half-width form-group-margin">
+    <label [for]="boxCondName" class="subtitle1-align-self greyish-black">{{boxConditionLabel | translate}} </label>
+    <select #dellPackoutBoxConditionRef placeholder='Select' class="body" class="dropdown-container textfield-container"
+        [formControlName]="boxCondName" (change)="onBoxCondChange($event)"
+        (openedChange)="onBoxCondOpenedChange($event)" required>
+        <option selected value="null" disabled>-Select-</option>
+        <option *ngFor="let option of boxConditionOptions" [value]="option.value">{{option.value | translate }}</option>
+    </select>
+</div>
+<div [formGroup]="group" class="flex-container-half-width form-group-margin">
+    <label [for]="boxPartNumName" class="subtitle1-align-self greyish-black">{{boxPartNumLabel | translate}} </label>
+    <select #dellPackoutBoxPartNumberRef placeholder='Select' class="body"
+        class="dropdown-container textfield-container" [formControlName]="boxPartNumName"
+        (change)="onBoxPartNumChanged($event)" (openedChange)="onBoxPartNumChange($event)" required>
+        <option selected value="null" disabled>-Select-</option>
+        <option *ngFor="let option of boxPartNumOptions" [value]="option">{{option | translate }}</option>
+    </select>
+</div>

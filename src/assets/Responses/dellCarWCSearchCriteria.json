@@ -1,0 +1,623 @@
+{
+  "ResultData": {
+    "ctype": "page",
+    "uuid": "pageUUID",
+    "css": "",
+    "visibility": true,
+    "hooks": [
+      {
+        "type": "condition",
+        "hookType": "afterInit",
+        "config": {
+          "operation": "isEqualTo",
+          "lhs": "#isTimeOutFromDellCarWC",
+          "rhs": true
+        },
+        "responseDependents": {
+          "onSuccess": {
+            "actions": [
+              {
+                "type": "microservice",
+                "config": {
+                  "microserviceId": "getUnitInfo",
+                  "requestMethod": "get",
+                  "params": {
+                    "unitIdentificationValue": "#dellCarSearchCriteriaData.unitIdentificationValue",
+                    "identificatorType": "#dellCarSearchCriteriaData.identificatorType",
+                    "locationId": "#userSelectedLocation",
+                    "clientId": "#userSelectedClient",
+                    "contractId": "#userSelectedContract"
+                  }
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "nextWCUnitInfoResp",
+                          "data": "responseData"
+                        }
+                      },
+                      {
+                        "type": "condition",
+                        "config": {
+                          "operation": "isValid",
+                          "lhs": "#nextWCUnitInfoResp.DESTINATIONWC"
+                        },
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "concatContexts",
+                                "config": {
+                                  "contextKey": "nextHpWorkCenterMessage",
+                                  "contexts": [
+                                    "Unit has been Timed Out to ",
+                                    "'",
+                                    "#nextWCUnitInfoResp.DESTINATIONWC",
+                                    "'"
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": [
+                              {
+                                "type": "concatContexts",
+                                "config": {
+                                  "contextKey": "nextHpWorkCenterMessage",
+                                  "contexts": [
+                                    "Unit has been Timed Out to ",
+                                    "'",
+                                    "#nextWCUnitInfoResp.WORKCENTER",
+                                    "'"
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "searchCriteriaSuccessTitleUUID",
+                          "properties": {
+                            "titleValue": "#nextHpWorkCenterMessage",
+                            "titleClass": "success-title",
+                            "isShown": true
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "handleCommonServices",
+                        "config": {
+                          "type": "errorRenderTemplate",
+                          "contextKey": "nextWcUnitErrorMsg",
+                          "updateKey": "searchCriteriaErrorTitleUUID"
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "onFailure": {
+            "actions": []
+          }
+        }
+      }
+    ],
+    "validations": [],
+    "action": [],
+    "header": [
+      {
+        "ctype": "toolbar",
+        "uuid": "dellCarSearchCriteriaWCToolbar",
+        "toolbarClass": "searchCriteria-toolbar section-title",
+        "items": [
+          {
+            "ctype": "title",
+            "uuid": "dellCarSearchCriteriaToolbarWCOperations",
+            "title": "Work Center Operations",
+            "titleClass": "greyish-black"
+          }
+        ]
+      }
+    ],
+    "items": [
+      {
+        "ctype": "title",
+        "uuid": "searchCriteriaErrorTitleUUID",
+        "titleClass": "error-title",
+        "isShown": false
+      },
+      {
+        "ctype": "title",
+        "uuid": "searchCriteriaSuccessTitleUUID",
+        "titleClass": "success-title",
+        "isShown": false
+      },
+      {
+        "ctype": "formPanel",
+        "title": "",
+        "header": "",
+        "uuid": "discrepancyUUID",
+        "formPanelClass": "searchCriteria-panel-full",
+        "visibility": true,
+        "hooks": [],
+        "validations": [],
+        "actions": [],
+        "items": [
+          {
+            "ctype": "textField",
+            "uuid": "dellCarWcSearchCriteriaUUID",
+            "isUpperCase": true,
+            "hooks": [],
+            "validations": [],
+            "textfieldClass": "searchcriteris-text-full",
+            "type": "text",
+            "required": true,
+            "placeholder": "Scan",
+            "submitable": true,
+            "label": "",
+            "labelPosition": "",
+            "name": "unitIdentificationValue",
+            "prefix": "true",
+            "prefixIcon": "qr_code_scanner",
+            "suffix": true,
+            "suffixIcon": "arrow_forward",
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "delete",
+                  "key": "errorMsg"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "errorDisp",
+                  "data": ""
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "searchCriteriaErrorTitleUUID",
+                  "properties": {
+                    "titleValue": "",
+                    "isShown": false
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "eventSource": "click",
+                "config": {
+                  "key": "searchCriteriaSuccessTitleUUID",
+                  "properties": {
+                    "titleValue": "",
+                    "isShown": false
+                  }
+                }
+              },
+              {
+                "type": "context",
+                "config": {
+                  "key": "isTimeOutFromDellCarWC",
+                  "data": false,
+                  "requestMethod": "addToGlobalContext"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "context",
+                "config": {
+                  "key": "dellCarSearchCriteriaData",
+                  "data": "formData",
+                  "requestMethod": "add"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "findIdentificatorType",
+                "eventSource": "click",
+                "config": {
+                  "wc": "DELL CAR",
+                  "key": "dellCarSearchCriteriaData",
+                  "unitIdentificationValue": "#dellCarSearchCriteriaData.unitIdentificationValue",
+                  "objectKey": "identificatorType"
+                }
+              },
+              {
+                "type": "microservice",
+                "config": {
+                  "microserviceId": "getUnitInfo",
+                  "requestMethod": "get",
+                  "params": {
+                    "unitIdentificationValue": "#dellCarSearchCriteriaData.unitIdentificationValue",
+                    "identificatorType": "#dellCarSearchCriteriaData.identificatorType",
+                    "locationId": "#userSelectedLocation",
+                    "clientId": "#userSelectedClient",
+                    "contractId": "#userSelectedContract"
+                  }
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "discrepancyUnitInfo",
+                          "data": "responseData"
+                        }
+                      },
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "repairUnitInfo",
+                          "data": "responseData"
+                        }
+                      },
+                      {
+                        "type": "microservice",
+                        "config": {
+                          "microserviceId": "getFFByWc",
+                          "isLocal": false,
+                          "LocalService": "assets/Responses/repairMockRamResponse.json",
+                          "requestMethod": "get",
+                          "params": {
+                            "clientId": "#discrepancyUnitInfo.CLIENT_ID",
+                            "routeName": "#discrepancyUnitInfo.ROUTE",
+                            "contrId": "#discrepancyUnitInfo.CONTRACT_ID",
+                            "wcId": "#discrepancyUnitInfo.WORKCENTER_ID",
+                            "itemId": "#discrepancyUnitInfo.ITEM_ID",
+                            "userName": "#loginUUID.username"
+                          }
+                        },
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "context",
+                                "config": {
+                                  "requestMethod": "add",
+                                  "key": "dellCarWCFF",
+                                  "data": "responseData"
+                                }
+                              },
+                              {
+                                "type": "extractValueBasedOnKey",
+                                "config": {
+                                  "data": "dellCarWCFF",
+                                  "reqKey": "ffName",
+                                  "reqValue": "msgRead",
+                                  "key": "msgReadObj"
+                                }
+                              },
+                              {
+                                "type": "extractValueBasedOnKey",
+                                "config": {
+                                  "data": "dellCarWCFF",
+                                  "reqKey": "ffName",
+                                  "reqValue": "Computer Tested",
+                                  "key": "compTest"
+                                }
+                              },
+                              {
+                                "type": "extractValueBasedOnKey",
+                                "config": {
+                                  "data": "dellCarWCFF",
+                                  "reqKey": "ffName",
+                                  "reqValue": "IDs of accessories",
+                                  "key": "IdsOfAccessoriesFF"
+                                }
+                              },
+                              {
+                                "type": "condition",
+                                "config": {
+                                  "operation": "isEqualTo",
+                                  "lhs": "#discrepancyUnitInfo.ONHOLD",
+                                  "rhs": "1"
+                                },
+                                "responseDependents": {
+                                  "onSuccess": {
+                                    "actions": [
+                                      {
+                                        "type": "microservice",
+                                        "config": {
+                                          "microserviceId": "dellCarStopProcessRCVTrigger",
+                                          "isLocal": false,
+                                          "LocalService": "assets/Responses/dellCarAssessmentMockData.json",
+                                          "requestMethod": "post",
+                                          "body": {
+                                            "locId": "#userSelectedLocation",
+                                            "clientId": "#discrepancyUnitInfo.CLIENT_ID",
+                                            "contractId": "#discrepancyUnitInfo.CONTRACT_ID",
+                                            "bttName": "CR",
+                                            "optName": "DCAR",
+                                            "serialNo": "#discrepancyUnitInfo.SERIAL_NO",
+                                            "partNo": "#discrepancyUnitInfo.PART_NO",
+                                            "fat": "#discrepancyUnitInfo.FAT",
+                                            "workCenter": "#discrepancyUnitInfo.WORKCENTER",
+                                            "userName": "#userAccountInfo.PersonalDetails.USERID",
+                                            "itemId": "#discrepancyUnitInfo.ITEM_ID",
+                                            "actionType": "TIMEIN",
+                                            "secResultCode": ""
+                                          },
+                                          "toBeStringified": true
+                                        },
+                                        "responseDependents": {
+                                          "onSuccess": {
+                                            "actions": [
+                                              {
+                                                "type": "context",
+                                                "config": {
+                                                  "requestMethod": "add",
+                                                  "key": "dellCarStopProcessTimeOutData",
+                                                  "data": "responseData"
+                                                }
+                                              },
+                                              {
+                                                "type": "dialog",
+                                                "uuid": "addNoteDialogUUID",
+                                                "config": {
+                                                  "title": "Release Popup",
+                                                  "items": [
+                                                    {
+                                                      "ctype": "title",
+                                                      "uuid": "searchCriteriaErrorTitleUUID",
+                                                      "titleClass": "",
+                                                      "title": "HOLDERROR: Unit can't be processed, as this is currently on hold, Storage IS NOT same as the one on the workorder."
+                                                    },
+                                                    {
+                                                      "ctype": "title",
+                                                      "uuid": "searchCriteriaErrorTitleUUID",
+                                                      "titleClass": "",
+                                                      "title": "Do you want to release the unit?"
+                                                    }
+                                                  ],
+                                                  "footer": [
+                                                    {
+                                                      "ctype": "button",
+                                                      "color": "primary",
+                                                      "text": "No",
+                                                      "uuid": "closeReleaseButtonUUID",
+                                                      "closeType": "close",
+                                                      "inputClass": "close-button",
+                                                      "disableClose": true,
+                                                      "visibility": true,
+                                                      "dialogButton": true,
+                                                      "type": "",
+                                                      "hooks": [],
+                                                      "validations": [],
+                                                      "actions": []
+                                                    },
+                                                    {
+                                                      "ctype": "button",
+                                                      "color": "primary",
+                                                      "text": "Yes",
+                                                      "uuid": "doneReleaseHoldUUID",
+                                                      "dialogButton": true,
+                                                      "visibility": true,
+                                                      "disabled": false,
+                                                      "type": "submit",
+                                                      "closeType": "success",
+                                                      "hooks": [],
+                                                      "validations": [],
+                                                      "actions": []
+                                                    }
+                                                  ]
+                                                },
+                                                "eventSource": "click",
+                                                "responseDependents": {
+                                                  "onSuccess": {
+                                                    "actions": [
+                                                      {
+                                                        "type": "dellCarholdReleaseActions"
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          "onFailure": {
+                                            "actions": [
+                                              {
+                                                "type": "handleCommonServices",
+                                                "config": {
+                                                  "type": "errorRenderTemplate",
+                                                  "contextKey": "stopErrorMsg",
+                                                  "updateKey": "searchCriteriaErrorTitleUUID"
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "onFailure": {
+                                    "actions": [
+                                      {
+                                        "type": "condition",
+                                        "config": {
+                                          "operation": "isEqualTo",
+                                          "lhs": "#discrepancyUnitInfo.STATUS",
+                                          "rhs": "Time Out"
+                                        },
+                                        "responseDependents": {
+                                          "onSuccess": {
+                                            "actions": [
+                                              {
+                                                "type": "condition",
+                                                "config": {
+                                                  "operation": "isValid",
+                                                  "lhs": "#discrepancyUnitInfo.DESTINATIONWC"
+                                                },
+                                                "responseDependents": {
+                                                  "onSuccess": {
+                                                    "actions": [
+                                                      {
+                                                        "type": "dellCarTimeInMicroServices",
+                                                        "config": {
+                                                          "DESTINATIONWC": "#discrepancyUnitInfo.DESTINATIONWC"
+                                                        }
+                                                      }
+                                                    ]
+                                                  },
+                                                  "onFailure": {
+                                                    "actions": [
+                                                      {
+                                                        "type": "errorPrepareAndRender",
+                                                        "config": {
+                                                          "key": "searchCriteriaErrorTitleUUID",
+                                                          "properties": {
+                                                            "titleValue": "Item- {0} Reached to it's Destination Workcenter: {1}",
+                                                            "isShown": true
+                                                          },
+                                                          "valueArray": [
+                                                            "#discrepancyUnitInfo.ITEM_BCN",
+                                                            "#discrepancyUnitInfo.WORKCENTER"
+                                                          ]
+                                                        }
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          "onFailure": {
+                                            "actions": [
+                                              {
+                                                "type": "condition",
+                                                "config": {
+                                                  "operation": "isValid",
+                                                  "lhs": "#discrepancyUnitInfo.STATUS"
+                                                },
+                                                "responseDependents": {
+                                                  "onSuccess": {
+                                                    "actions": [
+                                                      {
+                                                        "type": "commonScreenLevelOperations",
+                                                        "config": {
+                                                          "discrepancyUnitInfo": "#discrepancyUnitInfo"
+                                                        }
+                                                      }
+                                                    ]
+                                                  },
+                                                  "onFailure": {
+                                                    "actions": [
+                                                      {
+                                                        "type": "condition",
+                                                        "config": {
+                                                          "operation": "isValid",
+                                                          "lhs": "#discrepancyUnitInfo.DESTINATIONWC"
+                                                        },
+                                                        "responseDependents": {
+                                                          "onSuccess": {
+                                                            "actions": []
+                                                          },
+                                                          "onFailure": {
+                                                            "actions": [
+                                                              {
+                                                                "type": "errorPrepareAndRender",
+                                                                "config": {
+                                                                  "key": "searchCriteriaErrorTitleUUID",
+                                                                  "properties": {
+                                                                    "titleValue": "Item- {0} Reached to it's Destination Workcenter: {1}",
+                                                                    "isShown": true
+                                                                  },
+                                                                  "valueArray": [
+                                                                    "#discrepancyUnitInfo.ITEM_BCN",
+                                                                    "#discrepancyUnitInfo.WORKCENTER"
+                                                                  ]
+                                                                }
+                                                              }
+                                                            ]
+                                                          }
+                                                        }
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": [
+                              {
+                                "type": "handleCommonServices",
+                                "config": {
+                                  "type": "errorRenderTemplate",
+                                  "contextKey": "errorMsg",
+                                  "updateKey": "searchCriteriaErrorTitleUUID"
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "errorDisp",
+                          "data": "responseData"
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "searchCriteriaErrorTitleUUID",
+                          "properties": {
+                            "titleValue": "#errorDisp",
+                            "isShown": true
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "footer": []
+  },
+  "Result": "SUCCESS"
+}

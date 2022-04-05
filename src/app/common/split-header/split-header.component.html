@@ -1,0 +1,30 @@
+<!-- <div *ngFor="let label of headerTitleLabels; index as i">
+    <div [class]="inputClasses[i]">
+        <div class="body2">
+            {{label}}
+        </div>
+        <div class="body2">
+            {{headerTitleValues[i]}}
+        </div>
+    </div>
+</div>  -->
+
+<div [class]="inputClasses[0]">
+    <div [class]="reworkClass" >
+            <span class="subtitle1">{{headerTitleLabels[0] | translate}}</span> {{headerTitleValues[0] | translate}}
+    </div>
+    <div class="body greyish-black">
+        <span class="subtitle1">{{headerTitleLabels[1] | translate}} </span> {{headerTitleValues[1] | translate}}
+    </div>
+</div>
+<div [class]="inputClasses[1]">
+    <div class="body greyish-black">
+        <span class="subtitle1"> {{headerTitleLabels[2] | translate}} </span> {{headerTitleValues[2] | translate}}
+    </div>
+    <div class="body greyish-black">
+        <span class="body-italic">  {{headerTitleLabels[3] | translate}} </span> <span class="body">{{headerTitleValues[3] | translate}}</span>
+    </div>
+</div>
+<div class="parent3 body2">
+    <span [class]="headerClasses !== undefined && headerClasses ? headerClasses[0] : null">{{headerTitleValues[4] | translate}}</span>
+</div> 

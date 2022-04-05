@@ -1,0 +1,54 @@
+{
+    "ctype": "subProcess",
+    "title": "CISCO_X-RAY",
+    "uuid": "louCiscoXRayUUID",
+    "subMenuIndex": 0,
+    "clientName": "CISCO",
+    "openRightNav": false,
+    "hooks": [
+        {
+            "type": "microservice",
+            "hookType": "beforeInit",
+            "config": {
+                "microserviceId": "getSubProcessPageBody",
+                "requestMethod": "get",
+                "params": {
+                    "subProcessId": "#getReferenceDataKeys.subProcess.Cisco-LOU.CISCO_X-RAY",
+                    "userName": "#userAccountInfo.PersonalDetails.USERID"
+                },
+                "isLocal": true,
+                "LocalService": "assets/Responses/SubProcess/CISCO-LOU/lou_CiscoXRaySubprocess.json"
+            },
+            "responseDependents": {
+                "onSuccess": {
+                    "actions": [
+                        {
+                            "type": "context",
+                            "config": {
+                                "requestMethod": "add",
+                                "key": "louCiscoXRayData",
+                                "data": "responseData"
+                            }
+                        },
+                        {
+                            "type": "renderTemplate",
+                            "config": {
+                                "mode": "remote",
+                                "targetId": "mainPageContentBodysp",
+                                "templateId": "louCiscoXRayData"
+                            }
+                        }
+                    ]
+                },
+                "onFailure": {
+                    "actions": [
+                        {
+                            "type": "toast",
+                            "message": "Failed to fetch Cisco X-Ray JSON"
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}

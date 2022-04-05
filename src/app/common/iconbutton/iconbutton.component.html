@@ -1,0 +1,7 @@
+<div [style]="css" [hidden]="hidden" [class]= "iconButtonClass">
+  <button  #iconbutton mat-flat-button [color]='color' [disableRipple]="disableRipple" [disabled]='disabled'
+    [attr.isIconButton]='isIconButton' [attr.isRoundButton]='isRoundButton' [style]='inputStyles' [class]="iconButtonClass" (click)="onClick($event)">
+     <mat-icon [style]="iconcss" [class]="iconClass">{{icon | translate}}</mat-icon>
+    {{text | translate}} <span [class]="textValueClass">{{textValue | translate}}</span>
+  </button>
+</div>

@@ -1,0 +1,48 @@
+{
+    "ctype": "subProcess",
+    "title": "QUOTE RESPONSE",
+    "slWcName" : "HP_DEBUG",
+    "uuid": "quoteResponseUUID",
+    "fetchDataFromPrevWC":true,
+    "subMenuIndex": 3,
+    "clientName": "HP",
+    "openRightNav": false,
+    "hooks": [
+        {
+            "type": "microservice",
+            "hookType": "beforeInit",
+            "config": {
+                "microserviceId": "getSubProcessPageBody",
+                "requestMethod": "get",
+                "params": {
+                    "subProcessId": "#wcSubprocess.QUOTE_RESPONSE.subProcessID",
+                    "userName": "#userAccountInfo.PersonalDetails.USERID"
+                },
+                "isLocal": false,
+                "LocalService": "assets/Responses/SubProcess/HP/quoteResponseSubProcess.json"
+            },
+            "responseDependents": {
+                "onSuccess": {
+                    "actions": [
+                        {
+                            "type": "renderTemplate",
+                            "config": {
+                                "mode": "remote",
+                                "targetId": "mainPageContentBodysp",
+                                "templateId": "getSubProcessPageBody"
+                            }
+                        }
+                    ]
+                },
+                "onFailure": {
+                    "actions": [
+                        {
+                            "type": "toast",
+                            "message": "Failed to fetch Quote Response JSON"
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}

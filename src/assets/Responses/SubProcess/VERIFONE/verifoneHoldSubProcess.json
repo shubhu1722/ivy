@@ -1,0 +1,802 @@
+{
+    "ResultData": {
+        "ctype": "page",
+        "uuid": "pageUUID",
+        "visibility": true,
+        "hooks": [
+            {
+                "type": "microservice",
+                "hookType": "afterInit", 
+                "config": {
+                    "microserviceId": "getWcFlexFieldsLov",
+                    "requestMethod": "get",
+                    "params": {
+                        "itemId": "#UnitInfo.ITEM_ID",
+                        "ffIDs": "#getReferenceDataKeys.subProcess.VERIFONE.holdMissingPartFFIds"
+                    }
+                },
+                "responseDependents": {
+                    "onSuccess": {
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "getVerioneHoldMissingPartData",
+                                    "data": "responseData"
+                                }
+                            },
+                            {
+                                "type": "renderVerifoneHoldRequiredParts"
+                            }
+                        ]
+                    },
+                    "onFailure": {
+                        "actions": [
+
+                        ]
+                    }
+                }
+
+            },
+            {
+                "type": "microservice",
+                "hookType": "afterInit",
+                "config": {
+                    "microserviceId": "getResultCodes",
+                    "isLocal": false,
+                    "LocalService": "assets/Responses/mockBGA.json",
+                    "requestMethod": "get",
+                    "params": {
+                        "bcn": "#UnitInfo.ITEM_BCN",
+                        "validateResult": 1
+                    }
+                },
+                "responseDependents": {
+                    "onSuccess": {
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "getVerifoneHoldResultcodes",
+                                    "data": "responseData"
+                                }
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "ResultCodeVerifoneHoldUUID",
+                                    "dropDownProperties": {
+                                        "options": "#getVerifoneHoldResultcodes"
+                                    }
+                                }
+                            },
+                            {
+                                "type": "microservice",
+                                "hookType": "afterInit",
+                                "config": {
+                                    "microserviceId": "getPreviousWCNote",
+                                    "requestMethod": "get",
+                                    "isLocal": false,
+                                    "LocalService": "assets/Responses/mockBGA.json",
+                                    "params": {
+                                        "itemId": "#UnitInfo.ITEM_ID"
+                                    }
+                                },
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "lastNoteData",
+                                                    "data": "responseData"
+                                                }
+                                            },
+                                            {
+                                                "type": "condition",
+                                                "config": {
+                                                    "operation": "isValid",
+                                                    "lhs": "#lastNoteData.previousWorkcenterName"
+                                                },
+                                                "responseDependents": {
+                                                    "onSuccess": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "stringOperationWithoutUnderscore",
+                                                                "config": {
+                                                                    "key": "lastWorkCenter",
+                                                                    "stringArr": [
+                                                                        "The following Parts are required by the",
+                                                                        "#lastNoteData.previousWorkcenterName",
+                                                                        "Technician"
+                                                                    ],                                                    
+                                                                    "operation": "concat"
+                                                                }
+                                                            },
+                                                            {
+                                                                "type": "updateComponent",
+                                                                "config": {
+                                                                    "key": "RequiredPartsTextUUID",
+                                                                    "properties": {
+                                                                        "titleValue": "#lastWorkCenter"
+                                                                    }
+                                                                }
+                                                            },
+                                                            {
+                                                                "type": "getVerifoneHoldResultCode"
+                                                            }
+                                                        ]
+                                                    },
+                                                    "onFailure": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "updateComponent",
+                                                                "config": {
+                                                                    "key": "RequiredPartsTextUUID",
+                                                                    "properties": {
+                                                                        "titleValue": ""
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            }
+                                            
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "errorDisp",
+                                                    "data": "responseData"
+                                                }
+                                            },
+                                            {
+                                                "type": "condition",
+                                                "config": {
+                                                    "operation": "isEqualTo",
+                                                    "lhs": "#errorDisp",
+                                                    "rhs": "No Record Found"
+                                                },
+                                                "responseDependents": {
+                                                    "onSuccess": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "updateComponent",
+                                                                "config": {
+                                                                    "key": "errorTitleUUID",
+                                                                    "properties": {
+                                                                        "titleValue": "#errorDisp",
+                                                                        "isShown": false
+                                                                    }
+                                                                }
+                                                            },
+                                                            {
+                                                                "type": "updateComponent",
+                                                                "config": {
+                                                                    "key": "RequiredPartsTextUUID",
+                                                                    "properties": {
+                                                                        "titleValue": ""
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    "onFailure": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "updateComponent",
+                                                                "config": {
+                                                                    "key": "errorTitleUUID",
+                                                                    "properties": {
+                                                                        "titleValue": "#errorDisp",
+                                                                        "isShown": true
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            } 
+                        ]
+                    },
+                    "onFailure": {
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "errorMsg",
+                                    "data": "responseData"
+                                }
+                            },
+                            {
+                                "type": "condition",
+                                "config": {
+                                    "operation": "isEqualTo",
+                                    "lhs": "#errorMsg",
+                                    "rhs": "No Record Found"
+                                },
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "errorTitleUUID",
+                                                    "properties": {
+                                                        "titleValue": "#errorMsg",
+                                                        "isShown": false
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": [
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "errorTitleUUID",
+                                                    "properties": {
+                                                        "titleValue": "#errorMsg",
+                                                        "isShown": true
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            }                       
+        ],
+        "header": [
+            {
+                "ctype": "breadcrumb",
+                "style": "padding-left: 4px;",
+                "breadcrumbs": [
+                    {
+                        "label": "#userSelectedLocationName"
+                    },
+                    {
+                        "label": "#UnitInfo.CLIENTNAME"
+                    },
+                    {
+                        "label": "#userSelectedContractName"
+                    }
+                ]
+            },
+            {
+                "ctype": "toolbar",
+                "css": "padding-top: 35px;",
+                "toolbarClass": "pagecontent-header",
+                "items": [
+                    {
+                        "ctype": "title",
+                        "uuid": "HoldHeadertitleuuid",
+                        "titleValue": "Hold",
+                        "titleClass": "section-title",
+                        "css": "padding-bottom: 35px;padding-left: 4px;"
+                    },
+                    {
+                        "ctype": "spacer",
+                        "uuid": "emptySpaceUUID",
+                        "class": "empty-space"
+                    },
+                    {
+                        "ctype": "iconbutton",
+                        "iconButtonClass": "headeropen-button",
+                        "text": "",
+                        "uuid": "pageopenUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "hidden": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "icon": "menu_open",
+                        "disableRipple": true,
+                        "iconClass": "header-icon",
+                        "css": "padding-bottom: 35px;",
+                        "actions": [
+                            {
+                                "type": "toggle",
+                                "eventSource": "click",
+                                "name": "subProcessRightNavref"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "openUUID",
+                                    "properties": {
+                                        "hidden": false
+                                    }
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "pageopenUUID",
+                                    "properties": {
+                                        "hidden": true
+                                    }
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "items": [
+            {
+                "ctype": "title",
+                "uuid": "errorTitleUUID",
+                "titleClass": "error-title",
+                "isShown": false,
+                "containerId": "prebodysectionone"
+            },
+            {
+            "ctype": "taskPanel",
+            "containerId": "prebodysectionone",
+            "header": {
+                "title": "Required Parts",
+                "svgIcon": "description_icon",
+                "iconClass": "active-header",
+                "class": "po-specific"
+            },
+            "expanded": false,
+            "hideToggle": true,
+            "uuid": "RequiredPartsReleaseUUID",
+            "visibility": true,
+            "disabled": false,
+            "hidden": true,
+            "hooks": [],
+            "validations": [],
+            "actions": [],
+            "items": [
+                {
+                    "ctype": "title",
+                    "uuid": "RequiredPartsTextUUID",
+                    "titleValue": "",
+                    "titleValueClass": "body-italic"
+                }
+                
+            ],
+            "footer": [                
+            ]
+        }            
+        ],
+        "footer": [
+            {
+                "ctype": "toolbar",
+                "toolbarClass": "pagecontent-footer",
+                "items": [
+                    {
+                        "ctype": "iconbutton",
+                        "iconButtonClass": "footer-save body primary-btn",
+                        "text": "Exit",
+                        "uuid": "saveUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "icon": "close",
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "isReleased",
+                                    "data": false
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "renderTemplate",
+                                "config": {
+                                    "templateId": "dashboard.json",
+                                    "mode": "local"
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "clearAllContext",
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "microservice",
+                                "config": {
+                                    "microserviceId": "getSearchCriteria",
+                                    "isLocal": false,
+                                    "LocalService": "assets/Responses/getSearchCriteria.json",
+                                    "requestMethod": "get",
+                                    "params": {
+                                        "locationId": "#userSelectedLocation",
+                                        "clientId": "#userSelectedClient",
+                                        "contractId": "#userSelectedContract",
+                                        "searchType": "#userSelectedSubProcessType",
+                                        "userName": "#userAccountInfo.PersonalDetails.USERID"
+                                    }
+                                },
+                                "eventSource": "click",
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "getSearchCriteriaData",
+                                                    "data": "responseData"
+                                                }
+                                            },
+                                            {
+                                                "type": "renderTemplate",
+                                                "config": {
+                                                    "mode": "remote",
+                                                    "targetId": "mainPageContentBody",
+                                                    "templateId": "getSearchCriteriaData"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "errorDisp",
+                                                    "data": "responseData"
+                                                }
+                                            },
+                                            {
+                                                "type": "condition",
+                                                "config": {
+                                                    "operation": "isEqualTo",
+                                                    "lhs": "#errorDisp",
+                                                    "rhs": "No Record Found"
+                                                },
+                                                "responseDependents": {
+                                                    "onSuccess": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "updateComponent",
+                                                                "config": {
+                                                                    "key": "errorTitleUUID",
+                                                                    "properties": {
+                                                                        "titleValue": "#errorDisp",
+                                                                        "isShown": false
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    "onFailure": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "updateComponent",
+                                                                "config": {
+                                                                    "key": "errorTitleUUID",
+                                                                    "properties": {
+                                                                        "titleValue": "#errorDisp",
+                                                                        "isShown": true
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "iconText",
+                        "uuid": "IconUUID",
+                        "iconTextClass": "footer-addNote addNoteCls body",
+                        "icon": "add_comment",
+                        "text": "Add Note",
+                        "iconPosition": "Before",
+                        "actions": [
+                            {
+                                "type": "dialog",
+                                "uuid": "addNoteDialogUUID",
+                                "config": {
+                                    "title": "Add Note",
+                                    "items": [
+                                        {
+                                            "ctype": "textarea",
+                                            "name": "addNote",
+                                            "textareaClass": "note-class",
+                                            "uuid": "addNoteUUID",
+                                            "value": "#verifoneHoldNotes.addNote",
+                                            "actions": []
+                                        }
+                                    ],
+                                    "footer": [
+                                        {
+                                            "ctype": "button",
+                                            "color": "primary",
+                                            "text": "Close",
+                                            "uuid": "closeButtonUUID",
+                                            "closeType": "close",
+                                            "inputClass": "close-button",
+                                            "disableClose": true,
+                                            "visibility": true,
+                                            "dialogButton": true,
+                                            "type": "",
+                                            "hooks": [],
+                                            "validations": [],
+                                            "actions": []
+                                        },
+                                        {
+                                            "ctype": "button",
+                                            "color": "primary",
+                                            "text": "Done",
+                                            "uuid": "doneHoldUUID",
+                                            "dialogButton": true,
+                                            "visibility": true,
+                                            "type": "submit",
+                                            "closeType": "success",
+                                            "hooks": [],
+                                            "validations": [],
+                                            "actions": []
+                                        }
+                                    ]
+                                },
+                                "eventSource": "click",
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "verifoneHoldNotes",
+                                                    "data": "formData"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "spacer",
+                        "uuid": "emptySpaceUUID",
+                        "class": "empty-space"
+                    },
+                    {
+                        "ctype": "nativeDropdown",
+                        "dropdownClass": "footer-dropdown dropdown-container body2",
+                        "uuid": "ResultCodeVerifoneHoldUUID",
+                        "isDropdownNotSelected": true,
+                        "name": "ResultCodes",
+                        "dataSource": "",
+                        "code": "resultCode",
+                        "displayValue": "resultCode",
+                        "disabled": true,
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "SelectedResultcode",
+                                    "data": "elementControlName"
+                                },
+                                "eventSource": "change"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "verifoneHoldtimeoutUUID",
+                                    "properties": {
+                                        "disabled": false
+                                    }
+                                },
+                                "eventSource": "change"
+                            },
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "Hold",
+                                    "data": ""
+                                },
+                                "eventSource": "change"
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "button",
+                        "color": "primary",
+                        "buttonClass": "footer-button",
+                        "text": "Time Out",
+                        "uuid": "verifoneHoldtimeoutUUID",
+                        "visibility": true,
+                        "checkGroupValidity": false,
+                        "disabled": false,
+                        "hidden": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "actions": [
+                            {
+                                "type": "updateComponent",
+                                "eventSource": "click",
+                                "config": {
+                                    "key": "errorTitleUUID",
+                                    "properties": {
+                                        "titleValue": "",
+                                        "isShown": false
+                                    }
+                                }
+                            },
+                            {
+                                "type": "condition",
+                                "config": {
+                                    "operation": "isValid",
+                                    "lhs": "#SelectedResultcode"
+                                },
+                                "eventSource": "click",
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "microservice",
+                                                "config": {
+                                                    "microserviceId": "performTimeOut",
+                                                    "requestMethod": "post",
+                                                    "body": {
+                                                        "timeOutRequest": {
+                                                            "location": "#UnitInfo.GEONAME",
+                                                            "bcn": "#UnitInfo.ITEM_BCN",
+                                                            "workCenter": "#UnitInfo.WORKCENTER",
+                                                            "password": "#loginUUID.password",
+                                                            "warrantyInd": "false",
+                                                            "notes": "#verifoneHoldNotes.addNote",
+                                                            "resultCode": "#SelectedResultcode"
+                                                        },
+                                                        "modifyWarranty": 0,
+                                                        "timeOutType": "ProcessImmediate",
+                                                        "clientName": "#UnitInfo.CLIENTNAME",
+                                                        "contractName": "#UnitInfo.CONTRACTNAME",
+                                                        "userName": "#loginUUID.username",
+                                                        "userPass": "#loginUUID.password",
+                                                        "ip": "::1",
+                                                        "callSource": "FrontEnd",
+                                                        "apiUsage_LocationName": "#UnitInfo.GEONAME",
+                                                        "apiUsage_ClientName": "#UnitInfo.CLIENTNAME"
+                                                    },
+                                                    "toBeStringified": true,
+                                                    "removeUndefinedFields": [
+                                                        {
+                                                            "KeyName": "notes",
+                                                            "KeyValue": "#verifoneHoldNotes.addNote"
+                                                        }
+                                                    ]
+                                                },
+                                                "eventSource":"click",
+                                                "responseDependents": {
+                                                    "onSuccess": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "clearScreenData",
+                                                                "eventSource": "click"
+                                                            },
+                                                            {
+                                                                "type": "context",
+                                                                "config": {
+                                                                    "requestMethod": "delete",
+                                                                    "key": "currentWC"
+                                                                },
+                                                                "eventSource": "click"
+                                                            },
+                                                            {
+                                                                "type": "context",
+                                                                "config": {
+                                                                    "requestMethod": "add",
+                                                                    "key": "isReleased",
+                                                                    "data": false
+                                                                },
+                                                                "eventSource": "click"
+                                                            },
+                                                            {
+                                                                "type": "renderTemplate",
+                                                                "config": {
+                                                                    "templateId": "dashboard.json",
+                                                                    "mode": "local"
+                                                                },
+                                                                "eventSource": "click"
+                                                            }
+                                                        ]
+                                                    },
+                                                    "onFailure": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "context",
+                                                                "config": {
+                                                                    "requestMethod": "add",
+                                                                    "key": "errorDisp",
+                                                                    "data": "responseData"
+                                                                }
+                                                            },
+                                                            {
+                                                                "type": "condition",
+                                                                "config": {
+                                                                    "operation": "isEqualTo",
+                                                                    "lhs": "#errorDisp",
+                                                                    "rhs": "No Record Found"
+                                                                },
+                                                                "responseDependents": {
+                                                                    "onSuccess": {
+                                                                        "actions": [
+                                                                            {
+                                                                                "type": "updateComponent",
+                                                                                "config": {
+                                                                                    "key": "errorTitleUUID",
+                                                                                    "properties": {
+                                                                                        "titleValue": "#errorDisp",
+                                                                                        "isShown": false
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "onFailure": {
+                                                                        "actions": [
+                                                                            {
+                                                                                "type": "updateComponent",
+                                                                                "config": {
+                                                                                    "key": "errorTitleUUID",
+                                                                                    "properties": {
+                                                                                        "titleValue": "#errorDisp",
+                                                                                        "isShown": true
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            }                                           
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": []
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "Result": "SUCCESS"
+}

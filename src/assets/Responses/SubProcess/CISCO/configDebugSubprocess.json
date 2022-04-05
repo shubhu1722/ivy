@@ -1,0 +1,1871 @@
+{
+    "ResultData": {
+        "ctype": "page",
+        "uuid": "pageUUID",
+        "contentClass": "",
+        "css": "",
+        "visibility": true,
+        "hooks": [
+            {
+                "type": "context",
+                "config": {
+                    "requestMethod": "add",
+                    "key": "configDebugWishList",
+                    "data": []
+                },
+                "hookType": "afterInit"
+            },
+            {
+                "type": "context",
+                "config": {
+                    "requestMethod": "add",
+                    "key": "configDebugWishListLength",
+                    "data": ""
+                },
+                "hookType": "afterInit"
+            },
+            {
+                "type": "updateStage",
+                "hookType": "afterInit",
+                "config": {
+                    "currentStage": "PRE-SCREEN",
+                    "currentSubProcess": "IQA",
+                    "nextStage": "ECO BOOKING",
+                    "targetId": "menuTreeUUID",
+                    "processId": "#SubprocessMenu"
+                }
+            },
+            {
+                "type": "updateStage",
+                "hookType": "afterInit",
+                "config": {
+                    "currentStage": "ECO BOOKING",
+                    "currentSubProcess": "IQA",
+                    "nextStage": "CONFIG DEBUG",
+                    "targetId": "menuTreeUUID",
+                    "processId": "#SubprocessMenu"
+                }
+            },
+            {
+                "type": "microservice",
+                "config": {
+                    "microserviceId": "getUnitInfo",
+                    "requestMethod": "get",
+                    "params": {
+                        "unitIdentificationValue": "#UnitInfo.ITEM_BCN",
+                        "identificatorType": "BCN",
+                        "locationId": "#userSelectedLocation",
+                        "clientId": "#userSelectedClient",
+                        "contractId": "#userSelectedContract"
+                    }
+                },
+                "hookType": "afterInit",
+                "responseDependents": {
+                    "onSuccess": {
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "UnitInfo",
+                                    "data": "responseData"
+                                }
+                            },
+                            {
+                                "type": "microservice",
+                                "config": {
+                                    "microserviceId": "getPCBByMainPart",
+                                    "requestMethod": "post",
+                                    "body": {
+                                        "mainPartNo": "#UnitInfo.PART_NO",
+                                        "locationId": "#userSelectedLocation",
+                                        "itemId": "#UnitInfo.ITEM_ID"
+                                    },
+                                    "toBeStringified": true
+                                },
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "configDebugPCBRes",
+                                                    "data": "responseData"
+                                                }
+                                            },
+                                            {
+                                                "type": "microservice",
+                                                "config": {
+                                                    "microserviceId": "getValidateEco",
+                                                    "isLocal": false,
+                                                    "LocalService": "assets/Responses/mockBGA.json",
+                                                    "requestMethod": "get",
+                                                    "params": {
+                                                        "itemId": "#UnitInfo.ITEM_ID",
+                                                        "locationId": "#userSelectedLocation",
+                                                        "pidNo": "#UnitInfo.PART_NO"
+                                                    }
+                                                },
+                                                "eventSource": "click",
+                                                "responseDependents": {
+                                                    "onSuccess": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "context",
+                                                                "config": {
+                                                                    "requestMethod": "add",
+                                                                    "key": "getConfigDebugValidateEcodata",
+                                                                    "data": "responseData"
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    "onFailure": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "context",
+                                                                "config": {
+                                                                    "requestMethod": "add",
+                                                                    "key": "errorDisp",
+                                                                    "data": "responseData"
+                                                                }
+                                                            },
+                                                            {
+                                                                "type": "condition",
+                                                                "config": {
+                                                                    "operation": "isEqualTo",
+                                                                    "lhs": "#errorDisp",
+                                                                    "rhs": "No Record Found"
+                                                                },
+                                                                "responseDependents": {
+                                                                    "onSuccess": {
+                                                                        "actions": [
+                                                                            {
+                                                                                "type": "updateComponent",
+                                                                                "config": {
+                                                                                    "key": "errorTitleUUID",
+                                                                                    "properties": {
+                                                                                        "titleValue": "#errorDisp",
+                                                                                        "isShown": false
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "onFailure": {
+                                                                        "actions": [
+                                                                            {
+                                                                                "type": "updateComponent",
+                                                                                "config": {
+                                                                                    "key": "errorTitleUUID",
+                                                                                    "properties": {
+                                                                                        "titleValue": "#errorDisp",
+                                                                                        "isShown": true
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "type": "microservice",
+                                                "hookType": "afterInit",
+                                                "config": {
+                                                    "microserviceId": "getCiscoDebugWishlistItems",
+                                                    "isLocal": false,
+                                                    "LocalService": "assets/Responses/ciscoTaskPanelDataResponse.json",
+                                                    "requestMethod": "get",
+                                                    "params": {
+                                                        "itemId": "#UnitInfo.ITEM_ID",
+                                                        "workCenterId": "#UnitInfo.WORKCENTER_ID"
+                                                    }
+                                                },
+                                                "responseDependents": {
+                                                    "onSuccess": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "context",
+                                                                "config": {
+                                                                    "requestMethod": "add",
+                                                                    "key": "configDebugWLTasksRes",
+                                                                    "data": "responseData"
+                                                                }
+                                                            },
+                                                            {
+                                                                "type": "configDebugWishListPanels",
+                                                                "config": {
+                                                                    "data": "#configDebugWLTasksRes"
+                                                                }
+                                                            },
+                                                            {
+                                                                "type": "condition",
+                                                                "config": {
+                                                                    "operation": "isEqualTo",
+                                                                    "lhs": "#configDebugWLTasksRes",
+                                                                    "rhs": null
+                                                                },
+                                                                "responseDependents": {
+                                                                    "onSuccess": {
+                                                                        "actions": [
+                                                                            {
+                                                                                "type": "updateComponent",
+                                                                                "config": {
+                                                                                    "key": "errorTitleUUID",
+                                                                                    "properties": {
+                                                                                        "titleValue": "#errorDisp",
+                                                                                        "isShown": false
+                                                                                    }
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "type": "updateComponent",
+                                                                                "config": {
+                                                                                    "key": "configDebugWishListButtonUUID",
+                                                                                    "properties": {
+                                                                                        "text": "Wish List (0)"
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "onFailure": {
+                                                                        "actions": []
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    "onFailure": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "context",
+                                                                "config": {
+                                                                    "requestMethod": "add",
+                                                                    "key": "errorDisp",
+                                                                    "data": "responseData"
+                                                                }
+                                                            },
+                                                            {
+                                                                "type": "condition",
+                                                                "config": {
+                                                                    "operation": "isEqualTo",
+                                                                    "lhs": "#errorDisp",
+                                                                    "rhs": "No Record Found"
+                                                                },
+                                                                "responseDependents": {
+                                                                    "onSuccess": {
+                                                                        "actions": [
+                                                                            {
+                                                                                "type": "updateComponent",
+                                                                                "config": {
+                                                                                    "key": "errorTitleUUID",
+                                                                                    "properties": {
+                                                                                        "titleValue": "#errorDisp",
+                                                                                        "isShown": false
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "onFailure": {
+                                                                        "actions": [
+                                                                            {
+                                                                                "type": "updateComponent",
+                                                                                "config": {
+                                                                                    "key": "errorTitleUUID",
+                                                                                    "properties": {
+                                                                                        "titleValue": "#errorDisp",
+                                                                                        "isShown": true
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "type": "microservice",
+                                                "hookType": "afterInit",
+                                                "config": {
+                                                    "microserviceId": "getCiscoDebugEcoTasks",
+                                                    "isLocal": false,
+                                                    "LocalService": "assets/Responses/ciscoTaskPanelDataResponse.json",
+                                                    "requestMethod": "get",
+                                                    "params": {
+                                                        "locationId": "#userSelectedLocation",
+                                                        "route": "WRP",
+                                                        "itemId": "#UnitInfo.ITEM_ID",
+                                                        "clientId": "#userSelectedClient",
+                                                        "contractId": "#userSelectedContract",
+                                                        "workCenterId": "#UnitInfo.WORKCENTER_ID",
+                                                        "pidNo": "#UnitInfo.PART_NO"
+                                                    }
+                                                },
+                                                "responseDependents": {
+                                                    "onSuccess": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "context",
+                                                                "config": {
+                                                                    "requestMethod": "add",
+                                                                    "key": "configDebugEcoTasksRes",
+                                                                    "data": "responseData"
+                                                                }
+                                                            },
+                                                            {
+                                                                "type": "configDebugCreateEcoPanels",
+                                                                "config": {
+                                                                    "data": "#configDebugEcoTasksRes"
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    "onFailure": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "context",
+                                                                "config": {
+                                                                    "requestMethod": "add",
+                                                                    "key": "errorDisp",
+                                                                    "data": "responseData"
+                                                                }
+                                                            },
+                                                            {
+                                                                "type": "condition",
+                                                                "config": {
+                                                                    "operation": "isEqualTo",
+                                                                    "lhs": "#errorDisp",
+                                                                    "rhs": "No Record Found"
+                                                                },
+                                                                "responseDependents": {
+                                                                    "onSuccess": {
+                                                                        "actions": [
+                                                                            {
+                                                                                "type": "updateComponent",
+                                                                                "config": {
+                                                                                    "key": "errorTitleUUID",
+                                                                                    "properties": {
+                                                                                        "titleValue": "#errorDisp",
+                                                                                        "isShown": false
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "onFailure": {
+                                                                        "actions": [
+                                                                            {
+                                                                                "type": "updateComponent",
+                                                                                "config": {
+                                                                                    "key": "errorTitleUUID",
+                                                                                    "properties": {
+                                                                                        "titleValue": "#errorDisp",
+                                                                                        "isShown": true
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "type": "microservice",
+                                                "hookType": "afterInit",
+                                                "config": {
+                                                    "microserviceId": "getCiscoDebugSubAssemblies",
+                                                    "requestMethod": "get",
+                                                    "isLocal": false,
+                                                    "LocalService": "assets/Responses/ciscoDebugSampleAssem.json",
+                                                    "params": {
+                                                        "pId": "#UnitInfo.PART_NO",
+                                                        "itemId": "#UnitInfo.ITEM_ID",
+                                                        "locationId": "#userSelectedLocation",
+                                                        "clientId": "#userSelectedClient",
+                                                        "contractId": "#userSelectedContract",
+                                                        "orderProcessTypeCode": "WRP",
+                                                        "workCeterId": "#UnitInfo.WORKCENTER_ID"
+                                                    }
+                                                },
+                                                "responseDependents": {
+                                                    "onSuccess": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "context",
+                                                                "config": {
+                                                                    "requestMethod": "add",
+                                                                    "key": "configDebugRecAssemRes",
+                                                                    "data": "responseData"
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    "onFailure": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "context",
+                                                                "config": {
+                                                                    "requestMethod": "add",
+                                                                    "key": "errorDisp",
+                                                                    "data": "responseData"
+                                                                }
+                                                            },
+                                                            {
+                                                                "type": "condition",
+                                                                "config": {
+                                                                    "operation": "isEqualTo",
+                                                                    "lhs": "#errorDisp",
+                                                                    "rhs": "No Record Found"
+                                                                },
+                                                                "responseDependents": {
+                                                                    "onSuccess": {
+                                                                        "actions": [
+                                                                            {
+                                                                                "type": "updateComponent",
+                                                                                "config": {
+                                                                                    "key": "errorTitleUUID",
+                                                                                    "properties": {
+                                                                                        "titleValue": "#errorDisp",
+                                                                                        "isShown": false
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "onFailure": {
+                                                                        "actions": [
+                                                                            {
+                                                                                "type": "updateComponent",
+                                                                                "config": {
+                                                                                    "key": "errorTitleUUID",
+                                                                                    "properties": {
+                                                                                        "titleValue": "#errorDisp",
+                                                                                        "isShown": true
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "type": "microservice",
+                                                "hookType": "afterInit",
+                                                "config": {
+                                                    "microserviceId": "getCiscoDebugFaFlexFields",
+                                                    "requestMethod": "get",
+                                                    "isLocal": false,
+                                                    "LocalService": "assets/faResponse.json",
+                                                    "params": {}
+                                                },
+                                                "responseDependents": {
+                                                    "onSuccess": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "context",
+                                                                "config": {
+                                                                    "requestMethod": "add",
+                                                                    "key": "configDebugFaFlexFieldsRes",
+                                                                    "data": "responseData"
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    "onFailure": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "context",
+                                                                "config": {
+                                                                    "requestMethod": "add",
+                                                                    "key": "errorDisp",
+                                                                    "data": "responseData"
+                                                                }
+                                                            },
+                                                            {
+                                                                "type": "condition",
+                                                                "config": {
+                                                                    "operation": "isEqualTo",
+                                                                    "lhs": "#errorDisp",
+                                                                    "rhs": "No Record Found"
+                                                                },
+                                                                "responseDependents": {
+                                                                    "onSuccess": {
+                                                                        "actions": [
+                                                                            {
+                                                                                "type": "updateComponent",
+                                                                                "config": {
+                                                                                    "key": "errorTitleUUID",
+                                                                                    "properties": {
+                                                                                        "titleValue": "#errorDisp",
+                                                                                        "isShown": false
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "onFailure": {
+                                                                        "actions": [
+                                                                            {
+                                                                                "type": "updateComponent",
+                                                                                "config": {
+                                                                                    "key": "errorTitleUUID",
+                                                                                    "properties": {
+                                                                                        "titleValue": "#errorDisp",
+                                                                                        "isShown": true
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "type": "microservice",
+                                                "hookType": "afterInit",
+                                                "config": {
+                                                    "microserviceId": "getRecordedDefects",
+                                                    "isLocal": false,
+                                                    "LocalService": "assets/Responses/mockBGA.json",
+                                                    "requestMethod": "get",
+                                                    "params": {
+                                                        "itemId": "#UnitInfo.ITEM_ID"
+                                                    }
+                                                },
+                                                "responseDependents": {
+                                                    "onSuccess": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "context",
+                                                                "config": {
+                                                                    "requestMethod": "add",
+                                                                    "key": "getConfigDebugDefectRecords",
+                                                                    "data": "responseData"
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    "onFailure": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "context",
+                                                                "config": {
+                                                                    "requestMethod": "add",
+                                                                    "key": "errorDisp",
+                                                                    "data": "responseData"
+                                                                }
+                                                            },
+                                                            {
+                                                                "type": "condition",
+                                                                "config": {
+                                                                    "operation": "isEqualTo",
+                                                                    "lhs": "#errorDisp",
+                                                                    "rhs": "No Record Found"
+                                                                },
+                                                                "responseDependents": {
+                                                                    "onSuccess": {
+                                                                        "actions": [
+                                                                            {
+                                                                                "type": "updateComponent",
+                                                                                "config": {
+                                                                                    "key": "errorTitleUUID",
+                                                                                    "properties": {
+                                                                                        "titleValue": "#errorDisp",
+                                                                                        "isShown": false
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "onFailure": {
+                                                                        "actions": [
+                                                                            {
+                                                                                "type": "updateComponent",
+                                                                                "config": {
+                                                                                    "key": "errorTitleUUID",
+                                                                                    "properties": {
+                                                                                        "titleValue": "#errorDisp",
+                                                                                        "isShown": true
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "errorDisp",
+                                                    "data": "responseData"
+                                                }
+                                            },
+                                            {
+                                                "type": "condition",
+                                                "config": {
+                                                    "operation": "isEqualTo",
+                                                    "lhs": "#errorDisp",
+                                                    "rhs": "No Record Found"
+                                                },
+                                                "responseDependents": {
+                                                    "onSuccess": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "updateComponent",
+                                                                "config": {
+                                                                    "key": "errorTitleUUID",
+                                                                    "properties": {
+                                                                        "titleValue": "#errorDisp",
+                                                                        "isShown": false
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    "onFailure": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "updateComponent",
+                                                                "config": {
+                                                                    "key": "errorTitleUUID",
+                                                                    "properties": {
+                                                                        "titleValue": "#errorDisp",
+                                                                        "isShown": true
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }                            
+                        ]
+                    },
+                    "onFailure": {
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "errorDisp",
+                                    "data": "responseData"
+                                }
+                            },
+                            {
+                                "type": "condition",
+                                "config": {
+                                    "operation": "isEqualTo",
+                                    "lhs": "#errorDisp",
+                                    "rhs": "No Record Found"
+                                },
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "errorTitleUUID",
+                                                    "properties": {
+                                                        "titleValue": "#errorDisp",
+                                                        "isShown": false
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": [
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "errorTitleUUID",
+                                                    "properties": {
+                                                        "titleValue": "#errorDisp",
+                                                        "isShown": true
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+        ],
+        "validations": [],
+        "action": [],
+        "header": [
+            {
+                "ctype": "breadcrumb",
+                "breadcrumbs": [
+                    {
+                        "label": "#userSelectedLocationName"
+                    },
+                    {
+                        "label": "#userSelectedClientName"
+                    },
+                    {
+                        "label": "#userSelectedContractName"
+                    }
+                ]
+            },
+            {
+                "ctype": "toolbar",
+                "toolbarClass": "pagecontent-header",
+                "items": [
+                    {
+                        "ctype": "title",
+                        "uuid": "subProcessTitleUUID",
+                        "titleValue": "Config Debug",
+                        "titleClass": "section-title"
+                    },
+                    {
+                        "ctype": "spacer",
+                        "uuid": "emptySpaceUUID",
+                        "class": "empty-space"
+                    },
+                    {
+                        "ctype": "iconbutton",
+                        "iconButtonClass": "wishListButton",
+                        "text": "WishList (0)",
+                        "uuid": "configDebugWishListButtonUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "actions": [
+                            {
+                                "type": "dialog",
+                                "uuid": "configDebugWishListUUID",
+                                "config": {
+                                    "title": "Wish List",
+                                    "minimumWidth": false,
+                                    "disableClose": false,
+                                    "hasBackdrop": true,
+                                    "backdropClass": "cdk-overlay-transparent-backdrop",
+                                    "width": "380px",
+                                    "height": "400px",
+                                    "footerclass": "float-right",
+                                    "position": {
+                                        "bottom": "0",
+                                        "left": "70%",
+                                        "right": "0",
+                                        "top": "1%"
+                                    },
+                                    "items": [
+                                        {
+                                            "ctype": "table",
+                                            "isDelete": false,
+                                            "uuid": "configWishListTableUUID",
+                                            "tableClass": "replaceTaskTableclass",
+                                            "tableHeaderClass": "requisitionList-table-header subtitle1",
+                                            "tableContainerClass": "requisitionList-table",
+                                            "hooks": [],
+                                            "displayedColumns": [
+                                                "Part Details",
+                                                "Qty"
+                                            ],
+                                            "datasource": "#configDebugWishList",
+                                            "actions": [
+                                                {
+                                                    "type": "updateComponent",
+                                                    "eventSource": "rowDelete",
+                                                    "config": {
+                                                        "key": "errorTitleUUID",
+                                                        "properties": {
+                                                            "titleValue": "",
+                                                            "isShown": false
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "footer": []
+                                },
+                                "eventSource": "click",
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "updateComponent",
+                                                "eventSource": "click",
+                                                "config": {
+                                                    "key": "errorTitleUUID",
+                                                    "properties": {
+                                                        "titleValue": "",
+                                                        "isShown": false
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {}
+                                }
+                            }
+                        ],
+                        "icon": "shopping_cart",
+                        "iconClass": "header-icon"
+                    },
+                    {
+                        "ctype": "iconbutton",
+                        "iconButtonClass": "headeropen-button",
+                        "text": "",
+                        "uuid": "pageopenUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "hidden": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "icon": "menu_open",
+                        "disableRipple": true,
+                        "iconClass": "header-icon",
+                        "css": "padding-bottom: 35px;",
+                        "actions": [
+                            {
+                                "type": "toggle",
+                                "eventSource": "click",
+                                "name": "subProcessRightNavref"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "openUUID",
+                                    "properties": {
+                                        "hidden": false
+                                    }
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "pageopenUUID",
+                                    "properties": {
+                                        "hidden": true
+                                    }
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "items": [
+            {
+                "ctype": "title",
+                "uuid": "successTitleUUID",
+                "titleClass": "success-title",
+                "isShown": false
+            },
+            {
+                "ctype": "title",
+                "uuid": "errorTitleUUID",
+                "containerId": "prebodysectionone",
+                "titleClass": "error-title",
+                "isShown": false
+            },
+            {
+                "ctype": "toolbar",
+                "toolbarClass": "creatorTask-Toolbar",
+                "hoverClass": "background-white",
+                "items": [
+                    {
+                        "ctype": "iconText",
+                        "hoverClass": "blue-icon",
+                        "svgIcon": "replace",
+                        "text": "Replace",
+                        "iconTextClass": "creatorTask-Icontext",
+                        "uuid": "configDebugReplaceIconUUID",
+                        "textClass": "heading3-regular greyish-black",
+                        "iconPosition": "top",
+                        "actions": [
+                            {
+                                "type": "updateComponent",
+                                "eventSource": "click",
+                                "config": {
+                                    "key": "errorTitleUUID",
+                                    "properties": {
+                                        "titleValue": "",
+                                        "isShown": false
+                                    }
+                                }
+                            },
+                            {
+                                "type": "microservice",
+                                "eventSource": "click",
+                                "config": {
+                                    "microserviceId": "getCiscoDebugDefectCodes",
+                                    "requestMethod": "get",
+                                    "isLocal": false,
+                                    "LocalService": "assets/defectCodes.json",
+                                    "params": {
+                                        "locationName": "#UnitInfo.GEONAME",
+                                        "clientName": "#UnitInfo.CLIENTNAME",
+                                        "contractName": "#UnitInfo.CONTRACTNAME",
+                                        "routeName": "#UnitInfo.ROUTE",
+                                        "workCenterName": "#UnitInfo.WORKCENTER",
+                                        "actionCode": "OPEN-REPLACE"
+                                    }
+                                },
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "configDebugDefectCodesRes",
+                                                    "data": "responseData"
+                                                }
+                                            },
+                                            {
+                                                "type": "handleConfigProcessActions",
+                                                "eventSource": "click",
+                                                "config": {
+                                                    "svgIcon": "replace",
+                                                    "text": "Replace Part",
+                                                    "processType": "replace"
+                                                }
+                                            },
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "ConfigDebugDefectUUID",
+                                                    "dropDownProperties": {
+                                                        "options": "#configDebugDefectCodesRes"
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "errorDisp",
+                                                    "data": "responseData"
+                                                }
+                                            },
+                                            {
+                                                "type": "condition",
+                                                "config": {
+                                                    "operation": "isEqualTo",
+                                                    "lhs": "#errorDisp",
+                                                    "rhs": "No Record Found"
+                                                },
+                                                "responseDependents": {
+                                                    "onSuccess": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "updateComponent",
+                                                                "config": {
+                                                                    "key": "errorTitleUUID",
+                                                                    "properties": {
+                                                                        "titleValue": "#errorDisp",
+                                                                        "isShown": false
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    "onFailure": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "updateComponent",
+                                                                "config": {
+                                                                    "key": "errorTitleUUID",
+                                                                    "properties": {
+                                                                        "titleValue": "#errorDisp",
+                                                                        "isShown": true
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "iconText",
+                        "hoverClass": "blue-icon",
+                        "svgIcon": "remove",
+                        "text": "Remove",
+                        "iconTextClass": "creatorTask-Icontext",
+                        "uuid": "configDebugRemoveIconUUID",
+                        "textClass": "heading3-regular greyish-black",
+                        "iconPosition": "top",
+                        "actions": [
+                            {
+                                "type": "updateComponent",
+                                "eventSource": "click",
+                                "config": {
+                                    "key": "errorTitleUUID",
+                                    "properties": {
+                                        "titleValue": "",
+                                        "isShown": false
+                                    }
+                                }
+                            },
+                            {
+                                "type": "microservice",
+                                "eventSource": "click",
+                                "config": {
+                                    "microserviceId": "getCiscoDebugDefectCodes",
+                                    "requestMethod": "get",
+                                    "isLocal": false,
+                                    "LocalService": "assets/defectCodes.json",
+                                    "params": {
+                                        "locationName": "#UnitInfo.GEONAME",
+                                        "clientName": "#UnitInfo.CLIENTNAME",
+                                        "contractName": "#UnitInfo.CONTRACTNAME",
+                                        "routeName": "#UnitInfo.ROUTE",
+                                        "workCenterName": "#UnitInfo.WORKCENTER",
+                                        "actionCode": "OPEN-REMOVE"
+                                    }
+                                },
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "configDebugDefectCodesRes",
+                                                    "data": "responseData"
+                                                }
+                                            },
+                                            {
+                                                "type": "handleConfigProcessActions",
+                                                "eventSource": "click",
+                                                "config": {
+                                                    "svgIcon": "remove",
+                                                    "text": "Remove Part",
+                                                    "processType": "remove"
+                                                }
+                                            },
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "ConfigDebugDefectUUID",
+                                                    "dropDownProperties": {
+                                                        "options": "#configDebugDefectCodesRes"
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "errorDisp",
+                                                    "data": "responseData"
+                                                }
+                                            },
+                                            {
+                                                "type": "condition",
+                                                "config": {
+                                                    "operation": "isEqualTo",
+                                                    "lhs": "#errorDisp",
+                                                    "rhs": "No Record Found"
+                                                },
+                                                "responseDependents": {
+                                                    "onSuccess": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "updateComponent",
+                                                                "config": {
+                                                                    "key": "errorTitleUUID",
+                                                                    "properties": {
+                                                                        "titleValue": "#errorDisp",
+                                                                        "isShown": false
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    "onFailure": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "updateComponent",
+                                                                "config": {
+                                                                    "key": "errorTitleUUID",
+                                                                    "properties": {
+                                                                        "titleValue": "#errorDisp",
+                                                                        "isShown": true
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "iconText",
+                        "hoverClass": "blue-icon",
+                        "svgIcon": "fit",
+                        "text": "Fit",
+                        "iconTextClass": "creatorTask-Icontext",
+                        "uuid": "configDebugFitIconUUID",
+                        "textClass": "heading3-regular greyish-black",
+                        "iconPosition": "top",
+                        "actions": [
+                            {
+                                "type": "updateComponent",
+                                "eventSource": "click",
+                                "config": {
+                                    "key": "errorTitleUUID",
+                                    "properties": {
+                                        "titleValue": "",
+                                        "isShown": false
+                                    }
+                                }
+                            },
+                            {
+                                "type": "microservice",
+                                "eventSource": "click",
+                                "config": {
+                                    "microserviceId": "getCiscoDebugDefectCodes",
+                                    "requestMethod": "get",
+                                    "isLocal": false,
+                                    "LocalService": "assets/defectCodes.json",
+                                    "params": {
+                                        "locationName": "#UnitInfo.GEONAME",
+                                        "clientName": "#UnitInfo.CLIENTNAME",
+                                        "contractName": "#UnitInfo.CONTRACTNAME",
+                                        "routeName": "#UnitInfo.ROUTE",
+                                        "workCenterName": "#UnitInfo.WORKCENTER",
+                                        "actionCode": "OPEN-FIT"
+                                    }
+                                },
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "configDebugDefectCodesRes",
+                                                    "data": "responseData"
+                                                }
+                                            },
+                                            {
+                                                "type": "handleConfigProcessActions",
+                                                "eventSource": "click",
+                                                "config": {
+                                                    "svgIcon": "fit",
+                                                    "text": "Fit Part",
+                                                    "processType": "fit"
+                                                }
+                                            },
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "ConfigDebugDefectUUID",
+                                                    "dropDownProperties": {
+                                                        "options": "#configDebugDefectCodesRes"
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "errorDisp",
+                                                    "data": "responseData"
+                                                }
+                                            },
+                                            {
+                                                "type": "condition",
+                                                "config": {
+                                                    "operation": "isEqualTo",
+                                                    "lhs": "#errorDisp",
+                                                    "rhs": "No Record Found"
+                                                },
+                                                "responseDependents": {
+                                                    "onSuccess": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "updateComponent",
+                                                                "config": {
+                                                                    "key": "errorTitleUUID",
+                                                                    "properties": {
+                                                                        "titleValue": "#errorDisp",
+                                                                        "isShown": false
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    "onFailure": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "updateComponent",
+                                                                "config": {
+                                                                    "key": "errorTitleUUID",
+                                                                    "properties": {
+                                                                        "titleValue": "#errorDisp",
+                                                                        "isShown": true
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "iconText",
+                        "hoverClass": "blue-icon",
+                        "svgIcon": "manual",
+                        "text": "Resolder",
+                        "iconTextClass": "creatorTask-Icontext",
+                        "uuid": "configDebugResolderIconUUID",
+                        "textClass": "heading3-regular greyish-black",
+                        "iconPosition": "top",
+                        "actions": [
+                            {
+                                "type": "updateComponent",
+                                "eventSource": "click",
+                                "config": {
+                                    "key": "errorTitleUUID",
+                                    "properties": {
+                                        "titleValue": "",
+                                        "isShown": false
+                                    }
+                                }
+                            },
+                            {
+                                "type": "microservice",
+                                "eventSource": "click",
+                                "config": {
+                                    "microserviceId": "getCiscoDebugDefectCodes",
+                                    "requestMethod": "get",
+                                    "isLocal": false,
+                                    "LocalService": "assets/defectCodes.json",
+                                    "params": {
+                                        "locationName": "#UnitInfo.GEONAME",
+                                        "clientName": "#UnitInfo.CLIENTNAME",
+                                        "contractName": "#UnitInfo.CONTRACTNAME",
+                                        "routeName": "#UnitInfo.ROUTE",
+                                        "workCenterName": "#UnitInfo.WORKCENTER",
+                                        "actionCode": "OPEN-RESOLDER"
+                                    }
+                                },
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "configDebugDefectCodesRes",
+                                                    "data": "responseData"
+                                                }
+                                            },
+                                            {
+                                                "type": "handleConfigProcessActions",
+                                                "eventSource": "click",
+                                                "config": {
+                                                    "svgIcon": "manual",
+                                                    "text": "Resolder Part",
+                                                    "processType": "resolder"
+                                                }
+                                            },
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "ConfigDebugDefectUUID",
+                                                    "dropDownProperties": {
+                                                        "options": "#configDebugDefectCodesRes"
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "errorDisp",
+                                                    "data": "responseData"
+                                                }
+                                            },
+                                            {
+                                                "type": "condition",
+                                                "config": {
+                                                    "operation": "isEqualTo",
+                                                    "lhs": "#errorDisp",
+                                                    "rhs": "No Record Found"
+                                                },
+                                                "responseDependents": {
+                                                    "onSuccess": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "updateComponent",
+                                                                "config": {
+                                                                    "key": "errorTitleUUID",
+                                                                    "properties": {
+                                                                        "titleValue": "#errorDisp",
+                                                                        "isShown": false
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    "onFailure": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "updateComponent",
+                                                                "config": {
+                                                                    "key": "errorTitleUUID",
+                                                                    "properties": {
+                                                                        "titleValue": "#errorDisp",
+                                                                        "isShown": true
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "iconText",
+                        "hoverClass": "blue-icon",
+                        "svgIcon": "scrap",
+                        "text": "Scrap",
+                        "iconTextClass": "creatorTask-Icontext",
+                        "uuid": "configDebugScrapIconUUID",
+                        "textClass": "heading3-regular greyish-black",
+                        "iconPosition": "top",
+                        "actions": [
+                            {
+                                "type": "updateComponent",
+                                "eventSource": "click",
+                                "config": {
+                                    "key": "errorTitleUUID",
+                                    "properties": {
+                                        "titleValue": "",
+                                        "isShown": false
+                                    }
+                                }
+                            },
+                            {
+                                "type": "microservice",
+                                "eventSource": "click",
+                                "config": {
+                                    "microserviceId": "getCiscoDebugDefectCodes",
+                                    "requestMethod": "get",
+                                    "isLocal": false,
+                                    "LocalService": "assets/defectCodes.json",
+                                    "params": {
+                                        "locationName": "#UnitInfo.GEONAME",
+                                        "clientName": "#UnitInfo.CLIENTNAME",
+                                        "contractName": "#UnitInfo.CONTRACTNAME",
+                                        "routeName": "#UnitInfo.ROUTE",
+                                        "workCenterName": "#UnitInfo.WORKCENTER",
+                                        "actionCode": "OPEN-RESOLDER"
+                                    }
+                                },
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "configDebugDefectCodesRes",
+                                                    "data": "responseData"
+                                                }
+                                            },
+                                            {
+                                                "type": "handleConfigProcessActions",
+                                                "eventSource": "click",
+                                                "config": {
+                                                    "svgIcon": "scrap",
+                                                    "text": "Scrap",
+                                                    "processType": "scrap"
+                                                }
+                                            },
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "ConfigDebugDefectUUID",
+                                                    "dropDownProperties": {
+                                                        "options": "#configDebugDefectCodesRes"
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "errorDisp",
+                                                    "data": "responseData"
+                                                }
+                                            },
+                                            {
+                                                "type": "condition",
+                                                "config": {
+                                                    "operation": "isEqualTo",
+                                                    "lhs": "#errorDisp",
+                                                    "rhs": "No Record Found"
+                                                },
+                                                "responseDependents": {
+                                                    "onSuccess": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "updateComponent",
+                                                                "config": {
+                                                                    "key": "errorTitleUUID",
+                                                                    "properties": {
+                                                                        "titleValue": "#errorDisp",
+                                                                        "isShown": false
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    "onFailure": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "updateComponent",
+                                                                "config": {
+                                                                    "key": "errorTitleUUID",
+                                                                    "properties": {
+                                                                        "titleValue": "#errorDisp",
+                                                                        "isShown": true
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "footer": [
+            {
+                "ctype": "toolbar",
+                "toolbarClass": "pagecontent-footer",
+                "items": [
+                    {
+                        "ctype": "iconbutton",
+                        "iconButtonClass": "footer-save body primary-btn",
+                        "text": "Exit",
+                        "uuid": "discrepancySaveUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "icon": "save",
+                        "actions": [
+                            {
+                                "type": "renderTemplate",
+                                "config": {
+                                    "templateId": "dashboard.json",
+                                    "mode": "local"
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "iconText",
+                        "uuid": "configDebugAddNoteUUID",
+                        "icon": "add_comment",
+                        "text": "Add Note",
+                        "textCss": "",
+                        "iconPosition": "Before",
+                        "iconTextClass": "footer-addNote body",
+                        "actions": [
+                            {
+                                "type": "dialog",
+                                "uuid": "configDebugAddNoteDialogUUID",
+                                "config": {
+                                    "title": "Add Note",
+                                    "items": [
+                                        {
+                                            "ctype": "textarea",
+                                            "name": "addNote",
+                                            "textareaClass": "note-class",
+                                            "uuid": "configDebugNoteUUID",
+                                            "required": true,
+                                            "value": "#timeoutNotes.addNote",
+                                            "actions": [
+                                                {
+                                                    "type": "updateComponent",
+                                                    "config": {
+                                                        "key": "configDebugDoneButtonUUID",
+                                                        "properties": {
+                                                            "disabled": false
+                                                        }
+                                                    },
+                                                    "eventSource": "onLoad"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "footer": [
+                                        {
+                                            "ctype": "button",
+                                            "color": "primary",
+                                            "text": "Cancel",
+                                            "uuid": "configDebugCancelHoldUUID",
+                                            "closeType": "close",
+                                            "disableClose": true,
+                                            "visibility": true,
+                                            "dialogButton": true,
+                                            "type": "",
+                                            "hooks": [],
+                                            "validations": [],
+                                            "actions": []
+                                        },
+                                        {
+                                            "ctype": "button",
+                                            "color": "primary",
+                                            "text": "Done",
+                                            "uuid": "configDebugDoneButtonUUID",
+                                            "dialogButton": true,
+                                            "visibility": true,
+                                            "disabled": true,
+                                            "type": "submit",
+                                            "closeType": "success",
+                                            "hooks": [],
+                                            "validations": [],
+                                            "actions": []
+                                        }
+                                    ]
+                                },
+                                "eventSource": "click",
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "key": "timeoutNotes",
+                                                    "data": "formData",
+                                                    "requestMethod": "add",
+                                                    "value": "addNote"
+                                                },
+                                                "eventSource": "click"
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": []
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "spacer",
+                        "uuid": "emptySpaceUUID",
+                        "class": "empty-space"
+                    },
+                    {
+                        "ctype": "button",
+                        "color": "primary",
+                        "text": "Next",
+                        "uuid": "configDebugTimeOutUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "buttonClass": "footer-button primary-btn",
+                        "class": "primary-btn",
+                        "actions": [
+                            {
+                                "type": "updateComponent",
+                                "eventSource": "click",
+                                "config": {
+                                    "key": "errorTitleUUID",
+                                    "properties": {
+                                        "titleValue": "",
+                                        "isShown": false
+                                    }
+                                }
+                            },
+                            {
+                                "type": "microservice",
+                                "config": {
+                                    "microserviceId": "getValidateEco",
+                                    "isLocal": false,
+                                    "LocalService": "assets/Responses/mockBGA.json",
+                                    "requestMethod": "get",
+                                    "params": {
+                                        "itemId": "#UnitInfo.ITEM_ID",
+                                        "locationId": "#userSelectedLocation",
+                                        "pidNo": "#UnitInfo.PART_NO"
+                                    }
+                                },
+                                "eventSource": "click",
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "getConfigReworkValidateEcodata",
+                                                    "data": "responseData"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "errorDisp",
+                                                    "data": "responseData"
+                                                }
+                                            },
+                                            {
+                                                "type": "condition",
+                                                "config": {
+                                                    "operation": "isEqualTo",
+                                                    "lhs": "#errorDisp",
+                                                    "rhs": "No Record Found"
+                                                },
+                                                "responseDependents": {
+                                                    "onSuccess": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "updateComponent",
+                                                                "config": {
+                                                                    "key": "errorTitleUUID",
+                                                                    "properties": {
+                                                                        "titleValue": "#errorDisp",
+                                                                        "isShown": false
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    "onFailure": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "updateComponent",
+                                                                "config": {
+                                                                    "key": "errorTitleUUID",
+                                                                    "properties": {
+                                                                        "titleValue": "#errorDisp",
+                                                                        "isShown": true
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            },
+                            {
+                                "type": "microservice",
+                                "config": {
+                                    "microserviceId": "getConfigReworkTaskDetails",
+                                    "isLocal": false,
+                                    "LocalService": "assets/Responses/mockBGA.json",
+                                    "requestMethod": "get",
+                                    "params": {
+                                        "itemId": "#UnitInfo.ITEM_ID",
+                                        "locationId": "#userSelectedLocation",
+                                        "clientId": "#userSelectedClient",
+                                        "contractId": "#userSelectedContract",
+                                        "workCenterId": "#UnitInfo.WORKCENTER_ID",
+                                        "pidNo": "#UnitInfo.PART_NO"
+                                    }
+                                },
+                                "eventSource": "click",
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "getConfigReworkTaskdata",
+                                                    "data": "responseData"
+                                                }
+                                            },
+                                            {
+                                                "type": "filterConfigReworkTandCEco",
+                                                "eventSource": "click",
+                                                "config": {
+                                                    "tcEco": "#getConfigReworkValidateEcodata",
+                                                    "taskPanelData": "#getConfigReworkTaskdata",
+                                                    "key": "getTandCEcoData",
+                                                    "dataKey": "getConfigReworkTaskdata",
+                                                    "afterAction": [
+                                                        {
+                                                            "type": "renderTemplate",
+                                                            "config": {
+                                                                "templateId": "cisco-ConfigRework.json",
+                                                                "mode": "local"
+                                                            },
+                                                            "eventSource": "click"
+                                                        }
+                                                    ]
+                                                }                                                
+                                            }
+                                            
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "errorDisp",
+                                                    "data": "responseData"
+                                                }
+                                            },
+                                            {
+                                                "type": "condition",
+                                                "config": {
+                                                    "operation": "isEqualTo",
+                                                    "lhs": "#errorDisp",
+                                                    "rhs": "No Record Found"
+                                                },
+                                                "responseDependents": {
+                                                    "onSuccess": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "updateComponent",
+                                                                "config": {
+                                                                    "key": "errorTitleUUID",
+                                                                    "properties": {
+                                                                        "titleValue": "#errorDisp",
+                                                                        "isShown": false
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    "onFailure": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "updateComponent",
+                                                                "config": {
+                                                                    "key": "errorTitleUUID",
+                                                                    "properties": {
+                                                                        "titleValue": "#errorDisp",
+                                                                        "isShown": true
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "type": "renderTemplate",
+                                                "config": {
+                                                    "templateId": "cisco-ConfigRework.json",
+                                                    "mode": "local"
+                                                },
+                                                "eventSource": "click"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "Result": "SUCCESS"
+}

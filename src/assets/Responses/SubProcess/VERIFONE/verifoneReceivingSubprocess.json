@@ -1,0 +1,1148 @@
+{
+    "ResultData": {
+        "ctype": "page",
+        "uuid": "pageUUID",
+        "visibility": true,
+        "hooks": [     
+            {
+                "type": "condition",
+                "hookType": "afterInit",
+                "config": {
+                    "operation": "isEqualTo",
+                    "lhs": "#isFromRMAList",
+                    "rhs": true
+                  },
+                "responseDependents": {
+                    "onSuccess": {
+                        "actions": [
+                            {
+                                "type": "context",
+                                "hookType": "afterInit",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "fromRMAListFlag",
+                                    "data": "True"
+                                }
+                            }
+                        ]
+                    },
+                    "onFailure": {
+                        "actions": [
+                            {
+                                "type": "context",
+                                "hookType": "afterInit",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "fromRMAListFlag",
+                                    "data": "False"
+                                }
+                            }
+                        ]
+                    }
+                }
+            },       
+            {
+                "type": "context",
+                "hookType": "afterInit",
+                "config": {
+                    "requestMethod": "add",
+                    "key": "PrintSerialNumberdata",
+                    "data": "True"
+                }
+            },
+            {
+                "type": "context",
+                "hookType": "afterInit",
+                "config": {
+                    "requestMethod": "add",
+                    "key": "IsCorrectSerialNumberdata",
+                    "data": "True"
+                }
+            }
+        ],
+        "header": [
+            {
+                "ctype": "breadcrumb",
+                "style": "padding-left: 4px;",
+                "breadcrumbs": [
+                    {
+                        "label": "#userSelectedLocationName"
+                    },
+                    {
+                        "label": "#userSelectedClientName"
+                    },
+                    {
+                        "label": "#userSelectedContractName"
+                    }
+                ]
+            },
+            {
+                "ctype": "toolbar",
+                "css": "padding-top: 35px;",
+                "toolbarClass": "pagecontent-header",
+                "items": [
+                    {
+                        "ctype": "title",
+                        "uuid": "ReceivingHHeadertitleuuid",
+                        "titleValue": "Receiving",
+                        "titleClass": "section-title",
+                        "css": "padding-bottom: 35px;padding-left: 4px;"
+                    },
+                    {
+                        "ctype": "spacer",
+                        "uuid": "emptySpaceUUID",
+                        "class": "empty-space"
+                    },
+                    {
+                        "ctype": "iconbutton",
+                        "iconButtonClass": "headeropen-button",
+                        "text": "",
+                        "uuid": "pageopenUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "hidden": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "icon": "menu_open",
+                        "disableRipple": true,
+                        "iconClass": "header-icon",
+                        "css": "padding-bottom: 35px;",
+                        "actions": [
+                            {
+                                "type": "toggle",
+                                "eventSource": "click",
+                                "name": "subProcessRightNavref"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "openUUID",
+                                    "properties": {
+                                        "hidden": false
+                                    }
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "pageopenUUID",
+                                    "properties": {
+                                        "hidden": true
+                                    }
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "items": [
+            {
+                "ctype": "title",
+                "uuid": "successTitleUUID",
+                "titleClass": "success-title",
+                "isShown": false,
+                "containerId": "prebodysectionone"
+            },
+            {
+                "ctype": "title",
+                "uuid": "errorTitleUUID",
+                "titleClass": "error-title",
+                "isShown": false,
+                "containerId": "prebodysectionone"
+            },
+            {
+                "ctype": "taskPanel",
+                "containerId": "prebodysectionone",
+                "header": {
+                    "title": "Confirm Serial Number",
+                    "svgIcon": "description_icon",
+                    "iconClass": "active-header",
+                    "class": "po-specific"
+                },
+                "expanded": true,
+                "hideToggle": true,
+                "uuid": "ConfirmSerialNumberUUID",
+                "visibility": false,
+                "disabled": false,
+                "hooks": [],
+                "validations": [],
+                "actions": [],
+                "items": [
+                    {
+                        "ctype": "title",
+                        "uuid": "ConfirmSerialNumberTextUUID",
+                        "titleValue": "Confirm Order Information",
+                        "titleValueClass": "body-italic text-secondary"
+                    },
+                    {
+                        "ctype": "actionToggle",
+                        "formGroupClass": "body2 d-flex justify-content-between  mb-2 verifone-receiving-toggle",
+                        "parentUUID": "ConfirmSerialNumberUUID",
+                        "labelPosition": "before",
+                        "label": "Is the Serial Number correct?",
+                        "labelClass": "dell-greyish-black pt-2",
+                        "required": false,
+                        "submitable": true,
+                        "selectedVal": "True",
+                        "name": "IsCorrectSerialNumber",
+                        "sublabel": "#verifoneReceivingScanSerialNumberResp.OrderSerialNumber",
+                        "options": [                            
+                            {
+                                "bgcolor": "light-blue",
+                                "color": "white",
+                                "text": "No",
+                                "value": "False"
+                            },
+                            {
+                                "bgcolor": "light-blue",
+                                "color": "white",
+                                "text": "Yes",
+                                "value": "True"
+                            }
+                        ],
+                        "validations": [],
+                        "uuid": "IsCorrectSerialNumberValuesUUID",
+                        "hooks": [
+                            
+                        ],
+                        "actions": [
+                            {
+                                "type": "context",
+                                "eventSource": "change",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "IsCorrectSerialNumberdata",
+                                    "data": "elementControlValue"
+                                }
+                            }
+                        ]
+                    }
+                ],
+                "footer": [
+                    {
+                        "ctype": "button",
+                        "color": "primary",
+                        "text": "Complete",
+                        "class": "primary-btn",
+                        "uuid": "IsCorrectSerialNumberSubmitUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "actions": [                            
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "ConfirmSerialNumberUUID",
+                                    "properties": {
+                                        "expanded": true,
+                                        "disabled": false,
+                                        "header": {
+                                            "title": "Confirm Serial Number",
+                                            "svgIcon": "description_icon",
+                                            "iconClass": "active-header",
+                                            "class": "po-specific"
+                                        }
+                                    }
+                                },
+                                "eventSource": "click"
+                            },                            
+                            {
+                                "type": "condition",
+                                "eventSource": "click",                               
+                                "config": {
+                                    "operation": "isEqualTo",
+                                    "lhs": "#IsCorrectSerialNumberdata",
+                                    "rhs": "False"
+                                  },
+                                  "responseDependents": {
+                                    "onSuccess": {
+                                      "actions": [
+                                        {
+                                            "type": "dialog",
+                                            "uuid": "verifoneConfirmDialogUUID",
+                                            "config": {
+                                              "title": "Serial Number Mismatch",
+                                              "disableClose": true,
+                                              "items": [
+                                                  {
+                                                    "ctype": "label",
+                                                    "text": "Please perform the Homeless Process",
+                                                    "labelClass": "serial-number-mismatch-label"
+                                                  }
+                                              ],
+                                              "footer": [                                                
+                                                {
+                                                  "ctype": "button",
+                                                  "class": "blank-bg",
+                                                  "text": "Cancel",
+                                                  "uuid": "verifoneConfirmCancelHoldUUID",
+                                                  "closeType": "close",
+                                                  "disableClose": false,
+                                                  "visibility": true,
+                                                  "type": "",
+                                                  "hooks": [],
+                                                  "validations": [],
+                                                  "actions": [
+                                                    {
+                                                        "type": "closeAllDialogs",
+                                                        "eventSource": "click"
+                                                    }
+                                                  ]
+                                                },
+                                                {
+                                                  "ctype": "button",
+                                                  "color": "primary",
+                                                  "text": "Continue",
+                                                  "uuid": "verifoneConfirmDoneUUID",
+                                                  "visibility": true,
+                                                  "disabled": false,
+                                                  "type": "submit",
+                                                  "closeType": "success",
+                                                  "hooks": [],
+                                                  "validations": [],
+                                                  "actions": [
+                                                    {
+                                                        "type": "closeAllDialogs",
+                                                        "eventSource": "click"
+                                                    },
+                                                    {
+                                                        "type": "updateComponent",
+                                                        "config": {
+                                                            "properties": {
+                                                                "key": "Contract",
+                                                                "data": "Problem Shelf"
+                                                            }
+                                                        },
+                                                        "eventSource": "click"
+                                                    },
+                                                    {
+                                                        "type": "context",
+                                                        "config": {
+                                                          "requestMethod": "add",
+                                                          "key": "userSelectedContractName",
+                                                          "data": "Problem Shelf"
+                                                        },
+                                                        "eventSource": "click"
+                                                    },
+                                                    {
+                                                        "type": "context",
+                                                        "config": {
+                                                          "requestMethod": "add",
+                                                          "key": "userSelectedContract",
+                                                          "data": "12987"
+                                                        },
+                                                        "eventSource": "click"
+                                                    },
+                                                    {
+                                                        "type": "renderTemplate",
+                                                        "config": {
+                                                            "templateId": "dashboard.json",
+                                                            "mode": "local"
+                                                        },
+                                                        "eventSource": "click"
+                                                    }
+                                                    
+                                                  ]
+                                                }
+                                              ]
+                                            },
+                                            "eventSource": "click",
+                                            "responseDependents": {
+                                              "onSuccess": {
+                                                "actions": [
+                                                ]
+                                              },
+                                              "onFailure": {}
+                                            }
+                                          }
+                                      ]
+                                    },
+                                    "onFailure": {
+                                      "actions": [
+                                        {
+                                            "type": "updateComponent",
+                                            "config": {
+                                                "key": "ConfirmSerialNumberUUID",
+                                                "properties": {
+                                                    "expanded": true,
+                                                    "disabled": false,
+                                                    "header": {
+                                                        "title": "Confirm Serial Number",
+                                                        "svgIcon": "description_icon",
+                                                        "iconClass": "active-header",
+                                                        "statusIcon": "check_circle",
+                                                        "statusClass": "complete-status",
+                                                        "class": "disable-text"
+                                                    }
+                                                }
+                                            },
+                                            "eventSource": "click"
+                                        },  
+                                        {
+                                            "type": "updateComponent",
+                                            "config": {
+                                                "key" : "RecordPackingListNumberUUID",
+                                                "properties": {
+                                                    "expanded" : true,
+                                                    "disabled": false
+                                                }
+                                            },
+                                            "eventSource": "click"
+                                        }
+                                      ]
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "ctype": "taskPanel",
+                "containerId": "prebodysectionone",
+                "header": {
+                    "title": "Record Packing List Number",
+                    "svgIcon": "description_icon",
+                    "iconClass": "active-header",
+                    "class": "po-specific"
+                },
+                "expanded": false,
+                "hideToggle": true,
+                "uuid": "RecordPackingListNumberUUID",
+                "visibility": false,
+                "disabled": true,
+                "hooks": [],
+                "validations": [],
+                "actions": [],
+                "items": [
+                    {
+                        "ctype": "title",
+                        "uuid": "RecordPackingListNumberTextUUID",
+                        "titleValue": "Record Packing list number",
+                        "titleValueClass": "body-italic text-secondary"
+                    },
+                    {
+                        "ctype": "textField",
+                        "uuid": "packingListNumberScanUUID",
+                        "submitable": false,
+                        "disabled": false,
+                        "validations": [
+                        ],
+                        "inLine": true,
+                        "formGroupClass": "flex-container flex-container-half-width",
+                        "textfieldClass": "textfield-container-field",
+                        "hooks": [],
+                        "actions": [
+                        ],
+                        "name": "packingListNumberText",
+                        "label": "Packing List Number",
+                        "labelClass": "font-bold",
+                        "labelPosition": "",
+                        "tooltip": "",
+                        "TooltipPosition": "",
+                        "isAutoComplete": "off",
+                        "defaultValue": "",
+                        "readonly": false,
+                        "type": "text",
+                        "required": true,
+                        "placeholder": "Scan #",
+                        "value": "",
+                        "prefix": false,
+                        "prefixIcon": "",
+                        "suffix": false,
+                        "suffixIcon": ""
+                    },
+                    {
+                        "ctype": "checkbox",
+                        "name": "packingListNumberCheckbox",
+                        "uuid": "packingListNumberCheckboxUUID",
+                        "hooks": [],
+                        "required": false,
+                        "submittable": true,
+                        "checkVisibility": true,
+                        "isDisableNotReq": true,
+                        "label": "Packing List not available",
+                        "labelPosition": "after",
+                        "checkboxContainer": "label-init",
+                        "inputStyles": "padding-left:280px",
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                  "requestMethod": "add",
+                                  "key": "packingListNumberSelection",
+                                  "data": "elementControlValue"
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "condition",
+                                "eventSource": "click",                               
+                                "config": {
+                                    "operation": "isEqualTo",
+                                    "lhs": "#packingListNumberSelection",
+                                    "rhs": true
+                                  },
+                                  "responseDependents": {
+                                    "onSuccess": {
+                                      "actions": [
+                                        {
+                                            "type": "getCurrentDateForVerifonePackingList",
+                                            "eventSource": "click"
+                                        },
+                                        {
+                                            "type": "setDefaultValue",
+                                            "config": {
+                                              "key": "packingListNumberScanUUID",
+                                              "defaultValue": "#currentPackingDate"
+                                            },
+                                            "eventSource": "click"
+                                        },
+                                        {
+                                          "type": "updateComponent",
+                                          "config": {
+                                            "key": "RecordPackingListNumberSubmitUUID",
+                                            "properties": {
+                                              "disabled": false
+                                            }
+                                          },
+                                          "eventSource": "click"
+                                        }
+                                      ]
+                                    },
+                                    "onFailure": {
+                                      "actions": [
+                                        {
+                                            "type": "setDefaultValue",
+                                            "config": {
+                                              "key": "packingListNumberScanUUID",
+                                              "defaultValue": ""
+                                            },
+                                            "eventSource": "click"
+                                        },
+                                        {
+                                            "type": "updateComponent",
+                                            "config": {
+                                              "key": "RecordPackingListNumberSubmitUUID",
+                                              "properties": {
+                                                "disabled": true
+                                              }
+                                            },
+                                            "eventSource": "click"
+                                          }
+                                      ]
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ],
+                "footer": [
+                    {
+                        "ctype": "button",
+                        "color": "primary",
+                        "text": "Complete",
+                        "class": "primary-btn",
+                        "uuid": "RecordPackingListNumberSubmitUUID",
+                        "visibility": true,
+                        "disabled": true,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "recordPackingFormData",
+                                    "data": "formData"
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "RecordPackingListNumberUUID",
+                                    "properties": {
+                                        "expanded": false,
+                                        "disabled": false,
+                                        "header": {
+                                            "title": "Record the Packing list number",
+                                            "svgIcon": "description_icon",
+                                            "iconClass": "active-header",
+                                            "statusIcon": "check_circle",
+                                            "statusClass": "complete-status",
+                                            "class": "disable-text"
+                                        }
+                                    }
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key" : "PrintSerialNumberUUID",
+                                    "properties": {
+                                        "expanded" : true,
+                                        "disabled": false
+                                    }
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "ctype": "taskPanel",
+                "containerId": "prebodysectionone",
+                "header": {
+                    "title": "Print Serial Number Label",
+                    "svgIcon": "description_icon",
+                    "iconClass": "active-header",
+                    "class": "po-specific"
+                },
+                "expanded": false,
+                "hideToggle": true,
+                "uuid": "PrintSerialNumberUUID",
+                "visibility": false,
+                "disabled": true,
+                "hooks": [],
+                "validations": [],
+                "actions": [],
+                "items": [
+                    {
+                        "ctype": "actionToggle",
+                        "formGroupClass": "body2 d-flex justify-content-between  mb-2 verifone-receiving-toggle",
+                        "parentUUID": "PrintSerialNumberUUID",
+                        "labelPosition": "before",
+                        "label": "Do you want to print a Serial Number label ?",
+                        "labelClass": "dell-greyish-black pt-2",
+                        "required": false,
+                        "submitable": true,
+                        "selectedVal": "True",
+                        "name": "PrintSerialNumber",
+                        "options": [                            
+                            {
+                                "bgcolor": "light-blue",
+                                "color": "white",
+                                "text": "No",
+                                "value": "False"
+                            },
+                            {
+                                "bgcolor": "light-blue",
+                                "color": "white",
+                                "text": "Yes",
+                                "value": "True"
+                            }
+                        ],
+                        "validations": [],
+                        "uuid": "PrintSerialNumberValuesUUID",
+                        "hooks": [],
+                        "actions": [
+                            {
+                                "type": "context",
+                                "eventSource": "change",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "PrintSerialNumberdata",
+                                    "data": "elementControlValue"
+                                }
+                            }
+                        ]
+                    }
+                ],
+                "footer": [
+                    {
+                        "ctype": "button",
+                        "color": "primary",
+                        "text": "Complete",
+                        "class": "primary-btn",
+                        "uuid": "PrintSerialNumberSubmitUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "actions": [
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "PrintSerialNumberUUID",
+                                    "properties": {
+                                        "expanded": false,
+                                        "disabled": false,
+                                        "header": {
+                                            "title": "Print Serial Number Label",
+                                            "svgIcon": "description_icon",
+                                            "iconClass": "active-header",
+                                            "statusIcon": "check_circle",
+                                            "statusClass": "complete-status",
+                                            "class": "disable-text"
+                                        }
+                                    }
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config" : {
+                                    "key": "GoodReceipttimeoutUUID",
+                                    "properties": {
+                                        "disabled" : false
+                                    }
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "footer": [
+            {
+                "ctype": "toolbar",
+                "toolbarClass": "pagecontent-footer",
+                "items": [
+                    {
+                        "ctype": "iconbutton",
+                        "iconButtonClass": "footer-save body primary-btn",
+                        "text": "Exit",
+                        "uuid": "saveUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "icon": "close",
+                        "actions": [
+                            {
+                                "type": "clearAllContext",
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "renderTemplate",
+                                "config": {
+                                    "templateId": "dashboard.json",
+                                    "mode": "local"
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "spacer",
+                        "uuid": "emptySpaceUUID",
+                        "class": "empty-space"
+                    },
+                    {
+                        "ctype": "spacer",
+                        "uuid": "emptySpaceUUID",
+                        "class": "empty-space"
+                    },
+                    {
+                        "ctype": "spacer",
+                        "uuid": "emptySpaceUUID",
+                        "class": "empty-space"
+                    },
+                    {
+                        "ctype": "spacer",
+                        "uuid": "emptySpaceUUID",
+                        "class": "empty-space"
+                    },
+                    {
+                        "ctype": "button",
+                        "color": "primary",
+                        "buttonClass": "footer-button",
+                        "text": "Good Receipt",
+                        "uuid": "GoodReceipttimeoutUUID",
+                        "visibility": true,
+                        "checkGroupValidity": false,
+                        "disabled": true,
+                        "hidden": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "actions": [
+                            {
+                                "type": "microservice",
+                                "eventSource":"click",
+                                "config": {
+                                    "microserviceId": "verifoneReceivingTrigger",
+                                    "requestMethod": "post",
+                                    "body": {
+                                        "actionType": "proDetail",
+                                        "subActionType": "validatePartDataBySerial",
+                                        "geography": "#userSelectedLocationName",
+                                        "client": "#userSelectedClientName",
+                                        "contract": "#userSelectedContractName",
+                                        "orderProcessType": "#verifoneReceivingOrderDetails.ORDER_PROCESS_TYPE_CODE",
+                                        "clientId": "#verifoneReceivingOrderDetails.CLIENT_ID",
+                                        "contractId": "#verifoneReceivingOrderDetails.CONTRACT_ID",
+                                        "refOrderId": "#verifoneReceivingOrderDetails.REFERENCE_ORDER_ID",
+                                        "partNO": "#verifoneReceivingScanSerialNumberResp.OrderPartNumber",
+                                        "refOrderLineId": "1",
+                                        "serialNo": "#verifoneReceivingOrderDetails.CLIENT_REFERENCE_NO2",
+                                        "revisionLevel": "",
+                                        "serialNumber": "#verifoneReceivingOrderDetails.CLIENT_REFERENCE_NO2",
+                                        "roNote": "",
+                                        "clientReferenceNumber1": "#verifoneReceivingOrderDetails.CLIENT_REFERENCE_NO1"
+                                    },
+                                    "toBeStringified": true
+                                },
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "microservice",
+                                                "config": {
+                                                    "microserviceId": "receiptV2",
+                                                    "requestMethod": "post",
+                                                    "body": {
+                                                        "Receipt": {
+                                                            "ReceiptInfo": {
+                                                                "User": "#userAccountInfo.PersonalDetails.USERID",
+                                                                "Pwd": "#loginUUID.password",
+                                                                "PackingListNo":"#recordPackingFormData.packingListNumberText",
+                                                                "Lines": {
+                                                                    "Line": {
+                                                                        "LineNo": "1",
+                                                                        "Items": {
+                                                                            "Item": {
+                                                                                "PartNum": "#verifoneReceivingScanSerialNumberResp.OrderPartNumber",
+                                                                                "Quantity": "1",
+                                                                                "SerialNum": "#verifoneReceivingScanSerialNumberResp.SerialNumber",
+                                                                                "FixedAssetTag": "#verifoneReceivingOrderDetails.CLIENT_REFERENCE_NO1",
+                                                                                "ReasonCode": "",
+                                                                                "ReasonNotes": "",
+                                                                                "ResultCode": "#verifoneReceivingScanSerialNumberResp.ResultCode",
+                                                                                "Warranty": true
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                },
+                                                                "ExternalReceiptData": {
+                                                                    "ReceiptNumber": "",
+                                                                    "Application": "",
+                                                                    "Warehouse": ""
+                                                                },
+                                                                "IP": ":1",
+                                                                "CallSource": "FrontEnd",
+                                                                "APIUsage_LocationName": "#userSelectedLocationName",
+                                                                "APIUsage_ClientName": "#userSelectedClientName"
+                                                            },
+                                                            "RefOrder": "#verifoneReceivingOrderDetails.REFERENCE_ORDER_ID",
+                                                            "InboundOrderID": "#verifoneReceivingOrderDetails.INBOUND_ORDER_ID"
+                                                        },
+                                                        "justReturnXML": "false"
+                                                    },
+                                                    "toBeStringified": true
+                                                },
+                                                "responseDependents": {
+                                                    "onSuccess": {
+                                                        "actions": [                                            
+                                                            {
+                                                                "type": "context",
+                                                                "config": {
+                                                                    "requestMethod": "add",
+                                                                    "key": "verifoneReceivingreceiptId",
+                                                                    "data": "responseData"
+                                                                }
+                                                            },
+                                                            {
+                                                                "type": "updateComponent",
+                                                                "config": {
+                                                                    "key": "successTitleUUID",
+                                                                    "properties": {
+                                                                        "title": "Receipt Successfull : ",
+                                                                        "titleValue": "#verifoneReceivingreceiptId.ReceiptID",
+                                                                        "isShown": true
+                                                                    }
+                                                                }
+                                                            },                                            
+                                                            {
+                                                                "type": "condition",
+                                                                "eventSource": "click",
+                                                                "config": {
+                                                                    "operation": "isEqualTo",
+                                                                    "lhs": "#PrintSerialNumberdata",
+                                                                    "rhs": "True"
+                                                                  },
+                                                                  "responseDependents": {
+                                                                    "onSuccess": {
+                                                                        "actions": [
+                                                                            {
+                                                                                "type": "microservice",
+                                                                                "config": {
+                                                                                    "microserviceId": "onePrint",
+                                                                                    "requestMethod": "post",
+                                                                                    "body": {
+                                                                                        "locationId": "#verifoneReceivingOrderDetails.LOCATION_ID",
+                                                                                        "clientId": "#verifoneReceivingOrderDetails.CLIENT_ID",
+                                                                                        "contractId": "#verifoneReceivingOrderDetails.CONTRACT_ID",
+                                                                                        "warehouseId": "0",
+                                                                                        "routeCode": "IRMA",
+                                                                                        "workCenterId": "0",
+                                                                                        "eventName": "SZO_VER_TRAV_MINI_1CLK",
+                                                                                        "hostName": "#getHostNameResponse.hostName",
+                                                                                        "ip": "#getHostNameResponse.ip",
+                                                                                        "userName": "#userAccountInfo.PersonalDetails.USERID",
+                                                                                        "params": {
+                                                                                            "receiptId": "#verifoneReceivingreceiptId.ReceiptID"
+                                                                                        }
+                                                                                    },
+                                                                                    "toBeStringified": true
+                                                                                },
+                                                                                "responseDependents": {
+                                                                                    "onSuccess" : {
+                                                                                        "actions": [                                                                            
+                                                                                            {
+                                                                                                "type": "condition",
+                                                                                                "eventSource": "click",
+                                                                                                "config": {
+                                                                                                    "operation": "isEqualTo",
+                                                                                                    "lhs": "#fromRMAListFlag",
+                                                                                                    "rhs": "True"
+                                                                                                  },
+                                                                                                "responseDependents": {
+                                                                                                    "onSuccess": {
+                                                                                                        "actions": [
+                                                                                                            {
+                                                                                                                "type": "updateComponent",
+                                                                                                                "config": {
+                                                                                                                    "key": "RecordPackingListNumberUUID",
+                                                                                                                    "properties": {
+                                                                                                                        "expanded": false,
+                                                                                                                        "disabled": false,
+                                                                                                                        "header": {
+                                                                                                                            "title": "Record the Packing list number",
+                                                                                                                            "svgIcon": "description_icon",
+                                                                                                                            "iconClass": "active-header",
+                                                                                                                            "statusIcon": "check_circle",
+                                                                                                                            "statusClass": "incomplete-status",
+                                                                                                                            "class": "disable-text"
+                                                                                                                        }
+                                                                                                                    }
+                                                                                                                },
+                                                                                                                "eventSource": "click"
+                                                                                                            },
+                                                                                                            {
+                                                                                                                "type": "updateComponent",
+                                                                                                                "config": {
+                                                                                                                    "key": "PrintSerialNumberUUID",
+                                                                                                                    "properties": {
+                                                                                                                        "expanded": false,
+                                                                                                                        "disabled": false,
+                                                                                                                        "header": {
+                                                                                                                            "title": "Print Serial Number Label",
+                                                                                                                            "svgIcon": "description_icon",
+                                                                                                                            "iconClass": "active-header",
+                                                                                                                            "statusIcon": "check_circle",
+                                                                                                                            "statusClass": "incomplete-status",
+                                                                                                                            "class": "disable-text"
+                                                                                                                        }
+                                                                                                                    }
+                                                                                                                },
+                                                                                                                "eventSource": "click"
+                                                                                                            },
+                                                                                                            {
+                                                                                                                "type": "renderTemplate",
+                                                                                                                "config": {
+                                                                                                                    "templateId": "verifone/verifone-receiving-rma-list.json",
+                                                                                                                    "mode": "local"
+                                                                                                                },
+                                                                                                                "eventSource": "click"
+                                                                                                              }
+                                                                                                        ]
+                                                                                                    },
+                                                                                                    "onFailure": {
+                                                                                                        "actions": [
+                                                                                                            {
+                                                                                                                "type": "renderTemplate",
+                                                                                                                "config": {
+                                                                                                                    "templateId": "dashboard.json",
+                                                                                                                    "mode": "local"
+                                                                                                                }
+                                                                                                            }
+                                                                                                        ]
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        ]
+                                                                                    },
+                                                                                    "onFailure": {
+                                                                                        "actions": [
+                                                                                            {
+                                                                                                "type": "context",
+                                                                                                "config": {
+                                                                                                    "requestMethod": "add",
+                                                                                                    "key": "errorResp",
+                                                                                                    "data": "responseData"
+                                                                                                },
+                                                                                                "eventSource": "click"
+                                                                                            },
+                                                                                            {
+                                                                                                "type": "updateComponent",
+                                                                                                "config": {
+                                                                                                    "key": "errorTitleUUID",
+                                                                                                    "properties": {
+                                                                                                        "titleValue": "#errorResp",
+                                                                                                        "isShown": true
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        ]
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "onFailure": {
+                                                                        "actions": [
+                                                                            {
+                                                                                "type": "condition",
+                                                                                "eventSource": "click",
+                                                                                "config": {
+                                                                                    "operation": "isEqualTo",
+                                                                                    "lhs": "#fromRMAListFlag",
+                                                                                    "rhs": "True"
+                                                                                  },
+                                                                                "responseDependents": {
+                                                                                    "onSuccess": {
+                                                                                        "actions": [
+                                                                                            {
+                                                                                                "type": "updateComponent",
+                                                                                                "config": {
+                                                                                                    "key": "RecordPackingListNumberUUID",
+                                                                                                    "properties": {
+                                                                                                        "expanded": false,
+                                                                                                        "disabled": false,
+                                                                                                        "header": {
+                                                                                                            "title": "Record the Packing list number",
+                                                                                                            "svgIcon": "description_icon",
+                                                                                                            "iconClass": "active-header",
+                                                                                                            "statusIcon": "check_circle",
+                                                                                                            "statusClass": "incomplete-status",
+                                                                                                            "class": "disable-text"
+                                                                                                        }
+                                                                                                    }
+                                                                                                },
+                                                                                                "eventSource": "click"
+                                                                                            },
+                                                                                            {
+                                                                                                "type": "updateComponent",
+                                                                                                "config": {
+                                                                                                    "key": "PrintSerialNumberUUID",
+                                                                                                    "properties": {
+                                                                                                        "expanded": false,
+                                                                                                        "disabled": false,
+                                                                                                        "header": {
+                                                                                                            "title": "Print Serial Number Label",
+                                                                                                            "svgIcon": "description_icon",
+                                                                                                            "iconClass": "active-header",
+                                                                                                            "statusIcon": "check_circle",
+                                                                                                            "statusClass": "incomplete-status",
+                                                                                                            "class": "disable-text"
+                                                                                                        }
+                                                                                                    }
+                                                                                                },
+                                                                                                "eventSource": "click"
+                                                                                            },
+                                                                                            {
+                                                                                                "type": "renderTemplate",
+                                                                                                "config": {
+                                                                                                    "templateId": "verifone/verifone-receiving-rma-list.json",
+                                                                                                    "mode": "local"
+                                                                                                },
+                                                                                                "eventSource": "click"
+                                                                                              }
+                                                                                        ]
+                                                                                    },
+                                                                                    "onFailure": {
+                                                                                        "actions": [
+                                                                                            {
+                                                                                                "type": "renderTemplate",
+                                                                                                "config": {
+                                                                                                    "templateId": "dashboard.json",
+                                                                                                    "mode": "local"
+                                                                                                }
+                                                                                            }
+                                                                                        ]
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                            
+                                                                        ]
+                                                                    }
+                                                                  }
+                                                            }
+                                                        ]
+                                                    },
+                                                    "onFailure": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "context",
+                                                                "config": {
+                                                                    "requestMethod": "add",
+                                                                    "key": "errorResp",
+                                                                    "data": "responseData"
+                                                                },
+                                                                "eventSource": "click"
+                                                            },
+                                                            {
+                                                                "type": "updateComponent",
+                                                                "config": {
+                                                                    "key": "errorTitleUUID",
+                                                                    "properties": {
+                                                                        "titleValue": "#errorResp",
+                                                                        "isShown": true
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                },
+                                                "eventSource": "click"
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "errorResp",
+                                                    "data": "responseData"
+                                                },
+                                                "eventSource": "click"
+                                            },
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "errorTitleUUID",
+                                                    "properties": {
+                                                        "titleValue": "#errorResp",
+                                                        "isShown": true
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }                           
+                            
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "Result": "SUCCESS"
+}

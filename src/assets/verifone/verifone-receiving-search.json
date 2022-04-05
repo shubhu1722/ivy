@@ -1,0 +1,1539 @@
+{
+    "ResultData": {
+    "ctype": "page",
+    "uuid": "pageUUID",
+    "css": "",
+    "visibility": true,
+    "hooks": [        
+        {
+          "type":"condition",
+          "config": {
+            "operation": "isValid",
+            "lhs": "#receiptId.ReceiptRONumber"
+            },
+            "hookType": "afterInit",
+            "responseDependents":{
+              "onSuccess":{
+                "actions":[
+                  {
+                    "type":"updateComponent",
+                    "config":{
+                      "key":"blindReceiptNumberUUID",
+                      "properties":{
+                        "isShown":true
+                      }
+                    }
+                  }
+                ]
+              },
+              "onFailure":{
+                "actions":[{}]
+              }
+            }
+        },
+        {
+          "type":"condition",
+          "config": {
+            "operation": "isValid",
+            "lhs":"#verifoneReceivingreceiptId.ReceiptID"
+            },
+            "hookType": "afterInit",
+            "responseDependents":{
+              "onSuccess":{
+                "actions":[
+                  {
+                    "type":"updateComponent",
+                    "config":{
+                      "key":"ReceivingreceiptNumberUUID",
+                      "properties":{
+                        "isShown":true
+                      }
+                    }
+                  }
+                ]
+              },
+              "onFailure":{
+                "actions":[{}]
+              }
+            }
+        },
+        {
+          "type": "setVerifoneReceivingSearchOptions",
+          "hookType": "afterInit"
+        },
+        {
+            "type": "context",
+            "hookType": "afterInit",
+            "config": {
+                "requestMethod": "add",
+                "key": "placeHolderData",
+                "data": ""
+            }
+        },
+        {
+            "type": "context",
+            "hookType": "afterInit",
+            "config": {
+                "requestMethod": "add",
+                "key": "receivingScanTypeName",
+                "data": "SN - Quick"
+            }
+        },
+        {
+            "type": "stringOperation",
+            "config": {
+                "key": "placeHolderData",
+                "lstr": "Scan",
+                "rstr": "#receivingScanTypeName",
+                "operation": "concat",
+                "concatSymbol": " "
+            },
+            "hookType": "afterInit"
+        },
+        {
+            "type": "stringOperation",
+            "config": {
+                "key": "placeHolderData",
+                "lstr": "#placeHolderData",
+                "rstr": "Number",
+                "operation": "concat",
+                "concatSymbol": " "
+            },
+            "hookType": "afterInit"
+        },
+        {
+            "type": "updateComponent",
+            "config": {
+                "key": "receivingOrderIdUUID",
+                "properties": {
+                    "placeholder": "#placeHolderData"
+                }
+            },
+            "hookType": "afterInit"
+        }
+    ],
+    "validations": [],
+    "action": [],
+    "header": [
+        {
+            "ctype": "toolbar",
+            "toolbarClass": "searchCriteria-toolbar section-title",
+            "items": [
+                {
+                    "ctype": "title",
+                    "title": "Receiving"
+                }
+            ]
+        }
+    ],
+    "items": [
+      {
+        "ctype":"title",
+        "title": "Blind Receipt Successfull : ",
+        "uuid":"blindReceiptNumberUUID",
+        "titleClass": "success-title",
+        "titleValue":"#receiptId.ReceiptRONumber",
+        "isShown":false
+      },
+      {
+        "ctype":"title",
+        "title": "Receipt Successfull : ",
+        "uuid":"ReceivingreceiptNumberUUID",
+        "titleClass": "success-title",
+        "titleValue":"#verifoneReceivingreceiptId.ReceiptID",
+        "isShown":false
+       },
+        {
+            "ctype": "title",
+            "uuid": "errorTitleUUID",
+            "titleClass": "error-title",
+            "isShown": false
+        },
+        {
+            "ctype": "formPanel",
+            "title": "receiving",
+            "header": "",
+            "uuid": "receivingUUID",
+            "formPanelClass": "searchCriteria-panel",
+            "visibility": true,
+            "hooks": [],
+            "validations": [],
+            "actions": [],
+            "items": [
+                {
+                    "ctype": "nativeDropdown",
+                    "uuid": "receivingTypeUUID",
+                    "hooks": [],
+                    "validations": [],
+                    "actions": [
+                        {
+                            "type": "context",
+                            "config": {
+                                "requestMethod": "add",
+                                "key": "receivingScanTypeName",
+                                "data": "elementControlName"
+                            },
+                            "eventSource": "change"
+                        },
+                        {
+                            "type": "condition",
+                            "config": {
+                                "operation": "isEqualTo",
+                                "lhs": "#receivingScanTypeName",
+                                "rhs": "SN"
+                            },
+                            "eventSource": "change",
+                            "responseDependents": {
+                                "onSuccess": {
+                                    "actions": [
+                                        {
+                                            "type": "stringOperation",
+                                            "config": {
+                                                "key": "placeHolderData",
+                                                "lstr": "Scan",
+                                                "rstr": "Serial Number",
+                                                "operation": "concat",
+                                                "concatSymbol": " "
+                                            },
+                                            "eventSource": "change"
+                                        },
+                                        {
+                                            "type": "updateComponent",
+                                            "config": {
+                                                "key": "receivingOrderIdUUID",
+                                                "properties": {
+                                                    "placeholder": "#placeHolderData"
+                                                }
+                                            },
+                                            "eventSource": "change"
+                                        }
+                                    ]
+                                },
+                                "onFailure": {
+                                    "actions": [
+                                        {
+                                            "type": "stringOperation",
+                                            "config": {
+                                                "key": "placeHolderData",
+                                                "lstr": "Scan",
+                                                "rstr": "#receivingScanTypeName",
+                                                "operation": "concat",
+                                                "concatSymbol": " "
+                                            },
+                                            "eventSource": "change"
+                                        },
+                                        {
+                                            "type": "stringOperation",
+                                            "config": {
+                                                "key": "placeHolderData",
+                                                "lstr": "#placeHolderData",
+                                                "rstr": "Number",
+                                                "operation": "concat",
+                                                "concatSymbol": " "
+                                            },
+                                            "eventSource": "change"
+                                        },
+                                        {
+                                            "type": "updateComponent",
+                                            "config": {
+                                                "key": "receivingOrderIdUUID",
+                                                "properties": {
+                                                    "placeholder": "#placeHolderData"
+                                                }
+                                            },
+                                            "eventSource": "change"
+                                        },
+                                        {
+                                            "type": "condition",
+                                            "config": {
+                                                "operation": "isEqualTo",
+                                                "lhs": "#receivingScanTypeName",
+                                                "rhs": "Homeless"
+                                            },
+                                            "responseDependents": {
+                                                "onSuccess": {
+                                                    "actions": [
+                                                        {
+                                                            "type": "renderTemplate",
+                                                            "config": {
+                                                                "templateId": "verifone/verifone-receiving-homeless.json",
+                                                                "mode": "local"
+                                                            },
+                                                            "eventSource": "click"
+                                                        }
+                                                    ]
+                                                },
+                                                "onFailure": {
+                                                    "actions":[]
+                                                }
+                                            }
+
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ],
+                    "type": "text",
+                    "required": true,
+                    "submitable": true,
+                    "label": "",
+                    "labelPosition": "",
+                    "name": "identificatorTypeForReceiving",
+                    "defaultValue": "",
+                    "dropdownClass": "searchcriteris-drpdwn",
+                    "code": "code",
+                    "displayValue": "displayValue"
+                },
+                {
+                    "ctype": "textField",
+                    "uuid": "receivingOrderIdUUID",
+                    "isUpperCase": true,
+                    "hooks": [],
+                    "validations": [],
+                    "textfieldClass": "searchcriteris-text",
+                    "type": "text",
+                    "required": true,
+                    "placeholder": "",
+                    "submitable": true,
+                    "label": "",
+                    "labelPosition": "",
+                    "name": "receivingOrderIdValue",
+                    "prefix": "true",
+                    "prefixIcon": "qr_code_scanner",
+                    "suffix": true,
+                    "suffixIcon": "arrow_forward",
+                    "actions": [
+                        {
+                          "type":"context",
+                          "config": {
+                            "key": "receiptId",
+                            "data": "",
+                            "requestMethod": "add"
+                          },
+                          "eventSource": "click"
+                        },
+                        {
+                          "type":"context",
+                          "config": {
+                            "key": "verifoneReceivingreceiptId",
+                            "data": "",
+                            "requestMethod": "add"
+                          },
+                          "eventSource": "click"
+                        },
+                        {
+                          "type":"updateComponent",
+                          "eventSource": "click",
+                          "config":{
+                            "key":"blindReceiptNumberUUID",
+                            "properties":{
+                              "isShown":false
+                            }
+                          }
+                        },
+                        {
+                          "type":"updateComponent",
+                          "eventSource": "click",
+                          "config":{
+                            "key":"ReceivingreceiptNumberUUID",
+                            "properties":{
+                              "isShown":false
+                            }
+                          }
+                        },
+                        {
+                            "type": "updateComponent",
+                            "eventSource": "click",
+                            "config": {
+                                "key": "errorTitleUUID",
+                                "properties": {
+                                    "titleValue": "",
+                                    "isShown": false
+                                }
+                            }
+                        },
+                        {
+                            "type": "context",
+                            "config": {
+                                "key": "receivingUserSearchCriteria",
+                                "data": "formData",
+                                "requestMethod": "add"
+                            },
+                            "eventSource": "click"
+                        },
+                        {
+                            "type": "context",
+                            "config": {
+                                "key": "discrepancyUnitInfo",
+                                "data": "",
+                                "requestMethod": "add"
+                            },
+                            "eventSource": "click"
+                        },
+                        {
+                            "type": "context",
+                            "config": {
+                                "key": "repairUnitInfo",
+                                "data": "",
+                                "requestMethod": "add"
+                            },
+                            "eventSource": "click"
+                        },
+                        {
+                            "type": "condition",
+                            "config": {
+                                "operation": "isEqualTo",
+                                "lhs": "#receivingScanTypeName",
+                                "rhs": "SN"
+                            },
+                            "eventSource": "click",
+                            "responseDependents": {
+                                "onSuccess": {
+                                    "actions": [
+                                        {
+                                            "type": "microservice",
+                                            "hookType": "afterInit",
+                                            "config": {
+                                                "microserviceId": "getOrders",
+                                                "requestMethod": "get",
+                                                "params": {
+                                                    "searchCriteriaValue": "#receivingUserSearchCriteria.receivingOrderIdValue",
+                                                    "searchCriteriaName": "SerialNumber",
+                                                    "username": "#loginUUID.username"
+                                                }
+                                            },
+                                            "responseDependents": {
+                                                "onSuccess": {
+                                                    "actions": [
+                                                        {
+                                                            "type": "context",
+                                                            "config": {
+                                                                "requestMethod": "add",
+                                                                "key": "verifoneReceivingOrderDetails",
+                                                                "data": "responseData"
+                                                            }
+                                                        },                                                        
+                                                        {
+                                                            "type": "condition",
+                                                            "config": {
+                                                              "operation": "isEqualTo",
+                                                              "lhs": "#verifoneReceivingOrderDetails.LOCATION_ID",
+                                                              "rhs": "#userSelectedLocation"
+                                                            },
+                                                            "responseDependents": {
+                                                              "onSuccess": {
+                                                                "actions": [
+                                                                  {
+                                                                    "type": "condition",
+                                                                    "config": {
+                                                                      "operation": "isEqualTo",
+                                                                      "lhs": "#verifoneReceivingOrderDetails.CLIENT_ID",
+                                                                      "rhs": "#userSelectedClient"
+                                                                    },
+                                                                    "responseDependents": {
+                                                                      "onSuccess": {
+                                                                        "actions": [
+                                                                          {
+                                                                            "type": "condition",
+                                                                            "config": {
+                                                                              "operation": "isEqualTo",
+                                                                              "lhs": "#verifoneReceivingOrderDetails.CONTRACT_ID",
+                                                                              "rhs": "#userSelectedContract"
+                                                                            },
+                                                                            "responseDependents": {
+                                                                              "onSuccess": {
+                                                                                "actions": [
+                                                                                  {
+                                                                                    "type": "microservice",
+                                                                                    "eventSource": "click",
+                                                                                    "config": {
+                                                                                      "microserviceId": "getSubProcessMenu",
+                                                                                      "isLocal": false,
+                                                                                      "LocalService": "assets/Responses/getSubProcessMenu.json",
+                                                                                      "requestMethod": "get",
+                                                                                      "params": {
+                                                                                        "userId": "#loginUUID.username",
+                                                                                        "locationId": "#userSelectedLocation",
+                                                                                        "clientId": "#userSelectedClient",
+                                                                                        "contractId": "#userSelectedContract",
+                                                                                        "wcId": 1,
+                                                                                        "optId": 1,
+                                                                                        "btt": 1,
+                                                                                        "whId": "1",
+                                                                                        "operationType": "#userSelectedSubProcessType",
+                                                                                        "workCenterName": ""
+                                                                                      }
+                                                                                    },
+                                                                                    "responseDependents": {
+                                                                                      "onSuccess": {
+                                                                                        "actions": [
+                                                                                          {
+                                                                                            "type": "context",
+                                                                                            "config": {
+                                                                                              "requestMethod": "add",
+                                                                                              "key": "SubprocessMenu",
+                                                                                              "data": ""
+                                                                                            }
+                                                                                          },
+                                                                                          {
+                                                                                            "type": "microservice",
+                                                                                            "config": {
+                                                                                              "microserviceId": "getProcess",
+                                                                                              "requestMethod": "get",
+                                                                                              "parseJson": true,
+                                                                                              "params": {
+                                                                                                "locationId": "#userSelectedLocation",
+                                                                                                "clientId": "#userSelectedClient",
+                                                                                                "contractId": "#userSelectedContract",
+                                                                                                "btt": 1,
+                                                                                                "optId": 1,
+                                                                                                "whId": 1,
+                                                                                                "userId": "#userAccountInfo.PersonalDetails.USERID",
+                                                                                                "wcId": 1,
+                                                                                                "operationType": "#userSelectedSubProcessType",
+                                                                                                "workCenterName": ""
+                                                                                              }
+                                                                                            },
+                                                                                            "responseDependents": {
+                                                                                              "onSuccess": {
+                                                                                                "actions": [
+                                                                                                  {
+                                                                                                    "type": "context",
+                                                                                                    "config": {
+                                                                                                      "requestMethod": "add",
+                                                                                                      "key": "getProcessData",
+                                                                                                      "data": "responseData"
+                                                                                                    }
+                                                                                                  },
+                                                                                                  {
+                                                                                                    "type": "microservice",
+                                                                                                    "config": {
+                                                                                                        "microserviceId": "validateSerialScan",
+                                                                                                        "requestMethod": "post",
+                                                                                                        "body": {
+                                                                                                            "LOCATIONID": "#verifoneReceivingOrderDetails.LOCATION_ID",
+                                                                                                            "CLIENTID": "#verifoneReceivingOrderDetails.CLIENT_ID",
+                                                                                                            "FAT": "#verifoneReceivingOrderDetails.TP_ORDER_NO",
+                                                                                                            "CLIEREF1": "#verifoneReceivingOrderDetails.CLIENT_REFERENCE_NO1",
+                                                                                                            "CLIEREF2": "#verifoneReceivingOrderDetails.CLIENT_REFERENCE_NO2",
+                                                                                                            "P_USERNAME": "#userAccountInfo.PersonalDetails.USERID",
+                                                                                                            "QRCode": "#receivingUserSearchCriteria.receivingOrderIdValue",
+                                                                                                            "RefOrderID": "#verifoneReceivingOrderDetails.REFERENCE_ORDER_ID",
+                                                                                                            "CONTRACT": "#verifoneReceivingOrderDetails.CONTRACT_ID",
+                                                                                                            "InboundOrderId": "#verifoneReceivingOrderDetails.INBOUND_ORDER_ID",
+                                                                                                            "isCSOCheck": "true"
+                                                                                                        },
+                                                                                                        "toBeStringified": true
+                                                                                                    },
+                                                                                                    "hookType": "afterInit",
+                                                                                                    "responseDependents": {
+                                                                                                        "onSuccess": {
+                                                                                                            "actions": [
+                                                                                                                {
+                                                                                                                    "type": "context",
+                                                                                                                    "config": {
+                                                                                                                        "requestMethod": "add",
+                                                                                                                        "key": "verifoneReceivingScanSerialNumberResp",
+                                                                                                                        "data": "responseData"
+                                                                                                                    }
+                                                                                                                },
+                                                                                                                {
+                                                                                                                  "hookType":"afterInit",
+                                                                                                                  "type":"microservice",
+                                                                                                                  "config": {
+                                                                                                                      "microserviceId": "getReceivingLPanelDetails",
+                                                                                                                      "requestMethod": "get",
+                                                                                                                      "params": {
+                                                                                                                          "locationId": "#verifoneReceivingOrderDetails.LOCATION_ID",
+                                                                                                                          "clientId": "#verifoneReceivingOrderDetails.CLIENT_ID",
+                                                                                                                          "contractId":"#verifoneReceivingOrderDetails.CONTRACT_ID",
+                                                                                                                          "bttId":"1",
+                                                                                                                          "referenceOrderId":"#verifoneReceivingOrderDetails.REFERENCE_ORDER_ID",
+                                                                                                                          "identificatorType":"SN",
+                                                                                                                          "identificatorValue":"#receivingUserSearchCriteria.receivingOrderIdValue",
+                                                                                                                          "serialNo": "#verifoneReceivingOrderDetails.CLIENT_REFERENCE_NO2",
+                                                                                                                          "pr": "#verifoneReceivingOrderDetails.CLIENT_REFERENCE_NO1",
+                                                                                                                          "rma": "#verifoneReceivingOrderDetails.CLIENT_REFERENCE_NO1",
+                                                                                                                          "login": "#loginUUID.username"
+                                                                                                                      }                    
+                                                                                                                  },
+                                                                                                                  "responseDependents": {
+                                                                                                                      "onSuccess": {
+                                                                                                                          "actions": [
+                                                                                                                              {
+                                                                                                                                  "type": "context",
+                                                                                                                                  "config": {
+                                                                                                                                      "requestMethod": "add",
+                                                                                                                                      "key": "verifoneUnitHeaderData",
+                                                                                                                                      "data": "responseData"
+                                                                                                                                  }
+                                                                                                                              },
+                                                                                                                              {
+                                                                                                                                "type": "renderTemplate",
+                                                                                                                                "config": {
+                                                                                                                                    "templateId": "verifone/verifone-receiving-sn-pr.json",
+                                                                                                                                    "mode": "local"
+                                                                                                                                },
+                                                                                                                                "eventSource": "click"
+                                                                                                                              }
+                                                                                                                          ]
+                                                                                                                      },
+                                                                                                                      "onFailure": {
+                                                                                                                          "actions": [
+                                                                                                                            {
+                                                                                                                              "type": "renderTemplate",
+                                                                                                                              "config": {
+                                                                                                                                  "templateId": "verifone/verifone-receiving-sn-pr.json",
+                                                                                                                                  "mode": "local"
+                                                                                                                              },
+                                                                                                                              "eventSource": "click"
+                                                                                                                            }
+                                                                                                                          ]
+                                                                                                                      }
+                                                                                                                  }
+                                                                                                                  
+                                                                                                                }                                                                                                                
+                                                                                                            ]
+                                                                                                        },
+                                                                                                        "onFailure": {
+                                                                                                            "actions": [
+                                                                                                                {
+                                                                                                                    "type": "context",
+                                                                                                                    "config": {
+                                                                                                                        "requestMethod": "add",
+                                                                                                                        "key": "verifoneReceivingScanSerialNumberErrorResp",
+                                                                                                                        "data": "responseData"
+                                                                                                                    }
+                                                                                                                },
+                                                                                                                {
+                                                                                                                    "type": "updateComponent",
+                                                                                                                    "config": {
+                                                                                                                        "key": "errorTitleUUID",
+                                                                                                                        "properties": {
+                                                                                                                            "titleValue": "#verifoneReceivingScanSerialNumberErrorResp",
+                                                                                                                            "isShown": true
+                                                                                                                        }
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            ]
+                                                                                                        }
+                                                                                                    }
+                                                                                                 } 
+                                                                                                ]
+                                                                                              },
+                                                                                              "onFailure": {
+                                                                                                "actions": [
+                                                                                                  {
+                                                                                                    "type": "context",
+                                                                                                    "config": {
+                                                                                                      "requestMethod": "add",
+                                                                                                      "key": "getProcessData",
+                                                                                                      "data": "responseData"
+                                                                                                    }
+                                                                                                  },
+                                                                                                  {
+                                                                                                    "type": "updateComponent",
+                                                                                                    "config": {
+                                                                                                      "key": "errorTitleUUID",
+                                                                                                      "properties": {
+                                                                                                        "titleValue": "#getProcessData",
+                                                                                                        "isShown": true
+                                                                                                      }
+                                                                                                    }
+                                                                                                  }
+                                                                                                ]
+                                                                                              }
+                                                                                            }
+                                                                                          }
+                                                                                        ]
+                                                                                      },
+                                                                                      "onFailure": {
+                                                                                        "actions": [
+                                                                                          {
+                                                                                            "type": "updateComponent",
+                                                                                            "config": {
+                                                                                              "key": "errorTitleUUID",
+                                                                                              "properties": {
+                                                                                                "titleValue": "Failed to fetch getSubprocess Menu.",
+                                                                                                "isShown": true
+                                                                                              }
+                                                                                            }
+                                                                                          }
+                                                                                        ]
+                                                                                      }
+                                                                                    }
+                                                                                  }
+                                                                                ]
+                                                                              },
+                                                                              "onFailure": {
+                                                                                "actions": [
+                                                                                  {
+                                                                                    "type": "updateComponent",
+                                                                                    "config": {
+                                                                                      "key": "errorTitleUUID",
+                                                                                      "properties": {
+                                                                                        "titleValue": "This unit doesn't belong to selected Location/Client/Contract. Please scan the correct unit.",
+                                                                                        "isShown": true
+                                                                                      }
+                                                                                    }
+                                                                                  }
+                                                                                ]
+                                                                              }
+                                                                            }
+                                                                          }
+                                                                        ]
+                                                                      },
+                                                                      "onFailure": {
+                                                                        "actions": [
+                                                                          {
+                                                                            "type": "updateComponent",
+                                                                            "config": {
+                                                                              "key": "errorTitleUUID",
+                                                                              "properties": {
+                                                                                "titleValue": "This unit doesn't belong to selected Location/Client/Contract. Please scan the correct unit.",
+                                                                                "isShown": true
+                                                                              }
+                                                                            }
+                                                                          }
+                                                                        ]
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                ]
+                                                              },
+                                                              "onFailure": {
+                                                                "actions": [
+                                                                  {
+                                                                    "type": "updateComponent",
+                                                                    "config": {
+                                                                      "key": "errorTitleUUID",
+                                                                      "properties": {
+                                                                        "titleValue": "This unit doesn't belong to selected Location/Client/Contract. Please scan the correct unit.",
+                                                                        "isShown": true
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                ]
+                                                              }
+                                                            }
+                                                        }                                                     
+                                                    ]
+                                                },
+                                                "onFailure": {
+                                                    "actions": [
+                                                        {
+                                                            "type": "updateComponent",
+                                                            "config": {
+                                                                "key": "errorTitleUUID",
+                                                                "properties": {
+                                                                    "titleValue": "No Order Found",
+                                                                    "isShown": true
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            }
+                                        }
+                                    ]
+                                },
+                                "onFailure": {
+                                    "actions": [
+                                        {
+                                            "type": "condition",
+                                            "config": {
+                                                "operation": "isEqualTo",
+                                                "lhs": "#receivingScanTypeName",
+                                                "rhs": "RMA"
+                                            },
+                                            "eventSource": "click",
+                                            "responseDependents": {
+                                                "onSuccess": {
+                                                    "actions": [
+                                                        {
+                                                            "type": "renderTemplate",
+                                                            "config": {
+                                                                "templateId": "verifone/verifone-receiving-rma-list.json",
+                                                                "mode": "local"
+                                                            },
+                                                            "eventSource": "click"
+                                                        }
+                                                    ]
+                                                },
+                                                "onFailure": {
+                                                    "actions": [
+                                                        {
+                                                            "type": "condition",
+                                                            "config": {
+                                                                "operation": "isEqualTo",
+                                                                "lhs": "#receivingScanTypeName",
+                                                                "rhs": "PR"
+                                                            },
+                                                            "eventSource": "click",
+                                                            "responseDependents": {
+                                                                "onSuccess": {
+                                                                    "actions": [
+                                                                        {
+                                                                            "type": "microservice",
+                                                                            "hookType": "afterInit",
+                                                                            "config": {
+                                                                                "microserviceId": "getOrders",
+                                                                                "requestMethod": "get",
+                                                                                "params": {
+                                                                                    "searchCriteriaValue": "#receivingUserSearchCriteria.receivingOrderIdValue",
+                                                                                    "searchCriteriaName": "SerialNumber",
+                                                                                    "username": "#loginUUID.username"
+                                                                                }
+                                                                            },
+                                                                            "responseDependents": {
+                                                                                "onSuccess": {
+                                                                                    "actions": [
+                                                                                        {
+                                                                                            "type": "context",
+                                                                                            "config": {
+                                                                                                "requestMethod": "add",
+                                                                                                "key": "verifoneReceivingOrderDetails",
+                                                                                                "data": "responseData"
+                                                                                            }
+                                                                                        },                                                                                        
+                                                                                        {
+                                                                                            "type": "condition",
+                                                                                            "config": {
+                                                                                              "operation": "isEqualTo",
+                                                                                              "lhs": "#verifoneReceivingOrderDetails.LOCATION_ID",
+                                                                                              "rhs": "#userSelectedLocation"
+                                                                                            },
+                                                                                            "responseDependents": {
+                                                                                              "onSuccess": {
+                                                                                                "actions": [
+                                                                                                  {
+                                                                                                    "type": "condition",
+                                                                                                    "config": {
+                                                                                                      "operation": "isEqualTo",
+                                                                                                      "lhs": "#verifoneReceivingOrderDetails.CLIENT_ID",
+                                                                                                      "rhs": "#userSelectedClient"
+                                                                                                    },
+                                                                                                    "responseDependents": {
+                                                                                                      "onSuccess": {
+                                                                                                        "actions": [
+                                                                                                          {
+                                                                                                            "type": "condition",
+                                                                                                            "config": {
+                                                                                                              "operation": "isEqualTo",
+                                                                                                              "lhs": "#verifoneReceivingOrderDetails.CONTRACT_ID",
+                                                                                                              "rhs": "#userSelectedContract"
+                                                                                                            },
+                                                                                                            "responseDependents": {
+                                                                                                              "onSuccess": {
+                                                                                                                "actions": [
+                                                                                                                  {
+                                                                                                                    "type": "microservice",
+                                                                                                                    "eventSource": "click",
+                                                                                                                    "config": {
+                                                                                                                      "microserviceId": "getSubProcessMenu",
+                                                                                                                      "isLocal": false,
+                                                                                                                      "LocalService": "assets/Responses/getSubProcessMenu.json",
+                                                                                                                      "requestMethod": "get",
+                                                                                                                      "params": {
+                                                                                                                        "userId": "#loginUUID.username",
+                                                                                                                        "locationId": "#userSelectedLocation",
+                                                                                                                        "clientId": "#userSelectedClient",
+                                                                                                                        "contractId": "#userSelectedContract",
+                                                                                                                        "wcId": 1,
+                                                                                                                        "optId": 1,
+                                                                                                                        "btt": 1,
+                                                                                                                        "whId": "1",
+                                                                                                                        "operationType": "#userSelectedSubProcessType",
+                                                                                                                        "workCenterName": ""
+                                                                                                                      }
+                                                                                                                    },
+                                                                                                                    "responseDependents": {
+                                                                                                                      "onSuccess": {
+                                                                                                                        "actions": [
+                                                                                                                          {
+                                                                                                                            "type": "context",
+                                                                                                                            "config": {
+                                                                                                                              "requestMethod": "add",
+                                                                                                                              "key": "SubprocessMenu",
+                                                                                                                              "data": ""
+                                                                                                                            }
+                                                                                                                          },
+                                                                                                                          {
+                                                                                                                            "type": "microservice",
+                                                                                                                            "config": {
+                                                                                                                              "microserviceId": "getProcess",
+                                                                                                                              "requestMethod": "get",
+                                                                                                                              "parseJson": true,
+                                                                                                                              "params": {
+                                                                                                                                "locationId": "#userSelectedLocation",
+                                                                                                                                "clientId": "#userSelectedClient",
+                                                                                                                                "contractId": "#userSelectedContract",
+                                                                                                                                "btt": 1,
+                                                                                                                                "optId": 1,
+                                                                                                                                "whId": 1,
+                                                                                                                                "userId": "#userAccountInfo.PersonalDetails.USERID",
+                                                                                                                                "wcId": 1,
+                                                                                                                                "operationType": "#userSelectedSubProcessType",
+                                                                                                                                "workCenterName": ""
+                                                                                                                              }
+                                                                                                                            },
+                                                                                                                            "responseDependents": {
+                                                                                                                              "onSuccess": {
+                                                                                                                                "actions": [
+                                                                                                                                  {
+                                                                                                                                    "type": "context",
+                                                                                                                                    "config": {
+                                                                                                                                      "requestMethod": "add",
+                                                                                                                                      "key": "getProcessData",
+                                                                                                                                      "data": "responseData"
+                                                                                                                                    }
+                                                                                                                                  },
+                                                                                                                                  {
+                                                                                                                                    "type": "microservice",
+                                                                                                                                    "config": {
+                                                                                                                                        "microserviceId": "validateSerialScan",
+                                                                                                                                        "requestMethod": "post",
+                                                                                                                                        "body": {
+                                                                                                                                            "LOCATIONID": "#verifoneReceivingOrderDetails.LOCATION_ID",
+                                                                                                                                            "CLIENTID": "#verifoneReceivingOrderDetails.CLIENT_ID",
+                                                                                                                                            "FAT": "#verifoneReceivingOrderDetails.TP_ORDER_NO",
+                                                                                                                                            "CLIEREF1": "#verifoneReceivingOrderDetails.CLIENT_REFERENCE_NO1",
+                                                                                                                                            "CLIEREF2": "#verifoneReceivingOrderDetails.CLIENT_REFERENCE_NO2",
+                                                                                                                                            "P_USERNAME": "#userAccountInfo.PersonalDetails.USERID",
+                                                                                                                                            "QRCode": "#receivingUserSearchCriteria.receivingOrderIdValue",
+                                                                                                                                            "RefOrderID": "#verifoneReceivingOrderDetails.REFERENCE_ORDER_ID",
+                                                                                                                                            "CONTRACT": "#verifoneReceivingOrderDetails.CONTRACT_ID",
+                                                                                                                                            "InboundOrderId": "#verifoneReceivingOrderDetails.INBOUND_ORDER_ID",
+                                                                                                                                            "isCSOCheck": "true"
+                                                                                                                                        },
+                                                                                                                                        "toBeStringified": true
+                                                                                                                                    },
+                                                                                                                                    "hookType": "afterInit",
+                                                                                                                                    "responseDependents": {
+                                                                                                                                        "onSuccess": {
+                                                                                                                                            "actions": [
+                                                                                                                                                {
+                                                                                                                                                    "type": "context",
+                                                                                                                                                    "config": {
+                                                                                                                                                        "requestMethod": "add",
+                                                                                                                                                        "key": "verifoneReceivingScanSerialNumberResp",
+                                                                                                                                                        "data": "responseData"
+                                                                                                                                                    }
+                                                                                                                                                },
+                                                                                                                                                {
+                                                                                                                                                  "hookType":"afterInit",
+                                                                                                                                                  "type":"microservice",
+                                                                                                                                                  "config": {
+                                                                                                                                                      "microserviceId": "getReceivingLPanelDetails",
+                                                                                                                                                      "requestMethod": "get",
+                                                                                                                                                      "params": {
+                                                                                                                                                          "locationId": "#verifoneReceivingOrderDetails.LOCATION_ID",
+                                                                                                                                                          "clientId": "#verifoneReceivingOrderDetails.CLIENT_ID",
+                                                                                                                                                          "contractId":"#verifoneReceivingOrderDetails.CONTRACT_ID",
+                                                                                                                                                          "bttId":"1",
+                                                                                                                                                          "referenceOrderId":"#verifoneReceivingOrderDetails.REFERENCE_ORDER_ID",
+                                                                                                                                                          "identificatorType":"SN",
+                                                                                                                                                          "identificatorValue":"#receivingUserSearchCriteria.receivingOrderIdValue",
+                                                                                                                                                          "serialNo": "#verifoneReceivingOrderDetails.CLIENT_REFERENCE_NO2",
+                                                                                                                                                          "pr": "#verifoneReceivingOrderDetails.CLIENT_REFERENCE_NO1",
+                                                                                                                                                          "rma": "#verifoneReceivingOrderDetails.CLIENT_REFERENCE_NO1",
+                                                                                                                                                          "login": "#loginUUID.username"
+                                                                                                                                                      }                    
+                                                                                                                                                  },
+                                                                                                                                                  "responseDependents": {
+                                                                                                                                                      "onSuccess": {
+                                                                                                                                                          "actions": [
+                                                                                                                                                              {
+                                                                                                                                                                  "type": "context",
+                                                                                                                                                                  "config": {
+                                                                                                                                                                      "requestMethod": "add",
+                                                                                                                                                                      "key": "verifoneUnitHeaderData",
+                                                                                                                                                                      "data": "responseData"
+                                                                                                                                                                  }
+                                                                                                                                                              },
+                                                                                                                                                              {
+                                                                                                                                                                "type": "renderTemplate",
+                                                                                                                                                                "config": {
+                                                                                                                                                                    "templateId": "verifone/verifone-receiving-sn-pr.json",
+                                                                                                                                                                    "mode": "local"
+                                                                                                                                                                },
+                                                                                                                                                                "eventSource": "click"
+                                                                                                                                                              }
+                                                                                                                                                          ]
+                                                                                                                                                      },
+                                                                                                                                                      "onFailure": {
+                                                                                                                                                          "actions": [
+                                                                                                                                                            {
+                                                                                                                                                              "type": "renderTemplate",
+                                                                                                                                                              "config": {
+                                                                                                                                                                  "templateId": "verifone/verifone-receiving-sn-pr.json",
+                                                                                                                                                                  "mode": "local"
+                                                                                                                                                              },
+                                                                                                                                                              "eventSource": "click"
+                                                                                                                                                           }
+                                                                                                                                                          ]
+                                                                                                                                                      }
+                                                                                                                                                  }
+                                                                                                                                                  
+                                                                                                                                              }                                                                                                                                                
+                                                                                                                                            ]
+                                                                                                                                        },
+                                                                                                                                        "onFailure": {
+                                                                                                                                            "actions": [
+                                                                                                                                                {
+                                                                                                                                                    "type": "context",
+                                                                                                                                                    "config": {
+                                                                                                                                                        "requestMethod": "add",
+                                                                                                                                                        "key": "verifoneReceivingScanSerialNumberErrorResp",
+                                                                                                                                                        "data": "responseData"
+                                                                                                                                                    }
+                                                                                                                                                },
+                                                                                                                                                {
+                                                                                                                                                    "type": "updateComponent",
+                                                                                                                                                    "config": {
+                                                                                                                                                        "key": "errorTitleUUID",
+                                                                                                                                                        "properties": {
+                                                                                                                                                            "titleValue": "#verifoneReceivingScanSerialNumberErrorResp",
+                                                                                                                                                            "isShown": true
+                                                                                                                                                        }
+                                                                                                                                                    }
+                                                                                                                                                }
+                                                                                                                                            ]
+                                                                                                                                        }
+                                                                                                                                    }
+                                                                                                                                 } 
+                                                                                                                                ]
+                                                                                                                              },
+                                                                                                                              "onFailure": {
+                                                                                                                                "actions": [
+                                                                                                                                  {
+                                                                                                                                    "type": "context",
+                                                                                                                                    "config": {
+                                                                                                                                      "requestMethod": "add",
+                                                                                                                                      "key": "getProcessData",
+                                                                                                                                      "data": "responseData"
+                                                                                                                                    }
+                                                                                                                                  },
+                                                                                                                                  {
+                                                                                                                                    "type": "updateComponent",
+                                                                                                                                    "config": {
+                                                                                                                                      "key": "errorTitleUUID",
+                                                                                                                                      "properties": {
+                                                                                                                                        "titleValue": "#getProcessData",
+                                                                                                                                        "isShown": true
+                                                                                                                                      }
+                                                                                                                                    }
+                                                                                                                                  }
+                                                                                                                                ]
+                                                                                                                              }
+                                                                                                                            }
+                                                                                                                          }
+                                                                                                                        ]
+                                                                                                                      },
+                                                                                                                      "onFailure": {
+                                                                                                                        "actions": [
+                                                                                                                          {
+                                                                                                                            "type": "updateComponent",
+                                                                                                                            "config": {
+                                                                                                                              "key": "errorTitleUUID",
+                                                                                                                              "properties": {
+                                                                                                                                "titleValue": "Failed to fetch getSubprocess Menu.",
+                                                                                                                                "isShown": true
+                                                                                                                              }
+                                                                                                                            }
+                                                                                                                          }
+                                                                                                                        ]
+                                                                                                                      }
+                                                                                                                    }
+                                                                                                                  }
+                                                                                                                ]
+                                                                                                              },
+                                                                                                              "onFailure": {
+                                                                                                                "actions": [
+                                                                                                                  {
+                                                                                                                    "type": "updateComponent",
+                                                                                                                    "config": {
+                                                                                                                      "key": "errorTitleUUID",
+                                                                                                                      "properties": {
+                                                                                                                        "titleValue": "This unit doesn't belong to selected Location/Client/Contract. Please scan the correct unit.",
+                                                                                                                        "isShown": true
+                                                                                                                      }
+                                                                                                                    }
+                                                                                                                  }
+                                                                                                                ]
+                                                                                                              }
+                                                                                                            }
+                                                                                                          }
+                                                                                                        ]
+                                                                                                      },
+                                                                                                      "onFailure": {
+                                                                                                        "actions": [
+                                                                                                          {
+                                                                                                            "type": "updateComponent",
+                                                                                                            "config": {
+                                                                                                              "key": "errorTitleUUID",
+                                                                                                              "properties": {
+                                                                                                                "titleValue": "This unit doesn't belong to selected Location/Client/Contract. Please scan the correct unit.",
+                                                                                                                "isShown": true
+                                                                                                              }
+                                                                                                            }
+                                                                                                          }
+                                                                                                        ]
+                                                                                                      }
+                                                                                                    }
+                                                                                                  }
+                                                                                                ]
+                                                                                              },
+                                                                                              "onFailure": {
+                                                                                                "actions": [
+                                                                                                  {
+                                                                                                    "type": "updateComponent",
+                                                                                                    "config": {
+                                                                                                      "key": "errorTitleUUID",
+                                                                                                      "properties": {
+                                                                                                        "titleValue": "This unit doesn't belong to selected Location/Client/Contract. Please scan the correct unit.",
+                                                                                                        "isShown": true
+                                                                                                      }
+                                                                                                    }
+                                                                                                  }
+                                                                                                ]
+                                                                                              }
+                                                                                            }
+                                                                                        }                                                     
+                                                                                    ]
+                                                                                },
+                                                                                "onFailure": {
+                                                                                    "actions": [
+                                                                                        {
+                                                                                            "type": "updateComponent",
+                                                                                            "config": {
+                                                                                                "key": "errorTitleUUID",
+                                                                                                "properties": {
+                                                                                                    "titleValue": "No Order Found",
+                                                                                                    "isShown": true
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                    ]
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                },
+                                                                "onFailure": {
+                                                                    "actions": [
+                                                                        {
+                                                                            "type": "condition",
+                                                                            "config": {
+                                                                                "operation": "isEqualTo",
+                                                                                "lhs": "#receivingScanTypeName",
+                                                                                "rhs": "Homeless"
+                                                                            },
+                                                                            "eventSource": "click",
+                                                                            "responseDependents": {
+                                                                                "onSuccess": {
+                                                                                    "actions": [
+                                                                                        {
+                                                                                            "type": "renderTemplate",
+                                                                                            "config": {
+                                                                                                "templateId": "verifone/verifone-receiving-homeless.json",
+                                                                                                "mode": "local"
+                                                                                            },
+                                                                                            "eventSource": "click"
+                                                                                        }
+                                                                                    ]
+                                                                                },
+                                                                                "onFailure": {
+                                                                                    "actions": [
+                                                                                        {
+                                                                                            "type": "condition",
+                                                                                            "config": {
+                                                                                                "operation": "isEqualTo",
+                                                                                                "lhs": "#receivingScanTypeName",
+                                                                                                "rhs": "SN - Quick"
+                                                                                            },
+                                                                                            "eventSource": "click",
+                                                                                            "responseDependents": {
+                                                                                                "onSuccess": {
+                                                                                                    "actions": [
+                                                                                                      {
+                                                                                                        "type": "microservice",
+                                                                                                        "hookType": "afterInit",
+                                                                                                        "config": {
+                                                                                                            "microserviceId": "getOrders",
+                                                                                                            "requestMethod": "get",
+                                                                                                            "params": {
+                                                                                                                "searchCriteriaValue": "#receivingUserSearchCriteria.receivingOrderIdValue",
+                                                                                                                "searchCriteriaName": "SerialNumber",
+                                                                                                                "username": "#loginUUID.username"
+                                                                                                            }
+                                                                                                        },
+                                                                                                        "responseDependents": {
+                                                                                                            "onSuccess": {
+                                                                                                                "actions": [
+                                                                                                                    {
+                                                                                                                        "type": "context",
+                                                                                                                        "config": {
+                                                                                                                            "requestMethod": "add",
+                                                                                                                            "key": "verifoneReceivingOrderDetails",
+                                                                                                                            "data": "responseData"
+                                                                                                                        }
+                                                                                                                    },                                                        
+                                                                                                                    {
+                                                                                                                        "type": "condition",
+                                                                                                                        "config": {
+                                                                                                                          "operation": "isEqualTo",
+                                                                                                                          "lhs": "#verifoneReceivingOrderDetails.LOCATION_ID",
+                                                                                                                          "rhs": "#userSelectedLocation"
+                                                                                                                        },
+                                                                                                                        "responseDependents": {
+                                                                                                                          "onSuccess": {
+                                                                                                                            "actions": [
+                                                                                                                              {
+                                                                                                                                "type": "condition",
+                                                                                                                                "config": {
+                                                                                                                                  "operation": "isEqualTo",
+                                                                                                                                  "lhs": "#verifoneReceivingOrderDetails.CLIENT_ID",
+                                                                                                                                  "rhs": "#userSelectedClient"
+                                                                                                                                },
+                                                                                                                                "responseDependents": {
+                                                                                                                                  "onSuccess": {
+                                                                                                                                    "actions": [
+                                                                                                                                      {
+                                                                                                                                        "type": "condition",
+                                                                                                                                        "config": {
+                                                                                                                                          "operation": "isEqualTo",
+                                                                                                                                          "lhs": "#verifoneReceivingOrderDetails.CONTRACT_ID",
+                                                                                                                                          "rhs": "#userSelectedContract"
+                                                                                                                                        },
+                                                                                                                                        "responseDependents": {
+                                                                                                                                          "onSuccess": {
+                                                                                                                                            "actions": [
+                                                                                                                                              {
+                                                                                                                                                "type": "microservice",
+                                                                                                                                                "eventSource": "click",
+                                                                                                                                                "config": {
+                                                                                                                                                  "microserviceId": "getSubProcessMenu",
+                                                                                                                                                  "isLocal": false,
+                                                                                                                                                  "LocalService": "assets/Responses/getSubProcessMenu.json",
+                                                                                                                                                  "requestMethod": "get",
+                                                                                                                                                  "params": {
+                                                                                                                                                    "userId": "#loginUUID.username",
+                                                                                                                                                    "locationId": "#userSelectedLocation",
+                                                                                                                                                    "clientId": "#userSelectedClient",
+                                                                                                                                                    "contractId": "#userSelectedContract",
+                                                                                                                                                    "wcId": 1,
+                                                                                                                                                    "optId": 1,
+                                                                                                                                                    "btt": 1,
+                                                                                                                                                    "whId": "1",
+                                                                                                                                                    "operationType": "#userSelectedSubProcessType",
+                                                                                                                                                    "workCenterName": ""
+                                                                                                                                                  }
+                                                                                                                                                },
+                                                                                                                                                "responseDependents": {
+                                                                                                                                                  "onSuccess": {
+                                                                                                                                                    "actions": [
+                                                                                                                                                      {
+                                                                                                                                                        "type": "context",
+                                                                                                                                                        "config": {
+                                                                                                                                                          "requestMethod": "add",
+                                                                                                                                                          "key": "SubprocessMenu",
+                                                                                                                                                          "data": ""
+                                                                                                                                                        }
+                                                                                                                                                      },
+                                                                                                                                                      {
+                                                                                                                                                        "type": "microservice",
+                                                                                                                                                        "config": {
+                                                                                                                                                          "microserviceId": "getProcess",
+                                                                                                                                                          "requestMethod": "get",
+                                                                                                                                                          "parseJson": true,
+                                                                                                                                                          "params": {
+                                                                                                                                                            "locationId": "#userSelectedLocation",
+                                                                                                                                                            "clientId": "#userSelectedClient",
+                                                                                                                                                            "contractId": "#userSelectedContract",
+                                                                                                                                                            "btt": 1,
+                                                                                                                                                            "optId": 1,
+                                                                                                                                                            "whId": 1,
+                                                                                                                                                            "userId": "#userAccountInfo.PersonalDetails.USERID",
+                                                                                                                                                            "wcId": 1,
+                                                                                                                                                            "operationType": "#userSelectedSubProcessType",
+                                                                                                                                                            "workCenterName": ""
+                                                                                                                                                          }
+                                                                                                                                                        },
+                                                                                                                                                        "responseDependents": {
+                                                                                                                                                          "onSuccess": {
+                                                                                                                                                            "actions": [
+                                                                                                                                                              {
+                                                                                                                                                                "type": "context",
+                                                                                                                                                                "config": {
+                                                                                                                                                                  "requestMethod": "add",
+                                                                                                                                                                  "key": "getProcessData",
+                                                                                                                                                                  "data": "responseData"
+                                                                                                                                                                }
+                                                                                                                                                              },
+                                                                                                                                                              {
+                                                                                                                                                                "type": "microservice",
+                                                                                                                                                                "config": {
+                                                                                                                                                                    "microserviceId": "validateSerialScan",
+                                                                                                                                                                    "requestMethod": "post",
+                                                                                                                                                                    "body": {
+                                                                                                                                                                        "LOCATIONID": "#verifoneReceivingOrderDetails.LOCATION_ID",
+                                                                                                                                                                        "CLIENTID": "#verifoneReceivingOrderDetails.CLIENT_ID",
+                                                                                                                                                                        "FAT": "#verifoneReceivingOrderDetails.TP_ORDER_NO",
+                                                                                                                                                                        "CLIEREF1": "#verifoneReceivingOrderDetails.CLIENT_REFERENCE_NO1",
+                                                                                                                                                                        "CLIEREF2": "#verifoneReceivingOrderDetails.CLIENT_REFERENCE_NO2",
+                                                                                                                                                                        "P_USERNAME": "#userAccountInfo.PersonalDetails.USERID",
+                                                                                                                                                                        "QRCode": "#receivingUserSearchCriteria.receivingOrderIdValue",
+                                                                                                                                                                        "RefOrderID": "#verifoneReceivingOrderDetails.REFERENCE_ORDER_ID",
+                                                                                                                                                                        "CONTRACT": "#verifoneReceivingOrderDetails.CONTRACT_ID",
+                                                                                                                                                                        "InboundOrderId": "#verifoneReceivingOrderDetails.INBOUND_ORDER_ID",
+                                                                                                                                                                        "isCSOCheck": "true"
+                                                                                                                                                                    },
+                                                                                                                                                                    "toBeStringified": true
+                                                                                                                                                                },
+                                                                                                                                                                "hookType": "afterInit",
+                                                                                                                                                                "responseDependents": {
+                                                                                                                                                                    "onSuccess": {
+                                                                                                                                                                        "actions": [
+                                                                                                                                                                            {
+                                                                                                                                                                                "type": "context",
+                                                                                                                                                                                "config": {
+                                                                                                                                                                                    "requestMethod": "add",
+                                                                                                                                                                                    "key": "verifoneReceivingScanSerialNumberResp",
+                                                                                                                                                                                    "data": "responseData"
+                                                                                                                                                                                }
+                                                                                                                                                                            },
+                                                                                                                                                                            {
+                                                                                                                                                                              "hookType":"afterInit",
+                                                                                                                                                                              "type":"microservice",
+                                                                                                                                                                              "config": {
+                                                                                                                                                                                  "microserviceId": "getReceivingLPanelDetails",
+                                                                                                                                                                                  "requestMethod": "get",
+                                                                                                                                                                                  "params": {
+                                                                                                                                                                                      "locationId": "#verifoneReceivingOrderDetails.LOCATION_ID",
+                                                                                                                                                                                      "clientId": "#verifoneReceivingOrderDetails.CLIENT_ID",
+                                                                                                                                                                                      "contractId":"#verifoneReceivingOrderDetails.CONTRACT_ID",
+                                                                                                                                                                                      "bttId":"1",
+                                                                                                                                                                                      "referenceOrderId":"#verifoneReceivingOrderDetails.REFERENCE_ORDER_ID",
+                                                                                                                                                                                      "identificatorType":"SN",
+                                                                                                                                                                                      "identificatorValue":"#receivingUserSearchCriteria.receivingOrderIdValue",
+                                                                                                                                                                                      "serialNo": "#verifoneReceivingOrderDetails.CLIENT_REFERENCE_NO2",
+                                                                                                                                                                                      "pr": "#verifoneReceivingOrderDetails.CLIENT_REFERENCE_NO1",
+                                                                                                                                                                                      "rma": "#verifoneReceivingOrderDetails.CLIENT_REFERENCE_NO1",
+                                                                                                                                                                                      "login": "#loginUUID.username"
+                                                                                                                                                                                  }                    
+                                                                                                                                                                              },
+                                                                                                                                                                              "responseDependents": {
+                                                                                                                                                                                  "onSuccess": {
+                                                                                                                                                                                      "actions": [
+                                                                                                                                                                                          {
+                                                                                                                                                                                              "type": "context",
+                                                                                                                                                                                              "config": {
+                                                                                                                                                                                                  "requestMethod": "add",
+                                                                                                                                                                                                  "key": "verifoneUnitHeaderData",
+                                                                                                                                                                                                  "data": "responseData"
+                                                                                                                                                                                              }
+                                                                                                                                                                                          },
+                                                                                                                                                                                          {
+                                                                                                                                                                                            "type": "renderTemplate",
+                                                                                                                                                                                            "config": {
+                                                                                                                                                                                                "templateId": "verifone/verifone-receiving-sn-quick.json",
+                                                                                                                                                                                                "mode": "local"
+                                                                                                                                                                                            },
+                                                                                                                                                                                            "eventSource": "click"
+                                                                                                                                                                                          }
+                                                                                                                                                                                      ]
+                                                                                                                                                                                  },
+                                                                                                                                                                                  "onFailure": {
+                                                                                                                                                                                      "actions": [
+                                                                                                                                                                                        {
+                                                                                                                                                                                          "type": "renderTemplate",
+                                                                                                                                                                                          "config": {
+                                                                                                                                                                                              "templateId": "verifone/verifone-receiving-sn-quick.json",
+                                                                                                                                                                                              "mode": "local"
+                                                                                                                                                                                          },
+                                                                                                                                                                                          "eventSource": "click"
+                                                                                                                                                                                        }
+                                                                                                                                                                                      ]
+                                                                                                                                                                                  }
+                                                                                                                                                                              }
+                                                                                                                                                                              
+                                                                                                                                                                            }                                                                                                                
+                                                                                                                                                                        ]
+                                                                                                                                                                    },
+                                                                                                                                                                    "onFailure": {
+                                                                                                                                                                        "actions": [
+                                                                                                                                                                            {
+                                                                                                                                                                                "type": "context",
+                                                                                                                                                                                "config": {
+                                                                                                                                                                                    "requestMethod": "add",
+                                                                                                                                                                                    "key": "verifoneReceivingScanSerialNumberErrorResp",
+                                                                                                                                                                                    "data": "responseData"
+                                                                                                                                                                                }
+                                                                                                                                                                            },
+                                                                                                                                                                            {
+                                                                                                                                                                                "type": "updateComponent",
+                                                                                                                                                                                "config": {
+                                                                                                                                                                                    "key": "errorTitleUUID",
+                                                                                                                                                                                    "properties": {
+                                                                                                                                                                                        "titleValue": "#verifoneReceivingScanSerialNumberErrorResp",
+                                                                                                                                                                                        "isShown": true
+                                                                                                                                                                                    }
+                                                                                                                                                                                }
+                                                                                                                                                                            }
+                                                                                                                                                                        ]
+                                                                                                                                                                    }
+                                                                                                                                                                }
+                                                                                                                                                             } 
+                                                                                                                                                            ]
+                                                                                                                                                          },
+                                                                                                                                                          "onFailure": {
+                                                                                                                                                            "actions": [
+                                                                                                                                                              {
+                                                                                                                                                                "type": "context",
+                                                                                                                                                                "config": {
+                                                                                                                                                                  "requestMethod": "add",
+                                                                                                                                                                  "key": "getProcessData",
+                                                                                                                                                                  "data": "responseData"
+                                                                                                                                                                }
+                                                                                                                                                              },
+                                                                                                                                                              {
+                                                                                                                                                                "type": "updateComponent",
+                                                                                                                                                                "config": {
+                                                                                                                                                                  "key": "errorTitleUUID",
+                                                                                                                                                                  "properties": {
+                                                                                                                                                                    "titleValue": "#getProcessData",
+                                                                                                                                                                    "isShown": true
+                                                                                                                                                                  }
+                                                                                                                                                                }
+                                                                                                                                                              }
+                                                                                                                                                            ]
+                                                                                                                                                          }
+                                                                                                                                                        }
+                                                                                                                                                      }
+                                                                                                                                                    ]
+                                                                                                                                                  },
+                                                                                                                                                  "onFailure": {
+                                                                                                                                                    "actions": [
+                                                                                                                                                      {
+                                                                                                                                                        "type": "updateComponent",
+                                                                                                                                                        "config": {
+                                                                                                                                                          "key": "errorTitleUUID",
+                                                                                                                                                          "properties": {
+                                                                                                                                                            "titleValue": "Failed to fetch getSubprocess Menu.",
+                                                                                                                                                            "isShown": true
+                                                                                                                                                          }
+                                                                                                                                                        }
+                                                                                                                                                      }
+                                                                                                                                                    ]
+                                                                                                                                                  }
+                                                                                                                                                }
+                                                                                                                                              }
+                                                                                                                                            ]
+                                                                                                                                          },
+                                                                                                                                          "onFailure": {
+                                                                                                                                            "actions": [
+                                                                                                                                              {
+                                                                                                                                                "type": "updateComponent",
+                                                                                                                                                "config": {
+                                                                                                                                                  "key": "errorTitleUUID",
+                                                                                                                                                  "properties": {
+                                                                                                                                                    "titleValue": "This unit doesn't belong to selected Location/Client/Contract. Please scan the correct unit.",
+                                                                                                                                                    "isShown": true
+                                                                                                                                                  }
+                                                                                                                                                }
+                                                                                                                                              }
+                                                                                                                                            ]
+                                                                                                                                          }
+                                                                                                                                        }
+                                                                                                                                      }
+                                                                                                                                    ]
+                                                                                                                                  },
+                                                                                                                                  "onFailure": {
+                                                                                                                                    "actions": [
+                                                                                                                                      {
+                                                                                                                                        "type": "updateComponent",
+                                                                                                                                        "config": {
+                                                                                                                                          "key": "errorTitleUUID",
+                                                                                                                                          "properties": {
+                                                                                                                                            "titleValue": "This unit doesn't belong to selected Location/Client/Contract. Please scan the correct unit.",
+                                                                                                                                            "isShown": true
+                                                                                                                                          }
+                                                                                                                                        }
+                                                                                                                                      }
+                                                                                                                                    ]
+                                                                                                                                  }
+                                                                                                                                }
+                                                                                                                              }
+                                                                                                                            ]
+                                                                                                                          },
+                                                                                                                          "onFailure": {
+                                                                                                                            "actions": [
+                                                                                                                              {
+                                                                                                                                "type": "updateComponent",
+                                                                                                                                "config": {
+                                                                                                                                  "key": "errorTitleUUID",
+                                                                                                                                  "properties": {
+                                                                                                                                    "titleValue": "This unit doesn't belong to selected Location/Client/Contract. Please scan the correct unit.",
+                                                                                                                                    "isShown": true
+                                                                                                                                  }
+                                                                                                                                }
+                                                                                                                              }
+                                                                                                                            ]
+                                                                                                                          }
+                                                                                                                        }
+                                                                                                                    }                                                     
+                                                                                                                ]
+                                                                                                            },
+                                                                                                            "onFailure": {
+                                                                                                                "actions": [
+                                                                                                                    {
+                                                                                                                        "type": "updateComponent",
+                                                                                                                        "config": {
+                                                                                                                            "key": "errorTitleUUID",
+                                                                                                                            "properties": {
+                                                                                                                                "titleValue": "No Order Found",
+                                                                                                                                "isShown": true
+                                                                                                                            }
+                                                                                                                        }
+                                                                                                                    }
+                                                                                                                ]
+                                                                                                            }
+                                                                                                        }
+                                                                                                    }
+                                                                                                    ]
+                                                                                                },
+                                                                                                "onFailure": {
+                                                                                                    "actions": [
+                                                
+                                                                                                    ]
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                    ]
+                                                                                }
+                                                                            }
+                                                                        }
+                
+                                                                    ]
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "footer": []
+    },
+    "Result": "SUCCESS"
+}

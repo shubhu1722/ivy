@@ -1,0 +1,661 @@
+{
+    "ResultData": {
+        "ctype": "page",
+        "uuid": "pageUUID",
+        "visibility": true,
+        "hooks": [
+            {
+                "type": "microservice",
+                "hookType": "afterInit",
+                "config": {
+                    "microserviceId": "getSubProcessPageBody",
+                    "requestMethod": "get",
+                    "isLocal": true,
+                    "LocalService": "assets/dropdowndata.json",
+                    "params": {}
+                },
+                "responseDependents": {
+                    "onSuccess": {
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "TesttypeDropData",
+                                    "data": "responseData"
+                                }
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "dellDebugResultCodesUUID",
+                                    "dropDownProperties": {
+                                        "options": "#TesttypeDropData"
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    "onFailure": {
+                        "actions": []
+                    }
+                }
+            }
+        ],
+        "header": [
+            {
+                "ctype": "breadcrumb",
+                "style": "padding-left: 3px",
+                "breadcrumbs": [
+                    {
+                        "label": "Bydgoszcz "
+                    },
+                    {
+                        "label": "Dell"
+                    },
+                    {
+                        "label": "Dell CAR"
+                    }
+                ]
+            },
+            {
+                "ctype": "toolbar",
+                "toolbarClass": "pagecontent-header",
+                "css": "padding-top: 35px",
+                "items": [
+                    {
+                        "ctype": "title",
+                        "uuid": "subProcessTitleUUID",
+                        "titleValue": "Repair: Debug",
+                        "titleClass": "section-title",
+                        "css": "padding-bottom:35px;padding-left:4px"
+                    },
+                    {
+                        "ctype": "spacer",
+                        "uuid": "emptySpaceUUID",
+                        "class": "empty-space"
+                    },
+                    {
+                        "ctype": "reqlistbutton",
+                        "iconButtonClass": "wishListButton",
+                        "text": "Requisition List",
+                        "uuid": "dellDebugReqListButtonUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "css": "padding-bottom:35px",
+                        "actions": [
+                            {
+                                "type": "dialog",
+                                "uuid": "dellDebugReqListUUID",
+                                "config": {
+                                    "title": "Requisition List",
+                                    "minimumWidth": false,
+                                    "disableClose": false,
+                                    "hasBackdrop": true,
+                                    "backdropClass": "cdk-overlay-transparent-backdrop",
+                                    "width": "380px",
+                                    "height": "400px"
+                                }
+                            }
+                        ],
+                        "icon": "shopping_cart",
+                        "iconClass": "header-icon"
+                    }
+                ]
+            }
+        ],
+        "items": [
+            {
+                "ctype": "taskPanel",
+                "isblueBorder": true,
+                "containerId": "prebodysectiontwo",
+                "header": {
+                    "title": "CID In Warranty",
+                    "svgIcon": "description_icon",
+                    "iconClass": "active-header",
+                    "class": "po-specific",
+                    "statusIcon": "hourglass_empty",
+                    "statusClass": "incomplete-status"
+                },
+                "expanded": false,
+                "hideToggle": true,
+                "uuid": "CIDInWarrantyUUID",
+                "visibility": false,
+                "disabled": false,
+                "hooks": [],
+                "validations": [],
+                "actions": [],
+                "items": [
+                    {
+                        "ctype": "disabled",
+                        "uuid": "RepairInformationDisabledUUID",
+                        "disabledClass": "disabledFalse"
+                    },
+                    {
+                        "ctype": "title",
+                        "uuid": "verifoneVMIRepairInformationSMUUID",
+                        "titleClass": "greyish-black body-italic",
+                        "title": "Confirm details below"
+                    },
+                    {
+                        "ctype": "actionToggle",
+                        "label": "Customer Induced Damage In Warranty?",
+                        "labelClass": "body",
+                        "formGroupClass": "body2 mb-2 d-flex justify-content-between verifone-receiving-toggle",
+                        "labelPosition": "before",
+                        "name": "Tamperedactiontoggle",
+                        "options": [
+                            {
+                                "bgcolor": "light-blue",
+                                "color": "white",
+                                "text": "Yes",
+                                "value": "yes"
+                            },
+                            {
+                                "bgcolor": "light-blue",
+                                "color": "white",
+                                "text": "No",
+                                "value": "no"
+                            }
+                        ],
+                        "validations": [],
+                        "submitable": true,
+                        "required": true,
+                        "uuid": "TamperedToggleValuesUUID",
+                        "hooks": [],
+                        "actions": [
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "CIDInWarrantysubmittedUUID",
+                                    "properties": {
+                                        "disabled": false
+                                    }
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    }
+                ],
+                "footer": [
+                    {
+                        "ctype": "button",
+                        "color": "primary",
+                        "text": "Complete",
+                        "uuid": "CIDInWarrantysubmittedUUID",
+                        "name": "RepairInformationSubmitted",
+                        "visibility": true,
+                        "disabled": true,
+                        "checkGroupValidity": true,
+                        "type": "submit",
+                        "class": "primary-btn",
+                        "hooks": [],
+                        "validations": [],
+                        "actions": [
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "CIDInWarrantyUUID",
+                                    "properties": {
+                                        "expanded": false,
+                                        "disabled": false,
+                                        "header": {
+                                            "title": "CID In Warranty",
+                                            "svgIcon": "description_icon",
+                                            "iconClass": "active-header",
+                                            "class": "po-specific",
+                                            "statusIcon": "check_circle",
+                                            "statusClass": "complete-status"
+                                        }
+                                    }
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type":"updateComponent",
+                                "config":{
+                                    "key":"testtypeUUID",
+                                    "properties":{
+                                    "expanded":true
+                                    }
+                                },
+                                "eventSource":"click"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "ctype": "taskPanel",
+                "isblueBorder": true,
+                "containerId": "prebodysectiontwo",
+                "header": {
+                    "title": "Test Type",
+                    "svgIcon": "description_icon",
+                    "iconClass": "active-header",
+                    "class": "po-specific",
+                    "statusIcon": "hourglass_empty",
+                    "statusClass": "incomplete-status"
+                },
+                "expanded": false,
+                "hideToggle": true,
+                "uuid": "testtypeUUID",
+                "visibility": false,
+                "disabled": false,
+                "hooks": [],
+                "validations": [],
+                "actions": [],
+                "items": [
+                    {
+                        "ctype": "disabled",
+                        "uuid": "RepairInformationDisabledUUID",
+                        "disabledClass": "disabledFalse"
+                    },
+                    {
+                        "ctype": "title",
+                        "uuid": "verifoneVMIRepairInformationSMUUID",
+                        "titleClass": "greyish-black body-italic",
+                        "title": "Record the Test Type"
+                    },
+                    {
+                        "ctype": "title",
+                        "uuid": "verifoneVMIRepairInformationSMHeadingUUID",
+                        "titleClass": "greyish-black heading2",
+                        "title": "Test Type"
+                    },
+                    {
+                        "ctype": "nativeDropdown",
+                        "label": "Test Type",
+                        "dropdownClass": "drop-down-input-field olepauseholdtypedailogdropdown footer-dropdown",
+                        "uuid": "dellDebugResultCodesUUID",
+                        "name": "ResultCodes",
+                        "code": "value",
+                        "displayValue": "value",
+                        "hookType": "afterInit",
+                        "inputStyles": "width:20%;height:35px",
+                        "dataSource": "#TesttypeDropData",
+                        "visibility": true,
+                        "submitable": true,
+                        "required": true
+                    }
+                ],
+                "footer": [
+                    {
+                        "ctype": "button",
+                        "color": "primary",
+                        "text": "Complete",
+                        "uuid": "testtypeSubmittedUUID",
+                        "name": "RepairInformationSubmitted",
+                        "visibility": true,
+                        "disabled": false,
+                        "checkGroupValidity": true,
+                        "type": "submit",
+                        "class": "primary-btn",
+                        "hooks": [],
+                        "validations": [],
+                        "actions": [
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "testtypeUUID",
+                                    "properties": {
+                                        "expanded": false,
+                                        "disabled": false,
+                                        "header": {
+                                            "title": "Test Type",
+                                            "svgIcon": "description_icon",
+                                            "iconClass": "active-header",
+                                            "class": "po-specific",
+                                            "statusIcon": "check_circle",
+                                            "statusClass": "complete-status"
+                                        }
+                                    }
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type":"updateComponent",
+                                "config":{
+                                    "key":"RTCresetUUID",
+                                    "properties":{
+                                    "expanded":true
+                                    }
+                                },
+                                "eventSource":"click"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "ctype": "taskPanel",
+                "isblueBorder": true,
+                "containerId": "prebodysectiontwo",
+                "header": {
+                    "title": "RTC Reset",
+                    "svgIcon": "description_icon",
+                    "iconClass": "active-header",
+                    "class": "po-specific",
+                    "statusIcon": "hourglass_empty",
+                    "statusClass": "incomplete-status"
+                },
+                "expanded": false,
+                "hideToggle": true,
+                "uuid": "RTCresetUUID",
+                "visibility": false,
+                "disabled": false,
+                "hooks": [],
+                "validations": [],
+                "actions": [],
+                "items": [
+                    {
+                        "ctype": "disabled",
+                        "uuid": "RepairInformationDisabledUUID",
+                        "disabledClass": "disabledFalse"
+                    },
+                    {
+                        "ctype": "title",
+                        "uuid": "verifoneVMIRepairInformationSMHeadingUUID",
+                        "titleClass": "greyish-black heading2",
+                        "title": "RTC Reset"
+                    },
+                    {
+                        "ctype": "actionToggle",
+                        "label": "Was the RTC Reset?",
+                        "labelClass": "body",
+                        "formGroupClass": "body2 mb-2 d-flex justify-content-between verifone-receiving-toggle",
+                        "labelPosition": "before",
+                        "name": "Tamperedactiontoggle",
+                        "options": [
+                            {
+                                "bgcolor": "light-blue",
+                                "color": "white",
+                                "text": "Yes",
+                                "value": "yes"
+                            },
+                            {
+                                "bgcolor": "light-blue",
+                                "color": "white",
+                                "text": "No",
+                                "value": "no"
+                            }
+                        ],
+                        "validations": [],
+                        "submitable": true,
+                        "required": true,
+                        "uuid": "TamperedToggleValuesUUID",
+                        "hooks": [],
+                        "actions": [
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "CIDInWarrantysubmittedUUID",
+                                    "properties": {
+                                        "disabled": false
+                                    }
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    }
+                ],
+                "footer": [
+                    {
+                        "ctype": "button",
+                        "color": "primary",
+                        "text": "Complete",
+                        "uuid": "RTCresetsubmittedUUID",
+                        "name": "RepairInformationSubmitted",
+                        "visibility": true,
+                        "disabled": true,
+                        "checkGroupValidity": true,
+                        "type": "submit",
+                        "class": "primary-btn",
+                        "hooks": [],
+                        "validations": [],
+                        "actions": [
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "RTCresetUUID",
+                                    "properties": {
+                                        "expanded": false,
+                                        "disabled": false,
+                                        "header": {
+                                            "title": "CID In Warranty",
+                                            "svgIcon": "description_icon",
+                                            "iconClass": "active-header",
+                                            "class": "po-specific",
+                                            "statusIcon": "check_circle",
+                                            "statusClass": "complete-status"
+                                        }
+                                    }
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type":"updateComponent",
+                                "config":{
+                                    "key":"testtypeUUID",
+                                    "properties":{
+                                    "expanded":true
+                                    }
+                                },
+                                "eventSource":"click"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "ctype": "toolbar",
+                "toolbarClass": "creatorTask-Toolbar",
+                "hoverClass": "background-white",
+                "items": [
+                    {
+                        "ctype": "iconText",
+                        "hoverClass": "blue-icon",
+                        "svgIcon": "replace",
+                        "text": "Replace",
+                        "iconTextClass": "creatorTask-Icontext",
+                        "uuid": "dellDebugReplaceIconUUID",
+                        "textClass": "heading3-regular greyish-black",
+                        "iconPosition": "top",
+                        "actions":[
+                            {
+                                "type": "updateComponent",
+                                "eventSource": "click",
+                                "config": {
+                                    "key": "errorTitleUUID",
+                                    "properties":{
+                                        "titleValue": "",
+                                        "isShown": false
+                                    }
+                                }
+                            },
+                            {
+                                "type": "handleDellDebugActions",
+                                "methodType": "handleDellProcessActions",
+                                "eventSource": "click",
+                                "config": {
+                                    "svgIcon": "replace",
+                                    "text": "Replace part",
+                                    "processType": "replace"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "iconText",
+                        "hoverClass": "blue-icon",
+                        "svgIcon": "software",
+                        "text": "Software",
+                        "iconTextClass": "creatorTask-Icontext",
+                        "uuid": "dellDebugSoftwareIconUUID",
+                        "textClass": "heading3-regular greyish-black",
+                        "iconPosition": "top",
+                        "actions": [
+                            {
+                                "type": "handleDellDebugActions",
+                                "methodType": "handleDellProcessActions",
+                                "eventSource": "click",
+                                "config": {
+                                    "svgIcon": "software",
+                                    "text": "Software",
+                                    "processType": "software"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "iconText",
+                        "hoverClass": "blue-icon",
+                        "svgIcon": "manual",
+                        "text": "Manual",
+                        "iconTextClass": "creatorTask-Icontext",
+                        "uuid": "dellDebugSoftwareIconUUID",
+                        "textClass": "heading3-regular greyish-black",
+                        "iconPosition": "top",
+                        "actions": [
+                            {
+                                "type": "handleDellDebugActions",
+                                "methodType": "handleDellProcessActions",
+                                "eventSource": "click",
+                                "config": {
+                                    "svgIcon": "manual",
+                                    "text": "Manual",
+                                    "processType": "Manual"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "iconText",
+                        "hoverClass": "blue-icon",
+                        "svgIcon": "description",
+                        "text": "Other",
+                        "iconTextClass": "creatorTask-Icontext",
+                        "uuid": "dellDebugSoftwareIconUUID",
+                        "textClass": "heading3-regular greyish-black",
+                        "iconPosition": "top",
+                        "actions": [
+                            {
+                                "type": "handleDellDebugActions",
+                                "methodType": "handleDellProcessActions",
+                                "eventSource": "click",
+                                "config": {
+                                    "svgIcon": "description",
+                                    "text": "Other",
+                                    "processType": "Other"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "footer":[ 
+            {
+                "ctype": "toolbar",
+                "toolbarClass": "pagecontent-footer",
+                "items": [
+                    {
+                        "ctype": "iconbutton",
+                        "iconButtonClass": "footer-save body",
+                        "text": "Save & Exit",
+                        "uuid": "dellDebugSaveUUID",
+                        "visibility": true,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "icon": "save",
+                        "actions": [
+                            {
+                                "type": "renderTemplate",
+                                "config": {
+                                    "templateId": "dashboard.json",
+                                    "mode": "local"
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "iconText",
+                        "uuid": "dellDebugIconUUID",
+                        "icon": "add_comment",
+                        "text": "Add Note",
+                        "iconTextClass": "footer-addNote body",
+                        "actions":[
+                            {
+                                "type": "dialog",
+                                "uuid": "dellDebugAddNoteDialogUUID",
+                                "config": {
+                                    "title": "Add Note",
+                                    "items": [
+                                        {
+                                            "ctype": "textarea",
+                                            "name": "addNote",
+                                            "textareaClass": "note-class",
+                                            "uuid": "addNoteUUID",
+                                            "required": true,
+                                            "value": "#timeoutBotes.addNote",
+                                            "actions": [
+                                                {
+                                                    "type": "updateComponent",
+                                                    "config": {
+                                                        "key": "dellDebugDoneButtonUUID",
+                                                        "properties": {
+                                                            "disabled": false
+                                                        }
+                                                    },
+                                                    "eventSource": "onLoad"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "ctype": "spacer",
+                                            "uuid": "emptySpaceUUID",
+                                            "class": "empty-space"
+                                        },
+                                        {
+                                            "ctype": "iconbutton",
+                                            "uuid": "dellDebugPauseUUID",
+                                            "visibility": true,
+                                            "type": "submit",
+                                            "hooks": [],
+                                            "validations": [],
+                                            "icon": "pause",
+                                            "iconClass": "footer-btnas",
+                                            "disableRipple": true,
+                                            "actions": [
+                                                {
+                                                  "type": "handleDellDebugActions",
+                                                  "methodType": "dellDebugHoldActions",
+                                                  "eventSource": "click"  
+                                                },
+                                                {
+                                                    "type": "context",
+                                                    "config": {
+                                                        "requestMethod": "add",
+                                                        "key": "holdSubCodeData",
+                                                        "data": ""
+                                                    },
+                                                    "eventSource": "click"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "Result": "SUCCESS"
+}

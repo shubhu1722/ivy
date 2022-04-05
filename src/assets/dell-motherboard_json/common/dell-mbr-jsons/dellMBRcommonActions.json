@@ -1,0 +1,107 @@
+{
+  "type": "microservice",
+  "config": {
+    "microserviceId": "getROByBCN",
+    "requestMethod": "get",
+    "params": {
+      "userName": "#userAccountInfo.PersonalDetails.USERID",
+      "itemBCN": "#discrepancyUnitInfo.ITEM_BCN"
+    },
+    "isLocal": true,
+    "LocalService": "assets/dell-motherboard_json/reference-order-response.json"
+  },
+  "responseDependents": {
+    "onSuccess": {
+      "actions": [
+        {
+          "type": "context",
+          "config": {
+            "requestMethod": "add",
+            "key": "ROByBCNForDiscrepancy",
+            "data": "responseData"
+          }
+        },
+        {
+          "type": "microservice",
+          "hookType": "afterInit",
+          "config": {
+            "microserviceId": "getJsonReponse",
+            "requestMethod": "get",
+            "isLocal": false,
+            "LocalService": "assets/Responses/getsaveAndExitData.json",
+            "params": {
+              "itemId": "#discrepancyUnitInfo.ITEM_ID"
+            }
+          },
+          "responseDependents": {
+            "onSuccess": {
+              "actions": [
+                {
+                  "type": "context",
+                  "config": {
+                    "requestMethod": "add",
+                    "key": "getSaveAndExitData",
+                    "data": "responseData"
+                  }
+                },
+                {
+                  "type": "getDataFromSaveAndExit"
+                },
+                {
+                  "type": "dellMBRScreenOperation"
+                }
+              ]
+            },
+            "onFailure": {
+              "actions": [
+                {
+                  "type": "context",
+                  "config": {
+                    "requestMethod": "add",
+                    "key": "errorDisp",
+                    "data": "responseData"
+                  }
+                },
+                {
+                  "type": "updateComponent",
+                  "config": {
+                    "key": "searchCriteriaErrorTitleUUID",
+                    "properties": {
+                      "titleValue": "#errorDisp",
+                      "isShown": false
+                    }
+                  }
+                },
+                {
+                  "type": "dellMBRScreenOperation"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "onFailure": {
+      "actions": [
+        {
+          "type": "context",
+          "config": {
+            "requestMethod": "add",
+            "key": "errorDisp",
+            "data": "responseData"
+          }
+        },
+        {
+          "type": "updateComponent",
+          "config": {
+            "key": "searchCriteriaErrorTitleUUID",
+            "properties": {
+              "titleValue": "#errorDisp",
+              "isShown": true
+            }
+          }
+        }
+      ]
+    }
+  }
+}

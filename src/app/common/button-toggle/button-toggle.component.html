@@ -1,0 +1,9 @@
+<div  [formGroup]="group" [class]="formGroupClass" [style]="formGroupStyles">
+<label [for]="name" [style]="labelstyles" [class]="labelClass">{{label}} </label>
+<mat-button-toggle-group [disabled]='disabled' [name]='name'  [vertical]='vertical' [attr.checked]='checked'
+ [id]='id' [attr.visibility]='visibilty' [style]='css' [class]="toggleClass" (change)="toggle($event)">
+  <mat-button-toggle value="YES"  [style.background-color]="yesColor">YES</mat-button-toggle>
+  <mat-button-toggle value="NO" [style.background-color]="noColor">NO</mat-button-toggle>
+</mat-button-toggle-group>
+<ng-container #afterButtonToggle></ng-container>
+</div>

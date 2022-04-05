@@ -1,0 +1,159 @@
+{
+    "MasterListdata": {
+        "vpnDetails": [
+            {
+                "manufacturerName": "INTEL",
+                "manufacturerPartNo": "JKXZT56",
+                "geoId": "1224"
+            },
+            {
+                "manufacturerName": "KEMET",
+                "manufacturerPartNo": "UJEUJEUEJ",
+                "geoId": "1224"
+            }
+        ],
+        "dateCodes": [
+            {
+                "dateCode": "NAL"
+            },
+            {
+                "dateCode": "NAB"
+            }
+        ]
+    },
+
+    "TaskDetaildata": {
+        "fit": [
+            {
+                "taskType": "Fit Part- ",
+                "partNo": "13-100017-01",
+                "description": "DIO SH BAT54AW 30V 200mA",
+                "assembly": "A-02A",
+                "location": "B3",
+                "defectCode": "COMP_INCORRECTLY_PROGRAMMED",
+                "quantity": "1",
+                "pcbSn": "PCB -L8G0",
+                "analysis": "COMPONENT _ NO BOOT",
+                "rewInstr": "Test REW_INSTR FOR 471-00028-01 FOR ISSUE",
+                "dateCode": "NAB",
+                "pcbPn": "73-11836-08 A0",
+                "refurb": "True"
+            }
+        ],
+        "eco": [
+            {
+                "taskType": "Replace Part- E100713",
+                "partNo": "13-100017-01",
+                "description": "DIO SH BAT54AW 30V 200mA",
+                "assembly": "A-01A",
+                "location": "D1",
+                "defectCode": "E100713",
+                "quantity": "1",
+                "pcbSn": "PCB -L8G0",
+                "analysis": "SN NOT_APPLICABLE COMPONENT _ NO BOOT",
+                "rewInstr": "Test REW_INSTR FOR 36-0208-02",
+                "dateCode": "3232",
+                "pcbPn": "73-11836-08 A0",
+                "refurb": "True"
+            },
+            {
+                "taskType": "Replace Part- E106921",
+                "partNo": "471-00177-01",
+                "description": "LBL BLANK Poly-Silver 1.56 x 1.56",
+                "assembly": "A-03A",
+                "location": "LAB1",
+                "defectCode": "E106921",
+                "quantity": "1",
+                "pcbSn": "PCB -L8G0",
+                "analysis": "SN NOT_APPLICABLE COMPONENT _ NO BOOT",
+                "rewInstr": "Test REW_INSTR FOR 36-0208-02",
+                "dateCode": "5555",
+                "pcbPn": "73-11836-08 A0",
+                "refurb": "True"
+            }
+        ],
+        "resolder": [
+            {
+                "taskType": "Resolder Part- ",
+                "partNo": "47-106179-01",
+                "description": "Morocco Compliance 6mm Flat Patch Label",
+                "assembly": "A-03A",
+                "location": "LAB1",
+                "defectCode": "COMP_INCORRECTLY_PROGRAMMED",
+                "quantity": "1",
+                "pcbSn": "PCB - J1U",
+                "analysis": "COMPONENT _ NO BOOT",
+                "rewInstr": "Test REW_INSTR FOR 36-0208-02",
+                "dateCode": "1234",
+                "pcbPn": "73-11836-08 A0",
+                "refurb": "True"
+            }
+        ],
+        "replace": [
+            {
+                "taskType": "Replace Part- ",
+                "partNo": "11-2990-01",
+                "description": "CAP AO 1500uF 6.3V LOW ESR 10mOHM",
+                "assembly": "A-01A",
+                "location": "C2",
+                "defectCode": "COMP_FAILURE_COLD",
+                "quantity": "1",
+                "pcbSn": "PCB - LAB1 ",
+                "analysis": "SN NOT_APPLICABLE COMPONENT _ NO BOOT",
+                "rewInstr": "Test REW_INSTR config c2",
+                "dateCode": "NAB",
+                "pcbPn": "73-11836-08 A0",
+                "refurb": "True"
+            },
+            {
+                "taskType": "Replace Part- ",
+                "partNo": "11-2990-01",
+                "description": "CAP AO 1500uF 6.3V LOW ESR 10mOHM",
+                "assembly": "A-03A",
+                "location": "Z1",
+                "defectCode": "COMP_INCORRECTLY_PROGRAMMED",
+                "quantity": "1",
+                "pcbSn": "PCB - J1U",
+                "analysis": "COMPONENT _ NO BOOT",
+                "rewInstr": "Test REW_INSTR BT2K",
+                "dateCode": "NAB",
+                "pcbPn": "73-11836-08 A0",
+                "refurb": "True"
+            },
+            {
+                "taskType": "Replace Part- ",
+                "partNo": "13-100017-01",
+                "description": "DIO SH BAT54AW 30V 200mA",
+                "assembly": "A-01A",
+                "location": "D1",
+                "defectCode": "COMP_FAILURE_COLD",
+                "quantity": "1",
+                "pcbSn": "PCB - LAB1 ",
+                "analysis": "SN NOT_APPLICABLE COMPONENT _ NO BOOT",
+                "rewInstr": "Test REW_INSTR d1",
+                "dateCode": "NAB",
+                "pcbPn": "73-11836-08 A0",
+                "refurb": "True"
+            }
+        ],
+        "remove": [
+            {
+                "taskType": "Remove Part- ",
+                "partNo": "47-106179-01",
+                "description": "Morocco Compliance 6mm Flat Patch Label",
+                "assembly": "A-03A",
+                "location": "M2",
+                "defectCode": "COMP_FAILURE_HEAT",
+                "quantity": "1",
+                "pcbSn": "PCB -L8G0",
+                "analysis": "COMPONENT _ NO BOOT",
+                "rewInstr": "Test REW_INSTR",
+                "dateCode": "3232",
+                "pcbPn": "73-11836-08 A0",
+                "refurb": "True"
+            }
+        ]
+    },
+    "status": true,
+    "message": null
+}

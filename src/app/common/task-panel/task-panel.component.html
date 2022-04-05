@@ -1,0 +1,55 @@
+<mat-expansion-panel #matPanel [id]="uuid" (afterExpand)="afterPanelExpand()" [hidden]="hidden"
+  [disabled]="isEditable ? false: disabled" [expanded]="expanded" [hideToggle]="hideToggle"
+  [togglePosition]="togglePosition" class="task-panel-container" [class]="panelClass"
+  [ngStyle]="{ 'background': disabled ? '#f3f6f9' : '#fff'}"
+  [ngClass]="{'blue-border-left': matPanel.expanded && isblueBorder, 'yellow-border-left': matPanel.expanded && isyellowBorder}">
+  <mat-expansion-panel-header (click)="onHeaderClicktaskpanelexpandfalse()" [collapsedHeight]="collapsedHeight"
+    [expandedHeight]="expandedHeight" [class]="taskPanelHeaderClass">
+    <mat-panel-title [style]="header.css" [class]="header.class" class="heading2">
+      <mat-icon [svgIcon]="header.svgIcon" [class]="header.iconClass">{{header.icon}}</mat-icon>
+      <div *ngIf="columnWiseTitle === undefined; else elseBlock" [innerHtml]="header.title">
+      </div>
+      <ng-template #elseBlock>
+        <app-split-header class="display-flex-center" [inputClasses]="inputClasses"
+          [headerTitleLabels]="headerTitleLabels" [headerTitleValues]="headerTitleValues"
+          [headerClasses]="headerClasses" [isReworkClass]="isReworkClass" [reworkClass]="reworkClass">
+        </app-split-header>
+      </ng-template>
+
+    </mat-panel-title>
+    <mat-panel-description [class]="header.headerStatusClass">
+      {{header.status | translate}}
+      <mat-icon [style]="header.statusCss" [class]="header.statusClass" (click)="statusIconClick($event)">
+        {{header.statusIcon}}</mat-icon>
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+  <!-- expansionpanel content -->
+  <form [formGroup]="uuid" [style]="bodyCss" [class]="bodyClass">
+    <div [class]="disabled ? 'disabledTrue':'disabledFalse'"></div>
+    <div [ngClass]="{'topView': verticalsplitView}" [class]="topItemsClass">
+      <ng-container #expansionPanelContentTopHalf></ng-container>
+    </div>
+    <div>
+      <div [ngClass]="{'taskpanel-row': splitView}" [class]="ItemsClass">
+        <div [ngClass]="{'taskpanel-column': splitView}">
+          <div [ngClass]="{'leftside': splitView}">
+            <ng-container #expansionpanelcontent></ng-container>
+          </div>
+        </div>
+        <div [ngClass]="{'taskpanel-column': splitView}">
+          <div [ngClass]="{'rightside': splitView}">
+            <ng-container #expansionPanelContentFirstHalf></ng-container>
+            <div [class]="contentSecondHalfClass">
+              <ng-container #expansionPanelContentSecondHalf></ng-container>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- </ng-template> -->
+    </div>
+  </form>
+  <mat-action-row [ngClass]="{'mat-action-row-no-border': !splitView ,'mat-action-space-between' : spaceView}">
+    <ng-container #expansionpanelfooter></ng-container>
+  </mat-action-row>
+</mat-expansion-panel>

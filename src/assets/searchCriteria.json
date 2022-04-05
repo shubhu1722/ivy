@@ -1,0 +1,189 @@
+{
+	"ctype": "page",
+	"uuid": "pageUUID",
+	"css": "",
+	"visibility": true,
+	"hooks": [],
+	"validations": [],
+	"action": [],
+	"header": [
+		{
+			"ctype": "toolbar",
+			"css": "background-color:#e2e7ed;font-size: 20px;line-height:20px;font-weight:bold;color:#000;display:flex;justify-content:space-between;-webkit-flex-direction:row;flex-direction:row;-webkit-align-items:flex-start;align-items:flex-start;-webkit-flex-wrap:nowrap;flex-wrap:nowrap;width:100%;min-height:0;position:relative;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;",
+			"items": [
+				{
+					"ctype": "title",
+					"title": "Receiving"
+				}
+			]
+		}
+	],
+	"items": [
+		{
+			"ctype": "formPanel",
+			"title": "Receiving",
+			"header": "",
+			"uuid": "receivingUUID",
+			"css": "width:75%;margin:auto;height:15vh",
+			"visibility": true,
+			"hooks": [],
+			"validations": [],
+			"actions": [],
+			"items": [
+				{
+					"ctype": "nativeDropdown",
+					"uuid": "dropdownUUID",
+					"css": "width: 200px; float: left,border:1 solid;",
+					"hooks": [],
+					"validations": [],
+					"actions": [],
+					"type": "text",
+					"required": true,
+					"placeholder": "ReferenceOrderID",
+					"submitable": true,
+					"label": "",
+					"labelPosition": "",
+					"name": "homeSearchCriteria",
+					"defaultValue": "Serial number",
+					"inputStyles": "width:25%;float: left;width: 25% ;border-bottom-left-radius:4px;padding:16px;border-top-left-radius:4px;border:1px solid rgba(0, 0, 0, .9);background: white;",
+					"options": [
+						{
+							"code": "Serial number",
+							"displayValue": "Serial number"
+						},
+						{
+							"code": "Asset tag",
+							"displayValue": "Asset tag"
+						},
+						{
+							"code": "Bar code number",
+							"displayValue": "Bar code number"
+						}
+					]
+				},
+				{
+					"ctype": "textField",
+					"uuid": "scanUUID",
+					"hooks": [],
+					"validations": [],
+					"css": "width: 75%; float: left; margin-top:-10px",
+					"type": "text",
+					"required": true,
+					"placeholder": "Scan Inbound Tracking Number",
+					"submitable": true,
+					"label": "",
+					"labelPosition": "",
+					"name": "scan",
+					"inputStyles": "width: 100%;padding: 6px;",
+					"prefix": "true",
+					"prefixIcon": "qr_code_scanner",
+					"suffix": true,
+					"suffixIcon": "arrow_forward",
+					"actions": [
+						{
+							"type": "context",
+							"config": {
+								"key": "userSearchCriteria",
+								"data": "formData",
+								"requestMethod": "add"
+							},
+							"eventSource": "click"
+						},
+						{
+							"type": "microservice",
+							"config": {
+								"microserviceId": "getOrders",
+								"requestMethod": "get",
+								"params": {
+									"searchCriteriaValue": "#userSearchCriteria.scan",
+									"searchCriteriaName": "#userSearchCriteria.homeSearchCriteria",
+									"username": "#userAccountInfo.PersonalDetails.USERID"
+								}
+							},
+							"eventSource": "click",
+							"responseDependents": {
+								"onSuccess": {
+									"actions": [
+										{
+											"type": "context",
+											"config": {
+												"requestMethod": "add",
+												"key": "orderDetails",
+												"data": "responseData"
+											}
+                                        },
+                                        {
+                                            "type": "microservice",
+                                            "config": {
+                                                "microserviceId": "getProcess",
+                                                "requestMethod": "get",
+                                                "params": {
+                                                    "location": 1444,
+                                                    "client": 1030,
+                                                    "contract": 14856,
+                                                    "btt": 1,
+                                                    "opt": 1,
+                                                    "whse": 1,
+                                                    "username": "Bhupendra.Singh4",
+                                                    "wc": 1
+                                                }
+                                            },
+                                            "responseDependents": {
+                                                "onSuccess": {
+                                                    "actions": [
+                                                        {
+                                                            "type": "context",
+                                                            "config": {
+                                                                "requestMethod": "add",
+                                                                "key": "getProcessData",
+                                                                "data": "responseData"
+                                                            }
+                                                        },
+                                                        {
+                                                            "type": "renderTemplate",
+                                                            "config": {
+                                                                "mode": "remote",
+                                                                "targetId": "baseContainerRef",
+                                                                "templateId": "getProcessData"
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                "onFailure": {
+                                                    "actions": [
+                                                        {
+                                                            "type": "toast",
+                                                            "message": "Failed to fetch getOrders"
+                                                        }
+                                                    ]
+                                                }
+                                            }
+                                        },
+										{
+											"type": "renderTemplate",
+											"config": {
+												"templateId": "subProcess.json",
+												"mode": "local"
+											}
+										}
+									]
+								},
+								"onFailure": {
+									"actions": [
+										{
+											"type": "toast",
+											"message": "Failed to fetch getOrders"
+										}
+									]
+								}
+							}
+						}
+					]
+				}
+			]
+		}
+	],
+	"footer": [
+
+	]
+}

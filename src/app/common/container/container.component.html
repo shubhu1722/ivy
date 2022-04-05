@@ -1,0 +1,13 @@
+<mat-card [style]='css'>
+  <mat-card-header> {{header.name | translate}}
+    <div mat-card-avatar class="example-header-image"></div>
+  </mat-card-header>
+  <img mat-card-image  src="https://placeimg.com/640/480/nature" alt="Photo of a Shiba Inu">
+  <mat-card-content>{{items.name | translate}}</mat-card-content>
+  <mat-card-actions> <!--footer-->
+    <button mat-button>{{footer.name | translate}}</button>
+    <!-- <button mat-button>SHARE</button> -->
+  </mat-card-actions>
+</mat-card>
+
+

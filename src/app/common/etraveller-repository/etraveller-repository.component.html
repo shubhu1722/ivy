@@ -1,0 +1,35 @@
+<div class="tbl tb2">
+  <div class="accordioStyles" *ngFor="let repository of repositoryDetails;">
+    <mat-accordion [togglePosition]="'before'">
+      <mat-expansion-panel hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+              <button #accordionicon class="accordion"  (click)="onClickAccordion($event,accordionicon)"> {{repository.label}}</button>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+    
+        <div *ngIf="repository.dataSource" >
+          
+          <table mat-table [dataSource]="repository.dataSource" multiTemplateDataRows class="mat-elevation-z8">
+           
+            <ng-container matColumnDef="{{column}}" *ngFor="let column of repository.columnsToDisplay;  let i = index">
+            <ng-container *ngIf="column !== 'Action'; else action">
+                <th mat-header-cell *matHeaderCellDef class="ole-header"> {{repository.columnHeader[i]}}</th>
+                <td mat-cell class="right" *matCellDef="let element">{{element[column]}}</td>
+            </ng-container>
+            <ng-template #action>
+              <th mat-header-cell *matHeaderCellDef  class="ole-header">{{repository.columnHeader[i]}}</th>
+              <td mat-cell class="right" *matCellDef="let element">
+                <a (click)="performAction(element,repository.label)">{{element[column]}}</a></td>
+            </ng-template>
+          </ng-container>
+            <tr mat-header-row *matHeaderRowDef="repository.columnsToDisplay"></tr>
+            <tr mat-row *matRowDef="let row; columns: repository.columnsToDisplay"></tr>
+          
+          </table>
+       
+        </div> 
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+</div>

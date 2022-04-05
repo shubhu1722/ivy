@@ -1,0 +1,193 @@
+table {
+    width: 100%;
+  }
+  
+  tr.example-detail-row {
+    height: 0;
+    background-color: none !important;
+  }
+  
+  tr.mat-header-row{
+    background-color: rgba(70, 76, 89, 1);
+  }
+  th.mat-header-cell{
+    color:white;
+  }
+  tr.example-element-row:not(.example-expanded-row):hover {
+    background: #777;
+  }
+  
+  tr.example-element-row:not(.example-expanded-row):active {
+    background: #efefef;
+  }
+  
+  .example-element-row td {
+    border-bottom-width: 0;
+  }
+  
+  .example-element-detail {
+    overflow: hidden;
+    
+  }
+  
+  .example-element-diagram {
+    min-width: 80px;
+    border: 2px solid black;
+    padding: 8px;
+    font-weight: lighter;
+    margin: 8px 0;
+    height: 104px;
+  }
+  
+  .example-element-symbol {
+    font-weight: bold;
+    font-size: 40px;
+    line-height: normal;
+  }
+  
+  .example-element-description {
+    padding: 16px;
+  }
+  
+  .example-element-description-attribution {
+    opacity: 0.5;
+  }
+  
+  mat-icon {
+    cursor: pointer;
+    color: black;
+    font-weight: 600;
+  }
+
+  .mat-expanded .mat-expansion-panel-header-title .material-icons{
+    transform: rotate(180deg);
+  }
+  
+  .mat-expansion-panel-header-title .open,
+  .mat-expanded .mat-expansion-panel-header-title .close{
+    display: inline-block;
+  }
+  .mat-expanded .mat-expansion-panel-header-title .open,
+  .mat-expansion-panel-header-title .close{
+    display: none;
+  }
+
+  @media screen and (max-height: 799px){
+    .tbl{
+      overflow-y: scroll;
+      height: 484px;
+    }
+  }
+  @media screen and (min-height: 800px) and (max-height: 1000px){
+    .tbl{
+      overflow-y: scroll;
+      height: 700px;
+    }
+  }
+  @media screen and (min-height: 1001px) and (max-height: 1100px){
+    .tbl{
+      overflow-y: scroll;
+      height: 900px;
+    }
+  }
+  @media screen and (min-height: 1101px){
+    .tbl{
+      overflow-y: scroll;
+      height: 1000px;
+    }
+  }
+  .tb2 {
+    min-Width : 77vw;
+  }
+
+  .mat-tab-body-content {
+    overflow-y: scroll;
+  }
+  
+  th.mat-header-cell {
+    font-size: 15px;
+    font-weight: 500;
+    font-family: "bold";
+  //  min-width: 5%;
+  }
+  
+  td.mat-cell {
+  //  min-width: 5%;
+    margin-left: 10px;
+  }
+  
+  table.mat-table {
+    /* border-spacing: 0; */
+    box-shadow: none;
+  }
+  
+  .accordion {
+    background: none;
+    // color: #444;
+      cursor: pointer;
+        padding: 18px;
+    // width: 100%;
+      border: none;
+    // text-align: left;
+      outline: none;
+      font-size: 17px;
+    // transition: 0.4s;
+    font-weight: 600;
+  }
+  
+  .active, .accordion:hover {
+    //background-color: #ccc;
+  }
+  
+  .accordion:before {
+    content: "add_circle_outline";
+    font-family: "Material Icons";
+    //color: #777;
+    font-weight: bold;
+    // float: right;
+     margin-left: 5px;
+     margin-right: 5px;
+  
+  
+  
+  width: 20px;
+  display: inline-block;
+  }
+  
+  .active:before {
+    content: "remove_circle_outline";
+    font-family: "Material Icons";
+  }
+  
+  .panel {
+    padding: 0 18px;
+    background-color: white;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+  }
+  
+  table.mat-table {
+    margin-left: 4%;
+  }
+  
+  .innerTable {
+    margin-left: 0px !important;
+    // .mat-column-partDesc {
+    //  width: 140px;
+    // }
+    // .mat-column-partNo,
+    // .mat-column-partStatus,
+    // .mat-column-orderStatusId {
+    //   width: 140px;
+    // }
+    .mat-column-orderStatusName {
+      width: 20%;
+    }
+  }
+  td.mat-cell:last-of-type,
+td.mat-footer-cell:last-of-type,
+th.mat-header-cell:last-of-type {
+  padding-right: 24px !important;
+}
+

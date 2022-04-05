@@ -1,0 +1,70 @@
+.grey-border {
+    border: 1px solid rgba(80, 80, 80, 0.2980392156862745);
+}
+.custButStyle {
+    padding: 8px;
+    border:  1px solid rgba(255, 206, 75, 0.2980392156862745);
+    background: rgba(255, 206, 75, 0.2980392157);
+    color: #0180E5;
+    float: right;
+    margin: 20px 10px 20px;
+}
+.custButStyle:hover {
+    background: transparent;
+    border: 1px solid #0180E5;
+}
+.wiki-panel {
+    // position: absolute;
+    top: 73px;
+    .mat-expansion-panel-header {
+        height: 44px !important;
+        border-bottom: 1px solid rgba(80, 80, 80, 0.2980392156862745);
+        border-radius: 0;
+    }
+    .wiki-tiles {
+        .mat-expansion-panel-header {
+            height: 44px !important;
+            border-bottom: 1px solid rgba(80, 80, 80, 0.2980392156862745);
+            border-radius: 0;
+        }
+        .mat-expansion-panel-body {
+            padding: 8px !important;
+        }
+        .btn-edit{
+            .mat-icon {
+                color: #007bff !important;
+            }
+        }
+        button.btn-outline-primary:hover {
+            color: #007bff !important;
+            background-color: #fff !important;
+        }
+        button.btn-outline-primary:focus {
+            box-shadow: none !important;
+        }
+        button.btn-outline-dark:hover {
+            color: #343a40 !important;
+            background-color: #fff !important;
+        }
+        button.btn-outline-dark.button-activated:hover {
+            color: #fff !important;
+            background-color: #007bff !important;
+        }
+        button.btn-outline-dark:focus {
+            box-shadow: none !important;
+        }
+        .breadcrumb {
+            background: none !important;
+        }
+        .breadcrumb-item+.breadcrumb-item::before {
+            padding-right: 0;
+            content: "";
+        }
+    }
+}
+.button-activated {
+    background: #0180E5;
+    .mat-icon {
+        color: #fff;
+    }
+}

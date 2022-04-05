@@ -1,0 +1,1515 @@
+{
+  "ResultData": {
+    "ctype": "page",
+    "uuid": "pageUUID",
+    "visibility": true,
+    "hooks": [
+      {
+        "type": "microservice",
+        "hookType": "afterInit",
+        "config": {
+          "microserviceId": "getResultCodes",
+          "isLocal": false,
+          "LocalService": "assets/Responses/mockBGA.json",
+          "requestMethod": "get",
+          "params": {
+            "bcn": "#UnitInfo.ITEM_BCN",
+            "validateResult": 1
+          }
+        },
+        "responseDependents": {
+          "onSuccess": {
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "getPackoutResultcodes",
+                  "data": "responseData"
+                }
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "ResultCodePackoutUUID",
+                  "dropDownProperties": {
+                    "options": "#getPackoutResultcodes"
+                  }
+                }
+              }
+            ]
+          },
+          "onFailure": {
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "errorMsg",
+                  "data": "responseData"
+                }
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "errorTitleUUID",
+                  "properties": {
+                    "titleValue": "#errorMsg",
+                    "isShown": true
+                  }
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "type": "condition",
+        "hookType": "afterInit",
+        "config": {
+          "operation": "isValid",
+          "lhs": "#getPackOutDetails"
+        },
+        "responseDependents": {
+          "onSuccess": {
+            "actions": [
+              {
+                "type": "condition",
+                "hookType": "afterInit",
+                "config": {
+                  "operation": "isEqualTo",
+                  "lhs": "#getPackOutDetails.length",
+                  "rhs": 0
+                },
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "applyPackingUUID",
+                          "properties": {
+                            "disabled": false
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure":{
+                    "actions":[
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "applyPackingUUID",
+                          "properties": {
+                            "disabled" : true
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "onFailure": {
+            "actions": [
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "applyPackingUUID",
+                  "properties": {
+                    "disabled" : false
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "header": [
+      {
+        "ctype": "breadcrumb",
+        "style": "padding-left: 4px;",
+        "breadcrumbs": [
+          {
+            "label": "#userSelectedLocationName"
+          },
+          {
+            "label": "#UnitInfo.CLIENTNAME"
+          },
+          {
+            "label": "#userSelectedContractName"
+          }
+        ]
+      },
+      {
+        "ctype": "toolbar",
+        "css": "padding-top: 35px;",
+        "toolbarClass": "pagecontent-header",
+        "items": [
+          {
+            "ctype": "title",
+            "uuid": "PackoutHeadertitleuuid",
+            "titleValue": "Packout",
+            "titleClass": "section-title",
+            "css": "padding-bottom: 35px;padding-left: 4px;"
+          },
+          {
+            "ctype": "iconbutton",
+            "iconButtonClass": "headeropen-button",
+            "text": "",
+            "uuid": "pageopenUUID",
+            "visibility": true,
+            "disabled": false,
+            "hidden": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "icon": "menu_open",
+            "disableRipple": true,
+            "iconClass": "header-icon",
+            "css": "padding-bottom: 35px;",
+            "actions": [
+              {
+                "type": "toggle",
+                "eventSource": "click",
+                "name": "subProcessRightNavref"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "openUUID",
+                  "properties": {
+                    "hidden": false
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "pageopenUUID",
+                  "properties": {
+                    "hidden": true
+                  }
+                },
+                "eventSource": "click"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "items": [
+      {
+        "ctype": "title",
+        "uuid": "errorTitleUUID",
+        "titleClass": "error-title",
+        "isShown": false,
+        "containerId": "prebodysectionone"
+      },
+      {
+        "ctype": "dynamicTaskRender",
+        "uuid": "dynamicTaskUUID",
+        "containerId": "prebodysectionone",
+        "config": {
+          "ctype": "taskPanel",
+          "columnWiseTitle": true,
+          "disableTaskPanel": true,
+          "filterValue": [],
+          "header": {
+            "title": "Confirm Part -",
+            "icon": "description",
+            "statusIcon": "hourglass_empty",
+            "statusClass": "incomplete-status"
+          },
+          "headerTitleLabels": ["Confirm Part -", "", "", ""],
+          "headerTitleValues": [
+            "#_componentPartNo #_componentPartDesc #_bomComponentQty",
+            "",
+            "",
+            ""
+          ],
+          "inputClasses": ["", ""],
+          "headerClasses": [""],
+          "expanded": false,
+          "visibility": false,
+          "hideToggle": true,
+          "uuid": "confirmPartTaskPanelUUID#@",
+          "hidden": false,
+          "disabled": false,
+          "hooks": [],
+          "validations": [],
+          "actions": [],
+          "items": [
+            {
+              "ctype": "disabled",
+              "uuid": "qrPartTaskUUID#@",
+              "disabledClass": "disabledFalse"
+            },
+            {
+              "ctype": "label",
+              "text": "Confirm that the correct Accessory Pack is included",
+              "labelClass": "body-italic2"
+            }
+          ],
+          "footer": [
+            {
+              "ctype": "button",
+              "color": "primary",
+              "text": "Complete",
+              "uuid": "confirmPartSubmittedUUID#@",
+              "name": "confirmPartButtonSubmit",
+              "visibility": true,
+              "disabled": false,
+              "checkGroupValidity": false,
+              "type": "submit",
+              "class": "primary-btn",
+              "hooks": [],
+              "validations": [],
+              "actions": [
+                {
+                  "type": "microservice",
+                  "config": {
+                    "microserviceId": "performIssueParts",
+                    "requestMethod": "post",
+                    "isLocal": false,
+                    "LocalService": "assets/Responses/getHPFAHistory.json",
+                    "body": {
+                      "issuePartsRequest": {
+                        "bcn": "#UnitInfo.ITEM_BCN",
+                        "nonInventoryPartList": {
+                          "nonInventoryPart": [
+                            {
+                              "part": "#_componentPartNo",
+                              "quantity": "#_bomComponentQty"
+                            }
+                          ]
+                        }
+                      },
+                      "userPwd": {
+                        "username": "#userAccountInfo.PersonalDetails.USERID",
+                        "password": "#loginUUID.password"
+                      },
+                      "ip": "::1",
+                      "callSource": "FrontEnd",
+                      "apiUsage_LocationName": "#UnitInfo.GEONAME",
+                      "apiUsage_ClientName": "#UnitInfo.CLIENTNAME"
+                    },
+                    "toBeStringified": true
+                  },
+                  "eventSource": "click",
+                  "responseDependents": {
+                    "onSuccess": {
+                      "actions": [
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "confirmPartTaskPanelUUID#@1",
+                            "properties": {
+                              "expanded": true,
+                              "disabled": false
+                            }
+                          },
+                          "eventSource": "click"
+                        },
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "confirmPartTaskPanelUUID#@0",
+                            "properties": {
+                              "expanded": false,
+                              "disabled": false,
+                              "header": {
+                                "title": "OS Reinstall",
+                                "icon": "description",
+                                "css": "color:black",
+                                "statusIcon": "check_circle",
+                                "statusClass": "complete-status",
+                                "class": "complete-task",
+                                "iconClass": "complete-task"
+                              }
+                            }
+                          },
+                          "eventSource": "click"
+                        },
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "confirmPartTaskPanelUUID#@",
+                            "properties": {
+                              "expanded": false
+                            }
+                          },
+                          "eventSource": "click"
+                        },
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "confirmPartSubmittedUUID#@",
+                            "properties": {
+                              "disabled": true
+                            }
+                          },
+                          "eventSource": "click"
+                        },
+                        {
+                          "type": "condition",
+                          "eventSource": "click",
+                          "config": {
+                            "operation": "isEqualTo",
+                            "lhs": "#getPackSealData.length",
+                            "rhs": 0
+                          },
+                          "responseDependents": {
+                            "onSuccess": {
+                              "actions": [
+                                {
+                                  "type": "updateComponent",
+                                  "config": {
+                                    "key": "applyPackingUUID",
+                                    "properties": {
+                                      "expanded": false,
+                                      "disabled": false
+                                    }
+                                  }
+                                }
+                              ]
+                            },
+                            "onFailure": {
+                              "actions": [
+                                {
+                                  "type": "condition",
+                                  "config": {
+                                    "operation": "isEqualTo",
+                                    "lhs": "#@1",
+                                    "rhs": "#getConfirmAccessoryData.length"
+                                  },
+                                  "eventSource": "click",
+                                  "responseDependents": {
+                                    "onSuccess": {
+                                      "actions": [
+                                        {
+                                          "type": "updateComponent",
+                                          "config": {
+                                            "key": "packSealTaskPanelUUID0",
+                                            "properties": {
+                                              "expanded": true,
+                                              "disabled": false
+                                            }
+                                          },
+                                          "eventSource": "click"
+                                        }
+                                      ]
+                                    },
+                                    "onFailure": {
+                                      "actions": [
+                                        {
+                                          "type": "updateComponent",
+                                          "config": {
+                                            "key": "applyPackingUUID",
+                                            "properties": {}
+                                          },
+                                          "eventSource": "click"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        },
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "confirmPartTaskPanelUUID#@",
+                            "properties": {
+                              "expanded": false
+                            }
+                          },
+                          "eventSource": "click"
+                        }
+                      ]
+                    },
+                    "onFailure": {
+                      "actions": [
+                        {
+                          "type": "context",
+                          "config": {
+                            "requestMethod": "add",
+                            "key": "errorissuePart",
+                            "data": "responseData"
+                          }
+                        },
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "errorTitleUUID",
+                            "properties": {
+                              "titleValue": "#errorissuePart",
+                              "isShown": true
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "data": "#getConfirmAccessoryData"
+      },
+      {
+        "ctype": "dynamicTaskRender",
+        "uuid": "dynamicTaskUUID",
+        "containerId": "prebodysectionone",
+        "config": {
+          "ctype": "taskPanel",
+          "columnWiseTitle": true,
+          "disableTaskPanel": true,
+          "filterValue": [],
+          "header": {
+            "title": "Pack and seal box -",
+            "icon": "description",
+            "statusIcon": "hourglass_empty",
+            "statusClass": "incomplete-status"
+          },
+          "headerTitleLabels": ["Pack and seal box -", "", "", ""],
+          "headerTitleValues": [
+            "#_componentPartNo  #_componentPartLocation #_bomComponentQty",
+            "",
+            "",
+            ""
+          ],
+          "inputClasses": ["", ""],
+          "headerClasses": [""],
+          "expanded": false,
+          "visibility": false,
+          "hideToggle": true,
+          "uuid": "packSealTaskPanelUUID#@",
+          "hidden": false,
+          "disabled": false,
+          "hooks": [
+            {
+              "type": "condition",
+              "hookType": "afterInit",
+              "config": {
+                "operation": "isNotEqualTo",
+                "lhs": "#getConfirmAccessoryData.length",
+                "rhs": 0
+              },
+              "responseDependents": {
+                "onSuccess": {
+                  "actions": [
+                    {
+                      "type": "updateComponent",
+                      "config": {
+                        "key": "packSealTaskPanelUUID#@0",
+                        "properties": {
+                          "disabled": true
+                        }
+                      },
+                      "hookType": "afterInit"
+                    }
+                  ]
+                },
+                "onFailure": {
+                  "actions": []
+                }
+              }
+            }
+          ],
+          "validations": [],
+          "actions": [],
+          "items": [
+            {
+              "ctype": "disabled",
+              "uuid": "qrPartTaskUUID#@",
+              "disabledClass": "disabledFalse"
+            },
+            {
+              "ctype": "label",
+              "text": "Pack and seal the box",
+              "labelClass": "body-italic2"
+            }
+          ],
+          "footer": [
+            {
+              "ctype": "button",
+              "color": "primary",
+              "text": "Complete",
+              "uuid": "packSealSubmittedUUID#@",
+              "name": "packSealButtonSubmit",
+              "visibility": true,
+              "disabled": false,
+              "checkGroupValidity": false,
+              "type": "submit",
+              "class": "primary-btn",
+              "hooks": [],
+              "validations": [],
+              "actions": [
+                {
+                  "type": "microservice",
+                  "config": {
+                    "microserviceId": "performIssueParts",
+                    "requestMethod": "post",
+                    "isLocal": false,
+                    "LocalService": "assets/Responses/getHPFAHistory.json",
+                    "body": {
+                      "issuePartsRequest": {
+                        "bcn": "#UnitInfo.ITEM_BCN",
+                        "nonInventoryPartList": {
+                          "nonInventoryPart": [
+                            {
+                              "part": "#_componentPartNo",
+                              "quantity": "#_bomComponentQty"
+                            }
+                          ]
+                        }
+                      },
+                      "userPwd": {
+                        "username": "#userAccountInfo.PersonalDetails.USERID",
+                        "password": "#loginUUID.password"
+                      },
+                      "ip": "::1",
+                      "callSource": "FrontEnd",
+                      "apiUsage_LocationName": "#UnitInfo.GEONAME",
+                      "apiUsage_ClientName": "#UnitInfo.CLIENTNAME"
+                    },
+                    "toBeStringified": true
+                  },
+                  "eventSource": "click",
+                  "responseDependents": {
+                    "onSuccess": {
+                      "actions": [
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "packSealTaskPanelUUID#@1",
+                            "properties": {
+                              "expanded": true,
+                              "disabled": false
+                            }
+                          },
+                          "eventSource": "click"
+                        },
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "packSealTaskPanelUUID#@0",
+                            "properties": {
+                              "expanded": false,
+                              "disabled": false,
+                              "header": {
+                                "title": "OS Reinstall",
+                                "icon": "description",
+                                "statusIcon": "check_circle",
+                                "statusClass": "complete-status",
+                                "class": "complete-task",
+                                "iconClass": "complete-task"
+                              }
+                            }
+                          },
+                          "eventSource": "click"
+                        },
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "packSealSubmittedUUID#@",
+                            "properties": {
+                              "disabled": true
+                            }
+                          },
+                          "eventSource": "click"
+                        },
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "packSealTaskPanelUUID#@",
+                            "properties": {
+                              "expanded": false
+                            }
+                          },
+                          "eventSource": "click"
+                        },
+                        {
+                          "type": "condition",
+                          "config": {
+                            "operation": "isEqualTo",
+                            "lhs": "#@1",
+                            "rhs": "#getPackSealData.length"
+                          },
+                          "eventSource": "click",
+                          "responseDependents": {
+                            "onSuccess": {
+                              "actions": [
+                                {
+                                  "type": "updateComponent",
+                                  "config": {
+                                    "key": "applyPackingUUID",
+                                    "properties": {
+                                      "expanded": true,
+                                      "disabled": false,
+                                      "header": {
+                                        "title": "Apply packing label",
+                                        "icon": "description",
+                                        "statusIcon": "hourglass_empty",
+                                        "statusClass": "incomplete-status",
+                                        "class": "po-specific"
+                                      }
+                                    }
+                                  },
+                                  "eventSource": "click"
+                                }
+                              ]
+                            },
+                            "onFailure": {
+                              "actions": [
+                                {
+                                  "type": "updateComponent",
+                                  "config": {
+                                    "key": "applyPackingUUID",
+                                    "properties": {}
+                                  },
+                                  "eventSource": "click"
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    "onFailure": {
+                      "actions": [
+                        {
+                          "type": "context",
+                          "config": {
+                            "requestMethod": "add",
+                            "key": "errorissuePart",
+                            "data": "responseData"
+                          }
+                        },
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "errorTitleUUID",
+                            "properties": {
+                              "titleValue": "#errorissuePart",
+                              "isShown": true
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "data": "#getPackSealData",
+        "firstPanelExpand": false
+      },
+      {
+        "ctype": "taskPanel",
+        "header": {
+          "title": "Apply packing label",
+          "icon": "description",
+          "statusIcon": "hourglass_empty",
+          "statusClass": "incomplete-status",
+          "class": "po-specific"
+        },
+        "expanded": false,
+        "hideToggle": true,
+        "uuid": "applyPackingUUID",
+        "visibility": false,
+        "disabled": true,
+        "hooks": [],
+        "validations": [],
+        "actions": [],
+        "items": [
+          {
+            "ctype": "label",
+            "text": "Apply the packing label",
+            "labelClass": "body-italic2"
+          }
+        ],
+        "footer": [
+          {
+            "ctype": "button",
+            "color": "primary",
+            "text": "Complete",
+            "class": "primary-btn",
+            "uuid": "applyPackingSubmittedUUID",
+            "visibility": true,
+            "disabled": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "actions": [
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "applyPackingUUID",
+                  "properties": {
+                    "expanded": false,
+                    "disabled": false,
+                    "header": {
+                      "title": "Apply packing label",
+                      "icon": "description",
+                      "statusIcon": "check_circle",
+                      "statusClass": "complete-status",
+                      "class": "po-specific"
+                    }
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "applyPackingSubmittedUUID",
+                  "properties": {
+                    "disabled": true
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "enableComponent",
+                "config": {
+                  "key": "ResultCodePackoutUUID",
+                  "property": "ResultCodes"
+                },
+                "eventSource": "click"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "footer": [
+      {
+        "ctype": "toolbar",
+        "toolbarClass": "pagecontent-footer",
+        "items": [
+          {
+            "ctype": "iconbutton",
+            "iconButtonClass": "footer-save body primary-btn",
+            "text": "Exit",
+            "uuid": "saveUUID",
+            "visibility": true,
+            "disabled": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "icon": "save",
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "PackoutNotes",
+                  "data": ""
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "renderTemplate",
+                "config": {
+                  "templateId": "dashboard.json",
+                  "mode": "local"
+                },
+                "eventSource": "click"
+              }
+            ]
+          },
+          {
+            "ctype": "iconText",
+            "uuid": "IconUUID",
+            "iconTextClass": "footer-addNote addNoteCls body",
+            "icon": "add_comment",
+            "text": "Add Note",
+            "iconPosition": "Before",
+            "actions": [
+              {
+                "type": "dialog",
+                "uuid": "addNoteDialogUUID",
+                "config": {
+                  "title": "Add Note",
+                  "items": [
+                    {
+                      "ctype": "textarea",
+                      "name": "addNote",
+                      "textareaClass": "note-class",
+                      "uuid": "addNoteUUID",
+                      "value": "#PackoutNotes.addNote",
+                      "actions": []
+                    }
+                  ],
+                  "footer": [
+                    {
+                      "ctype": "button",
+                      "color": "primary",
+                      "text": "Close",
+                      "uuid": "closeButtonUUID",
+                      "closeType": "close",
+                      "inputClass": "close-button",
+                      "disableClose": true,
+                      "visibility": true,
+                      "dialogButton": true,
+                      "type": "",
+                      "hooks": [],
+                      "validations": [],
+                      "actions": []
+                    },
+                    {
+                      "ctype": "button",
+                      "color": "primary",
+                      "text": "Done",
+                      "uuid": "doneHoldUUID",
+                      "dialogButton": true,
+                      "visibility": true,
+                      "type": "submit",
+                      "closeType": "success",
+                      "hooks": [],
+                      "validations": [],
+                      "actions": []
+                    }
+                  ]
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "PackoutNotes",
+                          "data": "formData"
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "ctype": "spacer",
+            "uuid": "emptySpaceUUID",
+            "class": "empty-space"
+          },
+          {
+            "ctype": "iconbutton",
+            "uuid": "unitPausebtnUUID",
+            "visibility": true,
+            "disabled": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "icon": "pause",
+            "iconClass": "footer-btnas",
+            "disableRipple": true,
+            "actions": [
+              {
+                "type":"showOLEPausebuttonInScreen",
+                "eventSource": "click"
+              }
+            ]
+          },
+          {
+            "ctype": "nativeDropdown",
+            "dropdownClass": "footer-dropdown dropdown-container body2",
+            "uuid": "ResultCodePackoutUUID",
+            "isDropdownNotSelected": true,
+            "name": "ResultCodes",
+            "dataSource": "",
+            "code": "resultCode",
+            "displayValue": "resultCode",
+            "disabled": true,
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "SelectedPackoutResultcode",
+                  "data": "elementControlName"
+                },
+                "eventSource": "change"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "PackouttimeoutUUID",
+                  "properties": {
+                    "disabled": false
+                  }
+                },
+                "eventSource": "change"
+              },
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "test",
+                  "data": ""
+                },
+                "eventSource": "change"
+              }
+            ]
+          },
+          {
+            "ctype": "button",
+            "color": "primary",
+            "buttonClass": "footer-button",
+            "text": "Time Out",
+            "uuid": "PackouttimeoutUUID",
+            "visibility": true,
+            "checkGroupValidity": false,
+            "disabled": true,
+            "hidden": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "actions": [
+              {
+                "type": "updateComponent",
+                "eventSource": "click",
+                "config": {
+                  "key": "errorTitleUUID",
+                  "properties": {
+                    "titleValue": "",
+                    "isShown": false
+                  }
+                }
+              },
+              {
+                "type": "condition",
+                "config": {
+                  "operation": "isValid",
+                  "lhs": "#SelectedPackoutResultcode"
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "dialog",
+                        "uuid": "addNoteDialogUUID2",
+                        "config": {
+                          "title": "Time Out",
+                          "items": [
+                            {
+                              "ctype": "textarea",
+                              "label": "Add note",
+                              "name": "addNote",
+                              "textareaContainer": "timeout-class",
+                              "uuid": "addNoteTimeoutUUID2",
+                              "required": false,
+                              "value": "#PackoutNotes.addNote",
+                              "actions": []
+                            }
+                          ],
+                          "footer": [
+                            {
+                              "ctype": "button",
+                              "color": "primary",
+                              "text": "Close",
+                              "uuid": "closeButtonUUID2",
+                              "closeType": "close",
+                              "inputClass": "close-button",
+                              "disableClose": true,
+                              "visibility": true,
+                              "dialogButton": true,
+                              "type": "",
+                              "hooks": [],
+                              "validations": [],
+                              "actions": []
+                            },
+                            {
+                              "ctype": "button",
+                              "color": "primary",
+                              "text": "Done",
+                              "uuid": "doneHoldUUID2",
+                              "dialogButton": true,
+                              "visibility": true,
+                              "disableClose": false,
+                              "type": "submit",
+                              "closeType": "success",
+                              "hooks": [],
+                              "validations": [],
+                              "actions": []
+                            }
+                          ]
+                        },
+                        "eventSource": "click",
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "context",
+                                "config": {
+                                  "requestMethod": "add",
+                                  "key": "PackoutNotes",
+                                  "data": "formData"
+                                }
+                              },
+                              {
+                                "type": "condition",
+                                "config": {
+                                  "operation": "isContains",
+                                  "lhs": "#SelectedPackoutResultcode",
+                                  "rhs": "fail"
+                                },
+                                "eventSource": "click",
+                                "responseDependents": {
+                                  "onSuccess": {
+                                    "actions": [
+                                      {
+                                        "type": "context",
+                                        "config": {
+                                          "requestMethod": "add",
+                                          "key": "test",
+                                          "data": "test"
+                                        }
+                                      },
+                                      {
+                                        "type": "condition",
+                                        "config": {
+                                          "operation": "isValid",
+                                          "lhs": "#PackoutNotes.addNote"
+                                        },
+                                        "responseDependents": {
+                                          "onSuccess": {
+                                            "actions": [
+                                              {
+                                                "type": "microservice",
+                                                "config": {
+                                                  "microserviceId": "performTimeOut",
+                                                  "requestMethod": "post",
+                                                  "body": {
+                                                    "timeOutRequest": {
+                                                      "location": "#UnitInfo.GEONAME",
+                                                      "bcn": "#UnitInfo.ITEM_BCN",
+                                                      "workCenter": "#UnitInfo.WORKCENTER",
+                                                      "password": "#loginUUID.password",
+                                                      "warrantyInd": "false",
+                                                      "notes": "#PackoutNotes.addNote",
+                                                      "resultCode": "#SelectedPackoutResultcode"
+                                                    },
+                                                    "modifyWarranty": 0,
+                                                    "timeOutType": "ProcessImmediate",
+                                                    "clientName": "#UnitInfo.CLIENTNAME",
+                                                    "contractName": "#UnitInfo.CONTRACTNAME",
+                                                    "userName": "#loginUUID.username",
+                                                    "userPass": "#loginUUID.password",
+                                                    "ip": "::1",
+                                                    "callSource": "FrontEnd",
+                                                    "apiUsage_LocationName": "#UnitInfo.GEONAME",
+                                                    "apiUsage_ClientName": "#UnitInfo.CLIENTNAME"
+                                                  },
+                                                  "toBeStringified": true,
+                                                  "removeUndefinedFields": [
+                                                    {
+                                                      "KeyName": "notes",
+                                                      "KeyValue": "#PackoutNotes.addNote"
+                                                    }
+                                                  ]
+                                                },
+                                                "responseDependents": {
+                                                  "onSuccess": {
+                                                    "actions": [
+                                                      {
+                                                        "type": "context",
+                                                        "config": {
+                                                          "requestMethod": "add",
+                                                          "key": "PackoutNotes",
+                                                          "data": ""
+                                                        }
+                                                      },
+                                                      {
+                                                        "type": "clearScreenData"
+                                                      },                                                      
+                                                      {
+                                                        "type": "context",
+                                                        "config": {
+                                                          "requestMethod": "delete",
+                                                          "key": "currentWC"
+                                                        },
+                                                        "eventSource": "click"
+                                                      },
+                                                      {
+                                                        "type": "renderTemplate",
+                                                        "config": {
+                                                          "templateId": "dashboard.json",
+                                                          "mode": "local"
+                                                        },
+                                                        "eventSource": "click"
+                                                      }
+                                                    ]
+                                                  },
+                                                  "onFailure": {
+                                                    "actions": [
+                                                      {
+                                                        "type": "context",
+                                                        "config": {
+                                                          "requestMethod": "add",
+                                                          "key": "errorMsg",
+                                                          "data": "responseData"
+                                                        }
+                                                      },
+                                                      {
+                                                        "type": "updateComponent",
+                                                        "config": {
+                                                          "key": "errorTitleUUID",
+                                                          "properties": {
+                                                            "titleValue": "#errorMsg",
+                                                            "isShown": true
+                                                          }
+                                                        }
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          "onFailure": {
+                                            "actions": [
+                                              {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                  "key": "errorTitleUUID",
+                                                  "properties": {
+                                                    "titleValue": "Notes are mandatory for Result Code which starts with Fail",
+                                                    "isShown": true
+                                                  }
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "onFailure": {
+                                    "actions": [
+                                      {
+                                        "type": "condition",
+                                        "config": {
+                                          "operation": "isEqualTo",
+                                          "lhs": "#SelectedPackoutResultcode",
+                                          "rhs": "PassPkg"
+                                        },
+                                        "eventSource": "change",
+                                        "responseDependents": {
+                                          "onSuccess": {
+                                            "actions": [
+                                              {
+                                                "type": "microservice",
+                                                "config": {
+                                                  "microserviceId": "getprocessffbycountry",
+                                                  "requestMethod": "get",
+                                                  "params": {
+                                                    "itemId": "#UnitInfo.ITEM_ID",
+                                                    "resultCode": "#SelectedPackoutResultcode"
+                                                  }
+                                                },
+                                                "responseDependents": {
+                                                  "onSuccess": {
+                                                    "actions": [
+                                                      {
+                                                        "type": "context",
+                                                        "config": {
+                                                          "requestMethod": "add",
+                                                          "key": "getPackoutprocffbycountry",
+                                                          "data": "responseData"
+                                                        }
+                                                      },
+                                                      {
+                                                        "type": "condition",
+                                                        "config": {
+                                                          "operation": "isEqualTo",
+                                                          "lhs": "#getPackoutprocffbycountry.flexFieldName",
+                                                          "rhs": "Country of Origin"
+                                                        },
+                                                        "eventSource": "change",
+                                                        "responseDependents": {
+                                                          "onSuccess": {
+                                                            "actions": [
+                                                              {
+                                                                "type": "microservice",
+                                                                "config": {
+                                                                  "microserviceId": "performTimeOut",
+                                                                  "requestMethod": "post",
+                                                                  "body": {
+                                                                    "timeOutRequest": {
+                                                                      "location": "#UnitInfo.GEONAME",
+                                                                      "bcn": "#UnitInfo.ITEM_BCN",
+                                                                      "workCenter": "#UnitInfo.WORKCENTER",
+                                                                      "password": "#loginUUID.password",
+                                                                      "warrantyInd": "false",
+                                                                      "notes": "#PackoutNotes.addNote",
+                                                                      "resultCode": "#SelectedPackoutResultcode"
+                                                                    },
+                                                                    "modifyWarranty": 0,
+                                                                    "timeOutType": "ProcessImmediate",
+                                                                    "clientName": "#UnitInfo.CLIENTNAME",
+                                                                    "contractName": "#UnitInfo.CONTRACTNAME",
+                                                                    "userName": "#loginUUID.username",
+                                                                    "userPass": "#loginUUID.password",
+                                                                    "ip": "::1",
+                                                                    "callSource": "FrontEnd",
+                                                                    "apiUsage_LocationName": "#UnitInfo.GEONAME",
+                                                                    "apiUsage_ClientName": "#UnitInfo.CLIENTNAME"
+                                                                  },
+                                                                  "toBeStringified": true,
+                                                                  "removeUndefinedFields": [
+                                                                    {
+                                                                      "KeyName": "notes",
+                                                                      "KeyValue": "#PackoutNotes.addNote"
+                                                                    }
+                                                                  ]
+                                                                },
+                                                                "responseDependents": {
+                                                                  "onSuccess": {
+                                                                    "actions": [
+                                                                      {
+                                                                        "type": "context",
+                                                                        "config": {
+                                                                          "requestMethod": "add",
+                                                                          "key": "PackoutNotes",
+                                                                          "data": ""
+                                                                        }
+                                                                      },
+                                                                      {
+                                                                        "type": "clearScreenData"
+                                                                      },                                                      
+                                                                      {
+                                                                        "type": "context",
+                                                                        "config": {
+                                                                          "requestMethod": "delete",
+                                                                          "key": "currentWC"
+                                                                        },
+                                                                        "eventSource": "click"
+                                                                      },
+                                                                      {
+                                                                        "type": "renderTemplate",
+                                                                        "config": {
+                                                                          "templateId": "dashboard.json",
+                                                                          "mode": "local"
+                                                                        },
+                                                                        "eventSource": "click"
+                                                                      }
+                                                                    ]
+                                                                  },
+                                                                  "onFailure": {
+                                                                    "actions": [
+                                                                      {
+                                                                        "type": "context",
+                                                                        "config": {
+                                                                          "requestMethod": "add",
+                                                                          "key": "errorMsg",
+                                                                          "data": "responseData"
+                                                                        }
+                                                                      },
+                                                                      {
+                                                                        "type": "updateComponent",
+                                                                        "config": {
+                                                                          "key": "errorTitleUUID",
+                                                                          "properties": {
+                                                                            "titleValue": "#errorMsg",
+                                                                            "isShown": true
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                }
+                                                              }
+                                                            ]
+                                                          },
+                                                          "onFailure": {
+                                                            "actions": [
+                                                              {
+                                                                "type": "updateComponent",
+                                                                "config": {
+                                                                  "key": "errorTitleUUID",
+                                                                  "properties": {
+                                                                    "titleValue": "Unit has no process flex field 'Country of Origin'",
+                                                                    "isShown": true
+                                                                  }
+                                                                }
+                                                              }
+                                                            ]
+                                                          }
+                                                        }
+                                                      }
+                                                    ]
+                                                  },
+                                                  "onFailure": {
+                                                    "actions": [
+                                                      {
+                                                        "type": "context",
+                                                        "config": {
+                                                          "requestMethod": "add",
+                                                          "key": "errorMsg",
+                                                          "data": "responseData"
+                                                        }
+                                                      },
+                                                      {
+                                                        "type": "updateComponent",
+                                                        "config": {
+                                                          "key": "errorTitleUUID",
+                                                          "properties": {
+                                                            "titleValue": "#errorMsg",
+                                                            "isShown": true
+                                                          }
+                                                        }
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          "onFailure": {
+                                            "actions": [
+                                              {
+                                                "type": "microservice",
+                                                "config": {
+                                                  "microserviceId": "performTimeOut",
+                                                  "requestMethod": "post",
+                                                  "body": {
+                                                    "timeOutRequest": {
+                                                      "location": "#UnitInfo.GEONAME",
+                                                      "bcn": "#UnitInfo.ITEM_BCN",
+                                                      "workCenter": "#UnitInfo.WORKCENTER",
+                                                      "password": "#loginUUID.password",
+                                                      "warrantyInd": "false",
+                                                      "notes": "#PackoutNotes.addNote",
+                                                      "resultCode": "#SelectedPackoutResultcode"
+                                                    },
+                                                    "modifyWarranty": 0,
+                                                    "timeOutType": "ProcessImmediate",
+                                                    "clientName": "#UnitInfo.CLIENTNAME",
+                                                    "contractName": "#UnitInfo.CONTRACTNAME",
+                                                    "userName": "#loginUUID.username",
+                                                    "userPass": "#loginUUID.password",
+                                                    "ip": "::1",
+                                                    "callSource": "FrontEnd",
+                                                    "apiUsage_LocationName": "#UnitInfo.GEONAME",
+                                                    "apiUsage_ClientName": "#UnitInfo.CLIENTNAME"
+                                                  },
+                                                  "toBeStringified": true,
+                                                  "removeUndefinedFields": [
+                                                    {
+                                                      "KeyName": "notes",
+                                                      "KeyValue": "#PackoutNotes.addNote"
+                                                    }
+                                                  ]
+                                                },
+                                                "responseDependents": {
+                                                  "onSuccess": {
+                                                    "actions": [
+                                                      {
+                                                        "type": "context",
+                                                        "config": {
+                                                          "requestMethod": "add",
+                                                          "key": "PackoutNotes",
+                                                          "data": ""
+                                                        }
+                                                      },
+                                                      {
+                                                        "type": "clearScreenData"
+                                                      },                                                      
+                                                      {
+                                                        "type": "context",
+                                                        "config": {
+                                                          "requestMethod": "delete",
+                                                          "key": "currentWC"
+                                                        },
+                                                        "eventSource": "click"
+                                                      },
+                                                      {
+                                                        "type": "renderTemplate",
+                                                        "config": {
+                                                          "templateId": "dashboard.json",
+                                                          "mode": "local"
+                                                        },
+                                                        "eventSource": "click"
+                                                      }
+                                                    ]
+                                                  },
+                                                  "onFailure": {
+                                                    "actions": [
+                                                      {
+                                                        "type": "context",
+                                                        "config": {
+                                                          "requestMethod": "add",
+                                                          "key": "errorMsg",
+                                                          "data": "responseData"
+                                                        }
+                                                      },
+                                                      {
+                                                        "type": "updateComponent",
+                                                        "config": {
+                                                          "key": "errorTitleUUID",
+                                                          "properties": {
+                                                            "titleValue": "#errorMsg",
+                                                            "isShown": true
+                                                          }
+                                                        }
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": [
+                              {
+                                "type": "updateComponent",
+                                "eventSource": "click",
+                                "config": {
+                                  "key": "errorTitleUUID",
+                                  "properties": {
+                                    "titleValue": "Data is not valid"
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": []
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "Result": "SUCCESS"
+}

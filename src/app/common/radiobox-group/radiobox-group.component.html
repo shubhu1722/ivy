@@ -1,0 +1,8 @@
+<label [for]="name" [style]="labelstyles" [class]="labelClass">{{label | translate}} </label>
+<mat-radio-group (change)="onChange($event)" [matTooltip]="tooltip" [matTooltipPosition]="tooltipPosition"
+  [color]='color' [disabled]='disabled' [class]="groupClass" [labelPosition]='labelPosition' [required]='required'>
+  <mat-radio-button [name]='name' [style]="inputStyles" [class]="inputClass" *ngFor="let option of radioButtonOptions"
+    [value]="option.value | translate" [checked]="option.checked | translate">
+    {{option.value | translate}}
+  </mat-radio-button>
+</mat-radio-group>

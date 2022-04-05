@@ -1,0 +1,48 @@
+{
+  "ctype": "subProcess",
+  "title": "PACKING",
+  "slWcName": "DELL_CAR_PACKOUT",
+  "uuid": "packoutPackingUUID",
+  "fetchDataFromPrevWC": true,
+  "subMenuIndex": 0,
+  "clientName": "DELL_CAR",
+  "openRightNav": false,
+  "hooks": [
+    {
+      "type": "microservice",
+      "hookType": "beforeInit",
+      "config": {
+        "microserviceId": "getSubProcessPageBody",
+        "requestMethod": "get",
+        "params": {
+          "subProcessId": "#dellCarwcSubprocess.PACKING.subProcessID",
+          "userName": "#userAccountInfo.PersonalDetails.USERID"
+        },
+        "isLocal": false,
+        "LocalService": "assets/Responses/SubProcess/DELL_CAR/dellCarPackoutPackingSubProcess.json"
+      },
+      "responseDependents": {
+        "onSuccess": {
+          "actions": [
+            {
+              "type": "renderTemplate",
+              "config": {
+                "mode": "remote",
+                "targetId": "mainPageContentBodysp",
+                "templateId": "getSubProcessPageBody"
+              }
+            }
+          ]
+        },
+        "onFailure": {
+          "actions": [
+            {
+              "type": "toast",
+              "message": "Failed to fetch Packout JSON"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

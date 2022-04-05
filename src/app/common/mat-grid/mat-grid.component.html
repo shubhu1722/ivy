@@ -1,0 +1,22 @@
+<mat-grid-list [cols]="getWidth()" [rowHeight]="rowHeight" [class]="className">
+  <mat-grid-tile *ngFor="let tile of tiles" [colspan]="tile.cols" [rowspan]="tile.rows" [ngClass]="{ 'dell-receiving-tile' : tile.isDellScreen}" [class]="tile.tileClass ? tile.tileClass : 'dell-receiving-tile'"
+    (click)="clickEvent(tile,$event)">
+    <ng-container *ngIf= "tile.isDellScreen">
+      <div [class]="tile.gridContainer">
+      <app-image *ngIf="tile.imageSrc" [imageSrc]="tile.imageSrc" [css]="tile.css"  [imageClass] = "tile.class"></app-image>
+      <app-title *ngIf="tile.text" [title]="tile.text | translate" [css]="tile.css" [titleClass] = "tile.class"></app-title>
+    </div>
+    </ng-container>
+    <ng-container  *ngIf= "!tile.isDellScreen">
+        <app-image *ngIf="tile.imageSrc" [imageSrc]="tile.imageSrc" [css]="tile.css"  [imageClass] = "tile.class"></app-image>
+    <app-title *ngIf="tile.text" [title]="tile.text | translate" [css]="tile.css" [titleClass] = "tile.class"></app-title>
+    </ng-container>
+    <ng-container *ngIf= "!tile.isDellScreen">
+    <div class="overlay">
+      <div class="text">
+        <mat-icon>add</mat-icon>
+      </div>
+    </div>
+   </ng-container>
+  </mat-grid-tile>
+</mat-grid-list>

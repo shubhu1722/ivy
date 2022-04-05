@@ -1,0 +1,725 @@
+{
+    "ResultData": {
+        "ctype": "page",
+        "uuid": "pageUUID",
+        "visibility": true,
+        "hooks": [
+            {
+                "type": "microservice",
+                "hookType": "afterInit",
+                "config": {
+                    "microserviceId": "getSubProcessPageBody",
+                    "requestMethod": "get",
+                    "isLocal": true,
+                    "LocalService": "assets/dropdowndata.json",
+                    "params": {}
+                },
+                "responseDependents": {
+                    "onSuccess": {
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "TesttypeDropData",
+                                    "data": "responseData"
+                                }
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "dellDebugResultCodesUUID",
+                                    "dropDownProperties": {
+                                        "options": "#TesttypeDropData"
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    "onFailure": {
+                        "actions": []
+                    }
+                }
+            }
+        ],
+        "header": [
+            {
+                "ctype": "breadcrumb",
+                "style": "font-size: 13px;",
+                "breadcrumbs": [
+                    {
+                        "label": "Szombathely"
+                    },
+                    {
+                        "label": "Cisco"
+                    },
+                    {
+                        "label": "Cisco HU2"
+                    }
+                ]
+            },
+            {
+                "ctype": "toolbar",
+                "toolbarClass": "pagecontent-header",
+                "items": [
+                    {
+                        "ctype": "title",
+                        "uuid": "ECObookingtitleuuid",
+                        "titleValue": "ECO Booking",
+                        "titleClass": "section-title"
+                    },
+                    {
+                        "ctype": "spacer",
+                        "uuid": "emptySpaceUUID",
+                        "class": "empty-space"
+                    },
+                    {
+                        "ctype": "iconbutton",
+                        "iconButtonClass": "headeropen-button",
+                        "uuid": "pageopenUUID",
+                        "visibility": true,
+                        "hooks": [],
+                        "icon": "menu_open",
+                        "actions": [
+                            {
+                                "type": "toggle",
+                                "eventSource": "click",
+                                "name": "subProcessRightNavref"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "pageopenUUID",
+                                    "properties": {
+                                        "hidden": true
+                                    }
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "items": [
+            {
+                "ctype": "title",
+                "uuid": "errorTitleUUID",
+                "titleClass": "error-title",
+                "isShown": false,
+                "containerId": "prebodysectionone"
+            },
+            {
+                "ctype": "taskPanel",
+                "isblueBorder": true,
+                "containerId": "prebodysectiontwo",
+                "header": {
+                    "svgIcon": "description",
+                    "title": "(2) Config ECO - EA 562882 - XXXXXX",
+                    "class": "title-normal",
+                    "status": "Open",
+                    "statusIcon": "hourglass_empty",
+                    "statusClass": "incomplete-status"
+                },
+                "expanded": false,
+                "hideToggle": true,
+                "uuid": "ConfigECOBookingUUID",
+                "validations": [],
+                "hooks": [],
+                "actions": [],
+                "items": [
+                    {
+                        "ctype": "title",
+                        "uuid": "configECOinformationUUID",
+                        "titleClass": "greyish-black body-italic",
+                        "title": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget odio."
+                    },
+                    {
+                        "ctype": "actionToggle",
+                        "formGroupClass": "body2 d-flex justify-content-between mb-2",
+                        "label": "ECO State",
+                        "name":"actionToglles",
+                        "labelPosition": "before",
+                        "labelClass": "dell-greyish-black pt-2",
+                        "options": [
+                            {
+                                "bgcolor": "light-blue",
+                                "color": "white",
+                                "text": "Open",
+                                "value": "open"
+                            },
+                            {
+                                "bgcolor": "light-blue",
+                                "color": "white",
+                                "text": "Close",
+                                "value": "Close"
+                            },
+                            {
+                                "bgcolor": "light-blue",
+                                "color": "white",
+                                "text": "Reject",
+                                "value": "Reject",
+                                "innerClass": "disabled-pointer"
+                            }
+                        ],
+                        "actions": [
+                            {
+                                "type": "context",
+                                "eventSource": "change",
+                                "config": {
+                                    "data": "elementControlValue",
+                                    "requestMethod": "add",
+                                    "key": "ECNReceiveddata"
+                                }
+                            },
+                            {
+                                "eventSource": "change",
+                                "type": "condition",
+                                "config": {
+                                    "operation": "isEqualTo",
+                                    "lhs": "#ECNReceiveddata",
+                                    "rhs": "open"
+                                },
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "eventSource": "change",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "headerrightsidedata",
+                                                    "data": "Open"
+                                                }
+                                            },
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "ConfigECOBookingUUID",
+                                                    "properties": {
+                                                        "header": {
+                                                            "svgIcon": "description",
+                                                            "title": "(2) Config ECO - EA 562882 - XXXXXX",
+                                                            "class": "title-normal",
+                                                            "status": "Open"
+                                                        }
+                                                    }
+                                                },
+                                                "eventSource": "change"
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "eventSource": "change",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "headerleftsidedata",
+                                                    "data": "Close"
+                                                }
+                                            },
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "ConfigECOBookingUUID",
+                                                    "properties": {
+                                                        "header": {
+                                                            "svgIcon": "description",
+                                                            "title": "(2) Config ECO - EA 562882 - XXXXXX",
+                                                            "class": "title-normal",
+                                                            "status": "Close"
+                                                        }
+                                                    }
+                                                },
+                                                "eventSource": "change"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
+                        "submitable": true
+                    },
+                    {
+                        "ctype": "divider"
+                    }
+                ],
+                "footer": [
+                    {
+                        "ctype": "button",
+                        "color": "primary",
+                        "text": "Complete",
+                        "uuid": "ECNTaskSubmitUUID",
+                        "visibility": true,
+                        "disabled": true,
+                        "checkGroupValidity": true,
+                        "type": "submit",
+                        "class": "primary-btn",
+                        "actions": [
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "ConfigECOBookingUUID",
+                                    "properties": {
+                                        "expanded": false,
+                                        "disabled": false,
+                                        "header": {
+                                            "title": "(2) Config ECO - EA 562882 - XXXXXX",
+                                            "svgIcon": "description_icon",
+                                            "iconClass": "active-header",
+                                            "class": "po-specific",
+                                            "status": "#ECNReceiveddata",
+                                            "statusIcon": "check_circle",
+                                            "statusClass": "complete-status"
+                                        }
+                                    }
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type":"updateComponent",
+                                "config":{
+                                    "key":"ConfigECOUUID",
+                                    "properties":{
+                                    "expanded":true
+                                    }
+                                },
+                                "eventSource":"click"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "ctype": "taskPanel",
+                "isblueBorder": true,
+                "containerId": "prebodysectiontwo",
+                "header": {
+                    "svgIcon": "description",
+                    "title": "(3) Rework ECO - EA 571494 - XXXXXXX",
+                    "class": "title-normal",
+                    "status": "Open",
+                    "statusIcon": "hourglass_empty",
+                    "statusClass": "incomplete-status"
+                },
+                "expanded": false,
+                "hideToggle": true,
+                "uuid": "ConfigECOUUID",
+                "validations": [],
+                "hooks": [],
+                "actions": [],
+                "items": [
+                    {
+                        "ctype": "title",
+                        "uuid": "configECOinformationUUID",
+                        "titleClass": "greyish-black body-italic",
+                        "title": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget odio."
+                    },
+                    {
+                        "ctype": "actionToggle",
+                        "formGroupClass": "body2 d-flex justify-content-between mb-2",
+                        "label": "ECO State",
+                        "labelPosition": "before",
+                        "labelClass": "dell-greyish-black pt-2",
+                        "options": [
+                            {
+                                "bgcolor": "light-blue",
+                                "color": "white",
+                                "text": "Open",
+                                "value": "open",
+                                "innerClass": "disabled-pointer"
+                            },
+                            {
+                                "bgcolor": "light-blue",
+                                "color": "white",
+                                "text": "Close",
+                                "value": "close",
+                                "innerClass": "disabled-pointer"
+                            },
+                            {
+                                "bgcolor": "light-blue",
+                                "color": "white",
+                                "text": "Reject",
+                                "value": "reject",
+                                "innerClass": "disabled-pointer"
+                            }
+                        ],
+                        "actions": [
+                            {
+                                "eventSource": "click",
+                                "type": "context",
+                                "config": {
+                                    "data": "elementControlValue",
+                                    "requestMethod": "add",
+                                    "key": "ECNReceiveddata"
+                                }
+                            },
+                            {
+                                "eventSource": "click",
+                                "type": "condition",
+                                "config": {
+                                    "operation": "isEqualTo",
+                                    "lhs": "#ECNReceiveddata",
+                                    "rhs": "open"
+                                },
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "eventSource": "change",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "headerrightsidedata",
+                                                    "data": "Open"
+                                                }
+                                            },
+                                            {}
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "eventSource": "change",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "headerrightsidedata",
+                                                    "data": "Closed"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
+                        "submitable": true
+                    },
+                    {
+                        "ctype": "divider"
+                    }
+                ],
+                "footer": [
+                    {
+                        "ctype": "button",
+                        "color": "primary",
+                        "text": "Complete",
+                        "uuid": "ReworkEcoSubmitUUID",
+                        "visibility": true,
+                        "checkGroupValidity": true,
+                        "type": "submit",
+                        "class": "primary-btn",
+                        "actions": [
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "ConfigECOUUID",
+                                    "properties": {
+                                        "expanded": false,
+                                        "disabled": false,
+                                        "header": {
+                                            "title": "(3) Rework ECO - EA 571494 - XXXXXXX",
+                                            "svgIcon": "description_icon",
+                                            "iconClass": "active-header",
+                                            "class": "po-specific",
+                                            "status": "open",
+                                            "statusIcon": "check_circle",
+                                            "statusClass": "complete-status"
+                                        }
+                                    }
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type":"updateComponent",
+                                "config":{
+                                    "key":"TCECOBookingUUID",
+                                    "properties":{
+                                    "expanded":true
+                                    }
+                                },
+                                "eventSource":"click"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "ctype": "taskPanel",
+                "isblueBorder": true,
+                "containerId": "prebodysectiontwo",
+                "header": {
+                    "svgIcon": "description",
+                    "title": "T&C ECO - ECO - EA571759",
+                    "class": "title-normal",
+                    "status": "Open",
+                    "statusIcon": "hourglass_empty",
+                    "statusClass": "incomplete-status"
+                },
+                "expanded": false,
+                "hideToggle": true,
+                "uuid": "TCECOBookingUUID",
+                "validations": [],
+                "hooks": [],
+                "actions": [],
+                "items": [
+                    {
+                        "ctype": "title",
+                        "uuid": "configECOinformationUUID",
+                        "titleClass": "greyish-black body-italic",
+                        "title": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget odio."
+                    },
+                    {
+                        "ctype": "actionToggle",
+                        "formGroupClass": "body2 d-flex justify-content-between mb-2",
+                        "label": "ECO State",
+                        "name":"actionToglles",
+                        "labelPosition": "before",
+                        "labelClass": "dell-greyish-black pt-2",
+                        "options": [
+                            {
+                                "bgcolor": "light-blue",
+                                "color": "white",
+                                "text": "Open",
+                                "value": "open"
+                            },
+                            {
+                                "bgcolor": "light-blue",
+                                "color": "white",
+                                "text": "Close",
+                                "value": "close",
+                                "innerClass": "disabled-pointer"
+                            },
+                            {
+                                "bgcolor": "light-blue",
+                                "color": "white",
+                                "text": "Rejected",
+                                "value": "Rejected"           
+                            }
+                        ],
+                        "actions": [
+                            {
+                                "type": "context",
+                                "eventSource": "change",
+                                "config": {
+                                    "data": "elementControlValue",
+                                    "requestMethod": "add",
+                                    "key": "TCReceiveddata"
+                                }
+                            },
+                            {
+                                "eventSource": "change",
+                                "type": "condition",
+                                "config": {
+                                    "operation": "isEqualTo",
+                                    "lhs": "#TCReceiveddata",
+                                    "rhs": "open"
+                                },
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "eventSource": "change",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "TCheaderrightsidedata",
+                                                    "data": "Open"
+                                                }
+                                            },
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "TCECOBookingUUID",
+                                                    "properties": {
+                                                        "header": {
+                                                            "svgIcon": "description",
+                                                            "title": "T&C ECO - ECO - EA571759",
+                                                            "class": "title-normal",
+                                                            "status": "Open"
+                                                        }
+                                                    }
+                                                },
+                                                "eventSource": "change"
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "eventSource": "change",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "TCheaderleftsidedata",
+                                                    "data": "Reject"
+                                                }
+                                            },
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "TCECOBookingUUID",
+                                                    "properties": {
+                                                        "header": {
+                                                            "svgIcon": "description",
+                                                            "title": "T&C ECO - ECO - EA571759",
+                                                            "class": "title-normal",
+                                                            "status": "Rejected"
+                                                        }
+                                                    }
+                                                },
+                                                "eventSource": "change"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
+                        "submitable": true
+                    },
+                    {
+                        "ctype": "divider"
+                    }
+                ],
+                "footer": [
+                    {
+                        "ctype": "button",
+                        "color": "primary",
+                        "text": "Complete",
+                        "uuid": "TCTaskSubmitUUID",
+                        "visibility": true,
+                        "disabled": true,
+                        "checkGroupValidity": true,
+                        "type": "submit",
+                        "class": "primary-btn",
+                        "actions": [
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "TCECOBookingUUID",
+                                    "properties": {
+                                        "expanded": false,
+                                        "disabled": false,
+                                        "header": {
+                                            "title": "T&C ECO - ECO - EA571759",
+                                            "svgIcon": "description_icon",
+                                            "iconClass": "active-header",
+                                            "class": "po-specific",
+                                            "status": "#TCReceiveddata",
+                                            "statusIcon": "check_circle",
+                                            "statusClass": "complete-status"
+                                        }
+                                    }
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type":"updateComponent",
+                                "config":{
+                                    "key":"",
+                                    "properties":{
+                                    "expanded":true
+                                    }
+                                },
+                                "eventSource":"click"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "footer": [
+            {
+                "ctype": "toolbar",
+                "toolbarClass": "pagecontent-footer",
+                "items": [
+                    {
+                        "ctype": "iconbutton",
+                        "iconButtonClass": "footer-save body primary-btn",
+                        "text": "Save & Exit",
+                        "uuid": "saveUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "icon": "save",
+                        "actions": []
+                    },
+                    {
+                        "ctype": "iconText",
+                        "uuid": "IconUUID",
+                        "iconTextClass": "footer-addNote addNoteCls body",
+                        "icon": "add_comment",
+                        "text": "Add Note",
+                        "iconPosition": "Before",
+                        "actions": []
+                    },
+                    {
+                        "ctype": "spacer",
+                        "uuid": "emptySpaceUUID",
+                        "class": "empty-space"
+                    },
+                    {
+                        "ctype": "nativeDropdown",
+                        "dropdownClass": "footer-dropdown dropdown-container body2",
+                        "uuid": "dellDebugResultCodesUUID",
+                        "isDropdownNotSelected": true,
+                        "code": "value",
+                        "displayValue": "value",
+                        "hookType": "afterInit",
+                        "dataSource": "#TesttypeDropData",
+                        "disabled": false,
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "SelectedResultcode",
+                                    "data": "elementControlName"
+                                },
+                                "eventSource": "change"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "ReworktimeoutUUID",
+                                    "properties": {
+                                        "disabled": false,
+                                        "text": "Tme Out"
+                                    }
+                                },
+                                "eventSource": "change"
+                            },
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "test",
+                                    "data": ""
+                                },
+                                "eventSource": "change"
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "button",
+                        "color": "primary",
+                        "buttonClass": "footer-button",
+                        "text": "Next",
+                        "uuid": "ReworktimeoutUUID",
+                        "visibility": true,
+                        "checkGroupValidity": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "actions": []
+                    }
+                ]
+            }
+        ]
+    },
+    "Result": "SUCCESS"
+}

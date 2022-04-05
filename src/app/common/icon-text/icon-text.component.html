@@ -1,0 +1,25 @@
+<span *ngIf="!imageSrc">
+    <div *ngIf="!inLine; else elseBlock" [hidden]="hidden" [style.visibility]="visibility ? 'visible' : 'hidden'"
+        [hover-class]="hoverClass" [style]="css" [class]="iconTextClass"
+        (click)="disabled ? $event.stopPropagation() : onTextClick($event)" [ngClass]="{'icon-disabled': disabled}">
+        <mat-icon [attr.iconPosition]='iconPosition' [style]="iconcss" [svgIcon]="svgIcon" [class]="iconClass"
+            [ngClass]="{'icon-disabled': disabled}">{{icon}}</mat-icon>
+        <span [style]="textCSS" [class]="textClass"> {{text | translate}}</span>
+    </div>
+
+    <ng-template #elseBlock>
+        <span [hidden]="hidden" [hover-class]="hoverClass" [style]="css" [class]="iconTextClass" (click)="disabled ? $event.stopPropagation() : onTextClick($event)">
+            <mat-icon [attr.iconPosition]='iconPosition' [class]="iconClass" [style]="iconcss" [svgIcon]="svgIcon">
+                {{icon}}</mat-icon>
+            <span [style]="textCSS" [class]="textClass"> {{text | translate}}</span>
+        </span>
+    </ng-template>
+</span>
+
+<div *ngIf="imageSrc" [class]="pClass">
+    <div [class]="iconTextClass" (click)="disabled ? $event.stopPropagation() : onTextClick($event)"
+        [ngClass]="{'icon-disabled': disabled}">
+        <img [src]='imageSrc'>
+        <span [class]="textClass"> {{imgtext | translate}}</span>
+    </div>
+</div>

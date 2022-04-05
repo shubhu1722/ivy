@@ -1,0 +1,15 @@
+<div class = "dialog-box">
+<h1 mat-dialog-title>Session timeout</h1>
+<p mat-dialog-content>You have been inactive for too long</p>
+<p><small>You are about to be automatically logged out for security purpose</small></p>
+
+<div mat-dialog-actions class="footer d-flex justify-content-between">
+  
+  
+  <button mat-button mat-dialog class = "btn session-close-button" (click) = "this.idletimeout.closeDialog()" >Close</button>
+  
+  <button mat-button mat-dialog class = "btn btn-primary" (click) = "this.idletimeout.logout()">logout</button>
+</div>
+</div>
+
+  

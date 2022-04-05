@@ -1,0 +1,1629 @@
+{
+  "ResultData": {
+    "ctype": "page",
+    "uuid": "pageUUID",
+    "contentClass": "",
+    "css": "",
+    "visibility": true,
+    "hooks": [
+      {
+        "type": "microservice",
+        "hookType": "afterInit",
+        "config": {
+          "microserviceId": "getResultCodes",
+          "isLocal": false,
+          "LocalService": "assets/Responses/mock_burn-in.json",
+          "requestMethod": "get",
+          "params": {
+            "bcn": "#discrepancyUnitInfo.ITEM_BCN",
+            "validateResult": 1
+          }
+        },
+        "responseDependents": {
+          "onSuccess": {
+            "actions": [
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "packOutResultCodesUUID",
+                  "dropDownProperties": {
+                    "options": "#getResultCodes"
+                  }
+                }
+              }
+            ]
+          },
+          "onFailure": {
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "errorMsg",
+                  "data": "responseData"
+                }
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "errorTitleUUID",
+                  "properties": {
+                    "titleValue": "#errorMsg",
+                    "isShown": true
+                  }
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "type": "context",
+        "hookType": "afterInit",
+        "config": {
+          "requestMethod": "add",
+          "key": "numOfValidatedFieldsInCA",
+          "data": 0
+        },
+        "eventSource": "click"
+      },
+      {
+        "type": "microservice",
+        "hookType": "afterInit",
+        "eventSource": "click",
+        "config": {
+          "microserviceId": "getaccessfffromrec",
+          "requestMethod": "get",
+          "isLocal": false,
+          "LocalService": "assets/Responses/ConfirmAccessoriesDummy.json",
+          "params": {
+            "pitemId": "#repairUnitInfo.ITEM_ID",
+            "pclientId": "#repairUnitInfo.CLIENT_ID",
+            "pcontractId": "#repairUnitInfo.CONTRACT_ID",
+            "pOpt": "IRMA",
+            "puserName": "#loginUUID.username"
+          }
+        },
+        "responseDependents": {
+          "onSuccess": {
+            "actions": [
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "confirmAccessoriesUUID",
+                  "properties": {
+                    "hidden": false
+                  }
+                },
+                "eventSource": "change"
+              },
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "confirmAccessoriesFlexFieldsData",
+                  "data": "responseData"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "confirmAccessoriesListUUID",
+                  "properties": {
+                    "flexCount": "#getaccessfffromrec",
+                    "label": ""
+                  }
+                },
+                "eventSource": "click"
+              }
+            ]
+          },
+          "onFailure": {
+            "actions": [
+              {
+                "type": "enableComponent",
+                "config": {
+                  "key": "packOutResultCodesUUID",
+                  "property": "ResultCodes"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "packOutTimeoutUUID",
+                  "properties": {
+                    "disabled": true
+                  }
+                },
+                "eventSource": "change"
+              },
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "accessoryFilledFalse",
+                  "data": "False"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "errorResp",
+                  "data": "responseData"
+                }
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "errorTitleUUID",
+                  "properties": {
+                    "titleValue": "#errorResp",
+                    "isShown": true
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "validations": [],
+    "action": [],
+    "header": [
+      {
+        "ctype": "breadcrumb",
+        "breadcrumbs": [
+          {
+            "label": "#userSelectedLocationName"
+          },
+          {
+            "label": "#userSelectedClientName"
+          },
+          {
+            "label": "#userSelectedContractName"
+          }
+        ]
+      },
+      {
+        "ctype": "toolbar",
+        "toolbarClass": "pagecontent-header",
+        "items": [
+          {
+            "ctype": "title",
+            "uuid": "subProcessTitleUUID",
+            "titleValue": "Packout",
+            "titleClass": "section-title"
+          },
+          {
+            "ctype": "iconbutton",
+            "iconButtonClass": "headeropen-button",
+            "text": "",
+            "uuid": "pageopenUUID",
+            "visibility": true,
+            "disabled": false,
+            "hidden": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "icon": "menu_open",
+            "disableRipple": true,
+            "iconClass": "header-icon",
+            "actions": [
+              {
+                "type": "toggle",
+                "eventSource": "click",
+                "name": "subProcessRightNavref"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "openUUID",
+                  "properties": {
+                    "hidden": false
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "pageopenUUID",
+                  "properties": {
+                    "hidden": true
+                  }
+                },
+                "eventSource": "click"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "items": [
+      {
+        "ctype": "title",
+        "uuid": "successTitleUUID",
+        "titleClass": "success-title",
+        "isShown": false
+      },
+      {
+        "ctype": "title",
+        "uuid": "errorTitleUUID",
+        "containerId": "prebodysectionone",
+        "titleClass": "error-title",
+        "isShown": false
+      },
+      {
+        "ctype": "taskPanel",
+        "title": "",
+        "header": {
+          "title": "Confirm Accessories",
+          "class": "font-weight-700",
+          "icon": "description",
+          "iconClass": "active-header"
+        },
+        "expanded": true,
+        "disabled": false,
+        "hideToggle": true,
+        "panelClass": "margin-top-10",
+        "hidden": true,
+        "isBasedOnResultCode": true,
+        "uuid": "confirmAccessoriesUUID",
+        "hooks": [],
+        "validations": [],
+        "actions": [],
+        "items": [
+          {
+            "ctype": "compoList",
+            "uuid": "confirmAccessoriesListUUID",
+            "flexCount": 0,
+            "dataGrid": [
+              {
+                "ctype": "textField",
+                "readonly": false,
+                "uuid": "newNoUUID",
+                "hooks": [],
+                "validations": [],
+                "type": "text",
+                "placeholder": "Scan #",
+                "recursiveItemDisabled": true,
+                "isAccessoryFlexFiled": true,
+                "hidden": false,
+                "formGroupClass": "content-container display-inline",
+                "textfieldClass": "body2",
+                "name": "partNumber",
+                "value": "revisionLeveloutbound",
+                "label": "",
+                "rightLabel": "",
+                "rightLabelClass": "body2 relative-margin25px bold-font",
+                "bindLabel": true,
+                "labelKey": "revisionLevelInbound",
+                "actions": []
+              },
+              {
+                "ctype": "iconText",
+                "icon": "",
+                "text": "Missing Accessory ?",
+                "textCss": "",
+                "isAccessoryFlexFiled": true,
+                "iconPosition": "Before",
+                "iconTextClass": "body missing-accessory",
+                "uuid": "missingAccessoryUUID",
+                "inLine": true,
+                "name": "Missing Accessory ?",
+                "hidden": false,
+                "actions": [
+                  {
+                    "type": "populateEmailSubject",
+                    "config": {
+                      "key": "confirmAccessoriesFlexFieldsData",
+                      "properties": {}
+                    },
+                    "eventSource": "click"
+                  },
+                  {
+                    "type": "populateMissingAccessoriesNamesInTextFields",
+                    "config": {
+                      "key": "populateMissingAccessoriesNamesInTextFields",
+                      "properties": {}
+                    },
+                    "eventSource": "click"
+                  },
+                  {
+                    "type": "dialog",
+                    "uuid": "missingAccessoryEmailDialogUUID",
+                    "config": {
+                      "title": "Opisz w skrócie, na czym polega problem",
+                      "items": [
+                        {
+                          "ctype": "textField",
+                          "readonly": false,
+                          "uuid": "emailToAddressUUID",
+                          "hooks": [],
+                          "validations": [],
+                          "type": "text",
+                          "placeholder": "Email To",
+                          "recursiveItemDisabled": true,
+                          "formGroupClass": "content-container display-inline",
+                          "textfieldClass": "body2 width-85",
+                          "name": "emailToAddress",
+                          "defaultValue": "radoslaw.andrzejewski@ivytech.com, tomasz.konczol@ivytech.com, hanna.kowalewska@ivytech.com",
+                          "value": "emailToAddressValue",
+                          "label": "Send to",
+                          "labelClass": "label-fault",
+                          "bindLabel": true,
+                          "required": true,
+                          "labelKey": "revisionLevelInbound",
+                          "actions": []
+                        },
+                        {
+                          "ctype": "textField",
+                          "readonly": false,
+                          "targetuuid": "emailSubjectUUID",
+                          "hooks": [],
+                          "validations": [],
+                          "type": "text",
+                          "placeholder": "Subject",
+                          "recursiveItemDisabled": true,
+                          "formGroupClass": "content-container display-inline",
+                          "textfieldClass": "body2 width-85",
+                          "name": "emailSubject",
+                          "defaultValue": "#emailSubjectString",
+                          "label": "Subject",
+                          "labelClass": "label-fault",
+                          "bindLabel": true,
+                          "required": true,
+                          "labelKey": "revisionLevelInbound",
+                          "actions": []
+                        },
+                        {
+                          "ctype": "textarea",
+                          "label": "Body",
+                          "name": "emailBodyNote",
+                          "value": "#userAccountInfo.PersonalDetails.USERID",
+                          "textareaContainer": "timeout-class required-note",
+                          "uuid": "emailBodyUUID",
+                          "labelPosition": "width-18",
+                          "required": true,
+                          "submitable": true,
+                          "actions": []
+                        }
+                      ],
+                      "footer": [
+                        {
+                          "ctype": "button",
+                          "color": "primary",
+                          "text": "Cancel",
+                          "uuid": "cancelHoldUUID",
+                          "closeType": "close",
+                          "disableClose": true,
+                          "visibility": true,
+                          "dialogButton": true,
+                          "type": "",
+                          "hooks": [],
+                          "validations": [],
+                          "actions": []
+                        },
+                        {
+                          "ctype": "button",
+                          "color": "primary",
+                          "text": "Send",
+                          "uuid": "sendEmailButtonUUID",
+                          "dialogButton": true,
+                          "visibility": true,
+                          "disabled": true,
+                          "type": "submit",
+                          "closeType": "success",
+                          "hooks": [],
+                          "validations": [],
+                          "actions": []
+                        }
+                      ]
+                    },
+                    "eventSource": "click",
+                    "responseDependents": {
+                      "onSuccess": {
+                        "actions": [
+                          {
+                            "type": "context",
+                            "config": {
+                              "key": "emailBody",
+                              "data": "formData",
+                              "requestMethod": "add",
+                              "value": "emailBodyNote"
+                            },
+                            "eventSource": "click"
+                          },
+                          {
+                            "type": "context",
+                            "config": {
+                              "key": "emailBody",
+                              "data": "formData",
+                              "requestMethod": "add",
+                              "value": "emailSubject"
+                            },
+                            "eventSource": "click"
+                          },
+                          {
+                            "type": "context",
+                            "config": {
+                              "key": "emailBody",
+                              "data": "formData",
+                              "requestMethod": "add",
+                              "value": "emailToAddress"
+                            },
+                            "eventSource": "click"
+                          },
+                          {
+                            "type": "microservice",
+                            "config": {
+                              "microserviceId": "missingaccessMail",
+                              "isLocal": false,
+                              "LocalService": "assets/Responses/performFA.json",
+                              "toBeStringified": true,
+                              "requestMethod": "get",
+                              "params": {
+                                "to": "#emailBody.emailToAddress",
+                                "from": "donotreply@ivytech.com",
+                                "subject": "#emailBody.emailSubject",
+                                "body": "#emailBody.emailBodyNote"
+                              }
+                            },
+                            "eventSource": "click",
+                            "responseDependents": {
+                              "onSuccess": {
+                                "actions": [
+                                  {}
+                                ]
+                              },
+                              "onFailure": {
+                                "actions": [
+                                  {}
+                                ]
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      "onFailure": {}
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "footer": [
+          {
+            "ctype": "iconbutton",
+            "text": "Reset Form",
+            "uuid": "resetConfirmAccessoriesUUID",
+            "visibility": true,
+            "checkGroupValidity": false,
+            "disabled": false,
+            "hooks": [],
+            "validations": [],
+            "icon": "not_interested",
+            "iconClass": "resetIcon",
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "missingAccessoriesList",
+                  "data": ""
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "numOfValidatedFieldsInCA",
+                  "data": 0
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "confirmAccessoriesCompleteUUID",
+                  "properties": {
+                    "disabled": true
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "clearFlexFieldAccessories",
+                "eventSource": "click"
+              }
+            ]
+          },
+          {
+            "ctype": "button",
+            "color": "primary",
+            "text": "Complete",
+            "uuid": "confirmAccessoriesCompleteUUID",
+            "class": "primary-btn",
+            "visibility": true,
+            "disabled": true,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "accessoryFilledTrue",
+                  "data": "True"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "confirmAccessoriesUUID",
+                  "properties": {
+                    "expanded": false,
+                    "disabled": false,
+                    "header": {
+                      "title": "Confirm Accessories",
+                      "icon": "description",
+                      "statusIcon": "check_circle",
+                      "statusClass": "complete-status",
+                      "class": "complete-task",
+                      "iconClass": "complete-task"
+                    }
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "confirmAccessoriesCompleteUUID",
+                  "properties": {
+                    "disabled": true
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "enableComponent",
+                "config": {
+                  "key": "packOutResultCodesUUID",
+                  "property": "ResultCodes"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "resetConfirmAccessoriesUUID",
+                  "properties": {
+                    "disabled": true
+                  }
+                },
+                "eventSource": "click"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "footer": [
+      {
+        "ctype": "toolbar",
+        "toolbarClass": "pagecontent-footer",
+        "uuid": "pageFooterUUID",
+        "items": [
+          {
+            "ctype": "iconbutton",
+            "iconButtonClass": "footer-save body",
+            "text": "Exit",
+            "uuid": "discrepancySaveUUID",
+            "visibility": true,
+            "disabled": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "icon": "save",
+            "actions": [
+              {
+                "type": "renderTemplate",
+                "config": {
+                  "templateId": "dashboard.json",
+                  "mode": "local"
+                },
+                "eventSource": "click"
+              }
+            ]
+          },
+          {
+            "ctype": "iconbutton",
+            "iconButtonClass": "footer-save ml-1 body",
+            "text": " Exit",
+            "uuid": "exitUUID",
+            "visibility": true,
+            "disabled": false,
+            "type": "submit",
+            "icon": "close",
+            "actions": [
+              {
+                "type": "clearScreenData",
+                "eventSource": "click"
+              },
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "delete",
+                  "key": "currentWC"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "renderTemplate",
+                "config": {
+                  "templateId": "dashboard.json",
+                  "mode": "local"
+                },
+                "eventSource": "click"
+              }
+            ]
+          },
+          {
+            "ctype": "iconText",
+            "uuid": "discrepancyIconUUID",
+            "icon": "add_comment",
+            "text": "Add Note",
+            "textCss": "",
+            "disabled": false,
+            "iconPosition": "Before",
+            "iconTextClass": "footer-addNote body",
+            "actions": [
+              {
+                "type": "dialog",
+                "uuid": "addNoteDialogUUID",
+                "config": {
+                  "title": "Add Note",
+                  "items": [
+                    {
+                      "ctype": "textarea",
+                      "name": "addNote",
+                      "textareaClass": "note-class",
+                      "uuid": "addNoteUUID",
+                      "required": true,
+                      "value": "#packoutPacktimeoutNotes.addNote",
+                      "actions": [
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "doneaddnoteUUID",
+                            "properties": {
+                              "disabled": false
+                            }
+                          },
+                          "eventSource": "onLoad"
+                        }
+                      ]
+                    }
+                  ],
+                  "footer": [
+                    {
+                      "ctype": "button",
+                      "color": "primary",
+                      "text": "Cancel",
+                      "uuid": "cancelHoldUUID",
+                      "closeType": "close",
+                      "disableClose": true,
+                      "visibility": true,
+                      "dialogButton": true,
+                      "type": "",
+                      "hooks": [],
+                      "validations": [],
+                      "actions": []
+                    },
+                    {
+                      "ctype": "button",
+                      "color": "primary",
+                      "text": "Done",
+                      "uuid": "doneaddnoteUUID",
+                      "dialogButton": true,
+                      "visibility": true,
+                      "disabled": true,
+                      "type": "submit",
+                      "closeType": "success",
+                      "hooks": [],
+                      "validations": [],
+                      "actions": []
+                    }
+                  ]
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "key": "packoutPacktimeoutNotes",
+                          "data": "formData",
+                          "requestMethod": "add",
+                          "value": "addNote"
+                        },
+                        "eventSource": "click"
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": []
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "ctype": "iconbutton",
+            "uuid": "discrepancyResumeUUID",
+            "visibility": true,
+            "disabled": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "icon": "play_arrow",
+            "iconClass": "",
+            "hidden": true,
+            "disableRipple": true
+          },
+          {
+            "ctype": "spacer",
+            "uuid": "emptySpaceUUID",
+            "class": "empty-space"
+          },
+          {
+            "ctype": "iconbutton",
+            "uuid": "discrepancyPauseUUID",
+            "visibility": true,
+            "disabled": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "icon": "pause",
+            "iconClass": "",
+            "disableRipple": true,
+            "actions": [
+              {
+                "type": "dialog",
+                "uuid": "pauseDialogUUID",
+                "config": {
+                  "title": "Hold",
+                  "items": [
+                    {
+                      "ctype": "nativeDropdown",
+                      "formGroupClass": "discrepancy-holddrpdwn",
+                      "uuid": "holdTypeUUID",
+                      "label": "Hold Type",
+                      "name": "holdType",
+                      "required": true,
+                      "dataSource": "#holdCodesForDiscrepancy",
+                      "code": "storageHoldSubCode",
+                      "displayValue": "storageHoldSubCode",
+                      "actions": [
+                        {
+                          "type": "context",
+                          "config": {
+                            "requestMethod": "add",
+                            "key": "storageHoldSubCode",
+                            "data": "elementControlValue"
+                          },
+                          "eventSource": "change"
+                        },
+                        {
+                          "type": "GetValueFromArray",
+                          "config": {
+                            "arrayData": "#holdCodesForDiscrepancy",
+                            "PullValue": "storageHoldCode"
+                          },
+                          "eventSource": "change"
+                        }
+                      ]
+                    },
+                    {
+                      "ctype": "textarea",
+                      "label": "Add note",
+                      "name": "holdAddNote",
+                      "textareaContainer": "timeout-class required-note",
+                      "uuid": "holdNodeUUID",
+                      "required": true,
+                      "submitable": true,
+                      "actions": []
+                    }
+                  ],
+                  "footer": [
+                    {
+                      "ctype": "button",
+                      "color": "primary",
+                      "text": "Cancel",
+                      "uuid": "cancelHoldUUID",
+                      "closeType": "close",
+                      "disableClose": true,
+                      "visibility": true,
+                      "dialogButton": true,
+                      "type": "",
+                      "hooks": [],
+                      "validations": [],
+                      "actions": []
+                    },
+                    {
+                      "ctype": "button",
+                      "color": "primary",
+                      "text": "Done",
+                      "uuid": "doneHoldUUID",
+                      "dialogButton": true,
+                      "visibility": true,
+                      "disabled": true,
+                      "type": "submit",
+                      "closeType": "success",
+                      "hooks": [],
+                      "validations": [],
+                      "actions": [
+                        {
+                          "type": "context",
+                          "config": {
+                            "key": "packoutPacktimeoutNotes",
+                            "data": "formData",
+                            "requestMethod": "add",
+                            "value": "holdAddNote"
+                          },
+                          "eventSource": "click"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "mb_pnFieldValue",
+                          "data": ""
+                        },
+                        "eventSource": "click"
+                      },
+                      {
+                        "type": "context",
+                        "config": {
+                          "key": "holdDialogData",
+                          "data": "formData",
+                          "requestMethod": "add"
+                        },
+                        "eventSource": "click"
+                      },
+                      {
+                        "type": "microservice",
+                        "config": {
+                          "microserviceId": "moveinventory",
+                          "isLocal": false,
+                          "LocalService": "assets/Responses/performFA.json",
+                          "requestMethod": "post",
+                          "body": {
+                            "apiUsageClientName": "#discrepancyUnitInfo.CLIENTNAME",
+                            "apiUsageLocationName": "#discrepancyUnitInfo.GEONAME",
+                            "callSource": "FrontEnd",
+                            "ip": "::1",
+                            "items": {
+                              "addtionalDetails": {
+                                "comments": "#holdDialogData.holdAddNote",
+                                "fixedAssetTag": "#discrepancyUnitInfo.FAT",
+                                "storageHoldCode": "#storageHoldCode",
+                                "storageHoldSubCode": "#storageHoldSubCode"
+                              },
+                              "destinationLocation": {
+                                "bin": "Default",
+                                "geography": "#discrepancyUnitInfo.GEONAME",
+                                "stockingLocation": "WUR DGI",
+                                "warehouse": "HP LAPTOP WUR"
+                              },
+                              "item": [
+                                {
+                                  "bcn": "#discrepancyUnitInfo.ITEM_BCN",
+                                  "owner": "#discrepancyUnitInfo.CLIENTNAME",
+                                  "partNo": "#discrepancyUnitInfo.PART_NO",
+                                  "quantity": "1",
+                                  "serialNo": "#discrepancyUnitInfo.SERIAL_NO",
+                                  "condition": "Defective"
+                                }
+                              ],
+                              "notes": "#holdDialogData.holdAddNote",
+                              "sourceLocation": {
+                                "bin": "Default",
+                                "geography": "#discrepancyUnitInfo.GEONAME",
+                                "stockingLocation": "WIP",
+                                "warehouse": "HP LAPTOP WUR"
+                              }
+                            },
+                            "usrPwd": {
+                              "userName": "#loginUUID.username",
+                              "password": "#loginUUID.password"
+                            }
+                          },
+                          "toBeStringified": true
+                        },
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "context",
+                                "config": {
+                                  "requestMethod": "add",
+                                  "key": "confirmAccessoriesFlexFieldsData",
+                                  "data": []
+                                },
+                                "eventSource": "click"
+                              },
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "discrepancyResumeUUID",
+                                  "properties": {
+                                    "hidden": false
+                                  }
+                                }
+                              },
+                              {
+                                "type": "context",
+                                "config": {
+                                  "requestMethod": "add",
+                                  "key": "firstTaskReplaceAction",
+                                  "data": ""
+                                },
+                                "eventSource": "click"
+                              },
+                              {
+                                "type": "context",
+                                "config": {
+                                  "requestMethod": "add",
+                                  "key": "firstTaskReplaceAssembly",
+                                  "data": ""
+                                },
+                                "eventSource": "click"
+                              },
+                              {
+                                "type": "context",
+                                "config": {
+                                  "requestMethod": "add",
+                                  "key": "packoutPacktimeoutNotes",
+                                  "data": ""
+                                },
+                                "eventSource": "click"
+                              },
+                              {
+                                "type": "context",
+                                "config": {
+                                  "requestMethod": "add",
+                                  "key": "holdDialogData",
+                                  "data": ""
+                                },
+                                "eventSource": "click"
+                              },
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "discrepancyPauseUUID",
+                                  "properties": {
+                                    "hidden": true
+                                  }
+                                }
+                              },
+                              {
+                                "type": "context",
+                                "config": {
+                                  "requestMethod": "add",
+                                  "key": "mb_pnFieldValue",
+                                  "data": ""
+                                },
+                                "eventSource": "click"
+                              },
+                              {
+                                "type": "deleteComponent",
+                                "eventSource": "click",
+                                "config": {
+                                  "key": "#currentTaskUUID"
+                                }
+                              },
+                              {
+                                "type": "pauseScreenData"
+                              },
+                              {
+                                "type": "renderTemplate",
+                                "config": {
+                                  "templateId": "dashboard.json",
+                                  "mode": "local"
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": [
+                              {
+                                "type": "context",
+                                "config": {
+                                  "requestMethod": "add",
+                                  "key": "moveinventoryForDiscrepancy",
+                                  "data": "responseData"
+                                }
+                              },
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "discrepancyErrorTitleUUID",
+                                  "properties": {
+                                    "titleValue": "#moveinventoryForDiscrepancy",
+                                    "isShown": true
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        "eventSource": "click"
+                      }
+                    ]
+                  },
+                  "onFailure": {}
+                }
+              }
+            ]
+          },
+          {
+            "ctype": "nativeDropdown",
+            "dropdownClass": "footer-dropdown dropdown-container body2",
+            "uuid": "packOutResultCodesUUID",
+            "name": "ResultCodes",
+            "isDropdownNotSelected": true,
+            "dataSource": "",
+            "code": "resultCode",
+            "displayValue": "resultCode",
+            "disabled": false,
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "SelectedDescripencyResultcode",
+                  "data": "elementControlValue"
+                },
+                "eventSource": "change"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "packOutTimeoutUUID",
+                  "properties": {
+                    "disabled": false
+                  }
+                },
+                "eventSource": "change"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "errorTitleUUID",
+                  "properties": {
+                    "titleValue": "",
+                    "isShown": true
+                  }
+                },
+                "eventSource": "change"
+              }
+            ]
+          },
+          {
+            "ctype": "button",
+            "color": "primary",
+            "text": "Time Out",
+            "uuid": "packOutTimeoutUUID",
+            "visibility": true,
+            "disabled": true,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "buttonClass": "footer-button primary-btn",
+            "class": "primary-btn",
+            "actions": [
+              {
+                "type": "microservice",
+                "config": {
+                  "microserviceId": "samplingOBA",
+                  "isLocal": false,
+                  "LocalService": "assets/Responses/mock_burn-in.json",
+                  "requestMethod": "get",
+                  "params": {
+                    "itemId": "#repairUnitInfo.ITEM_ID",
+                    "workOrderID": "#repairUnitInfo.WORKORDER_ID",
+                    "username": "#userAccountInfo.PersonalDetails.USERID",
+                    "LocationId" : "#userSelectedLocation",
+                    "opt" : "#repairUnitInfo.ROUTE",
+                    "ClientId" : "#userSelectedClient",
+                    "ContractId":"#userSelectedContract"
+                  }
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "requiredOBA",
+                          "data": "responseData"
+                        }
+                      },
+                      {
+                        "type": "condition",
+                        "config": {
+                          "operation": "isEqualTo",
+                          "lhs": "#requiredOBA",
+                          "rhs": true
+                        },
+                        "eventSource": "click",
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "condition",
+                                "config": {
+                                  "operation": "isEqualTo",
+                                  "lhs": "#SelectedDescripencyResultcode",
+                                  "rhs": "REPAIRED"
+                                },
+                                "eventSource": "click",
+                                "responseDependents": {
+                                  "onSuccess": {
+                                    "actions": [
+                                      {
+                                        "type": "dialog",
+                                        "uuid": "dboDialogUUID",
+                                        "config": {
+                                          "title": "Send to OBA",
+                                          "message": "This Unit has been selected for OBA testing",
+                                          "items": [],
+                                          "footer": [
+                                            {
+                                              "ctype": "button",
+                                              "color": "primary",
+                                              "text": "Cancel",
+                                              "uuid": "cancelDBOUUID",
+                                              "closeType": "close",
+                                              "disableClose": true,
+                                              "visibility": true,
+                                              "dialogButton": true,
+                                              "type": "",
+                                              "hooks": [],
+                                              "validations": [],
+                                              "actions": []
+                                            },
+                                            {
+                                              "ctype": "button",
+                                              "color": "primary",
+                                              "text": "Done",
+                                              "uuid": "doneDBOUUID",
+                                              "dialogButton": true,
+                                              "visibility": true,
+                                              "disabled": false,
+                                              "type": "submit",
+                                              "closeType": "success",
+                                              "hooks": [],
+                                              "validations": [],
+                                              "actions": []
+                                            }
+                                          ]
+                                        },
+                                        "eventSource": "click",
+                                        "responseDependents": {
+                                          "onSuccess": {
+                                            "actions": [
+                                              {
+                                                "type": "context",
+                                                "config": {
+                                                  "requestMethod": "add",
+                                                  "key": "SelectedDescripencyResultcode",
+                                                  "data": "OBA"
+                                                },
+                                                "eventSource": "click"
+                                              },
+                                              {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                  "key": "packOutResultCodesUUID",
+                                                  "fieldProperties": {
+                                                    "ResultCodes": "OBA"
+                                                  }
+                                                },
+                                                "eventSource": "click"
+                                              },
+                                              {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                  "key": "",
+                                                  "properties": {
+                                                    "disabled": true
+                                                  }
+                                                },
+                                                "eventSource": "click"
+                                              },
+                                              {
+                                                "type": "disableComponent",
+                                                "config": {
+                                                  "key": "packOutResultCodesUUID",
+                                                  "property": "ResultCodes",
+                                                  "isNotReset": true
+                                                },
+                                                "eventSource": "click"
+                                              },
+                                              {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                  "key": "packOutTimeoutUUID",
+                                                  "properties": {
+                                                    "disabled": false
+                                                  }
+                                                },
+                                                "eventSource": "click"
+                                              }, 
+                                              {
+                                                "type": "condition",
+                                                "eventSource": "click",
+                                                "config": {
+                                                  "operation": "isValid",
+                                                  "lhs": "#confirmAccessoriesFlexFieldsData"
+                                                },
+                                                "responseDependents": {
+                                                  "onSuccess": {
+                                                    "actions": [
+                                                      {
+                                                        "type": "condition",
+                                                        "eventSource": "click",
+                                                        "config": {
+                                                          "operation": "isEqualTo",
+                                                          "lhs": "#accessoryFilledTrue",
+                                                          "rhs": "True"
+                                                        },
+                                                        "responseDependents": {
+                                                          "onSuccess": {
+                                                            "actions": [
+                                                              {
+                                                                "type": "handlePackingTimoutWithAccessories"
+                                                              }
+                                                            ]
+                                                          },
+                                                          "onFailure": {
+                                                            "actions": [
+                                                              {
+                                                                "type": "handlePackingTimoutWithOutAccessories"
+                                                              }
+                                                            ]
+                                                          }
+                                                        }
+                                                      }
+                                                    ]
+                                                  },
+                                                  "onFailure": {
+                                                    "actions": [
+                                                      {
+                                                        "type": "handlePackingTimoutWithOutAccessories"
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          "onFailure": {
+                                            "actions": []
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "onFailure": {
+                                    "actions": [
+                                      {
+                                        "type": "condition",
+                                        "eventSource": "click",
+                                        "config": {
+                                          "operation": "isValid",
+                                          "lhs": "#confirmAccessoriesFlexFieldsData"
+                                        },
+                                        "responseDependents": {
+                                          "onSuccess": {
+                                            "actions": [
+                                              {
+                                                "type": "condition",
+                                                "eventSource": "click",
+                                                "config": {
+                                                  "operation": "isEqualTo",
+                                                  "lhs": "#accessoryFilledTrue",
+                                                  "rhs": "True"
+                                                },
+                                                "responseDependents": {
+                                                  "onSuccess": {
+                                                    "actions": [
+                                                      {
+                                                        "type": "handlePackingTimoutWithAccessories"
+                                                      }
+                                                    ]
+                                                  },
+                                                  "onFailure": {
+                                                    "actions": [
+                                                      {
+                                                        "type": "condition",
+                                                        "eventSource": "click",
+                                                        "config": {
+                                                          "operation": "isEqualTo",
+                                                          "lhs": "#SelectedDescripencyResultcode",
+                                                          "rhs": "OBA"
+                                                        },
+                                                        "responseDependents": {
+                                                          "onSuccess": {
+                                                            "actions": [
+                                                              {
+                                                                "type": "handlePackingTimoutWithOutAccessories"
+                                                              }
+                                                            ]
+                                                          },
+                                                          "onFailure": {
+                                                            "actions": [
+                                                              {
+                                                                "type": "condition",
+                                                                "eventSource": "click",
+                                                                "config": {
+                                                                  "operation": "isValid",
+                                                                  "lhs": "#accessoryFilledFalse"
+                                                                },
+                                                                "responseDependents": {
+                                                                  "onSuccess": {
+                                                                    "actions": [
+                                                                      {
+                                                                        "type": "handlePackingTimoutWithOutAccessories"
+                                                                      }
+                                                                    ]
+                                                                  },
+                                                                  "onFailure": {
+                                                                    "actions": [
+                                                                      {
+                                                                        "type": "context",
+                                                                        "config": {
+                                                                          "requestMethod": "add",
+                                                                          "key": "passFtDataFaild",
+                                                                          "data": "Confirm Accessories Are Mandatory"
+                                                                        }
+                                                                      },
+                                                                      {
+                                                                        "type": "updateComponent",
+                                                                        "config": {
+                                                                          "key": "errorTitleUUID",
+                                                                          "properties": {
+                                                                            "titleValue": "Confirm Accessories Are Mandatory",
+                                                                            "isShown": true
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                }
+                                                              }
+                                                            ]
+                                                          }
+                                                        }
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          "onFailure": {
+                                            "actions": [
+                                              {
+                                                "type": "condition",
+                                                "eventSource": "click",
+                                                "config": {
+                                                  "operation": "isValid",
+                                                  "lhs": "#accessoryFilledFalse"
+                                                },
+                                                "responseDependents": {
+                                                  "onSuccess": {
+                                                    "actions": [
+                                                      {
+                                                        "type": "handlePackingTimoutWithOutAccessories"
+                                                      }
+                                                    ]
+                                                  },
+                                                  "onFailure": {
+                                                    "actions": []
+                                                  }
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": [
+                              {
+                                "type": "condition",
+                                "eventSource": "click",
+                                "config": {
+                                  "operation": "isValid",
+                                  "lhs": "#confirmAccessoriesFlexFieldsData"
+                                },
+                                "responseDependents": {
+                                  "onSuccess": {
+                                    "actions": [
+                                      {
+                                        "type": "condition",
+                                        "eventSource": "click",
+                                        "config": {
+                                          "operation": "isEqualTo",
+                                          "lhs": "#accessoryFilledTrue",
+                                          "rhs": "True"
+                                        },
+                                        "responseDependents": {
+                                          "onSuccess": {
+                                            "actions": [
+                                              {
+                                                "type": "handlePackingTimoutWithAccessories"
+                                              }
+                                            ]
+                                          },
+                                          "onFailure": {
+                                            "actions": [
+                                              {
+                                                "type": "condition",
+                                                "eventSource": "click",
+                                                "config": {
+                                                  "operation": "isEqualTo",
+                                                  "lhs": "#SelectedDescripencyResultcode",
+                                                  "rhs": "OBA"
+                                                },
+                                                "responseDependents": {
+                                                  "onSuccess": {
+                                                    "actions": [
+                                                      {
+                                                        "type": "handlePackingTimoutWithAccessories"
+                                                      }
+                                                    ]
+                                                  },
+                                                  "onFailure": {
+                                                    "actions": [
+                                                      {
+                                                        "type": "condition",
+                                                        "eventSource": "click",
+                                                        "config": {
+                                                          "operation": "isValid",
+                                                          "lhs": "#accessoryFilledFalse"
+                                                        },
+                                                        "responseDependents": {
+                                                          "onSuccess": {
+                                                            "actions": [
+                                                              {
+                                                                "type": "handlePackingTimoutWithOutAccessories"
+                                                              }
+                                                            ]
+                                                          },
+                                                          "onFailure": {
+                                                            "actions": [
+                                                              {
+                                                                "type": "context",
+                                                                "config": {
+                                                                  "requestMethod": "add",
+                                                                  "key": "passFtDataFaild",
+                                                                  "data": "Confirm Accessories Are Mandatory"
+                                                                }
+                                                              },
+                                                              {
+                                                                "type": "updateComponent",
+                                                                "config": {
+                                                                  "key": "errorTitleUUID",
+                                                                  "properties": {
+                                                                    "titleValue": "Confirm Accessories Are Mandatory",
+                                                                    "isShown": true
+                                                                  }
+                                                                }
+                                                              }
+                                                            ]
+                                                          }
+                                                        }
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "onFailure": {
+                                    "actions": [
+                                      {
+                                        "type": "condition",
+                                        "eventSource": "click",
+                                        "config": {
+                                          "operation": "isValid",
+                                          "lhs": "#accessoryFilledFalse"
+                                        },
+                                        "responseDependents": {
+                                          "onSuccess": {
+                                            "actions": [
+                                              {
+                                                "type": "handlePackingTimoutWithOutAccessories"
+                                              }
+                                            ]
+                                          },
+                                          "onFailure": {
+                                            "actions": []
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "errorMsg",
+                          "data": "responseData"
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "errorTitleUUID",
+                          "properties": {
+                            "titleValue": "#errorMsg",
+                            "isShown": true
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "Result": "SUCCESS"
+}

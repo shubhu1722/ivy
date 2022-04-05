@@ -1,0 +1,322 @@
+{
+    "ctype": "page",
+    "uuid": "pageUUID",
+    "css": "",
+    "visibility": true,
+    "hooks": [],
+    "validations": [],
+    "action": [],
+    "header": [
+        {
+            "ctype": "toolbar",
+            "toolbarClass": "searchCriteria-toolbar section-title",
+            "items": [
+                {
+                    "ctype": "title",
+                    "title": "IQA Pre-Screen"
+                }
+            ]
+        }
+    ],
+    "items": [
+        {
+            "ctype": "formPanel",
+            "title": "IQAPreScreen",
+            "header": "",
+            "uuid": "IQAPreScreenUUID",
+            "formPanelClass": "searchCriteria-panel",
+            "visibility": true,
+            "hooks": [],
+            "validations": [],
+            "actions": [],
+            "items": [
+                {
+                    "ctype": "nativeDropdown",
+                    "uuid": "identificatorTypeUUID",
+                    "hooks": [],
+                    "validations": [],
+                    "actions": [],
+                    "type": "text",
+                    "required": true,
+                    "placeholder": "Identificator Type",
+                    "submitable": true,
+                    "label": "",
+                    "labelPosition": "",
+                    "name": "identificatorType",
+                    "defaultValue": "SerialNumber",
+                    "dropdownClass": "searchcriteris-drpdwn",
+                    "options": [
+                        {
+                            "code": "BCN",
+                            "displayValue": "Barcode Number"
+                        },
+                        {
+                            "code": "FixedAssetTag",
+                            "displayValue": "Fixed Asset Tag"
+                        },
+                        {
+                            "code": "SerialNumber",
+                            "displayValue": "Serial Number"
+                        }
+                    ]
+                },
+                {
+                    "ctype": "textField",
+                    "uuid": "unitIdentificationValueUUID",
+                    "hooks": [],
+                    "validations": [],
+                    "textfieldClass": "searchcriteris-text",
+                    "type": "text",
+                    "required": true,
+                    "placeholder": "Scan Number",
+                    "submitable": true,
+                    "label": "",
+                    "labelPosition": "",
+                    "name": "unitIdentificationValue",
+                    "prefix": "true",
+                    "prefixIcon": "qr_code_scanner",
+                    "suffix": true,
+                    "suffixIcon": "arrow_forward",
+                    "actions": [
+                        {
+                            "type": "context",
+                            "config": {
+                                "key": "userSearchCriteriaCisco",
+                                "data": "formData",
+                                "requestMethod": "add"
+                            },
+                            "eventSource": "click"
+                        },
+                        {
+                            "type": "microservice",
+                            "config": {
+                                "microserviceId": "getUnitInfo",
+                                "requestMethod": "get",
+                                "params": {
+                                    "unitIdentificationValue": "#userSearchCriteriaCisco.unitIdentificationValue",
+                                    "identificatorType": "#userSearchCriteriaCisco.identificatorType"
+                                }
+                            },
+                            "eventSource": "click",
+                            "responseDependents": {
+                                "onSuccess": {
+                                    "actions": [
+                                        {
+                                            "type": "context",
+                                            "config": {
+                                                "requestMethod": "add",
+                                                "key": "UnitInfo",
+                                                "data": "responseData"
+                                            }
+                                        },
+                                        {
+                                            "type": "microservice",
+                                            "config": {
+                                                "microserviceId": "getBomCount",
+                                                "requestMethod": "post",
+                                                "body": {
+                                                    "locationId": "#userSelectedLocation",
+                                                    "mainPartNo": "#UnitInfo.PART_NO"
+                                                },
+                                                "toBeStringified": true
+                                            },
+                                            "responseDependents": {
+                                                "onSuccess": {
+                                                    "actions": [
+                                                        {
+                                                            "type": "context",
+                                                            "config": {
+                                                                "requestMethod": "add",
+                                                                "key": "BomCount",
+                                                                "data": "responseData"
+                                                            }
+                                                        },
+                                                        {
+                                                            "type": "microservice",
+                                                            "config": {
+                                                                "microserviceId": "getResultCodes",
+                                                                "requestMethod": "get",
+                                                                "wraper": true,
+                                                                "params": {
+                                                                    "bcn": "#UnitInfo.ITEM_BCN",
+                                                                    "validateResult": 1
+                                                                }
+                                                            },
+                                                            "responseDependents": {
+                                                                "onSuccess": {
+                                                                    "actions": [
+                                                                        {
+                                                                            "type": "context",
+                                                                            "config": {
+                                                                                "requestMethod": "add",
+                                                                                "key": "ResultCodes",
+                                                                                "data": "responseData"
+                                                                            }
+                                                                        },
+                                                                        {
+                                                                            "type": "microservice",
+                                                                            "config": {
+                                                                                "microserviceId": "getBomsByMainPartNo",
+                                                                                "requestMethod": "post",
+                                                                                "body": {
+                                                                                    "locationId": "#userSelectedLocation",
+                                                                                    "mainPartNo": "#UnitInfo.PART_NO"
+                                                                                },
+                                                                                "toBeStringified": true
+                                                                            },
+                                                                            "responseDependents": {
+                                                                                "onSuccess": {
+                                                                                    "actions": [
+                                                                                        {
+                                                                                            "type": "context",
+                                                                                            "config": {
+                                                                                                "requestMethod": "add",
+                                                                                                "key": "BomsByMainPartNo",
+                                                                                                "data": "responseData"
+                                                                                            }
+                                                                                        },
+                                                                                        {
+                                                                                            "type": "microservice",
+                                                                                            "config": {
+                                                                                                "microserviceId": "getConditionFlexFields",
+                                                                                                "requestMethod": "get",
+                                                                                                "wraper": true,
+                                                                                                "params": {
+                                                                                                    "locationId": "1224",
+                                                                                                    "clientId": "1171",
+                                                                                                    "contractId": "6989"
+                                                                                                }
+                                                                                            },
+                                                                                            "responseDependents": {
+                                                                                                "onSuccess": {
+                                                                                                    "actions": [
+                                                                                                        {
+                                                                                                            "type": "context",
+                                                                                                            "config": {
+                                                                                                                "requestMethod": "add",
+                                                                                                                "key": "conditionOptions",
+                                                                                                                "data": "responseData"
+                                                                                                            }
+                                                                                                        },
+                                                                                                        {
+                                                                                                            "type": "renderTemplate",
+                                                                                                            "config": {
+                                                                                                                "templateId": "cisco-iqaPreScreen.json",
+                                                                                                                "mode": "local"
+                                                                                                            }
+                                                                                                        },
+                                                                                                        {
+                                                                                                            "type": "microservice",
+                                                                                                            "config": {
+                                                                                                                "microserviceId": "getSubProcessMenu",
+                                                                                                                "requestMethod": "get",
+                                                                                                                "wraper": true,
+                                                                                                                "params": {
+                                                                                                                    "userId": "Bhupendra.Singh4"
+                                                                                                                }
+                                                                                                            },
+                                                                                                            "responseDependents": {
+                                                                                                                "onSuccess": {
+                                                                                                                    "actions": [
+                                                                                                                        {
+                                                                                                                            "type": "context",
+                                                                                                                            "config": {
+                                                                                                                                "requestMethod": "add",
+                                                                                                                                "key": "SubprocessMenu",
+                                                                                                                                "data": "responseData"
+                                                                                                                            }
+                                                                                                                        },
+                                                                                                                        {
+                                                                                                                            "type": "renderTemplate",
+                                                                                                                            "config": {
+                                                                                                                                "templateId": "cisco-iqaPreScreen.json",
+                                                                                                                                "mode": "local"
+                                                                                                                            }
+                                                                                                                        },
+                                                                                                                        {
+                                                                                                                            "type": "context",
+                                                                                                                            "config": {
+                                                                                                                                "requestMethod": "add",
+                                                                                                                                "key": "subProcessMenuType",
+                                                                                                                                "data": "IQA-Pre-screen"
+                                                                                                                            }
+                                                                                                                        }
+                                                                                                                    ]
+                                                                                                                },
+                                                                                                                "onFailure": {
+                                                                                                                    "actions": [
+                                                                                                                        {
+                                                                                                                            "type": "toast",
+                                                                                                                            "message": "Failed to fetch getSubprocess Menu"
+                                                                                                                        }
+                                                                                                                    ]
+                                                                                                                }
+                                                                                                            }
+                                                                                                        }
+                                                                                                    ]
+                                                                                                },
+                                                                                                "onFailure": {
+                                                                                                    "actions": [
+                                                                                                        {
+                                                                                                            "type": "toast",
+                                                                                                            "message": "Failed to fetch getSubprocess Menu"
+                                                                                                        }
+                                                                                                    ]
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                    ]
+                                                                                },
+                                                                                "onFailure": {
+                                                                                    "actions": [
+                                                                                        {
+                                                                                            "type": "toast",
+                                                                                            "message": "Failed to fetch getSubprocess Menu"
+                                                                                        }
+                                                                                    ]
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                },
+                                                                "onFailure": {
+                                                                    "actions": [
+                                                                        {
+                                                                            "type": "toast",
+                                                                            "message": "Failed to fetch getSubprocess Menu"
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                "onFailure": {
+                                                    "actions": [
+                                                        {
+                                                            "type": "toast",
+                                                            "message": "Failed to fetch getBomCount"
+                                                        }
+                                                    ]
+                                                }
+                                            }
+                                        }
+                                    ]
+                                },
+                                "onFailure": {
+                                    "actions": [
+                                        {
+                                            "type": "toast",
+                                            "message": "Failed to fetch getUnitInfo"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "footer": []
+}

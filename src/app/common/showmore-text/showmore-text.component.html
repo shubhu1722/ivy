@@ -1,0 +1,6 @@
+<ng-container *ngIf = "isShown">
+<span class="showLess"><a href="javascript:" (click)="showMore = !showMore">{{ showMore ? 'Show less': '' }}</a></span>
+<p class="container-showmore" [class.showMore]="showMore">{{ text | translate}}</p>
+<a href="javascript:" (click)="showMore = !showMore">{{ showMore ? 'Show less': 'Show More' }}</a>
+
+</ng-container>

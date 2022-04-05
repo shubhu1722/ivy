@@ -1,0 +1,54 @@
+{
+    "ctype": "subProcess",
+    "title": "CORE_DEBUG",
+    "uuid": "ciscoCoreDebugUUID",
+    "subMenuIndex": 0,
+    "clientName": "CISCO",
+    "openRightNav": false,
+    "hooks": [
+        {
+            "type": "microservice",
+            "hookType": "beforeInit",
+            "config": {
+                "microserviceId": "getSubProcessPageBody",
+                "requestMethod": "get",
+                "params": {
+                    "subProcessId": "#getReferenceDataKeys.subProcess.Cisco-SZO.CORE_DEBUG",
+                    "userName": "#userAccountInfo.PersonalDetails.USERID"
+                },
+                "isLocal": false,
+                "LocalService": "assets/Responses/SubProcess/CISCO-SZO/szo_CiscoCoreDebugSubprocess.json"
+            },
+            "responseDependents": {
+                "onSuccess": {
+                    "actions": [
+                        {
+                            "type": "context",
+                            "config": {
+                                "requestMethod": "add",
+                                "key": "ciscoCoreDebugData",
+                                "data": "responseData"
+                            }
+                        },
+                        {
+                            "type": "renderTemplate",
+                            "config": {
+                                "mode": "remote",
+                                "targetId": "mainPageContentBodysp",
+                                "templateId": "ciscoCoreDebugData"
+                            }
+                        }
+                    ]
+                },
+                "onFailure": {
+                    "actions": [
+                        {
+                            "type": "toast",
+                            "message": "Failed to fetch Cisco Core_Debug JSON"
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}

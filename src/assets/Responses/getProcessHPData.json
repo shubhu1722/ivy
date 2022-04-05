@@ -1,0 +1,317 @@
+{
+  "data": {
+    "sourceType": "PLATFORM",
+    "roheaderffIds": "35881,35675,35882,35677",
+    "rolineffIds": "35857,36007,35848,35983,35855,36002,39530,39534,39528,39532,39527,39531,35851,35996,39529,39533,35853,35999,35856,35992,35852,35998,35854,36001,35849,35994",
+    "workcenterffIds": "49889,108953",
+    "ffId": "49911",
+    "qrffId": "49953",
+    "udffId": "109219",
+    "arcffId": "49957",
+    "ftffId": "49949",
+    "tmffID": "50932",
+    "faffId": "1073",
+    "rrffId": "109469",
+    "debugwcID": 23383,
+    "reworkwcID": 23384,
+    "obawcID": 23381,
+    "ctFFID": "108895",
+    "prFFID": "49920",
+    "ccFFID": "49925",
+    "vftUnitDamageFFID": "109220",
+    "mbRepairMarksFFID": "72547",
+    "mbBeforeRLFFID": "85328",
+    "QrActionFaffId": "1065",
+    "hpVMIWCIDforPremium": "23381",
+    "bsodTestCodeffId" : "",
+    "bsodswReloadffId" : "111803",
+    "bsodCodeffId" : "111804",
+    "hpWorKInstructionsLinks": "https://partsurfer.hp.com/Search.aspx?searchText=",
+    "subProcess": {
+      "WCOperation": {
+        "HP": [
+          {
+            "wcName": "HP_BURN_IN",
+            "wcID": "23385",
+            "subProcess": {
+              "BURN_IN": {
+                "subProcessID": "1945",
+                "subProcessName": "BURN_IN"
+              }
+            }
+          },
+          {
+            "wcName": "HP_FAILURE_ANALYSIS",
+            "wcID": "23382",
+            "subProcess": {
+              "FA": {
+                "subProcessID": "1964",
+                "subProcessName": "FA"
+              }
+            }
+          },
+          {
+            "wcName": "HP_REWORK",
+            "wcID": "23384",
+            "subProcess": {
+              "REWORK": {
+                "subProcessID": "1944",
+                "subProcessName": "REWORK"
+              }
+            }
+          },
+          {
+            "wcName": "HP_QUICK_RESTORE",
+            "wcID": "23386",
+            "subProcess": {
+              "QUICK_RESTORE": {
+                "subProcessID": "1946",
+                "subProcessName": "QUICK_RESTORE"
+              }
+            }
+          },
+          {
+            "wcName": "HP_DEBUG",
+            "wcID": "23383",
+            "subProcess": {
+              "ASSESSMENT": {
+                "subProcessID": "1919",
+                "subProcessName": "ASSESSMENT"
+              },
+              "DEBUG": {
+                "subProcessID": "1939",
+                "subProcessName": "DEBUG"
+              },
+              "QUOTE_MESSAGE": {
+                "subProcessID": "1941",
+                "subProcessName": "QUOTE_MESSAGE"
+              },
+              "QUOTE_RESPONSE": {
+                "subProcessID": "1943",
+                "subProcessName": "QUOTE_RESPONSE"
+              }
+            }
+          },
+          {
+            "wcName": "HP_MB_REPAIR",
+            "wcID": "24505",
+            "subProcess": {
+              "MB_REPAIR": {
+                "subProcessID": "2038",
+                "subProcessName": "MB_REPAIR"
+              }
+            }
+          },
+          {
+            "wcName": "HP_OBA",
+            "wcID": "23391",
+            "subProcess": {
+              "OBA": {
+                "subProcessID": "2039",
+                "subProcessName": "OBA"
+              }
+            }
+          },
+          {
+            "wcName": "HP_VISUAL_FINAL_TEST_RTV",
+            "wcID": "23389",
+            "subProcess": {
+              "VFT": {
+                "subProcessID": "2061",
+                "subProcessName": "VFT"
+              }
+            }
+          },
+          {
+            "wcName": "HP_DISCREPANCY",
+            "wcID": "24194",
+            "subProcess": {
+              "DISCREPANCY": {
+                "subProcessID": "63",
+                "subProcessName": "DISCREPANCY"
+              }
+            }
+          },
+          {
+            "wcName": "HP_PACKOUT",
+            "wcID": "23390",
+            "subProcess": {
+              "PACKOUT": {
+                "subProcessID": "2041",
+                "subProcessName": "PACKOUT"
+              }
+            }
+          }
+        ]
+      },
+      "Shipping": {
+        "subProcessName": "SHIPPING",
+        "subProcessID": "2042",
+        "screenName": "SHIPPING"
+      },
+      "Receiving": {
+        "subProcessName": "SEARCH",
+        "subProcessID": "1897",
+        "screenName": "SEARCH"
+      }
+    },
+    "workInstructionInfo": {
+      "permissions": {
+        "ASSESSMENT": "true",
+        "BURN_IN": "true",
+        "CONFIRM": "true",
+        "HPReceiving": "true",
+        "DEBUG": "true",
+        "DISCREPANCY": "true",
+        "FA-ASSESSMENT": "true",
+        "MB_REPAIR": "true",
+        "MB REPAIR": "true",
+        "OBA": "true",
+        "PACKING": "true",
+        "PACKOUT": "true",
+        "QUICK_RESTORE": "true",
+        "QUOTE MESSAGE": "true",
+        "QUOTE RESPONSE": "true",
+        "REWORK": "true",
+        "SEARCH": "true",
+        "SHIPPING": "true",
+        "VFT": "true"
+      },
+      "Level": {
+        "ModelLevel": {
+          "Screens": [],
+          "params": {
+            "customInstructionType": "WORK_INSTRUCTION",
+            "sourceType": "MODEL_NUMBER",
+            "secondSource": "#userSelectedLocation",
+            "userName": "#userAccountInfo.PersonalDetails.USERID",
+            "firstSource": "#getPartModelAndWarrentyDetails.MODEL_NUMBER",
+            "locationId": "#userSelectedLocation",
+            "clientId": "#userSelectedClient",
+            "contractId": "#userSelectedContract",
+            "contractName": "#userSelectedContractName",
+            "locationName": "#userSelectedLocationName",
+            "clientName": "#userSelectedClientName"
+          }
+        },
+        "ScreenLevel": {
+          "Screens": [
+            "ASSESSMENT",
+            "BURN_IN",
+            "CONFIRM",
+            "DEBUG",
+            "DISCREPANCY",
+            "FA-ASSESSMENT",
+            "MB REPAIR",
+            "MB_REPAIR",
+            "OBA",
+            "PACKING",
+            "PACKOUT",
+            "QUICK_RESTORE",
+            "QUOTE MESSAGE",
+            "QUOTE RESPONSE",
+            "REWORK",
+            "SEARCH",
+            "SHIPPING",
+            "VFT",
+            "HPReceiving"
+          ],
+          "params": {
+            "customInstructionType": "WORK_INSTRUCTION",
+            "sourceType": "SUBPROCESS_NAME",
+            "secondSource": "",
+            "userName": "#userAccountInfo.PersonalDetails.USERID",
+            "firstSource": "#currentWC",
+            "locationId": "#userSelectedLocation",
+            "clientId": "#userSelectedClient",
+            "contractId": "#userSelectedContract",
+            "contractName": "#userSelectedContractName",
+            "locationName": "#userSelectedLocationName",
+            "clientName": "#userSelectedClientName"
+          }
+        }
+      }
+    },
+    "workInstructionsScreenInfo": {
+      "HPReceiving": "SEARCH",
+      "PACKING": "PACKOUT",
+      "SHIPPING": "SHIPPING",
+      "DEBUG": "DEBUG",
+      "QUOTE MESSAGE": "QUOTE MESSAGE",
+      "MB REPAIR": "MB_REPAIR",
+      "FA-ASSESSMENT": "FA-ASSESSMENT",
+      "ASSESSMENT": "ASSESSMENT",
+      "QUICK_RESTORE": "QUICK_RESTORE",
+      "QUOTE RESPONSE": "QUOTE RESPONSE",
+      "OBA": "OBA",
+      "VFT": "VFT",
+      "REWORK": "REWORK",
+      "BURN_IN": "BURN_IN",
+      "DISCREPANCY": "DISCREPANCY"
+    },
+    "workInstructionsLinksInfo": {
+      "PACKING": "PACKING",
+      "DEBUG": "DEBUG",
+      "QUOTE MESSAGE": "QUOTE MESSAGE",
+      "MB REPAIR": "MB REPAIR",
+      "FA-ASSESSMENT": "FA-ASSESSMENT",
+      "ASSESSMENT": "ASSESSMENT",
+      "QUICK_RESTORE": "QUICK_RESTORE",
+      "QUOTE RESPONSE": "QUOTE RESPONSE",
+      "OBA": "OBA",
+      "VFT": "VFT",
+      "REWORK": "REWORK",
+      "BURN_IN": "BURN_IN",
+      "DISCREPANCY": "DISCREPANCY"
+    },
+    "getBSODTestCode": [
+      {
+        "value" : "HEAVYLOAD"
+      }, 
+      {
+        "value" : "MEMTEST"
+      },
+      {
+        "value" : "FUMRARK"
+      },
+      {
+        "value" : "UEFI"
+      },
+      {
+        "value" : "BENCHMARK"
+      }, 
+      {
+        "value" : "HST"
+      },
+      {
+        "value" : "MANUAL"
+      }, 
+      {
+        "value" : "RAM SWAP"
+      }, 
+      {
+        "value" : "DISK SWAP"
+      },
+      {
+        "value" : "QR"
+      }, 
+      {
+        "value" : "BOOT/POST ISSUE" 
+      },
+      {
+        "value" : "REBOOTER"
+      }, 
+      {
+        "value" : "BURN_IN"
+      },
+      {
+        "value" : "HDTUNE"
+      }, 
+      {
+        "value" : "HIBERNATION/SLEEP" 
+      }		
+    ]
+  },
+  "status": true,
+  "message": null
+}

@@ -1,0 +1,8 @@
+<div>
+  <label [for]="name" [style]="labelstyles" [class]="labelPosition">{{name | translate}}</label>
+  <mat-form-field appearance="outline">
+    <input matInput [placeholder]="placeholder | translate" [type]="type" [id]="name" [value]="value | translate" [name]="name" [readonly]="readonly"
+      [required]="required" [matTooltip]="tooltip" [matTooltipPosition]="TooltipPosition" (focus)="onlocalfocus($event)" (onchange)="onlocalChange($event)"
+      (keyup)="onKeyup($event)" (blur)="onlocalBlur($event)" (onfocusout)="onlocalFocusOut($event)" (keydown)="onKeyDown($event)">
+  </mat-form-field>
+</div>

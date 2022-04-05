@@ -1,0 +1,16 @@
+<div class="table-heading d-flex flex-column pt-1" *ngIf="visibility && rmaListData.length > 0" style="margin-left: 15px;">
+    <div class="row">
+        <div class="col-3"><span class="cursor-pointer" (click)="sortUnitTable('serialNo', rmaListData, sortOrder)">Serial Number <i class="fas  fa-sort"></i></span></div>
+        <div class="col-3"><span class="cursor-pointer" (click)="sortUnitTable('packingListNo', rmaListData, sortOrder)">Packing List Number<i class="fas  fa-sort"></i></span></div>
+        <div class="col-3"><span class="cursor-pointer" (click)="sortUnitTable('partNo',rmaListData , sortOrder)">Part Number<i class="fas  fa-sort"></i></span></div>
+        <div class="col-3"><span class="cursor-pointer" (click)="sortUnitTable('inboundOrderStatus', rmaListData, sortOrder)">Status <i class="fas  fa-sort"></i></span></div>
+    </div>
+</div>
+<div class="table-body d-flex align-items-center flex-column pt-1" *ngIf="rmaListData.length > 0" style="width: 98.7%;">
+    <div class="row rma-list-item" *ngFor="let item of rmaListData" [ngClass]="item?.inboundOrderStatus=='Complete' ? 'complete-receipt':'pending-receipt'" (click)="goToReceiving(item)">
+        <div class="col-3 p-1">{{item?.serialNo}}</div>
+        <div class="col-3 p-1">{{item?.packingListNo}}</div>
+        <div class="col-3 p-1">{{item?.partNo}}</div>
+        <div class="col-3 p-1 text-uppercase">{{item?.inboundOrderStatus}}</div>
+    </div>
+</div>

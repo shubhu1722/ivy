@@ -1,0 +1,44 @@
+.comments-dialog {
+    .cust-disabled-btn:disabled {
+        background-color: #6c757d;
+        border: #6c757d;
+    }
+    .mat-tab-group {
+        .mat-tab-label-active {
+            color: rgb(1, 128, 229) !important;
+            font-weight: bold !important;
+            border-top: 2px solid rgb(1, 128, 229) !important;
+        }
+        .mat-ink-bar {
+            background-color: none !important;
+        }
+    }
+}
+.wiki-tiles {
+    height: 450px;
+    .tile-border-bottom {
+        border-bottom: 2px solid #E1E1E1;
+        .version-label {
+            color: rgba(80, 80, 80, 0.4980392156862745);
+        }
+        .richText-border {
+            border: 1px solid #E1E1E1;
+            border-radius: 3px;
+        }
+    }
+    .tile-border-bottom:last-child {
+        border-bottom: none !important;
+    }
+}
+.comment-list {
+    border-top: 1px solid #E1E1E1;
+}
+.comment-list:first-child {
+    border-top: none;
+}
+.comment-list:nth-child(2n+1) {
+    background: #f2f2f2;
+}
+.cr-submit {
+    background: rgba(80, 80, 80, 0.098);
+}

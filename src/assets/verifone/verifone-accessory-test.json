@@ -1,0 +1,133 @@
+{
+    "ctype": "subProcess",
+    "title": "Accessory Test",
+    "uuid": "AccessoryTestUUID",
+    "subMenuIndex": 0,
+    "clientName": "VeriFone",
+    "openRightNav": false,
+    "hooks": [
+        {
+            "type": "microservice",
+            "hookType": "beforeInit",
+            "config": {
+                "microserviceId": "getResultCodes",
+                "isLocal": true,
+                "LocalService": "assets/Responses/verifoneacctest.json",
+                "requestMethod": "get",
+                "params": {
+                    "bcn": "#UnitInfo.ITEM_BCN",
+                    "validateResult": 1
+                }
+            },
+            "responseDependents": {
+                "onSuccess": {
+                    "actions": [
+                        {
+                            "type": "context",
+                            "config": {
+                                "requestMethod": "add",
+                                "key": "dynamic",
+                                "data": "responseData"
+                            }
+                        }                        
+                    ]
+                },
+                "onFailure": {
+                    "actions": [
+                        {
+                            "type": "context",
+                            "config": {
+                                "requestMethod": "add",
+                                "key": "errorMsg",
+                                "data": "responseData"
+                            }
+                        },
+                        {
+                            "type": "condition",
+                            "config": {
+                                "operation": "isEqualTo",
+                                "lhs": "#errorMsg",
+                                "rhs": "No Record Found"
+                            },
+                            "responseDependents": {
+                                "onSuccess": {
+                                    "actions": [
+                                        {
+                                            "type": "updateComponent",
+                                            "config": {
+                                                "key": "errorTitleUUID",
+                                                "properties": {
+                                                    "titleValue": "#errorMsg",
+                                                    "isShown": false
+                                                }
+                                            }
+                                        }
+                                    ]
+                                },
+                                "onFailure": {
+                                    "actions": [
+                                        {
+                                            "type": "updateComponent",
+                                            "config": {
+                                                "key": "errorTitleUUID",
+                                                "properties": {
+                                                    "titleValue": "#errorMsg",
+                                                    "isShown": true
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "type": "microservice",
+            "hookType": "beforeInit",
+            "config": {
+                "microserviceId": "getSubProcessPageBody",
+                "requestMethod": "get",
+                "params": {
+                    "subProcessId": "#getReferenceDataKeys.subProcess.VERIFONE.ACCESSORY_TEST",
+                    "userName": "#userAccountInfo.PersonalDetails.USERID"
+                },
+                "isLocal": true,
+                "LocalService": "assets/Responses/SubProcess/VERIFONE/verifoneAccessoryTestSubprocess.json"
+            },
+            "responseDependents": {
+                "onSuccess": {
+                    "actions": [
+                        {
+                            "type": "context",
+                            "config": {
+                                "requestMethod": "add",
+                                "key": "AccessoryTestData",
+                                "data": "responseData"
+                            }
+                        },
+                        {
+                            "type": "renderTemplate",
+                            "config": {
+                                "mode": "remote",
+                                "targetId": "mainPageContentBodysp",
+                                "templateId": "AccessoryTestData"
+                            }
+                        }
+                    ]
+                },
+                "onFailure": {
+                    "actions": [
+                        {
+                            "type": "toast",
+                            "message": "Failed to fetch ACCESSORY TEST JSON"
+                        }
+                    ]
+                }
+            }
+        }
+        
+    ]
+}

@@ -1,0 +1,179 @@
+{
+    "ctype": "taskPanel",
+    "title": "",
+    "header": {
+        "title": "Confirm Part Number",
+        "icon": "description",
+        "css": "color:black",
+        "status": ""
+    },
+    "expanded": true,
+    "hideToggle": true,
+    "hidden": false,
+    "uuid": "ConfirmPartNumberUUID",
+    "css": "width:50%;margin:auto;height:10vh",
+    "hooks": [],
+    "validations": [],
+    "actions": [],
+    "items": [
+        {
+            "ctype": "textField",
+            "uuid": "ROPartNumberUUID",
+            "hooks": [],
+            "validations": [
+                {
+                    "type": "regex",
+                    "script": ""
+                }
+            ],
+            "actions": [],
+            "type": "text",
+            "css": "width:50%",
+            "required": true,
+            "placeholder": "",
+            "submitable": true,
+            "visibility": true,
+            "label": "RO Part Number",
+            "labelPosition": "left",
+            "name": "ROPartNumber",
+            "labelClass": "col-sm-3 col-form-label",
+            "formGroupClass": "form-group row"
+        },
+        {
+            "ctype": "textField",
+            "uuid": "actualPartNumber",
+            "hooks": [],
+            "validations": [
+                {
+                    "type": "regex",
+                    "script": ""
+                }
+            ],
+            "actions": [],
+            "type": "text",
+            "css": "width:50%",
+            "required": true,
+            "placeholder": "Scan #",
+            "submitable": true,
+            "disabled": true,
+            "label": "Actual Part Number",
+            "labelPosition": "left",
+            "name": "actualPartNumber",
+            "labelClass": "col-sm-3 col-form-label",
+            "formGroupClass": "form-group row"
+        },
+        {
+            "ctype": "checkbox",
+            "uuid": "updatePartNumber",
+            "name": "updatePartNumber",
+            "hooks": [],
+            "validations": [],
+            "required": true,
+            "submitable": true,
+            "label": "Update Part Number",
+            "labelPosition": "after",
+            "actions": [
+                {
+                    "type": "condition",
+                    "config": {
+                        "operation": "isEqualTo",
+                        "compareTo": "#OrderInfo.PartNumber"
+                    },
+                    "eventSource": "onblur",
+                    "responseDependents": {
+                        "onSuccess": {
+                            "actions": [
+                                {
+                                    "type": "displayComp",
+                                    "config": {
+                                        "component": "label",
+                                        "value": "Matched",
+                                        "css": "text: green"
+                                    }
+                                }
+                            ]
+                        },
+                        "onFailure": {
+                            "actions": [
+                                {
+                                    "type": "displayComp",
+                                    "config": {
+                                        "component": "label",
+                                        "value": "Mismatch",
+                                        "css": "text: red"
+                                    }
+                                },
+                                {
+                                    "type": "disableButton"
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        }
+    ],
+    "footer": [
+        {
+            "ctype": "button",
+            "color": "primary",
+            "text": "Complete",
+            "uuid": "CompleteUUID",
+            "visibility": true,
+            "disabled": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "actions": [
+                {
+                    "type": "updateComponent",
+                    "config": {
+                        "key": "scanSerialNumberTaskUUID",
+                        "properties": {
+                            "expanded": false,
+                            "disabled": true,
+                            "header": {
+                                "title": "Scan Value",
+                                "icon": "description",
+                                "css": "color:black",
+                                "status": "",
+                                "statusIcon": "check_circle",
+                                "statusCss": "color: #30c76f"
+                            }
+                        }
+                    },
+                    "eventSource": "click"
+                },
+                {
+                    "type": "updateComponent",
+                    "config": {
+                        "key": "ConfirmPartNumberUUID",
+                        "properties": {
+                            "expanded": false,
+                            "disabled": true,
+                            "header": {
+                                "title": "Confirm Part Number",
+                                "icon": "description",
+                                "css": "color:black",
+                                "status": "",
+                                "statusIcon": "check_circle",
+                                "statusCss": "color: #30c76f"
+                            }
+                        }
+                    },
+                    "eventSource": "click"
+                },
+                {
+                    "type": "updateComponent",
+                    "config": {
+                        "key": "nextButtonUUID",
+                        "properties": {
+                            "disabled": false
+                        }
+                    },
+                    "eventSource": "click"
+                }
+            ]
+        }
+    ]
+}

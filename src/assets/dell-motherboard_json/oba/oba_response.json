@@ -1,0 +1,49 @@
+{
+  "ctype": "subProcess",
+  "title": "DELL_MBR_OBA",
+  "uuid": "dellOBAUUID",
+  "workInstructionId": "6",
+  "subMenuIndex": 1,
+  "clientName": "DELL",
+  "openRightNav": false,
+  "class": "ivy-menutree",
+  "hooks": [
+    {
+      "type": "microservice",
+      "hookType": "beforeInit",
+      "config": {
+        "microserviceId": "getSubProcessPageBody",
+        "requestMethod": "get",
+        "parseJson": true,
+        "params": {
+          "subProcessId": "#getReferenceDataKeys.subProcess.DELL_MBR.OBA",
+          "userName": "#userAccountInfo.PersonalDetails.USERID"
+        },
+        "isLocal": false,
+        "LocalService": "assets/dell-motherboard_json/oba/oba.json"
+      },
+      "responseDependents": {
+        "onSuccess": {
+          "actions": [
+            {
+              "type": "renderTemplate",
+              "config": {
+                "mode": "remote",
+                "targetId": "mainPageContentBodysp",
+                "templateId": "getSubProcessPageBody"
+              }
+            }
+          ]
+        },
+        "onFailure": {
+          "actions": [
+            {
+              "type": "toast",
+              "message": "Failed to fetch mb repair JSON"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

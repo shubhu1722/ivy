@@ -1,0 +1,146 @@
+{
+  "ctype": "taskPanel",
+  "title": "",
+  "header": {
+      "title": "Discrepancy Details",
+      "icon": "description",
+      "css": "color:black",
+      "status": ""
+  },
+  "expanded": "true",
+  "hideToggle": "true",
+  "uuid": "receivingUUID",
+  "css": "width:50%;margin:auto;height:10vh",
+  "visibility": true,
+  "hooks": [],
+  "validations": [],
+  "actions": [],
+  "Items": [
+      {
+          "ctype": "divider",
+          "css": "width:100%;"
+      },
+      {
+          "ctype": "textField",
+          "uuid": "CustomerPONumberUUID",
+          "hooks": [],
+          "validations": [
+              {
+                  "type": "regex",
+                  "script": ""
+              }
+          ],
+          "actions": [],
+          "type": "text",
+          "css": "width:50%;margin-top:10px",
+          "required": true,
+          "placeholder": "Enter Value",
+          "submitable": true,
+          "label": "Customer PO Number",
+          "labelPosition": "left",
+          "name": "CustomerPONumber",
+          "inputStyles": "width: 50%",
+          "value": ""
+      },
+      {
+        "ctype": "textField",
+        "uuid": "BoxCSOUUID",
+        "hooks": [],
+        "validations": [
+            {
+                "type": "regex",
+                "script": ""
+            }
+        ],
+        "actions": [],
+        "type": "text",
+        "css": "width:50%",
+        "required": true,
+        "placeholder": "Enter Value",
+        "submitable": true,
+        "label": "Box CSO",
+        "labelPosition": "left",
+        "name": "BoxCSO",
+        "inputStyles": "width: 50%",
+        "value": ""
+      },
+      {
+        "ctype": "nativeDropdown",
+        "inputStyles": "width:25%; height:35px;",
+        "uuid": "DiscrepancyCode",
+        "name": "DiscrepancyCode",
+        "label":"Discrepancy Code",
+        "dataSource": "#DiscrepancyCode",
+        "code": "DiscrepancyCode_ID",
+        "displayValue": "DiscrepancyCode_NAME",
+        "defaultValue": "123917",
+        "actions": [
+            {
+                "type": "context",
+                "config": {
+                    "requestMethod": "add",
+                    "key": "selectDiscrepancyCode",
+                    "data": "selectDiscrepancyCode"
+                }
+            }
+        ]
+    },
+    {
+      "ctype": "textField",
+      "uuid": "UnitSNUUID",
+      "hooks": [],
+      "validations": [
+          {
+              "type": "regex",
+              "script": ""
+          }
+      ],
+      "actions": [],
+      "type": "text",
+      "css": "width:50%;margin-top:10px",
+      "required": true,
+      "placeholder": "Scan#",
+      "submitable": true,
+      "label": "Unit SN",
+      "labelPosition": "left",
+      "name": "UnitSN",
+      "inputStyles": "width: 50%",
+      "value": ""
+    },
+    {
+      "ctype": "textField",
+      "uuid": "UnitPNUUID",
+      "hooks": [],
+      "validations": [
+          {
+              "type": "regex",
+              "script": ""
+          }
+      ],
+      "actions": [],
+      "type": "text",
+      "css": "width:50%",
+      "required": true,
+      "placeholder": "Scan#",
+      "submitable": true,
+      "label": "UnitPN",
+      "labelPosition": "left",
+      "name": "UnitPN",
+      "inputStyles": "width: 50%",
+      "value": ""
+    }
+  ],
+  "footer": [
+      {
+          "ctype": "button",
+          "inputStyles": "float:right;background-color:rgb(245,245,245); color:rgb(152,152,152);",
+          "text": "Complete",
+          "uuid": "CompleteUUID",
+          "visibility": true,
+          "disabled": false,
+          "type": "submit",
+          "hooks": [],
+          "validations": []
+      }
+  ]
+}

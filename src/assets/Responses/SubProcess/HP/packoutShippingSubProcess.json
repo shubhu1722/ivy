@@ -1,0 +1,2036 @@
+{
+  "ResultData": {
+    "ctype": "page",
+    "uuid": "pageUUID",
+    "contentClass": "",
+    "css": "",
+    "visibility": true,
+    "hooks": [
+      {
+        "type": "context",
+        "config": {
+            "key": "isTimeOutFromHpWC",
+            "data": false,
+            "requestMethod": "addToGlobalContext"
+        },
+        "hookType": "afterInit"
+      },
+      {
+        "type": "context",
+        "hookType": "afterInit",
+        "config": {
+          "requestMethod": "delete",
+          "key": "shippingrecvideoref"
+        }
+      },
+      {
+        "type": "context",
+        "hookType": "afterInit",
+        "config": {
+          "requestMethod": "add",
+          "key": "shippingPrinter",
+          "data": ""
+        }
+      },
+      {
+        "type": "context",
+        "hookType": "afterInit",
+        "config": {
+          "requestMethod": "add",
+          "key": "shippingTrackingNumber",
+          "data": ""
+        }
+      },
+      {
+        "type": "condition",
+        "hookType": "afterInit",
+        "config": {
+          "operation": "isValid",
+          "lhs": "#shippingFromDashboard"
+        },
+        "responseDependents": {
+          "onSuccess": {
+            "actions": [
+              {
+                "type": "condition",
+                "hookType": "afterInit",
+                "config": {
+                  "operation": "isValid",
+                  "lhs": "#boxShipping"
+                },
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "orderProcessTypeCode",
+                          "data": "OSTK"
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "BCNTitle",
+                          "properties": {
+                            "title": "RO: ",
+                            "titleValue": "#shippingReferenceOrderId",
+                            "titleClass": "heading1 sidenav-header"
+                          }
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "DueUUID",
+                          "properties": {
+                            "visibility": false,
+                            "titleValue": ""
+                          }
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "SerialUUID",
+                          "properties": {
+                            "titleValue": "--"
+                          }
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "EliteUUID",
+                          "properties": {
+                            "visibility": true,
+                            "titleValue": "#shippingPartNo"
+                          }
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "FamilyUUID",
+                          "properties": {
+                            "visibility": true,
+                            "titleValue": "#shippingPartDesc"
+                          }
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "WarrantyUUID",
+                          "properties": {
+                            "titleValue": "--"
+                          }
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "vidoeRecordingPanelUUID",
+                          "properties": {
+                            "hidden": true
+                          }
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "trackingPanelUUID",
+                          "properties": {
+                            "hidden": true
+                          }
+                        }
+                      },
+                      {
+                        "type": "context",
+                        "hookType": "afterInit",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "shippingItemBcn",
+                          "data": ""
+                        }
+                      },
+                      {
+                        "type": "context",
+                        "hookType": "afterInit",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "shippingSerialNo",
+                          "data": ""
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "eventSource": "click",
+                        "config": {
+                          "key": "etravellerShippingUUID",
+                          "properties": {
+                            "disabled": true
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "orderProcessTypeCode",
+                          "data": "ORET"
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "BCNTitle",
+                          "properties": {
+                            "titleValue": "#shippingItemBcn"
+                          }
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "SerialUUID",
+                          "properties": {
+                            "titleValue": "#shippingSerialNo"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "type": "condition",
+                "config": {
+                  "operation": "isValid",
+                  "lhs": "#shippingShipManifestStatus.shipmentId"
+                },
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "microservice",
+                        "config": {
+                          "microserviceId": "getStAbbrevCode",
+                          "requestMethod": "get",
+                          "params": {
+                            "outBoundOrderId": "#shippingOutBoundOrderId",
+                            "userName": "#userAccountInfo.PersonalDetails.USERID"
+                          }
+                        },
+                        "eventSource": "click",
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "context",
+                                "config": {
+                                  "requestMethod": "add",
+                                  "key": "shippingAbbrevCodeData",
+                                  "data": "responseData"
+                                }
+                              },
+                              {
+                                "type": "microservice",
+                                "config": {
+                                  "microserviceId": "getShippingTermsDetails",
+                                  "requestMethod": "get",
+                                  "params": {
+                                    "outBoundOrderId": "#shippingOutBoundOrderId",
+                                    "tradingPartnerId": "#shippingTradingPartnerId",
+                                    "abbrevCode": "#shippingAbbrevCodeData.abbrevCode",
+                                    "userName": "#userAccountInfo.PersonalDetails.USERID"
+                                  }
+                                },
+                                "eventSource": "click",
+                                "responseDependents": {
+                                  "onSuccess": {
+                                    "actions": [
+                                      {
+                                        "type": "context",
+                                        "config": {
+                                          "requestMethod": "add",
+                                          "key": "shippingTermsDetails",
+                                          "data": "responseArray"
+                                        }
+                                      },
+                                      {
+                                        "type": "microservice",
+                                        "eventSource": "click",
+                                        "config": {
+                                          "microserviceId": "getDestinationPallet",
+                                          "requestMethod": "get",
+                                          "params": {
+                                            "outBoundOrderId": "#shippingOutBoundOrderId",
+                                            "tradingPartnerId": "#shippingTradingPartnerId",
+                                            "abbrevCode": "#shippingAbbrevCodeData.abbrevCode",
+                                            "userName": "#loginUUID.username"
+                                          }
+                                        },
+                                        "responseDependents": {
+                                          "onSuccess": {
+                                            "actions": [
+                                              {
+                                                "type": "context",
+                                                "eventSource": "click",
+                                                "config": {
+                                                  "requestMethod": "add",
+                                                  "key": "shippingDestinationPalletData",
+                                                  "data": "responseData"
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          "onFailure": {
+                                            "actions": [
+                                              {
+                                                "type": "context",
+                                                "config": {
+                                                  "requestMethod": "add",
+                                                  "key": "errorMsg",
+                                                  "data": "responseData"
+                                                }
+                                              },
+                                              {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                  "key": "errorTitleUUID",
+                                                  "properties": {
+                                                    "titleValue": "#errorMsg",
+                                                    "isShown": true
+                                                  }
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "onFailure": {
+                                    "actions": [
+                                      {
+                                        "type": "context",
+                                        "config": {
+                                          "requestMethod": "add",
+                                          "key": "errorMsg",
+                                          "data": "responseData"
+                                        }
+                                      },
+                                      {
+                                        "type": "updateComponent",
+                                        "config": {
+                                          "key": "errorTitleUUID",
+                                          "properties": {
+                                            "titleValue": "#errorMsg",
+                                            "isShown": true
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": [
+                              {
+                                "type": "context",
+                                "config": {
+                                  "requestMethod": "add",
+                                  "key": "errorMsg",
+                                  "data": "responseData"
+                                }
+                              },
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "errorTitleUUID",
+                                  "properties": {
+                                    "titleValue": "#errorMsg",
+                                    "isShown": true
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "shippingPanelUUID",
+                          "properties": {
+                            "expanded": false,
+                            "disabled": false,
+                            "header": {
+                              "title": "Ship",
+                              "icon": "description",
+                              "statusIcon": "check_circle",
+                              "statusClass": "complete-status",
+                              "class": "complete-task ",
+                              "iconClass": "complete-task"
+                            }
+                          }
+                        },
+                        "eventSource": "click"
+                      },
+                      {
+                        "type": "updateComponent",
+                        "eventSource": "click",
+                        "config": {
+                          "key": "shipCompleteUUID",
+                          "properties": {
+                            "disabled": true
+                          }
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "manifestPanelUUID",
+                          "properties": {
+                            "expanded": true,
+                            "disabled": false,
+                            "header": {
+                              "title": "Manifest",
+                              "icon": "description",
+                              "iconClass": "active-header",
+                              "statusIcon": "hourglass_empty",
+                              "statusClass": "incomplete-status",
+                              "class": "active-header "
+                            }
+                          }
+                        },
+                        "eventSource": "click"
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": []
+                  }
+                }
+              },
+              {
+                "type": "microservice",
+                "eventSource": "click",
+                "config": {
+                  "microserviceId": "getRecipientCountryCode",
+                  "requestMethod": "get",
+                  "params": {
+                    "outBoundOrderId": "#shippingOutBoundOrderId",
+                    "userName": "#loginUUID.username"
+                  }
+                },
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "shippingRecipientCountryCode",
+                          "data": "responseData"
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "countryNameUUID",
+                          "properties": {
+                            "visibility": true,
+                            "titleValue": "#shippingRecipientCountryCode.countryName"
+                          }
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "cityNameUUID",
+                          "properties": {
+                            "visibility": true,
+                            "titleValue": "#shippingRecipientCountryCode.cityName"
+                          }
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "postalCodeUUID",
+                          "properties": {
+                            "visibility": true,
+                            "titleValue": "#shippingRecipientCountryCode.postalCode"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "errorMsg",
+                          "data": "responseData"
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "errorTitleUUID",
+                          "properties": {
+                            "titleValue": "#errorMsg",
+                            "isShown": true
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "onFailure": {
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "orderProcessTypeCode",
+                  "data": "ORET"
+                }
+              },
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "shippingSerialNo",
+                  "data": "#repairUnitInfo.SERIAL_NO"
+                }
+              },
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "shippingItemBcn",
+                  "data": "#repairUnitInfo.ITEM_BCN"
+                }
+              },
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "shippingPartNo",
+                  "data": "#repairUnitInfo.PART_NO"
+                }
+              },
+              {
+                "type": "microservice",
+                "hookType": "afterInit",
+                "config": {
+                  "microserviceId": "getShipmentDetails",
+                  "requestMethod": "get",
+                  "params": {
+                    "locationId": "#userSelectedLocation",
+                    "login": "#loginUUID.username",
+                    "serialNo": "#shippingSerialNo",
+                    "userName": "#loginUUID.username"
+                  }
+                },
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "shippingShipmentDetails",
+                          "data": "responseArray"
+                        }
+                      },
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "shippingOutBoundOrderId",
+                          "data": "#shippingShipmentDetails.outBoundOrderId"
+                        }
+                      },
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "shippmentSourceBinName",
+                          "data": "#shippingShipmentDetails.sourceBinName"
+                        }
+                      },
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "shippingTradingPartnerId",
+                          "data": "#shippingShipmentDetails.tradingPartnerId"
+                        }
+                      },
+                      {
+                        "type": "microservice",
+                        "eventSource": "click",
+                        "config": {
+                          "microserviceId": "getRecipientCountryCode",
+                          "requestMethod": "get",
+                          "params": {
+                            "outBoundOrderId": "#shippingOutBoundOrderId",
+                            "userName": "#loginUUID.username"
+                          }
+                        },
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "context",
+                                "config": {
+                                  "requestMethod": "add",
+                                  "key": "shippingRecipientCountryCode",
+                                  "data": "responseData"
+                                }
+                              },
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "countryNameUUID",
+                                  "properties": {
+                                    "visibility": true,
+                                    "titleValue": "#shippingRecipientCountryCode.countryName"
+                                  }
+                                }
+                              },
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "cityNameUUID",
+                                  "properties": {
+                                    "visibility": true,
+                                    "titleValue": "#shippingRecipientCountryCode.cityName"
+                                  }
+                                }
+                              },
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "postalCodeUUID",
+                                  "properties": {
+                                    "visibility": true,
+                                    "titleValue": "#shippingRecipientCountryCode.postalCode"
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": [
+                              {
+                                "type": "context",
+                                "config": {
+                                  "requestMethod": "add",
+                                  "key": "errorMsg",
+                                  "data": "responseData"
+                                }
+                              },
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "errorTitleUUID",
+                                  "properties": {
+                                    "titleValue": "#errorMsg",
+                                    "isShown": true
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "errorMsg",
+                          "data": "responseData"
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "errorTitleUUID",
+                          "properties": {
+                            "titleValue": "#errorMsg",
+                            "isShown": true
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "type": "microservice",
+        "hookType": "afterInit",
+        "config": {
+          "microserviceId": "getPrinterNameByHostName",
+          "requestMethod": "get",
+          "params": {
+            "hostName": "#getHostNameResponse.hostName",
+            "userName": "#userAccountInfo.PersonalDetails.USERID"
+          }
+        },
+        "responseDependents": {
+          "onSuccess": {
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "shippingPrinterNameByHostName",
+                  "data": "responseData"
+                }
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "printerNumber3UUID",
+                  "fieldProperties": {
+                    "shippingPrinter": "#shippingPrinterNameByHostName.printerName"
+                  }
+                }
+              }
+            ]
+          },
+          "onFailure": {
+            "actions": []
+          }
+        }
+      }
+    ],
+    "validations": [],
+    "action": [],
+    "header": [
+      {
+        "ctype": "breadcrumb",
+        "breadcrumbs": [
+          {
+            "label": "#userSelectedLocationName"
+          },
+          {
+            "label": "#userSelectedClientName"
+          },
+          {
+            "label": "#userSelectedContractName"
+          }
+        ]
+      },
+      {
+        "ctype": "toolbar",
+        "uuid":"shippingToolBarUUID",
+        "toolbarClass": "pagecontent-header",
+        "items": [
+          {
+            "ctype": "title",
+            "uuid": "subProcessTitleUUID",
+            "titleValue": "Shipping",
+            "titleClass": "section-title"
+          },
+          {
+            "ctype": "iconbutton",
+            "iconButtonClass": "headeropen-button",
+            "text": "",
+            "uuid": "pageopenUUID",
+            "visibility": true,
+            "disabled": false,
+            "hidden": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "icon": "menu_open",
+            "disableRipple": true,
+            "iconClass": "header-icon",
+            "actions": [
+              {
+                "type": "toggle",
+                "eventSource": "click",
+                "name": "subProcessRightNavref"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "openUUID",
+                  "properties": {
+                    "hidden": false
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "pageopenUUID",
+                  "properties": {
+                    "hidden": true
+                  }
+                },
+                "eventSource": "click"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "items": [
+      {
+        "ctype": "title",
+        "uuid": "successTitleUUID",
+        "titleClass": "success-title",
+        "isShown": false
+      },
+      {
+        "ctype": "title",
+        "uuid": "errorTitleUUID",
+        "containerId": "prebodysectionone",
+        "titleClass": "error-title",
+        "isShown": false
+      },
+      {
+        "ctype": "taskPanel",
+        "title": "",
+        "header": {
+          "title": "Ship",
+          "icon": "description",
+          "iconClass": "active-header"
+        },
+        "expanded": true,
+        "disabled": false,
+        "hideToggle": true,
+        "panelClass": "margin-top-10",
+        "hidden": false,
+        "uuid": "shippingPanelUUID",
+        "hooks": [],
+        "validations": [],
+        "actions": [],
+        "items": [],
+        "footer": [
+          {
+            "ctype": "label",
+            "text": "Complete task to ship",
+            "labelClass": "shippingContent",
+            "value": ""
+          },
+          {
+            "ctype": "button",
+            "color": "primary",
+            "text": "Complete",
+            "uuid": "shipCompleteUUID",
+            "class": "primary-btn",
+            "visibility": true,
+            "disabled": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "actions": [
+              {
+                "type": "updateComponent",
+                "eventSource": "click",
+                "config": {
+                  "key": "errorTitleUUID",
+                  "properties": {
+                    "titleValue": "",
+                    "isShown": false
+                  }
+                }
+              },
+              {
+                "type": "microservice",
+                "config": {
+                  "microserviceId": "performShipment",
+                  "requestMethod": "post",
+                  "body": {
+                    "apiUsageClientName": "#discrepancyUnitInfo.CLIENTNAME",
+                    "apiUsageLocationName": "#userSelectedLocationName",
+                    "callSource": "FrontEnd",
+                    "ip": "::1",
+                    "shipments": {
+                      "outboundOrderId": "#shippingOutBoundOrderId",
+                      "shipmentBoxes": [
+                        {
+                          "boxNo": "001",
+                          "shipmentItems": [
+                            {
+                              "bcn": "#shippingItemBcn",
+                              "lineNo": "1",
+                              "partNo": "#shippingPartNo",
+                              "privatesourceBin": "#shippmentSourceBinName",
+                              "quantity": "1",
+                              "serialNo": "#shippingSerialNo",
+                              "shipmentBoxNo": "001"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    "userPass": {
+                      "userName": "#userAccountInfo.PersonalDetails.USERID",
+                      "password": "#loginUUID.password"
+                    }
+                  },
+                  "toBeStringified": true,
+                  "spliceIfEmptyValueObject": [
+                    {
+                      "identifier": "shipmentItems",
+                      "valueField": "privatesourceBin"
+                    }
+                  ],
+                  "removeUndefinedFields": [
+                    {
+                      "KeyName": "bcn",
+                      "KeyValue": "#shippingItemBcn"
+                    },
+                    {
+                      "KeyName": "serialNo",
+                      "KeyValue": "#shippingSerialNo"
+                    },
+                    {
+                      "KeyName": "partNo",
+                      "KeyValue": "#shippingPartNo"
+                    }
+                  ]
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "shippingPerformShipment",
+                          "data": "responseData"
+                        }
+                      },
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "shippingShipmentID",
+                          "data": "#shippingPerformShipment.shipmentId"
+                        }
+                      },
+                      {
+                        "type": "microservice",
+                        "eventSource": "click",
+                        "config": {
+                          "microserviceId": "getPrintTemplate",
+                          "requestMethod": "get",
+                          "params": {
+                            "locationId": "#userSelectedLocation",
+                            "clientId": "#userSelectedClient",
+                            "contractId": "#userSelectedContract",
+                            "opt": "#orderProcessTypeCode",
+                            "userName": "#loginUUID.username"
+                          }
+                        },
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "context",
+                                "eventSource": "click",
+                                "config": {
+                                  "requestMethod": "add",
+                                  "key": "printTemplateResponse",
+                                  "data": "responseData"
+                                }
+                              },
+                              {
+                                "type": "handleCommonServices",
+                                "config": {
+                                  "type": "handleOnePrintApi",
+                                  "data": "printTemplateResponse"
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": [
+                              {
+                                "type": "context",
+                                "config": {
+                                  "requestMethod": "add",
+                                  "key": "errorMsg",
+                                  "data": "responseData"
+                                }
+                              },
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "errorTitleUUID",
+                                  "properties": {
+                                    "titleValue": "#errorMsg",
+                                    "isShown": true
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "errorMsg",
+                          "data": "responseData"
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "errorTitleUUID",
+                          "properties": {
+                            "titleValue": "#errorMsg",
+                            "isShown": true
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "ctype": "taskPanel",
+        "title": "",
+        "header": {
+          "title": "Manifest",
+          "icon": "description",
+          "iconClass": "active-header",
+          "statusIcon": "hourglass_empty",
+          "statusClass": "incomplete-status"
+        },
+        "expanded": false,
+        "disabled": true,
+        "hideToggle": true,
+        "hidden": false,
+        "uuid": "manifestPanelUUID",
+        "hooks": [],
+        "validations": [],
+        "actions": [],
+        "items": [
+          {
+            "ctype": "label",
+            "text": "Complete task to manifest",
+            "labelClass": "shippingContent",
+            "value": ""
+          },
+          {
+            "ctype": "textField",
+            "uuid": "printerNumber3UUID",
+            "hooks": [],
+            "type": "text",
+            "placeholder": "",
+            "submitable": true,
+            "visibility": true,
+            "required": true,
+            "label": "Printer:",
+            "isUpperCase": true,
+            "labelPosition": "left",
+            "textfieldClass": "textfield-container printer-number",
+            "labelClass": "body2 ",
+            "name": "shippingPrinter",
+            "formGroupClass": "lex-container-one-fourth-width",
+            "validations": [
+              {
+                "type": "regex",
+                "script": "^TRAX-[a-zA-Z0-9]{2,50}$"
+              }
+            ],
+            "actions": [
+              {
+                "type": "updateComponent",
+                "eventSource": "input",
+                "config": {
+                  "key": "manifestCompleteUUID",
+                  "properties": {
+                    "disabled": false
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "footer": [
+          {
+            "ctype": "button",
+            "color": "primary",
+            "text": "Complete",
+            "uuid": "manifestCompleteUUID",
+            "class": "primary-btn",
+            "visibility": true,
+            "disabled": true,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "actions": [
+              {
+                "type": "updateComponent",
+                "eventSource": "click",
+                "config": {
+                  "key": "errorTitleUUID",
+                  "properties": {
+                    "titleValue": "",
+                    "isShown": false
+                  }
+                }
+              },
+              {
+                "type": "context",
+                "config": {
+                  "key": "shippingData",
+                  "data": "formData",
+                  "requestMethod": "add"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "context",
+                "config": {
+                  "key": "shippingPrinter",
+                  "data": "#shippingData.shippingPrinter",
+                  "requestMethod": "add"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "microservice",
+                "config": {
+                  "microserviceId": "hpgntrigger",
+                  "requestMethod": "post",
+                  "body": {
+                    "actionType": "carrierShipment",
+                    "processType": "ship",
+                    "locationId": "#userSelectedLocation",
+                    "carrierId": "#shippingTermsDetails.carrierCodeId",
+                    "carrierTypeId": "#shippingTermsDetails.carrierTypeId",
+                    "workOrderId": "#repairUnitInfo.WORKORDER_ID",
+                    "serviceTypeCode": "#shippingTermsDetails.serviceTypeCode",
+                    "location": "#userSelectedLocationName",
+                    "client": "HP",
+                    "contract": "#userSelectedContractName",
+                    "outboundOrderId": "#shippingOutBoundOrderId",
+                    "recipientCountryCode": "#shippingRecipientCountryCode.countryId",
+                    "userLoginId": "#userAccountInfo.PersonalDetails.USERID",
+                    "refOrderId": "#shippingShipmentDetails.refOrderId"
+                  },
+                  "toBeStringified": true
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "shippingHpgnTriggerData",
+                          "data": "responseData"
+                        }
+                      },
+                      {
+                        "type": "condition",
+                        "config": {
+                          "operation": "isValid",
+                          "lhs": "#shippingHpgnTriggerData.message"
+                        },
+                        "eventSource": "click",
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "errorTitleUUID",
+                                  "properties": {
+                                    "titleValue": "#shippingHpgnTriggerData.message",
+                                    "isShown": true
+                                  }
+                                }
+                              },
+                              {
+                                "type": "updateShippingTermDetailsContext"
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": [
+                              {
+                                "type": "updateShippingTermDetailsContext"
+                              },
+                              {
+                                "type": "microservice",
+                                "config": {
+                                  "microserviceId": "manifestTrax",
+                                  "requestMethod": "post",
+                                  "body": {
+                                    "actionType": "carrierShipment",
+                                    "processType": "ship",
+                                    "boxNo": "001",
+                                    "boxContent": {
+                                      "boxCount": "1",
+                                      "box": [
+                                        {
+                                          "trackingNo": "#shippingPrinter",
+                                          "boxNo": "001",
+                                          "item": "#shippingItemBcn"
+                                        }
+                                      ]
+                                    },
+                                    "carrierTypeCode": "#shippingTermsDetails.carrierTypeCode",
+                                    "packingListNo": "#shippingShipmentID",
+                                    "outboundOrderId": "#shippingOutBoundOrderId",
+                                    "locationName": "#userSelectedLocationName",
+                                    "clientName": "HP",
+                                    "contractName": "#userSelectedContractName",
+                                    "carrierName": "#shippingTermsDetails.carrierName",
+                                    "serviceTypeCode": "#shippingTermsDetails.serviceTypeCode",
+                                    "serviceTypeId": "#shippingTermsDetails.serviceTypeId",
+                                    "xelusFlexFieldList": [
+                                      {
+                                        "contextAttributeName": "detailFF502",
+                                        "FlexFieldID": "",
+                                        "FlexFieldName": "",
+                                        "FlexFieldValue": ""
+                                      },
+                                      {
+                                        "contextAttributeName": "detailFF5081",
+                                        "FlexFieldID": "",
+                                        "FlexFieldName": "",
+                                        "FlexFieldValue": ""
+                                      },
+                                      {
+                                        "contextAttributeName": "detailFF81",
+                                        "FlexFieldID": "",
+                                        "FlexFieldName": "",
+                                        "FlexFieldValue": ""
+                                      }
+                                    ]
+                                  },
+                                  "removeUndefinedFields": [
+                                    {
+                                      "KeyName": "item",
+                                      "KeyValue": "#shippingItemBcn"
+                                    }
+                                  ],
+                                  "toBeStringified": true
+                                },
+                                "eventSource": "click",
+                                "responseDependents": {
+                                  "onSuccess": {
+                                    "actions": [
+                                      {
+                                        "type": "context",
+                                        "config": {
+                                          "requestMethod": "add",
+                                          "key": "shippingManifestTraxData",
+                                          "data": "responseData"
+                                        }
+                                      },
+                                      {
+                                        "type": "microservice",
+                                        "config": {
+                                          "microserviceId": "performManifest",
+                                          "requestMethod": "post",
+                                          "body": {
+                                            "apiUsageClientName": "HP",
+                                            "apiUsageLocationName": "#userSelectedLocationName",
+                                            "callSource": "FrontEnd",
+                                            "carrier": "#shippingTermsDetails.carrierName",
+                                            "carrierServiceType": "#shippingTermsDetails.serviceTypeCode",
+                                            "carrierType": "#shippingTermsDetails.carrierTypeCode",
+                                            "ip": "::1",
+                                            "manifestBoxList": [
+                                              {
+                                                "shipmentBoxNumber": "001",
+                                                "trackingNumber": "#shippingManifestTraxData.boxContent.box[0].trackingNo",
+                                                "returnAirBill": "#shippingManifestTraxData.boxContent.box[0].returnAirbill"
+                                              }
+                                            ],
+                                            "manifestedBy": "#userAccountInfo.PersonalDetails.USERID",
+                                            "shipmentId": "#shippingShipmentID",
+                                            "userPass": {
+                                              "password": "#loginUUID.password",
+                                              "userName": "#userAccountInfo.PersonalDetails.USERID"
+                                            }
+                                          },
+                                          "removeUndefinedFields": [
+                                            {
+                                              "KeyName": "returnAirBill",
+                                              "KeyValue": "#shippingManifestTraxData.boxContent.box[0].returnAirbill"
+                                            }
+                                          ],
+                                          "toBeStringified": true
+                                        },
+                                        "eventSource": "click",
+                                        "responseDependents": {
+                                          "onSuccess": {
+                                            "actions": [
+                                              {
+                                                "type": "context",
+                                                "config": {
+                                                  "requestMethod": "add",
+                                                  "key": "shippingPerformManifestData",
+                                                  "data": "responseData"
+                                                }
+                                              },
+                                              {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                  "key": "manifestPanelUUID",
+                                                  "properties": {
+                                                    "expanded": false,
+                                                    "disabled": false,
+                                                    "header": {
+                                                      "title": "Manifest",
+                                                      "icon": "description",
+                                                      "statusIcon": "check_circle",
+                                                      "statusClass": "complete-status",
+                                                      "class": "complete-task ",
+                                                      "iconClass": "complete-task"
+                                                    }
+                                                  }
+                                                },
+                                                "eventSource": "click"
+                                              },
+                                              {
+                                                "type": "updateComponent",
+                                                "eventSource": "click",
+                                                "config": {
+                                                  "key": "manifestCompleteUUID",
+                                                  "properties": {
+                                                    "disabled": true
+                                                  }
+                                                }
+                                              },
+                                              {
+                                                "type": "updateComponent",
+                                                "eventSource": "click",
+                                                "config": {
+                                                  "key": "printerNumber3UUID",
+                                                  "properties": {
+                                                    "readonly": true,
+                                                    "disabled": true
+                                                  }
+                                                }
+                                              },
+                                              {
+                                                "type": "condition",
+                                                "hookType": "afterInit",
+                                                "config": {
+                                                  "operation": "isValid",
+                                                  "lhs": "#boxShipping"
+                                                },
+                                                "responseDependents": {
+                                                  "onSuccess": {
+                                                    "actions": [
+                                                      {
+                                                        "type": "dialog",
+                                                        "uuid": "shippingDialogUUID",
+                                                        "config": {
+                                                          "title": "Destination Pallet",
+                                                          "footerclass": "float-right",
+                                                          "disableClose": true,
+                                                          "closeIcon": true,
+                                                          "items": [
+                                                            {
+                                                              "ctype": "label",
+                                                              "text": "Place the box on the following Pallet",
+                                                              "labelClass": "serial-label body2",
+                                                              "value": ""
+                                                            },
+                                                            {
+                                                              "ctype": "title",
+                                                              "uuid": "shippingDialogTitlelUUID",
+                                                              "titleClass": "sidenav-title body2",
+                                                              "title": "",
+                                                              "titleValue": ""
+                                                            }
+                                                          ],
+                                                          "footer": [
+                                                            {
+                                                              "ctype": "button",
+                                                              "color": "primary",
+                                                              "text": "Done",
+                                                              "uuid": "shippingDoneUUID",
+                                                              "class": "button-direction",
+                                                              "footerclass": "button-direction",
+                                                              "dialogButton": true,
+                                                              "visibility": true,
+                                                              "disabled": false,
+                                                              "type": "submit",
+                                                              "closeType": "success",
+                                                              "hooks": [
+                                                                {
+                                                                  "type": "updateComponent",
+                                                                  "hookType": "afterInit",
+                                                                  "config": {
+                                                                    "key": "shippingDialogTitlelUUID",
+                                                                    "properties": {
+                                                                      "titleValue": "#shippingDestinationPalletData.destinationPallet"
+                                                                    }
+                                                                  }
+                                                                }
+                                                              ],
+                                                              "validations": [],
+                                                              "actions": [
+                                                                {
+                                                                  "type": "updateComponent",
+                                                                  "config": {
+                                                                    "key": "shippingDialogUUID",
+                                                                    "disableClose": true
+                                                                  },
+                                                                  "eventSource": "click"
+                                                                }
+                                                              ]
+                                                            }
+                                                          ]
+                                                        },
+                                                        "eventSource": "click",
+                                                        "responseDependents": {
+                                                          "onSuccess": {
+                                                            "actions": [
+                                                              {
+                                                                "type": "renderTemplate",
+                                                                "config": {
+                                                                  "templateId": "dashboard.json",
+                                                                  "mode": "local"
+                                                                },
+                                                                "eventSource": "click"
+                                                              },
+                                                              {
+                                                                "type": "context",
+                                                                "config": {
+                                                                  "requestMethod": "add",
+                                                                  "key": "shippingrecvideo",
+                                                                  "data": ""
+                                                                }
+                                                              }
+                                                            ]
+                                                          },
+                                                          "onFailure": {
+                                                            "actions": []
+                                                          }
+                                                        }
+                                                      }
+                                                    ]
+                                                  },
+                                                  "onFailure": {
+                                                    "actions": [
+                                                      {
+                                                        "type": "updateComponent",
+                                                        "config": {
+                                                          "key": "vidoeRecordingPanelUUID",
+                                                          "properties": {
+                                                            "expanded": true,
+                                                            "disabled": false,
+                                                            "header": {
+                                                              "title": "Video",
+                                                              "icon": "description",
+                                                              "iconClass": "active-header",
+                                                              "statusIcon": "hourglass_empty",
+                                                              "statusClass": "incomplete-status",
+                                                              "class": "active-header "
+                                                            }
+                                                          }
+                                                        },
+                                                        "eventSource": "click"
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          "onFailure": {
+                                            "actions": [
+                                              {
+                                                "type": "context",
+                                                "config": {
+                                                  "requestMethod": "add",
+                                                  "key": "errorMsg",
+                                                  "data": "responseData"
+                                                }
+                                              },
+                                              {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                  "key": "errorTitleUUID",
+                                                  "properties": {
+                                                    "titleValue": "#errorMsg",
+                                                    "isShown": true
+                                                  }
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "onFailure": {
+                                    "actions": [
+                                      {
+                                        "type": "context",
+                                        "config": {
+                                          "requestMethod": "add",
+                                          "key": "errorMsg",
+                                          "data": "responseData"
+                                        }
+                                      },
+                                      {
+                                        "type": "updateComponent",
+                                        "config": {
+                                          "key": "errorTitleUUID",
+                                          "properties": {
+                                            "titleValue": "#errorMsg",
+                                            "isShown": true
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "errorMsg",
+                          "data": "responseData"
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "errorTitleUUID",
+                          "properties": {
+                            "titleValue": "#errorMsg",
+                            "isShown": true
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "type": "updateComponent",
+                "eventSource": "click",
+                "config": {
+                  "key": "errorTitleUUID",
+                  "properties": {
+                    "titleValue": "",
+                    "isShown": false
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "ctype": "taskPanel",
+        "title": "",
+        "header": {
+          "title": "Video",
+          "icon": "description",
+          "statusIcon": "hourglass_empty",
+          "statusClass": "incomplete-status"
+        },
+        "expanded": false,
+        "disabled": true,
+        "hideToggle": true,
+        "panelClass": "margin-top-10",
+        "hidden": false,
+        "uuid": "vidoeRecordingPanelUUID",
+        "hooks": [],
+        "validations": [],
+        "actions": [],
+        "items": [],
+        "footer": [
+          {
+            "ctype": "title",
+            "uuid": "shipManifestTitlelUUID",
+            "titleClass": "greyish-black shippingContent",
+            "title": "Hit Complete to start recording",
+            "titleValue": ""
+          },
+          {
+            "ctype": "button",
+            "color": "primary",
+            "text": "Complete",
+            "uuid": "photoCompleteUUID",
+            "class": "primary-btn",
+            "visibility": true,
+            "disabled": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "actions": [
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "vidoeRecordingPanelUUID",
+                  "properties": {
+                    "expanded": false,
+                    "disabled": false,
+                    "header": {
+                      "title": "Video",
+                      "icon": "description",
+                      "statusIcon": "check_circle",
+                      "statusClass": "complete-status",
+                      "class": "complete-task ",
+                      "iconClass": "complete-task"
+                    }
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "trackingPanelUUID",
+                  "properties": {
+                    "expanded": true,
+                    "disabled": false,
+                    "header": {
+                      "title": "Apply Tracking Label and Record Tracking Number",
+                      "icon": "description",
+                      "iconClass": "active-header",
+                      "statusIcon": "hourglass_empty",
+                      "statusClass": "incomplete-status",
+                      "class": "active-header "
+                    }
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "eventSource": "click",
+                "config": {
+                  "key": "photoCompleteUUID",
+                  "properties": {
+                    "disabled": true
+                  }
+                }
+              },
+              {
+                "type": "createComponent",
+                "config": {
+                  "targetId": "shippingToolBarUUID",
+                  "containerId": "toolbarElement",
+                  "index": 1,
+                  "data": {
+                    "ctype": "videoCam",
+                    "uuid": "shippingrecvideo",
+                    "recordingTitle": "#repairUnitInfo.SERIAL_NO",
+                    "dialogWidth": "30%",
+                    "style": "margin-right:5px",
+                    "shippingVideoRecording": true
+                  }
+                },
+                "eventSource": "click"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "ctype": "taskPanel",
+        "title": "",
+        "header": {
+          "title": "Apply Tracking Label and Record Tracking Number",
+          "icon": "description",
+          "statusIcon": "hourglass_empty",
+          "statusClass": "incomplete-status"
+        },
+        "expanded": false,
+        "disabled": true,
+        "hideToggle": true,
+        "panelClass": "margin-top-10",
+        "hidden": false,
+        "uuid": "trackingPanelUUID",
+        "hooks": [],
+        "validations": [],
+        "actions": [],
+        "items": [
+          {
+            "ctype": "textField",
+            "uuid": "trackingNumberUUID",
+            "hooks": [],
+            "validations": [
+              {
+                "type": "regex",
+                "script": "^[a-zA-Z0-9]{0,32}$"
+              }
+            ],
+            "type": "text",
+            "textfieldClass": "textfield-container tracking-number",
+            "required": true,
+            "placeholder": "Scan #",
+            "submitable": true,
+            "label": "Tracking Number",
+            "labelClass": "body2 ",
+            "labelPosition": "left",
+            "isUpperCase": true,
+            "name": "shippingTrackingNumber",
+            "actions": []
+          }
+        ],
+        "footer": [
+          {
+            "ctype": "button",
+            "color": "primary",
+            "text": "Complete",
+            "uuid": "trackingNumberCompleteUUID",
+            "class": "primary-btn",
+            "visibility": true,
+            "disabled": true,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "key": "shippingTrackingFormData",
+                  "data": "formData",
+                  "requestMethod": "add"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "context",
+                "config": {
+                  "key": "shippingTrackingNumber",
+                  "data": "#shippingTrackingFormData.shippingTrackingNumber",
+                  "requestMethod": "add"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "shippingrecvideo",
+                  "methodCall": "stopRecording",
+                  "shippingVideoRecording": true
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "stringOperation",
+                "config": {
+                  "key": "shippingVideoRecordingTitle",
+                  "lstr": "#shippingTrackingNumber",
+                  "rstr": "#repairUnitInfo.SERIAL_NO",
+                  "operation": "concat"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "shippingrecvideo",
+                  "properties": {
+                    "recordingTitle": "#shippingVideoRecordingTitle"
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "dialog",
+                "uuid": "shippingDialogUUID",
+                "config": {
+                  "title": "Destination Pallet",
+                  "footerclass": "float-right",
+                  "disableClose": true,
+                  "closeIcon": true,
+                  "items": [
+                    {
+                      "ctype": "label",
+                      "text": "Place the box on the following Pallet",
+                      "labelClass": "serial-label body2",
+                      "value": ""
+                    },
+                    {
+                      "ctype": "title",
+                      "uuid": "shippingDialogTitlelUUID",
+                      "titleClass": "sidenav-title body2",
+                      "title": "",
+                      "titleValue": ""
+                    }
+                  ],
+                  "footer": [
+                    {
+                      "ctype": "button",
+                      "color": "primary",
+                      "text": "Done",
+                      "uuid": "shippingDoneUUID",
+                      "class": "button-direction",
+                      "footerclass": "button-direction",
+                      "dialogButton": true,
+                      "visibility": true,
+                      "disabled": false,
+                      "type": "submit",
+                      "closeType": "success",
+                      "hooks": [
+                        {
+                          "type": "updateComponent",
+                          "hookType": "afterInit",
+                          "config": {
+                            "key": "shippingDialogTitlelUUID",
+                            "properties": {
+                              "titleValue": "#shippingDestinationPalletData.destinationPallet"
+                            }
+                          }
+                        }
+                      ],
+                      "validations": [],
+                      "actions": [
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "shippingDialogUUID",
+                            "disableClose": true
+                          },
+                          "eventSource": "click"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "renderTemplate",
+                        "config": {
+                          "templateId": "dashboard.json",
+                          "mode": "local"
+                        },
+                        "eventSource": "click"
+                      },
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "shippingrecvideo",
+                          "data": ""
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": []
+                  }
+                }
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "trackingPanelUUID",
+                  "properties": {
+                    "expanded": false,
+                    "disabled": false,
+                    "header": {
+                      "title": "Apply Tracking Label and Record Tracking Number",
+                      "icon": "description",
+                      "statusIcon": "check_circle",
+                      "statusClass": "complete-status",
+                      "class": "complete-task",
+                      "iconClass": "complete-task"
+                    }
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "eventSource": "click",
+                "config": {
+                  "key": "trackingNumberCompleteUUID",
+                  "properties": {
+                    "disabled": true
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "footer": [
+      {
+        "ctype": "toolbar",
+        "toolbarClass": "pagecontent-footer",
+        "uuid": "pageFooterUUID",
+        "items": [
+          {
+            "ctype": "iconbutton",
+            "iconButtonClass": "body primary-btn",
+            "text": "Save & Exit",
+            "uuid": "discrepancySaveUUID",
+            "visibility": true,
+            "disabled": true,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "icon": "save",
+            "actions": []
+          },
+          {
+            "ctype": "iconText",
+            "uuid": "discrepancyIconUUID",
+            "icon": "add_comment",
+            "text": "Add Note",
+            "disabled": true,
+            "textCss": "",
+            "iconPosition": "Before",
+            "iconTextClass": "body",
+            "actions": []
+          },
+          {
+            "ctype": "iconbutton",
+            "uuid": "discrepancyResumeUUID",
+            "visibility": true,
+            "disabled": true,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "icon": "play_arrow",
+            "iconClass": "",
+            "hidden": true,
+            "disableRipple": true
+          },
+          {
+            "ctype": "spacer",
+            "uuid": "emptySpaceUUID",
+            "class": "empty-space"
+          },
+          {
+            "ctype": "iconbutton",
+            "uuid": "discrepancyPauseUUID",
+            "visibility": true,
+            "disabled": true,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "icon": "pause",
+            "iconClass": "",
+            "disableRipple": true,
+            "actions": []
+          },
+          {
+            "ctype": "nativeDropdown",
+            "dropdownClass": "footer-dropdown dropdown-container body2",
+            "uuid": "packOutResultCodesUUID",
+            "name": "ResultCodes",
+            "isDropdownNotSelected": true,
+            "dataSource": "#resultCodesForDiscrepancy",
+            "code": "resultCode",
+            "displayValue": "resultCode",
+            "disabled": true,
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "SelectedDescripencyResultcode",
+                  "data": "elementControlValue"
+                },
+                "eventSource": "change"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "packOutTimeoutUUID",
+                  "properties": {
+                    "disabled": false
+                  }
+                },
+                "eventSource": "change"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "errorTitleUUID",
+                  "properties": {
+                    "titleValue": "",
+                    "isShown": true
+                  }
+                },
+                "eventSource": "change"
+              }
+            ]
+          },
+          {
+            "ctype": "button",
+            "color": "primary",
+            "text": "Time Out",
+            "uuid": "packOutTimeoutUUID",
+            "visibility": true,
+            "disabled": true,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "buttonClass": "footer-button primary-btn",
+            "class": "primary-btn",
+            "actions": []
+          }
+        ]
+      }
+    ]
+  },
+  "Result": "SUCCESS"
+}

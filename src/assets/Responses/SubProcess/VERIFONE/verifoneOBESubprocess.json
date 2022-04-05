@@ -1,0 +1,1314 @@
+{
+    "ResultData": {
+        "ctype": "page",
+        "uuid": "pageUUID",
+        "visibility": true,
+        "hooks": [
+            {
+                "type": "microservice",
+                "hookType": "afterInit",
+                "config": {
+                    "microserviceId": "getPreviousWCNote",
+                    "requestMethod": "get",
+                    "params": {
+                        "itemId": "#UnitInfo.ITEM_ID"
+                    }
+                },
+                "responseDependents": {
+                    "onSuccess": {
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "lastNoteData",
+                                    "data": "responseData"
+                                }
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "verifoneOBELastNoteTextUUID",
+                                    "properties": {
+                                        "titleValue": "#lastNoteData.timeOutNote"
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    "onFailure": {
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "errorDisp",
+                                    "data": "responseData"
+                                }
+                            },
+                            {
+                                "type": "condition",
+                                "config": {
+                                    "operation": "isEqualTo",
+                                    "lhs": "#errorDisp",
+                                    "rhs": "No Record Found"
+                                },
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "errorTitleUUID",
+                                                    "properties": {
+                                                        "titleValue": "#errorDisp",
+                                                        "isShown": false
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": [
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "errorTitleUUID",
+                                                    "properties": {
+                                                        "titleValue": "#errorDisp",
+                                                        "isShown": true
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "type": "microservice",
+                "hookType": "afterInit",
+                "config": {
+                  "microserviceId": "getResultCodes",
+                  "isLocal": false,
+                  "LocalService": "assets/Responses/mockBGA.json",
+                  "requestMethod": "get",
+                  "params": {
+                    "bcn": "#UnitInfo.ITEM_BCN",
+                    "validateResult": 1
+                  }
+                },
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "getverifoneOBEResultcodes",
+                          "data": "responseData"
+                        }
+                      },
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "ResultCodeVerifoneOBEUUID",
+                          "dropDownProperties": {
+                            "options": "#getverifoneOBEResultcodes"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "errorDisp",
+                          "data": "responseData"
+                        }
+                      },
+                      {
+                        "type": "condition",
+                        "config": {
+                          "operation": "isEqualTo",
+                          "lhs": "#errorDisp",
+                          "rhs": "No Record Found"
+                        },
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "errorTitleUUID",
+                                  "properties": {
+                                    "titleValue": "#errorDisp",
+                                    "isShown": false
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": [
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "errorTitleUUID",
+                                  "properties": {
+                                    "titleValue": "#errorDisp",
+                                    "isShown": true
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+            }
+        ],
+        "header": [
+            {
+                "ctype": "breadcrumb",
+                "style": "padding-left: 4px;",
+                "breadcrumbs": [
+                    {
+                        "label": "#userSelectedLocationName"
+                    },
+                    {
+                        "label": "#userSelectedClientName"
+                    },
+                    {
+                        "label": "#userSelectedContractName"
+                    }
+                ]
+            },
+            {
+                "ctype": "toolbar",
+                "css": "padding-top: 35px;",
+                "toolbarClass": "pagecontent-header",
+                "items": [
+                    {
+                        "ctype": "title",
+                        "uuid": "OBEHHeadertitleuuid",
+                        "titleValue": "OBE",
+                        "titleClass": "section-title",
+                        "css": "padding-bottom: 35px;padding-left: 4px;"
+                    },
+                    {
+                        "ctype": "spacer",
+                        "uuid": "emptySpaceUUID",
+                        "class": "empty-space"
+                    },
+                    {
+                        "ctype": "iconbutton",
+                        "iconButtonClass": "headeropen-button",
+                        "text": "",
+                        "uuid": "pageopenUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "hidden": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "icon": "menu_open",
+                        "disableRipple": true,
+                        "iconClass": "header-icon",
+                        "css": "padding-bottom: 35px;",
+                        "actions": [
+                            {
+                                "type": "toggle",
+                                "eventSource": "click",
+                                "name": "subProcessRightNavref"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "openUUID",
+                                    "properties": {
+                                        "hidden": false
+                                    }
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "pageopenUUID",
+                                    "properties": {
+                                        "hidden": true
+                                    }
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "items": [
+            {
+                "ctype": "title",
+                "uuid": "successTitleUUID",
+                "titleClass": "success-title",
+                "isShown": false,
+                "containerId": "prebodysectionone"
+            },
+            {
+                "ctype": "title",
+                "uuid": "errorTitleUUID",
+                "titleClass": "error-title",
+                "isShown": false,
+                "containerId": "prebodysectionone"
+            },
+            {
+                "ctype": "taskPanel",
+                "title": "",
+                "containerId": "prebodysectiontwo",
+                "header": {
+                  "title": "Last note",
+                  "svgIcon": "description_icon",
+                  "iconClass": "active-header",
+                  "class": "greyish-black"
+                },
+                "expanded": false,
+                "disabled": false,
+                "hideToggle": true,
+                "isMandatory": false,
+                "taskPanelHeaderClass":"background-white",
+                "hidden": false,
+                "hooks": [],
+                "validations": [],
+                "actions": [],
+                "isblueBorder": true,
+                "uuid": "verifoneOBElastNoteTaskUUID",
+                "visibility": true,
+                "items": [
+                  {
+                    "ctype": "title",
+                    "uuid": "verifoneOBELastNoteTextUUID",
+                    "titleClass": "greyish-black body-italic assessment-alert",
+                    "title": ""
+                  }
+                ]
+            },
+            {
+            "ctype": "taskPanel",
+            "title": "",
+            "isblueBorder": true,
+            "containerId": "prebodysectiontwo",
+            "header": {
+                "title": "Repair Information",
+                "svgIcon": "description_icon",
+                "iconClass": "active-header",
+                "statusIcon": "hourglass_empty",
+                "statusClass": "incomplete-status",
+                "class": "greyish-black"
+            },
+            "uuid": "verifoneOBERepairInformationTaskUUID",
+            "expanded": true,
+            "hideToggle": true,
+            "disabled": false,
+            "visibility": true,
+            "isEditable": true,
+            "isMandatory": false,
+            "hooks": [],
+            "validations": [],
+            "actions": [],
+            "items": [
+                {
+                "ctype": "title",
+                "uuid": "verifoneOBERepairInformationTextUUID",
+                "titleClass": "greyish-black body-italic assessment-alert",
+                "title": ""
+                },
+                {
+                    "ctype": "title",
+                    "uuid": "verifoneOBERepairInformationSMSpacerUUID",
+                    "titleClass": "greyish-black body-italic assessment-alert",
+                    "isShown": false,
+                    "title": ""
+                },
+                {
+                    "ctype": "title",
+                    "uuid": "verifoneOBERepairInformationSMHeadingUUID",
+                    "titleClass": "greyish-black heading2",
+                    "isShown": false,
+                    "title": "Special Message"
+                },
+                {
+                    "ctype": "title",
+                    "uuid": "verifoneOBERepairInformationSMUUID",
+                    "titleClass": "greyish-black body-italic",
+                    "isShown": false,
+                    "title": ""
+                },
+                {
+                "ctype": "checkbox",
+                "name": "verifoneOBEReadMessageCheckbox",
+                "uuid": "verifoneOBEReadMessageUUID",
+                "hooks": [],
+                "validations": [],
+                "required": true,
+                "disabled": false,
+                "label": "I have read this message",
+                "labelPosition": "after",
+                "submitable": true,
+                "isDisableNotReq": true,
+                "checkboxContainer": "label-init",
+                "actions": [
+                    {
+                    "type": "context",
+                    "config": {
+                        "requestMethod": "add",
+                        "key": "verifoneOBECheckboxValue",
+                        "data": "formData"
+                    },
+                    "eventSource": "click"
+                    },
+                    {
+                    "type": "condition",
+                    "config": {
+                        "operation": "isValid",
+                        "lhs": "#verifoneOBECheckboxValue.verifoneOBEReadMessageCheckbox"
+                    },
+                    "eventSource": "click",
+                    "responseDependents": {
+                        "onSuccess": {
+                        "actions": [
+                            {
+                            "type": "updateComponent",
+                            "config": {
+                                "key": "verifoneOBECompleteeButtonUUID",
+                                "properties": {
+                                "disabled": false
+                                }
+                            }
+                            }
+                        ]
+                        },
+                        "onFailure": {
+                        "actions": [
+                            {
+                            "type": "updateComponent",
+                            "config": {
+                                "key": "verifoneOBECompleteeButtonUUID",
+                                "properties": {
+                                "disabled": true
+                                }
+                            }
+                            }
+                        ]
+                        }
+                    }
+                    }
+                ]
+                }
+            ],
+            "footer": [
+                {
+                "ctype": "button",
+                "color": "primary",
+                "text": "Complete",
+                "class": "primary-btn",
+                "name":"verifoneOBERepairInfoCompleteName",
+                "isDisableNotReq": true,
+                "uuid": "verifoneOBECompleteeButtonUUID",
+                "disabled": true,
+                "hidden": false,
+                "visibility": true,
+                "type": "submit",
+                "hooks": [],
+                "validations": [],
+                "actions": [
+                    {
+                        "type": "context",
+                        "config": {
+                            "requestMethod": "add",
+                            "key": "repairInfoEstimateData",
+                            "data": "rawFormData"
+                        },
+                        "eventSource": "click"
+                    },
+                    {
+                    "type": "enableComponent",
+                    "config": {
+                        "key": "verifoneOBEResultCodesUUID",
+                        "property": "ResultCodes"
+                    },
+                    "eventSource": "click"
+                },
+                {
+                    "type": "updateComponent",
+                    "config": {
+                    "key": "verifoneOBERepairInformationTaskUUID",
+                    "properties": {
+                        "expanded": false,
+                        "disabled": false,
+                        "header": {
+                        "title": "Repair Information",
+                        "svgIcon": "description_icon",
+                        "iconClass": "active-header",
+                        "statusIcon": "check_circle",
+                        "statusClass": "complete-status",
+                        "class": "disable-text"
+                        }
+                    }
+                    },
+                    "eventSource": "click"
+                },
+                    {
+                        "type": "condition",
+                        "config": {
+                            "operation": "isEqualTo",
+                            "lhs": "#repairInfoEstimateData.verifoneOBEReadMessageCheckbox",
+                            "rhs": true
+                        },
+                        "eventSource": "click",
+                        "responseDependents": {
+                            "onSuccess": {
+                                "actions": [
+                                    {
+                                        "type": "context",
+                                        "config": {
+                                            "requestMethod": "add",
+                                            "key": "submitablemsgRead",
+                                            "data": "Yes"
+                                        }
+                                    }
+                                ]
+                            },
+                            "onFailure": {
+                                "actions": [
+                                    {
+                                        "type": "context",
+                                        "config": {
+                                            "requestMethod": "add",
+                                            "key": "submitablemsgRead",
+                                            "data": "No"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    {
+                    "type": "updateComponent",
+                    "config": {
+                        "key": "verifoneOBELogRecordsUUID",
+                        "properties": {
+                        "expanded": true,
+                        "disabled": false,
+                        "header": {
+                            "title": "Log Records",
+                            "svgIcon": "description_icon",
+                            "iconClass": "complete-task",
+                            "statusIcon": "hourglass_empty",
+                            "statusClass": "incomplete-status",
+                            "class": "greyish-black"
+                        }
+                        }
+                    },
+                    "eventSource": "click"
+                    }
+                ]
+                }
+            ]
+            },
+            {
+                "ctype": "taskPanel",
+                "containerId": "prebodysectiontwo",
+                "header": {
+                    "title": "Log Records",
+                    "svgIcon": "description_icon",
+                    "iconClass": "active-header",
+                    "statusIcon": "hourglass_empty",
+                    "statusClass": "incomplete-status",
+                    "class": "greyish-black"
+                },
+                "expanded": false,
+                "hideToggle": true,
+                "uuid": "verifoneOBELogRecordsUUID",
+                "visibility": false,
+                "disabled": true,
+                "hooks": [],
+                "validations": [],
+                "actions": [],
+                "items": [
+                    {
+                        "ctype": "title",
+                        "uuid": "QualityCheckTextUUID",
+                        "titleValue": "Quality Check",
+                        "titleValueClass": "body-italic text-secondary"
+                    },
+                    {
+                        "ctype": "title",
+                        "uuid": "QCResultTextUUID",
+                        "title": "QC Result",
+                        "titleClass": "body text-secondary font-bold verifone-packing-shipping-label",
+                        "titleValue": "Passed",
+                        "titleValueClass": "body font-normal text-secondary verifone-packing-shipping-value-3"
+                    },
+                    {
+                        "ctype": "title",
+                        "uuid": "TestLogTextUUID",
+                        "title": "Test Result",
+                        "titleClass": "body text-secondary font-bold verifone-packing-shipping-label",
+                        "titleValue": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip",
+                        "titleValueClass": "body font-normal text-secondary verifone-packing-shipping-value-3"
+                    },
+                    {
+                        "ctype": "title",
+                        "uuid": "LstLogCheckTextUUID",
+                        "title": "LST Log Check",
+                        "titleClass": "body text-secondary font-bold verifone-packing-shipping-label",
+                        "titleValue": "Passed",
+                        "titleValueClass": "body font-normal text-secondary verifone-packing-shipping-value-3"
+                    },
+                    {
+                        "ctype": "title",
+                        "uuid": "TmsCheckTextUUID",
+                        "title": "TMS Check",
+                        "titleClass": "body text-secondary font-bold verifone-packing-shipping-label",
+                        "titleValue": "Passed",
+                        "titleValueClass": "body font-normal text-secondary verifone-packing-shipping-value-3"
+                    }
+                ],
+                "footer": [
+                    {
+                        "ctype": "button",
+                        "color": "primary",
+                        "text": "Complete",
+                        "class": "primary-btn",
+                        "uuid": "LogRecordsSubmitUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "actions": [
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "verifoneOBELogRecordsUUID",
+                                    "properties": {
+                                        "expanded": false,
+                                        "disabled": false,
+                                        "header": {
+                                            "title": "Log Records",
+                                            "svgIcon": "description_icon",
+                                            "iconClass": "active-header",
+                                            "statusIcon": "check_circle",
+                                            "statusClass": "complete-status",
+                                            "class": "disable-text"
+                                        }
+                                    }
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key" : "verifoneOBETestUUID",
+                                    "properties": {
+                                        "expanded" : true,
+                                        "disabled": false
+                                    }
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "ctype": "taskPanel",
+                "containerId": "prebodysectiontwo",
+                "header": {
+                    "title": "OBE Test",
+                    "svgIcon": "description_icon",
+                    "iconClass": "active-header",
+                    "statusIcon": "hourglass_empty",
+                    "statusClass": "incomplete-status",
+                    "class": "greyish-black"
+                },
+                "expanded": false,
+                "hideToggle": true,
+                "uuid": "verifoneOBETestUUID",
+                "visibility": false,
+                "disabled": true,
+                "hooks": [],
+                "validations": [],
+                "actions": [],
+                "items": [
+                    {
+                        "ctype": "title",
+                        "uuid": "ObeTestTextUUID",
+                        "titleValue": "Record the result of the OBE Test",
+                        "titleValueClass": "body-italic text-secondary"
+                    },
+                    {
+                        "ctype": "actionToggle",
+                        "formGroupClass": "body2 d-flex justify-content-between  mb-2 verifone-receiving-toggle",                                
+                        "labelPosition": "before",
+                        "label": "Final Test Result",
+                        "labelClass": "dell-greyish-black pt-2",
+                        "required": false,
+                        "submitable": true,
+                        "selectedVal": "",
+                        "name": "FinalTestResultToggle",
+                        "sublabel": "",
+                        "options": [                            
+                            {
+                                "bgcolor": "light-blue",
+                                "color": "white",
+                                "text": "Fail",
+                                "value": "False"
+                            },
+                            {
+                                "bgcolor": "light-blue",
+                                "color": "white",
+                                "text": "Pass",
+                                "value": "True"
+                            }
+                        ],
+                        "validations": [],
+                        "uuid": "FinalTestResultValuesUUID",
+                        "hooks": [
+                            
+                        ],
+                        "actions": [
+                            {
+                                "type": "context",
+                                "eventSource": "change",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "FinalTestResultdata",
+                                    "data": "elementControlValue"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "divider",
+                        "css": "width:100%; margin-bottom:10px;"
+                    },
+                    {
+                        "ctype": "nativeDropdown",
+                        "dropdownClass": "col-2 mb-3 footer-dropdown body2 reworkCommon verifoneProblemDescLayout",
+                        "formGroupClass": "d-flex",
+                        "uuid": "FailureDescription1DropdownUUID",
+                        "name": "FailureDescription1Dropdown",
+                        "label": "Failure Description 1",
+                        "labelClass": "pl-0 pt-3 align-left",
+                        "dataSource": "",
+                        "code": "value",
+                        "displayValue": "value",
+                        "disabled": true,
+                        "required": true,
+                        "options": [],
+                        "actions": [
+                        ]
+                    },
+                    {
+                        "ctype": "nativeDropdown",
+                        "dropdownClass": "col-2 mb-3 footer-dropdown body2 reworkCommon verifoneProblemDescLayout",
+                        "formGroupClass": "d-flex",
+                        "uuid": "FailureDescription2DropdownUUID",
+                        "name": "FailureDescription2Dropdown",
+                        "label": "Failure Description 2",
+                        "labelClass": "pl-0 pt-3 align-left",
+                        "dataSource": "",
+                        "code": "value",
+                        "displayValue": "value",
+                        "required": true,
+                        "disabled": true,
+                        "options": [],
+                        "actions": [
+                        ]
+                    },
+                    {
+                        "ctype": "nativeDropdown",
+                        "dropdownClass": "col-2 mb-3 footer-dropdown body2 reworkCommon verifoneProblemDescLayout",
+                        "formGroupClass": "d-flex",
+                        "uuid": "FailureDescription3DropdownUUID",
+                        "name": "FailureDescription3Dropdown",
+                        "label": "Failure Description 3",
+                        "labelClass": "pl-0 pt-3 align-left",
+                        "dataSource": "",
+                        "code": "value",
+                        "displayValue": "value",
+                        "required": true,
+                        "disabled": true,
+                        "options": [],
+                        "actions": [
+                        ]
+                    }
+                ],
+                "footer": [
+                    {
+                        "ctype": "button",
+                        "color": "primary",
+                        "text": "Complete",
+                        "class": "primary-btn",
+                        "uuid": "verifoneOBETestSubmitUUID",
+                        "visibility": true,
+                        "disabled": true,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "actions": [
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "verifoneOBETestUUID",
+                                    "properties": {
+                                        "expanded": false,
+                                        "disabled": false,
+                                        "header": {
+                                            "title": "OBE Test",
+                                            "svgIcon": "description_icon",
+                                            "iconClass": "active-header",
+                                            "statusIcon": "check_circle",
+                                            "statusClass": "complete-status",
+                                            "class": "disable-text"
+                                        }
+                                    }
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key" : "verifoneOBERecordBatterySerialNumberUUID",
+                                    "properties": {
+                                        "expanded" : true,
+                                        "disabled": false,
+                                        "hidden" : false
+                                    }
+                                },
+                                "eventSource": "click"
+                            }                            
+                        ]
+                    }
+                ]
+            },
+            {
+                "ctype": "taskPanel",
+                "containerId": "prebodysectiontwo",
+                "header": {
+                    "title": "Record Battery Serial Number",
+                    "svgIcon": "description_icon",
+                    "iconClass": "active-header",
+                    "statusIcon": "hourglass_empty",
+                    "statusClass": "incomplete-status",
+                    "class": "greyish-black"
+                },
+                "expanded": false,
+                "hideToggle": true,
+                "uuid": "verifoneOBERecordBatterySerialNumberUUID",
+                "visibility": false,
+                "disabled": true,
+                "hooks": [],
+                "validations": [],
+                "actions": [],
+                "items": [
+                    {
+                        "ctype": "title",
+                        "uuid": "OBERecordBatterySerialNumberTextUUID",
+                        "titleValue": "Record the Battery Serial Number",
+                        "titleValueClass": "body-italic text-secondary"
+                    },
+                    {
+                        "ctype": "textField",
+                        "uuid": "BatterySerialNumberUUID",
+                        "submitable": false,
+                        "disabled": false,
+                        "validations": [
+                        ],
+                        "inLine": true,
+                        "formGroupClass": "flex-container flex-container-half-width",
+                        "textfieldClass": "textfield-container-field",
+                        "hooks": [],
+                        "actions": [
+                        ],
+                        "name": "BatterySerialNumberText",
+                        "label": "Battery Serial Number",
+                        "labelClass": "font-bold",
+                        "placeholer": "Scan #",
+                        "labelPosition": "",
+                        "tooltip": "",
+                        "TooltipPosition": "",
+                        "isAutoComplete": "off",
+                        "defaultValue": "",
+                        "readonly": false,
+                        "type": "text",
+                        "required": true,
+                        "placeholder": "Scan #",
+                        "value": "",
+                        "prefix": false,
+                        "prefixIcon": "",
+                        "suffix": false,
+                        "suffixIcon": ""
+                    }
+                ],
+                "footer": [
+                    {
+                        "ctype": "button",
+                        "color": "primary",
+                        "text": "Complete",
+                        "class": "primary-btn",
+                        "uuid": "verifoneOBEBatterySerialNumberSubmitUUID",
+                        "visibility": true,
+                        "disabled": true,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "actions": [
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "verifoneOBEStopRecordBatterySerialNumberUUID",
+                                    "properties": {
+                                        "expanded": false,
+                                        "disabled": false,
+                                        "header": {
+                                            "title": "Record Battery Serial Number",
+                                            "svgIcon": "description_icon",
+                                            "iconClass": "active-header",
+                                            "statusIcon": "check_circle",
+                                            "statusClass": "complete-status",
+                                            "class": "disable-text"
+                                        }
+                                    }
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key" : "verifoneOBESecuritySealUUID",
+                                    "properties": {
+                                        "expanded" : true,
+                                        "disabled": false
+                                    }
+                                },
+                                "eventSource": "click"
+                            }                            
+                        ]
+                    }
+                ]
+            },
+            {
+                "ctype": "taskPanel",
+                "containerId": "prebodysectiontwo",
+                "header": {
+                    "title": "Security Seal",
+                    "svgIcon": "description_icon",
+                    "iconClass": "active-header",
+                    "statusIcon": "hourglass_empty",
+                    "statusClass": "incomplete-status",
+                    "class": "greyish-black"
+                },
+                "expanded": false,
+                "hideToggle": true,
+                "uuid": "verifoneOBESecuritySealUUID",
+                "visibility": false,
+                "disabled": true,
+                "hooks": [],
+                "validations": [],
+                "actions": [],
+                "items": [
+                    {
+                        "ctype": "title",
+                        "uuid": "OBESecuritySealTextUUID",
+                        "titleValue": "Apply Security seals and record numbers",
+                        "titleValueClass": "body-italic text-secondary"
+                    },
+                    {
+                        "ctype": "textField",
+                        "uuid": "OBESecurityLabelUUID",
+                        "submitable": false,
+                        "disabled": false,
+                        "validations": [
+                        ],
+                        "inLine": true,
+                        "formGroupClass": "ppid-flexfield",
+                        "textfieldClass": "ppid-textfield",
+                        "hooks": [],
+                        "actions": [
+                        ],
+                        "name": "LabelNumberText",
+                        "label": "Label Number",
+                        "labelClass": "font-bold ppid-label",
+                        "placeholer": "Scan #",
+                        "labelPosition": "",
+                        "tooltip": "",
+                        "TooltipPosition": "",
+                        "isAutoComplete": "off",
+                        "defaultValue": "",
+                        "readonly": false,
+                        "type": "text",
+                        "required": true,
+                        "placeholder": "Scan #",
+                        "value": "",
+                        "prefix": false,
+                        "prefixIcon": "",
+                        "suffix": false,
+                        "suffixIcon": ""
+                    },
+                    {
+                        "ctype": "button",
+                        "color": "primary",
+                        "text": "Add",
+                        "class": "primary-btn verifone-security-seal-addbutton content-container display-inline",
+                        "uuid": "verifoneOBESecuritySealCompleteUUID",
+                        "visibility": true,
+                        "disabled": true,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "actions": [
+
+                        ]
+                    },
+                    {
+                        "ctype": "title",
+                        "uuid": "OBELabelCountTextUUID",
+                        "titleValue": "Label Count : ",
+                        "titleValueClass": "body-italic text-secondary verifone-security-seal-labelfield "
+                    }
+                ],
+                "footer": [
+                    {
+                        "ctype": "button",
+                        "class": "primary-btn verifone-obe-markasunused",
+                        "text": "Mark as Unused",
+                        "uuid": "markasusedUUID",
+                        "color": "primary",
+                        "visibility": true,
+                        "disabled": true,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "actions": [
+                        ]
+                    },
+                    {
+                        "ctype": "button",
+                        "color": "primary",
+                        "text": "Complete",
+                        "class": "primary-btn",
+                        "uuid": "verifoneOBESecuritySealSubmitUUID",
+                        "visibility": true,
+                        "disabled": true,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "actions": [
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "verifoneOBESecuritySealUUID",
+                                    "properties": {
+                                        "expanded": false,
+                                        "disabled": false,
+                                        "header": {
+                                            "title": "Security Seal",
+                                            "svgIcon": "description_icon",
+                                            "iconClass": "active-header",
+                                            "statusIcon": "check_circle",
+                                            "statusClass": "complete-status",
+                                            "class": "disable-text"
+                                        }
+                                    }
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "ResultCodeVerifoneOBEUUID",
+                                    "properties": {
+                                        "disabled": false
+                                    }
+                                },
+                                "eventSource": "click"
+                            }
+                                                      
+                        ]
+                    }
+                ]
+            }
+        ],
+        "footer": [
+            {
+                "ctype": "toolbar",
+                "toolbarClass": "pagecontent-footer",
+                "items": [
+                    {
+                        "ctype": "iconbutton",
+                        "iconButtonClass": "footer-save body primary-btn",
+                        "text": "Exit",
+                        "uuid": "saveUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "icon": "close",
+                        "actions": [
+                            {
+                                "type": "clearAllContext",
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "renderTemplate",
+                                "config": {
+                                    "templateId": "dashboard.json",
+                                    "mode": "local"
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "iconText",
+                        "uuid": "IconUUID",
+                        "iconTextClass": "footer-addNote body",
+                        "icon": "add_comment",
+                        "text": "Add Note",
+                        "iconPosition": "Before",
+                        "actions": [
+                            {
+                                "type": "dialog",
+                                "uuid": "addNoteDialogUUID",
+                                "config": {
+                                    "title": "Add Note",
+                                    "items": [
+                                        {
+                                            "ctype": "textarea",
+                                            "name": "addNote",
+                                            "textareaClass": "note-class",
+                                            "uuid": "addNoteUUID",
+                                            "value": "#LoadStationHNotes.addNote",
+                                            "actions": []
+                                        }
+                                    ],
+                                    "footer": [
+                                        {
+                                            "ctype": "button",
+                                            "color": "primary",
+                                            "text": "Close",
+                                            "uuid": "closeButtonUUID",
+                                            "closeType": "close",
+                                            "inputClass": "close-button",
+                                            "disableClose": true,
+                                            "visibility": true,
+                                            "dialogButton": true,
+                                            "type": "",
+                                            "hooks": [],
+                                            "validations": [],
+                                            "actions": []
+                                        },
+                                        {
+                                            "ctype": "button",
+                                            "color": "primary",
+                                            "text": "Done",
+                                            "uuid": "doneHoldUUID",
+                                            "dialogButton": true,
+                                            "visibility": true,
+                                            "type": "submit",
+                                            "closeType": "success",
+                                            "hooks": [],
+                                            "validations": [],
+                                            "actions": []
+                                        }
+                                    ]
+                                },
+                                "eventSource": "click",
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "OBENotes",
+                                                    "data": "formData"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "spacer",
+                        "uuid": "emptySpaceUUID",
+                        "class": "empty-space"
+                    },
+                    {
+                        "ctype": "iconbutton",
+                        "uuid": "discrepancyPauseUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "type": "submit",
+                        "icon": "pause",
+                        "iconClass": "",
+                        "disableRipple": true,
+                        "actions": [
+                            {
+                                "type":"showVerifoneOLEPausebuttonInScreen",
+                                "eventSource": "click"
+                              }
+                        ]
+                    },
+                    {
+                        "ctype": "nativeDropdown",
+                        "dropdownClass": "footer-dropdown dropdown-container body2",
+                        "uuid": "ResultCodeVerifoneOBEUUID",
+                        "isDropdownNotSelected": true,
+                        "hooks": [],
+                        "validations": [],
+                        "type": "text",
+                        "required": true,
+                        "submitable": true,
+                        "label": "",
+                        "labelPosition": "",
+                        "name": "identificatorTypeForUnit",
+                        "defaultValue": "",
+                        "code": "outcomeCodeId",
+                        "displayValue": "outcomeCodeValue",
+                        "disabled": true,
+                        "options": [],
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "SelectedResultcode",
+                                    "data": "elementControlName"
+                                },
+                                "eventSource": "change"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "OBETimeoutUUID",
+                                    "properties": {
+                                        "disabled": false
+                                    }
+                                },
+                                "eventSource": "change"
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "button",
+                        "color": "primary",
+                        "buttonClass": "footer-button",
+                        "text": "Time Out",
+                        "uuid": "OBETimeoutUUID",
+                        "visibility": true,
+                        "checkGroupValidity": false,
+                        "disabled": true,
+                        "hidden": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "actions": [
+                             {
+                                "type": "microservice",
+                                "eventSource": "click",
+                                "config": {
+                                  "microserviceId": "performTimeOut",
+                                  "requestMethod": "post",
+                                  "body": {
+                                    "timeOutRequest": {
+                                      "location": "#repairUnitInfo.GEONAME",
+                                      "bcn": "#repairUnitInfo.ITEM_BCN",
+                                      "workCenter": "#repairUnitInfo.WORKCENTER",
+                                      "password": "#loginUUID.password",
+                                      "warrantyInd": "false",
+                                      "notes": "#dellObaFailTimeoutNotes.addNote",
+                                      "resultCode": "#SelectedOBEResultcode",
+                                      "workCenterFlexFieldList": {
+                                        "flexField": [
+                                          {
+                                            "name": "OBE_Result",
+                                            "value": "#OBETestResultDropdownData"
+                                          },
+                                          {
+                                            "name": "msgRead",
+                                            "value": "#OBESubmitablemsgRead"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    "modifyWarranty": 0,
+                                    "timeOutType": "ProcessImmediate",
+                                    "clientName": "#repairUnitInfo.CLIENTNAME",
+                                    "contractName": "#repairUnitInfo.CONTRACTNAME",
+                                    "userName": "#loginUUID.username",
+                                    "userPass": "#loginUUID.password",
+                                    "ip": "::1",
+                                    "callSource": "FrontEnd",
+                                    "apiUsage_LocationName": "#repairUnitInfo.GEONAME",
+                                    "apiUsage_ClientName": "#repairUnitInfo.CLIENTNAME"
+                                  },
+                                  "toBeStringified": true
+                                },
+                                "responseDependents": {
+                                  "onSuccess": {
+                                    "actions":[
+                                        {
+                                            "type": "clearAllContext",
+                                            "eventSource": "click"
+                                          },
+                                          {
+                                            "type": "clearScreenData"
+                                          },
+                                          {
+                                            "type": "renderTemplate",
+                                            "config": {
+                                              "templateId": "dashboard.json",
+                                              "mode": "local"
+                                            },
+                                            "eventSource": "click"
+                                          }
+                                    ]
+                                  },
+                                  "onFailure": {
+                                    "actions": [
+                                      {
+                                        "type": "handleCommonServices",
+                                        "config": {
+                                          "type": "errorRenderTemplate",
+                                          "contextKey": "errorMsg",
+                                          "updateKey": "errorTitleUUID"
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                             }
+                        ]
+
+                    }
+                ]
+            }
+        ]
+    },
+    "Result": "SUCCESS"
+}

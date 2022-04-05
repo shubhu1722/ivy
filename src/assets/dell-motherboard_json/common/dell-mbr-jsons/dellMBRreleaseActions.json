@@ -1,0 +1,50 @@
+{
+  "type": "microservice",
+  "config": {
+    "microserviceId": "getROByBCN",
+    "requestMethod": "get",
+    "params": {
+      "userName": "#userAccountInfo.PersonalDetails.USERID",
+      "itemBCN": "#discrepancyUnitInfo.ITEM_BCN"
+    }
+  },
+  "responseDependents": {
+    "onSuccess": {
+      "actions": [
+        {
+          "type": "context",
+          "config": {
+            "requestMethod": "add",
+            "key": "ROByBCNForDiscrepancy",
+            "data": "responseData"
+          }
+        },
+        {
+          "type": "dellMBRScreenOperation"
+        }
+      ]
+    },
+    "onFailure": {
+      "actions": [
+        {
+          "type": "context",
+          "config": {
+            "requestMethod": "add",
+            "key": "errorDisp",
+            "data": "responseData"
+          }
+        },
+        {
+          "type": "updateComponent",
+          "config": {
+            "key": "searchCriteriaErrorTitleUUID",
+            "properties": {
+              "titleValue": "#errorDisp",
+              "isShown": true
+            }
+          }
+        }
+      ]
+    }
+  }
+}

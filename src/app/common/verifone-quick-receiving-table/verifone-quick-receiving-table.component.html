@@ -1,0 +1,24 @@
+<div class="table-heading d-flex flex-column pt-1" *ngIf="visibility">
+    <div class="row">
+        <div class="col-4 " ><span
+                class="cursor-pointer">Serial Number <i class="fas  fa-sort"></i></span></div>
+        <div class="col-4 " ><span
+                class="cursor-pointer">RMA<i class="fas  fa-sort"></i></span></div>
+        <div class="col-4 text-center"
+            >Status</div>
+    </div>
+</div>
+<div class="table-heading d-flex flex-column pt-1" style="margin-left: 15px;">
+        <div class="row">
+            <div class="col-3">Serial Number</div>            
+            <div class="col-3">RMA</div>
+            <div class="col-3">Status</div>
+        </div>
+</div>
+<div class="table-body d-flex align-items-center flex-column pt-1" *ngIf="quickReceivingListData.length > 0" style="width: 98.7%;">
+        <div class="row rma-list-item" *ngFor="let item of quickReceivingListData" [ngClass]="item?.inboundOrderStatus=='Complete' ? 'complete-receipt':'pending-receipt'">
+            <div class="col-3 p-1"><span [ngClass]="item.error ? 'error-class':''">{{item?.serialNo}}</span></div>
+            <div class="col-3 p-1"><span [ngClass]="item.error ? 'error-class':''">{{item?.rmaNo}}</span></div>
+            <div class="col-3 p-1 text-uppercase"><span [ngClass]="item.error ? 'error-class':''">{{item?.status}}</span></div>
+        </div>
+</div>

@@ -1,0 +1,2113 @@
+{
+  "ResultData": {
+    "dellDesktop": {
+        "ctype": "page",
+        "uuid": "pageUUID",
+        "visibility": true,
+        "hooks": [
+            {
+                "type": "context",
+                "hookType": "afterInit",
+                "config": {
+                    "requestMethod": "add",
+                    "key": "Shelfflag",
+                    "data": false
+                }
+            }
+        ],
+        "validations": [],
+        "action": [],
+        "header": [
+            {
+                "ctype": "breadcrumb",
+                "breadcrumbs": [
+                    {
+                        "label": "#userSelectedLocationName"
+                    },
+                    {
+                        "label": "#userSelectedClientName"
+                    },
+                    {
+                        "label": "#userSelectedContractName"
+                    }
+                ]
+            },
+            {
+                "ctype": "toolbar",
+                "toolbarClass": "pagecontent-header",
+                "items": [
+                    {
+                        "ctype": "title",
+                        "uuid": "dellKDTitleUUID",
+                        "titleValue": "Kardex >"
+                    }
+                ]
+            }
+        ],
+        "items": [
+            {
+                "ctype": "title",
+                "uuid": "successTitleUUID",
+                "titleClass": "success-title",
+                "isShown": false
+            },
+            {
+                "ctype": "title",
+                "uuid": "errorTitleUUID",
+                "containerId": "prebodysectionone",
+                "titleClass": "error-title",
+                "isShown": false
+            },
+            {
+                "ctype": "taskPanel",
+                "containerId": "prebodysectionone",
+                "taskPanelHeaderClass": "background-white",
+                "header": {
+                    "title": "Load / Unload Kardex",
+                    "svgIcon": "description_icon",
+                    "class": "greyish-black",
+                    "iconClass": "active-header"
+                },
+                "expanded": true,
+                "disabled": false,
+                "hideToggle": true,
+                "hidden": false,
+                "hooks": [
+                    {
+                        "type": "microservice",
+                        "hookType": "afterInit",
+                        "config": {
+                            "microserviceId": "getDellKDTrolleyBinItems",
+                            "isLocal": false,
+                            "LocalService": "assets/Responses/repairMockRamResponse.json",
+                            "requestMethod": "get",
+                            "params": {
+                                "locationId": "#userSelectedLocation",
+                                "clientId": "#userSelectedClient",
+                                "contractId": "#userSelectedContract",
+                                "ownerId": "241",
+                                "userName": "#userAccountInfo.PersonalDetails.USERID"
+                            }
+                        },
+                        "responseDependents": {
+                            "onSuccess": {
+                                "actions": [
+                                    {
+                                        "type": "context",
+                                        "config": {
+                                            "requestMethod": "add",
+                                            "key": "dellKDSearchAndSortData",
+                                            "data": "responseData"
+                                        }
+                                    },
+                                    {
+                                        "type": "updateComponent",
+                                        "config": {
+                                            "key": "dellKDSearchAndSortTableUUID",
+                                            "fieldProperties": {
+                                                "dataSource": "#dellKDSearchAndSortData"
+                                            }
+                                        }
+                                    }
+                                ]
+                            },
+                            "onFailure": {
+                                "actions": [
+                                    {
+                                        "type": "context",
+                                        "config": {
+                                            "requestMethod": "add",
+                                            "key": "dellKDSearchAndSortData",
+                                            "data": []
+                                        }
+                                    },
+                                    {
+                                        "type": "updateComponent",
+                                        "config": {
+                                            "key": "dellKDSearchAndSortTableUUID",
+                                            "fieldProperties": {
+                                                "dataSource": "#dellKDSearchAndSortData"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "type": "handleCommonServices",
+                                        "config": {
+                                            "type": "errorRenderTemplate",
+                                            "contextKey": "errorMsg",
+                                            "updateKey": "errorTitleUUID"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ],
+                "validations": [],
+                "actions": [],
+                "isblueBorder": true,
+                "uuid": "dellKDLoadAndUnloadUUID",
+                "items": [
+                    {
+                        "ctype": "textField",
+                        "uuid": "dellKDSearchUUID",
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "dellKDSearchID",
+                                    "data": "elementControlValue"
+                                },
+                                "eventSource": "input"
+                            },
+                            {
+                                "type": "updateSearchValues",
+                                "config": {
+                                    "key": "dellKDSearchAndSortTableUUID",
+                                    "data": "#dellKDSearchID",
+                                    "searchBy": "Serial Number",
+                                    "isEnterClicked": false
+                                },
+                                "eventSource": "input"
+                            },
+                            {
+                                "type": "microservice",
+                                "config": {
+                                    "microserviceId": "getUnitInfo",
+                                    "requestMethod": "get",
+                                    "params": {
+                                        "unitIdentificationValue": "#dellKDSearchID",
+                                        "identificatorType": "SerialNumber",
+                                        "locationId": "#userSelectedLocation",
+                                        "clientId": "#userSelectedClient",
+                                        "contractId": "#userSelectedContract"
+                                    }
+                                },
+                                "eventSource": "enter",
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "UnitInfo",
+                                                    "data": "responseData"
+                                                }
+                                            },
+                                            {
+                                                "type": "microservice",
+                                                "config": {
+                                                    "microserviceId": "getHoldReleaseDetailService",
+                                                    "requestMethod": "get",
+                                                    "isLocal": false,
+                                                    "LocalService": "assets/Responses/repairMockAlertResponse.json",
+                                                    "params": {
+                                                        "itemId": "#UnitInfo.ITEM_ID",
+                                                        "operationType": "RELEASE",
+                                                        "userName": "#loginUUID.username"
+                                                    }
+                                                },
+                                                "eventSource": "enter",
+                                                "responseDependents": {
+                                                    "onSuccess": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "context",
+                                                                "config": {
+                                                                    "requestMethod": "add",
+                                                                    "key": "getDellKDHoldReleaseDetails",
+                                                                    "data": "responseData"
+                                                                }
+                                                            },
+                                                            {
+                                                                "type": "context",
+                                                                "config": {
+                                                                    "requestMethod": "add",
+                                                                    "key": "dellKDCurrentBinDesc",
+                                                                    "data": "#getDellKDHoldReleaseDetails.currentBinDesc"
+                                                                }
+                                                            },
+                                                            {
+                                                                "type": "context",
+                                                                "config": {
+                                                                    "requestMethod": "add",
+                                                                    "key": "dellKDCurrentBin",
+                                                                    "data": "#getDellKDHoldReleaseDetails.bin"
+                                                                }
+                                                            },
+                                                            {
+                                                                "type": "context",
+                                                                "config": {
+                                                                    "requestMethod": "add",
+                                                                    "key": "dellKDCurrentBinName",
+                                                                    "data": "#getDellKDHoldReleaseDetails.currentBinName"
+                                                                }
+                                                            },
+                                                            {
+                                                                "type": "updateSearchValues",
+                                                                "config": {
+                                                                    "key": "dellKDSearchAndSortTableUUID",
+                                                                    "keyToSave": "dellKDSearchedRecord",
+                                                                    "data": "#dellKDSearchID",
+                                                                    "searchBy": "Serial Number",
+                                                                    "isEnterClicked": true
+                                                                }
+                                                            },
+                                                            {
+                                                                "type": "condition",
+                                                                "hookType": "afterInit",
+                                                                "config": {
+                                                                    "operation": "isValid",
+                                                                    "lhs": "#dellKDCurrentBinDesc"
+                                                                },
+                                                                "responseDependents": {
+                                                                    "onSuccess": {
+                                                                        "actions": [
+                                                                            {
+                                                                                "type": "condition",
+                                                                                "config": {
+                                                                                    "operation": "isContains",
+                                                                                    "lhs": "#dellKDCurrentBinDesc",
+                                                                                    "rhs": "kardex-trolley"
+                                                                                },
+                                                                                "eventSource": "click",
+                                                                                "responseDependents": {
+                                                                                    "onSuccess": {
+                                                                                        "actions": [
+                                                                                            {
+                                                                                                "type": "renderTemplate",
+                                                                                                "config": {
+                                                                                                    "mode": "remote",
+                                                                                                    "targetId": "mainPageContentBody",
+                                                                                                    "templateId": "LoadKardexdesktop"
+                                                                                                }
+                                                                                            }
+                                                                                        ]
+                                                                                    },
+                                                                                    "onFailure": {
+                                                                                        "actions": [
+                                                                                            {
+                                                                                                "type": "condition",
+                                                                                                "config": {
+                                                                                                    "operation": "isContains",
+                                                                                                    "lhs": "#dellKDCurrentBinDesc",
+                                                                                                    "rhs": "kardex-bin"
+                                                                                                },
+                                                                                                "eventSource": "click",
+                                                                                                "responseDependents": {
+                                                                                                    "onSuccess": {
+                                                                                                        "actions": [
+                                                                                                            {
+                                                                                                                "type": "renderTemplate",
+                                                                                                                "config": {
+                                                                                                                    "mode": "remote",
+                                                                                                                    "targetId": "mainPageContentBody",
+                                                                                                                    "templateId": "UnLoadKardexdesktop"
+                                                                                                                }
+                                                                                                            }
+                                                                                                        ]
+                                                                                                    },
+                                                                                                    "onFailure": {
+                                                                                                        "actions": [
+                                                                                                            {
+                                                                                                                "type": "context",
+                                                                                                                "config": {
+                                                                                                                    "requestMethod": "add",
+                                                                                                                    "key": "Shelfflag",
+                                                                                                                    "data": true
+                                                                                                                }
+                                                                                                            },
+                                                                                                            {
+                                                                                                                "type": "renderTemplate",
+                                                                                                                "config": {
+                                                                                                                    "mode": "remote",
+                                                                                                                    "targetId": "mainPageContentBody",
+                                                                                                                    "templateId": "UnLoadKardexdesktop"
+                                                                                                                }
+                                                                                                            }
+                                                                                                        ]
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        ]
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "onFailure": {
+                                                                        "actions": [
+                                                                            {
+                                                                                "type": "context",
+                                                                                "config": {
+                                                                                    "requestMethod": "add",
+                                                                                    "key": "Shelfflag",
+                                                                                    "data": true
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "type": "renderTemplate",
+                                                                                "config": {
+                                                                                    "mode": "remote",
+                                                                                    "targetId": "mainPageContentBody",
+                                                                                    "templateId": "UnLoadKardexdesktop"
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    "onFailure": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "handleCommonServices",
+                                                                "config": {
+                                                                    "type": "errorRenderTemplate",
+                                                                    "contextKey": "errorMsg",
+                                                                    "updateKey": "errorTitleUUID"
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": [
+                                            {
+                                                "type": "handleCommonServices",
+                                                "config": {
+                                                    "type": "errorRenderTemplate",
+                                                    "contextKey": "errorMsg",
+                                                    "updateKey": "errorTitleUUID"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
+                        "type": "text",
+                        "required": false,
+                        "placeholder": "SCAN #",
+                        "submitable": true,
+                        "visibility": true,
+                        "label": "Scan to Start",
+                        "readonly": false,
+                        "labelPosition": "left",
+                        "name": "dellKDSearch",
+                        "labelClass": "body2",
+                        "textfieldClass": "textfield-container",
+                        "formGroupClass": "flex-container"
+                    },
+                    {
+                        "ctype": "tableWithSearchAndSort",
+                        "uuid": "dellKDSearchAndSortTableUUID",
+                        "tableClass": "replaceTaskTableclass",
+                        "tableDivCalss": "tableDivCalss",
+                        "tableHeaderClass": "requisitionList-table-header subtitle1",
+                        "tableContainerClass": "requisitionList-table",
+                        "serachVariable": "#dellKDSearchID",
+                        "hooks": [],
+                        "displayedColumns": [
+                            "Serial Number",
+                            "Hold Type",
+                            "BIN"
+                        ],
+                        "displayValues": {
+                            "serial_no": "Serial Number",
+                            "storageHoldCode": "Hold Type",
+                            "binName": "BIN"
+                        },
+                        "datasource": "#dellKDSearchAndSortData",
+                        "actions": [
+                            {
+                                "type": "addRowData",
+                                "keyToSave": "dellKDSearchedRecord",
+                                "eventSource": "rowClick"
+                            },
+                            {
+                                "type": "microservice",
+                                "config": {
+                                    "microserviceId": "getUnitInfo",
+                                    "requestMethod": "get",
+                                    "params": {
+                                        "unitIdentificationValue": "#dellKDSearchedRecord.Serial Number",
+                                        "identificatorType": "SerialNumber",
+                                        "locationId": "#userSelectedLocation",
+                                        "clientId": "#userSelectedClient",
+                                        "contractId": "#userSelectedContract"
+                                    }
+                                },
+                                "eventSource": "rowClick",
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "UnitInfo",
+                                                    "data": "responseData"
+                                                }
+                                            },
+                                            {
+                                                "type": "microservice",
+                                                "config": {
+                                                    "microserviceId": "getHoldReleaseDetailService",
+                                                    "requestMethod": "get",
+                                                    "isLocal": false,
+                                                    "LocalService": "assets/Responses/repairMockAlertResponse.json",
+                                                    "params": {
+                                                        "itemId": "#UnitInfo.ITEM_ID",
+                                                        "operationType": "RELEASE",
+                                                        "userName": "#loginUUID.username"
+                                                    }
+                                                },
+                                                "eventSource": "rowClick",
+                                                "responseDependents": {
+                                                    "onSuccess": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "context",
+                                                                "config": {
+                                                                    "requestMethod": "add",
+                                                                    "key": "getDellKDHoldReleaseDetails",
+                                                                    "data": "responseData"
+                                                                }
+                                                            },
+                                                            {
+                                                                "type": "context",
+                                                                "config": {
+                                                                    "requestMethod": "add",
+                                                                    "key": "dellKDCurrentBinDesc",
+                                                                    "data": "#getDellKDHoldReleaseDetails.currentBinDesc"
+                                                                }
+                                                            },
+                                                            {
+                                                                "type": "context",
+                                                                "config": {
+                                                                    "requestMethod": "add",
+                                                                    "key": "dellKDCurrentBin",
+                                                                    "data": "#getDellKDHoldReleaseDetails.bin"
+                                                                }
+                                                            },
+                                                            {
+                                                                "type": "context",
+                                                                "config": {
+                                                                    "requestMethod": "add",
+                                                                    "key": "dellKDCurrentBinName",
+                                                                    "data": "#dellKDSearchedRecord.BIN"
+                                                                }
+                                                            },
+                                                            {
+                                                                "type": "updateSearchValues",
+                                                                "config": {
+                                                                    "key": "dellKDSearchAndSortTableUUID",
+                                                                    "keyToSave": "dellKDSearchedRecord",
+                                                                    "data": "#dellKDSearchID",
+                                                                    "searchBy": "Serial Number",
+                                                                    "isEnterClicked": true
+                                                                }
+                                                            },
+                                                            {
+                                                                "type": "renderTemplate",
+                                                                "config": {
+                                                                    "mode": "remote",
+                                                                    "targetId": "mainPageContentBody",
+                                                                    "templateId": "LoadKardexdesktop"
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    "onFailure": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "handleCommonServices",
+                                                                "config": {
+                                                                    "type": "errorRenderTemplate",
+                                                                    "contextKey": "errorMsg",
+                                                                    "updateKey": "errorTitleUUID"
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": [
+                                            {
+                                                "type": "handleCommonServices",
+                                                "config": {
+                                                    "type": "errorRenderTemplate",
+                                                    "contextKey": "errorMsg",
+                                                    "updateKey": "errorTitleUUID"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "footer": [
+            {
+                "ctype": "toolbar",
+                "toolbarClass": "pagecontent-footer",
+                "items": [
+                    {
+                        "ctype": "iconbutton",
+                        "iconButtonClass": "footer-save body",
+                        "text": "Exit",
+                        "uuid": "dellAssemblyExitUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "icon": "save",
+                        "actions": [
+                            {
+                                "type": "renderTemplate",
+                                "config": {
+                                    "templateId": "dashboard.json",
+                                    "mode": "local"
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "LoadKardex": {
+        "ctype": "page",
+        "uuid": "pageUUID",
+        "css": "",
+        "visibility": true,
+        "onLoadActions": [],
+        "hooks": [
+            {
+                "type": "concatContexts",
+                "hookType": "afterInit",
+                "config": {
+                    "contextKey": "SubProcessTitleValue",
+                    "contexts": [
+                        "Kardex 1 > Load:",
+                        "#dellKDSearchedRecord.Serial Number"
+                    ]
+                }
+            },
+            {
+                "type": "updateComponent",
+                "hookType": "afterInit",
+                "config": {
+                    "key": "subProcessTitleUUID",
+                    "properties": {
+                        "titleValue": "#SubProcessTitleValue"
+                    }
+                }
+            },
+            {
+                "type": "concatContexts",
+                "hookType": "afterInit",
+                "config": {
+                    "contextKey": "LoadTaskPanelTitle",
+                    "contexts": [
+                        "Load:",
+                        "#dellKDSearchedRecord.Serial Number"
+                    ]
+                }
+            },
+            {
+                "type": "updateComponent",
+                "hookType": "afterInit",
+                "config": {
+                    "key": "dellKardexLoadUUID",
+                    "properties": {
+                        "header": {
+                            "title": "#LoadTaskPanelTitle",
+                            "svgIcon": "description_icon",
+                            "iconClass": "active-header",
+                            "class": "greyish-black"
+                        }
+                    }
+                }
+            },
+            {
+                "type": "microservice",
+                "hookType": "afterInit",
+                "config": {
+                    "microserviceId": "getPutAwayLocation",
+                    "requestMethod": "get",
+                    "isLocal": false,
+                    "LocalService": "assets/Responses/dellDebugDefects.json",
+                    "params": {
+                        "locationId": "#userSelectedLocation",
+                        "userName": "#userAccountInfo.PersonalDetails.USERID",
+                        "ownerName": "#userSelectedClientName"
+                    }
+                },
+                "responseDependents": {
+                    "onSuccess": {
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "getPutAwayLocation",
+                                    "data": "responseArray"
+                                }
+                            },
+                            {
+                                "type": "splitString",
+                                "config": {
+                                    "data": "#getPutAwayLocation.binName",
+                                    "splitkey": "_",
+                                    "position": 1,
+                                    "contextKey": "kardexValue"
+                                }
+                            },
+                            {
+                                "type": "concatContexts",
+                                "config": {
+                                    "contextKey": "DestinationValue",
+                                    "contexts": [
+                                        "Kardex_",
+                                        "#kardexValue",
+                                        " >",
+                                        "#getPutAwayLocation.binName"
+                                    ]
+                                }
+                            },
+                            {
+                                "type": "concatContexts",
+                                "hookType": "afterInit",
+                                "config": {
+                                    "contextKey": "SubProcessTitleValue",
+                                    "contexts": [
+                                        "Kardex",
+                                        "#kardexValue",
+                                        " > Load:",
+                                        "#dellKDSearchedRecord.Serial Number"
+                                    ]
+                                }
+                            },
+                            {
+                                "type": "updateComponent",
+                                "hookType": "afterInit",
+                                "config": {
+                                    "key": "subProcessTitleUUID",
+                                    "properties": {
+                                        "titleValue": "#SubProcessTitleValue"
+                                    }
+                                }
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "destinationUUID",
+                                    "properties": {
+                                        "titleValue": "#DestinationValue"
+                                    }
+                                }
+                            },
+                            {
+                                "type": "microservice",
+                                "config": {
+                                    "microserviceId": "getGLBDellKardexDetails",
+                                    "requestMethod": "post",
+                                    "body": {
+                                        "bcnNumber": "#UnitInfo.ITEM_BCN",
+                                        "userName": "#loginUUID.username",
+                                        "optCode": "#UnitInfo.ROUTE",
+                                        "partNumber": "#UnitInfo.PART_NO",
+                                        "workCenterId": "#UnitInfo.WORKCENTER_ID",
+                                        "clientId": "#UnitInfo.CLIENT_ID",
+                                        "contractId": "#UnitInfo.CONTRACT_ID",
+                                        "locationId": "#UnitInfo.LOCATION_ID",
+                                        "workCenterName": "#UnitInfo.WORKCENTER",
+                                        "serialNumber": "#UnitInfo.SERIAL_NO",
+                                        "destinationBin": "#getPutAwayLocation.binName"
+                                    },
+                                    "toBeStringified": true
+                                },
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "updateComponent",
+                                                "config": {
+                                                    "key": "loadConfirmUUID",
+                                                    "properties": {
+                                                        "disabled": false
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": [
+                                            {
+                                                "type": "handleCommonServices",
+                                                "config": {
+                                                    "type": "errorRenderTemplate",
+                                                    "contextKey": "errorMsg",
+                                                    "updateKey": "errorTitleUUID"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    },
+                    "onFailure": {
+                        "actions": [
+                            {
+                                "type": "handleCommonServices",
+                                "config": {
+                                    "type": "errorRenderTemplate",
+                                    "contextKey": "errorMsg",
+                                    "updateKey": "errorTitleUUID"
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+        ],
+        "validations": [],
+        "action": [],
+        "header": [
+            {
+                "ctype": "breadcrumb",
+                "breadcrumbs": [
+                    {
+                        "label": "#userSelectedLocationName"
+                    },
+                    {
+                        "label": "#userSelectedClientName"
+                    },
+                    {
+                        "label": "#userSelectedContractName"
+                    }
+                ]
+            },
+            {
+                "ctype": "toolbar",
+                "toolbarClass": "pagecontent-header",
+                "items": [
+                    {
+                        "ctype": "title",
+                        "actions": [
+                            {
+                                "type": "renderTemplate",
+                                "config": {
+                                    "mode": "remote",
+                                    "targetId": "mainPageContentBody",
+                                    "templateId": "kardexProcessJson"
+                                },
+                                "eventSource": "click"
+                            }
+                        ],
+                        "uuid": "subProcessTitleUUID",
+                        "titleValue": "#SubProcessTitleValue",
+                        "titleClass": "section-title"
+                    },
+                    {
+                        "ctype": "iconbutton",
+                        "iconButtonClass": "headeropen-button",
+                        "text": "",
+                        "uuid": "pageopenUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "hidden": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "icon": "menu_open",
+                        "disableRipple": true,
+                        "iconClass": "header-icon",
+                        "actions": [
+                            {
+                                "type": "toggle",
+                                "eventSource": "click",
+                                "name": "subProcessRightNavref"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "openUUID",
+                                    "properties": {
+                                        "hidden": false
+                                    }
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "pageopenUUID",
+                                    "properties": {
+                                        "hidden": true
+                                    }
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "items": [
+            {
+                "ctype": "title",
+                "uuid": "successTitleUUID",
+                "titleClass": "success-title",
+                "containerId": "prebodysectionone",
+                "isShown": false
+            },
+            {
+                "ctype": "title",
+                "uuid": "errorTitleUUID",
+                "containerId": "prebodysectionone",
+                "titleClass": "error-title",
+                "isShown": false
+            },
+            {
+                "ctype": "taskPanel",
+                "isblueBorder": true,
+                "uuid": "dellKardexLoadUUID",
+                "containerId": "prebodysectionone",
+                "title": "",
+                "header": {
+                    "title": "#LoadTaskPanelTitle",
+                    "svgIcon": "description_icon",
+                    "iconClass": "active-header",
+                    "class": "greyish-black"
+                },
+                "expanded": true,
+                "disabled": false,
+                "panelClass": "margin-top-10",
+                "hidden": false,
+                "hooks": [],
+                "validations": [],
+                "actions": [],
+                "items": [
+                    {
+                        "ctype": "title",
+                        "uuid": "destinationUUID",
+                        "titleClass": "flex-container flex-container-half-width",
+                        "title": "Destination",
+                        "titleValue": "#Destination",
+                        "titleValueClass": "textfield-container-small-width"
+                    },
+                    {
+                        "ctype": "title",
+                        "uuid": "holdTypeUUID",
+                        "titleClass": "flex-container flex-container-half-width",
+                        "title": "Hold Type",
+                        "titleValue": "#dellKDSearchedRecord.Hold Type",
+                        "titleValueClass": "textfield-container-small-width"
+                    },
+                    {
+                        "ctype": "iconText",
+                        "uuid": "overflowShelfUUID",
+                        "icon": "report",
+                        "hoverClass": "cursor-pointer",
+                        "text": "Overflow Shelf",
+                        "iconClass": "reportIcon",
+                        "disabled": false,
+                        "textCss": "",
+                        "iconPosition": "Before",
+                        "iconTextClass": "body text-primary",
+                        "actions": [
+                            {
+                                "type": "dialog",
+                                "uuid": "OverflowShelfDialogUUID",
+                                "config": {
+                                    "title": "Overflow Shelf",
+                                    "height": "231px",
+                                    "width": "547px",
+                                    "minimumWidth": false,
+                                    "disableClose": false,
+                                    "items": [
+                                        {
+                                            "ctype": "title",
+                                            "uuid": "overflowShelfTextUUID",
+                                            "titleClass": "flex-container flex-container-half-width",
+                                            "title": "Scan Overflow Shelf Location",
+                                            "titleValue": ""
+                                        },
+                                        {
+                                            "ctype": "textField",
+                                            "uuid": "overflowShelfLocationUUID",
+                                            "submitable": false,
+                                            "disabled": false,
+                                            "inLine": true,
+                                            "formGroupClass": "flex-container1",
+                                            "textfieldClass": "hold-textfield1-container",
+                                            "hooks": [],
+                                            "validations": [],
+                                            "actions": [],
+                                            "name": "OverflowShelfLocation",
+                                            "label": "Overflow Shelf Location",
+                                            "labelClass": "hold-tf-label",
+                                            "labelPosition": "left",
+                                            "tooltip": "",
+                                            "TooltipPosition": "",
+                                            "defaultValue": "",
+                                            "readonly": false,
+                                            "type": "text",
+                                            "required": true,
+                                            "placeholder": "Scan #",
+                                            "value": "",
+                                            "prefix": false,
+                                            "prefixIcon": "",
+                                            "suffix": false,
+                                            "suffixIcon": ""
+                                        }
+                                    ],
+                                    "footer": [
+                                        {
+                                            "ctype": "button",
+                                            "color": "primary",
+                                            "text": "Cancel",
+                                            "uuid": "dellValidationCancelAddNoteUUID",
+                                            "closeType": "close",
+                                            "buttonClass": "overflowshelfcancel",
+                                            "disableClose": true,
+                                            "visibility": true,
+                                            "dialogButton": true,
+                                            "type": "",
+                                            "hooks": [],
+                                            "validations": [],
+                                            "actions": []
+                                        },
+                                        {
+                                            "ctype": "button",
+                                            "color": "primary",
+                                            "text": "OK",
+                                            "uuid": "dellReworkDoneAddNoteUUID",
+                                            "dialogButton": true,
+                                            "visibility": true,
+                                            "disabled": true,
+                                            "type": "submit",
+                                            "closeType": "success",
+                                            "hooks": [],
+                                            "validations": [],
+                                            "actions": []
+                                        }
+                                    ]
+                                },
+                                "eventSource": "click",
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "context",
+                                                "config": {
+                                                    "key": "overflowShelfData",
+                                                    "data": "formData",
+                                                    "requestMethod": "add"
+                                                },
+                                                "eventSource": "click"
+                                            },
+                                            {
+                                                "type": "microservice",
+                                                "config": {
+                                                    "microserviceId": "moveinventory",
+                                                    "requestMethod": "post",
+                                                    "body": {
+                                                        "apiUsageClientName": "#UnitInfo.CLIENTNAME",
+                                                        "apiUsageLocationName": "#UnitInfo.GEONAME",
+                                                        "callSource": "FrontEnd",
+                                                        "ip": "::1",
+                                                        "items": {
+                                                            "addtionalDetails": {
+                                                                "comments": "#overflowShelfData.OverflowShelfLocation",
+                                                                "storageHoldCode": "#dellKDSearchedRecord.Hold Type"
+                                                            },
+                                                            "destinationLocation": {
+                                                                "bin": "#overflowShelfData.OverflowShelfLocation",
+                                                                "geography": "#UnitInfo.GEONAME",
+                                                                "stockingLocation": "#getDellKDHoldReleaseDetails.srcStkLocationName",
+                                                                "warehouse": "#UnitInfo.WAREHOUSE_NAME"
+                                                            },
+                                                            "item": [
+                                                                {
+                                                                    "bcn": "#UnitInfo.ITEM_BCN",
+                                                                    "owner": "#UnitInfo.CLIENTNAME",
+                                                                    "partNo": "#UnitInfo.PART_NO",
+                                                                    "quantity": "1",
+                                                                    "serialNo": "#UnitInfo.SERIAL_NO",
+                                                                    "condition": "Defective"
+                                                                }
+                                                            ],
+                                                            "notes": "#overflowShelfData.OverflowShelfLocation",
+                                                            "sourceLocation": {
+                                                                "bin": "#dellKDCurrentBinName",
+                                                                "geography": "#UnitInfo.GEONAME",
+                                                                "stockingLocation": "#getDellKDHoldReleaseDetails.destStkLocationName",
+                                                                "warehouse": "#UnitInfo.WAREHOUSE_NAME"
+                                                            }
+                                                        },
+                                                        "usrPwd": {
+                                                            "userName": "#loginUUID.username",
+                                                            "password": "#loginUUID.password"
+                                                        }
+                                                    },
+                                                    "toBeStringified": true
+                                                },
+                                                "responseDependents": {
+                                                    "onSuccess": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "pauseScreenData"
+                                                            },
+                                                            {
+                                                                "type": "context",
+                                                                "config": {
+                                                                    "key": "dellAssessmentholdDialogData",
+                                                                    "data": "formData",
+                                                                    "requestMethod": "add"
+                                                                }
+                                                            },
+                                                            {
+                                                                "type": "renderTemplate",
+                                                                "config": {
+                                                                    "mode": "remote",
+                                                                    "targetId": "mainPageContentBody",
+                                                                    "templateId": "kardexProcessJson"
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    "onFailure": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "handleCommonServices",
+                                                                "config": {
+                                                                    "type": "errorRenderTemplate",
+                                                                    "contextKey": "errorMsg",
+                                                                    "updateKey": "errorTitleUUID"
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                },
+                                                "eventSource": "click"
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": []
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ],
+                "footer": [
+                    {
+                        "ctype": "button",
+                        "color": "primary",
+                        "text": "Cancel",
+                        "class": "primary-btn",
+                        "uuid": "loadCancelUUID",
+                        "name": "LoadCancel",
+                        "visibility": true,
+                        "disabled": false,
+                        "type": "submit",
+                        "tooltip": "",
+                        "isDisableNotReq": true,
+                        "hooks": [],
+                        "validations": [],
+                        "actions": [
+                            {
+                                "type": "renderTemplate",
+                                "config": {
+                                    "mode": "remote",
+                                    "targetId": "mainPageContentBody",
+                                    "templateId": "kardexProcessJson"
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "button",
+                        "color": "primary",
+                        "text": "Confirm",
+                        "class": "primary-btn",
+                        "uuid": "loadConfirmUUID",
+                        "name": "LoadConfirm",
+                        "visibility": true,
+                        "disabled": true,
+                        "type": "submit",
+                        "tooltip": "",
+                        "isDisableNotReq": true,
+                        "hooks": [],
+                        "validations": [],
+                        "actions": [
+                            {
+                                "type": "microservice",
+                                "config": {
+                                    "microserviceId": "moveinventory",
+                                    "requestMethod": "post",
+                                    "body": {
+                                        "apiUsageClientName": "#UnitInfo.CLIENTNAME",
+                                        "apiUsageLocationName": "#UnitInfo.GEONAME",
+                                        "callSource": "FrontEnd",
+                                        "ip": "::1",
+                                        "items": {
+                                            "addtionalDetails": {
+                                                "comments": "#holdDialogData.dellReworkHoldAddNote",
+                                                "storageHoldCode": "#dellKDSearchedRecord.Hold Type"
+                                            },
+                                            "destinationLocation": {
+                                                "bin": "#getPutAwayLocation.binName",
+                                                "geography": "#UnitInfo.GEONAME",
+                                                "stockingLocation": "#getDellKDHoldReleaseDetails.srcStkLocationName",
+                                                "warehouse": "#UnitInfo.WAREHOUSE_NAME"
+                                            },
+                                            "item": [
+                                                {
+                                                    "bcn": "#UnitInfo.ITEM_BCN",
+                                                    "owner": "#UnitInfo.CLIENTNAME",
+                                                    "partNo": "#UnitInfo.PART_NO",
+                                                    "quantity": "1",
+                                                    "serialNo": "#UnitInfo.SERIAL_NO",
+                                                    "condition": "Defective"
+                                                }
+                                            ],
+                                            "notes": "#holdDialogData.dellReworkHoldAddNote",
+                                            "sourceLocation": {
+                                                "bin": "#dellKDCurrentBinName",
+                                                "geography": "#UnitInfo.GEONAME",
+                                                "stockingLocation": "#getDellKDHoldReleaseDetails.destStkLocationName",
+                                                "warehouse": "#UnitInfo.WAREHOUSE_NAME"
+                                            }
+                                        },
+                                        "usrPwd": {
+                                            "userName": "#loginUUID.username",
+                                            "password": "#loginUUID.password"
+                                        }
+                                    },
+                                    "toBeStringified": true
+                                },
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "pauseScreenData"
+                                            },
+                                            {
+                                                "type": "renderTemplate",
+                                                "config": {
+                                                    "mode": "remote",
+                                                    "targetId": "mainPageContentBody",
+                                                    "templateId": "kardexProcessJson"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": [
+                                            {
+                                                "type": "handleCommonServices",
+                                                "config": {
+                                                    "type": "errorRenderTemplate",
+                                                    "contextKey": "errorMsg",
+                                                    "updateKey": "errorTitleUUID"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "footer": [
+            {
+                "ctype": "toolbar",
+                "toolbarClass": "pagecontent-footer",
+                "items": [
+                    {
+                        "ctype": "iconbutton",
+                        "iconButtonClass": "footer-save body",
+                        "text": "Exit",
+                        "uuid": "loadSaveUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "icon": "close",
+                        "actions": [
+                            {
+                                "type": "renderTemplate",
+                                "config": {
+                                    "templateId": "dashboard.json",
+                                    "mode": "local"
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "UnLoadkardex": {
+        "ctype": "page",
+        "uuid": "pageUUID",
+        "css": "",
+        "visibility": true,
+        "onLoadActions": [],
+        "hooks": [
+            {
+                "type": "condition",
+                "hookType": "afterInit",
+                "config": {
+                    "operation": "isEqualTo",
+                    "lhs": "#Shelfflag",
+                    "rhs": true
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                    "onSuccess": {
+                        "actions": [
+                            {
+                                "type": "concatContexts",
+                                "hookType": "afterInit",
+                                "config": {
+                                    "contextKey": "SubProcessTitleValue",
+                                    "contexts": [
+                                        "Kardex",
+                                        " > Unload:",
+                                        "#dellKDSearchID"
+                                    ]
+                                }
+                            },
+                            {
+                                "type": "updateComponent",
+                                "hookType": "afterInit",
+                                "config": {
+                                    "key": "subProcessTitleUUID",
+                                    "properties": {
+                                        "titleValue": "#SubProcessTitleValue"
+                                    }
+                                }
+                            },
+                            {
+                                "type": "concatContexts",
+                                "hookType": "afterInit",
+                                "config": {
+                                    "contextKey": "LocationValue",
+                                    "contexts": [
+                                        "Kardex",
+                                        " >",
+                                        "#dellKDCurrentBinName"
+                                    ]
+                                }
+                            },
+                            {
+                                "type": "updateComponent",
+                                "hookType": "afterInit",
+                                "config": {
+                                    "key": "locationUUID",
+                                    "properties": {
+                                        "titleValue": "#LocationValue"
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    "onFailure": {
+                        "actions": [
+                            {
+                                "type": "splitString",
+                                "hookType": "afterInit",
+                                "config": {
+                                    "data": "#dellKDCurrentBinName",
+                                    "splitkey": "_",
+                                    "position": 1,
+                                    "contextKey": "UnloadkardexValue"
+                                }
+                            },
+                            {
+                                "type": "concatContexts",
+                                "hookType": "afterInit",
+                                "config": {
+                                    "contextKey": "SubProcessTitleValue",
+                                    "contexts": [
+                                        "Kardex",
+                                        "#UnloadkardexValue",
+                                        " > Unload:",
+                                        "#dellKDSearchID"
+                                    ]
+                                }
+                            },
+                            {
+                                "type": "updateComponent",
+                                "hookType": "afterInit",
+                                "config": {
+                                    "key": "subProcessTitleUUID",
+                                    "properties": {
+                                        "titleValue": "#SubProcessTitleValue"
+                                    }
+                                }
+                            },
+                            {
+                                "type": "concatContexts",
+                                "hookType": "afterInit",
+                                "config": {
+                                    "contextKey": "LocationValue",
+                                    "contexts": [
+                                        "Kardex_",
+                                        "#UnloadkardexValue",
+                                        " >",
+                                        "#dellKDCurrentBinName"
+                                    ]
+                                }
+                            },
+                            {
+                                "type": "updateComponent",
+                                "hookType": "afterInit",
+                                "config": {
+                                    "key": "locationUUID",
+                                    "properties": {
+                                        "titleValue": "#LocationValue"
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "type": "concatContexts",
+                "hookType": "afterInit",
+                "config": {
+                    "contextKey": "UnloadtaskPanelTitle",
+                    "contexts": [
+                        "Unload:",
+                        "#dellKDSearchID"
+                    ]
+                }
+            },
+            {
+                "type": "updateComponent",
+                "hookType": "afterInit",
+                "config": {
+                    "key": "dellKardexUnloadUUID",
+                    "properties": {
+                        "header": {
+                            "title": "#UnloadtaskPanelTitle",
+                            "svgIcon": "description_icon",
+                            "iconClass": "active-header",
+                            "class": "greyish-black"
+                        }
+                    }
+                }
+            }
+        ],
+        "validations": [],
+        "action": [],
+        "header": [
+            {
+                "ctype": "breadcrumb",
+                "breadcrumbs": [
+                    {
+                        "label": "#userSelectedLocationName"
+                    },
+                    {
+                        "label": "#userSelectedClientName"
+                    },
+                    {
+                        "label": "#userSelectedContractName"
+                    }
+                ]
+            },
+            {
+                "ctype": "toolbar",
+                "toolbarClass": "pagecontent-header",
+                "items": [
+                    {
+                        "ctype": "title",
+                        "actions": [
+                            {
+                                "type": "renderTemplate",
+                                "config": {
+                                    "mode": "remote",
+                                    "targetId": "mainPageContentBody",
+                                    "templateId": "kardexProcessJson"
+                                },
+                                "eventSource": "click"
+                            }
+                        ],
+                        "uuid": "subProcessTitleUUID",
+                        "titleValue": "#SubProcessTitleValue",
+                        "titleClass": "section-title"
+                    },
+                    {
+                        "ctype": "iconbutton",
+                        "iconButtonClass": "headeropen-button",
+                        "text": "",
+                        "uuid": "pageopenUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "hidden": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "icon": "menu_open",
+                        "disableRipple": true,
+                        "iconClass": "header-icon",
+                        "actions": [
+                            {
+                                "type": "toggle",
+                                "eventSource": "click",
+                                "name": "subProcessRightNavref"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "openUUID",
+                                    "properties": {
+                                        "hidden": false
+                                    }
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "updateComponent",
+                                "config": {
+                                    "key": "pageopenUUID",
+                                    "properties": {
+                                        "hidden": true
+                                    }
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "items": [
+            {
+                "ctype": "title",
+                "uuid": "successTitleUUID",
+                "titleClass": "success-title",
+                "containerId": "prebodysectionone",
+                "isShown": false
+            },
+            {
+                "ctype": "title",
+                "uuid": "errorTitleUUID",
+                "containerId": "prebodysectionone",
+                "titleClass": "error-title",
+                "isShown": false
+            },
+            {
+                "ctype": "taskPanel",
+                "isblueBorder": true,
+                "uuid": "dellKardexUnloadUUID",
+                "containerId": "prebodysectionone",
+                "title": "",
+                "header": {
+                    "title": "#UnloadtaskPanelTitle",
+                    "svgIcon": "description_icon",
+                    "iconClass": "active-header",
+                    "class": "greyish-black"
+                },
+                "expanded": true,
+                "disabled": false,
+                "panelClass": "margin-top-10",
+                "hidden": false,
+                "hooks": [],
+                "validations": [],
+                "actions": [],
+                "items": [
+                    {
+                        "ctype": "title",
+                        "uuid": "locationUUID",
+                        "titleClass": "flex-container flex-container-half-width",
+                        "title": "Location",
+                        "titleValue": "#LocationValue",
+                        "titleValueClass": "textfield-container-small-width"
+                    },
+                    {
+                        "ctype": "title",
+                        "uuid": "holdTypeUUID",
+                        "titleClass": "flex-container flex-container-half-width",
+                        "title": "Hold Type",
+                        "titleValue": "#getDellKDHoldReleaseDetails.storateHoldCode",
+                        "titleValueClass": "textfield-container-small-width"
+                    },
+                    {
+                        "ctype": "title",
+                        "uuid": "partsOrderUUID",
+                        "titleClass": "flex-container flex-container-half-width",
+                        "title": "Parts Order",
+                        "titleValue": "09876998798",
+                        "titleValueClass": "textfield-container-small-width"
+                    }
+                ],
+                "footer": [
+                    {
+                        "ctype": "button",
+                        "color": "primary",
+                        "text": "Cancel",
+                        "class": "primary-btn",
+                        "uuid": "loadCancelUUID",
+                        "name": "LoadCancel",
+                        "visibility": true,
+                        "disabled": false,
+                        "type": "close",
+                        "tooltip": "",
+                        "isDisableNotReq": true,
+                        "hooks": [],
+                        "validations": [],
+                        "actions": [
+                            {
+                                "type": "renderTemplate",
+                                "config": {
+                                    "mode": "remote",
+                                    "targetId": "mainPageContentBody",
+                                    "templateId": "kardexProcessJson"
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    },
+                    {
+                        "ctype": "button",
+                        "color": "primary",
+                        "text": "Get Tray",
+                        "class": "primary-btn",
+                        "uuid": "unloadGetTrayUUID",
+                        "name": "unloadGetTray",
+                        "visibility": true,
+                        "disabled": false,
+                        "type": "submit",
+                        "tooltip": "",
+                        "isDisableNotReq": true,
+                        "hooks": [],
+                        "validations": [],
+                        "actions": [
+                            {
+                                "type": "context",
+                                "config": {
+                                    "requestMethod": "add",
+                                    "key": "assessmentRAMFormSavedData",
+                                    "data": "rawFormData"
+                                },
+                                "eventSource": "click"
+                            },
+                            {
+                                "type": "condition",
+                                "config": {
+                                    "operation": "isEqualTo",
+                                    "lhs": "#Shelfflag",
+                                    "rhs": true
+                                },
+                                "eventSource": "click",
+                                "responseDependents": {
+                                    "onSuccess": {
+                                        "actions": [
+                                            {
+                                                "type": "dialog",
+                                                "uuid": "confirmUnloadUUID",
+                                                "config": {
+                                                    "title": "Confirm Unload",
+                                                    "height": "231px",
+                                                    "width": "547px",
+                                                    "minimumWidth": false,
+                                                    "disableClose": false,
+                                                    "items": [
+                                                        {
+                                                            "ctype": "title",
+                                                            "uuid": "overflowShelfTextUUID",
+                                                            "titleClass": "flex-container flex-container-half-width",
+                                                            "title": "Confirm that the unit has been unloaded",
+                                                            "titleValue": ""
+                                                        }
+                                                    ],
+                                                    "footer": [
+                                                        {
+                                                            "ctype": "button",
+                                                            "color": "primary",
+                                                            "text": "Cancel",
+                                                            "uuid": "CancelUnloadPopupUUID",
+                                                            "closeType": "close",
+                                                            "buttonClass": "overflowshelfcancel",
+                                                            "disableClose": true,
+                                                            "visibility": true,
+                                                            "dialogButton": true,
+                                                            "type": "",
+                                                            "hooks": [],
+                                                            "validations": [],
+                                                            "actions": []
+                                                        },
+                                                        {
+                                                            "ctype": "button",
+                                                            "color": "primary",
+                                                            "text": "Confirm",
+                                                            "uuid": "ConfirmUnloadPopupUUID",
+                                                            "dialogButton": true,
+                                                            "visibility": true,
+                                                            "disabled": false,
+                                                            "type": "submit",
+                                                            "closeType": "success",
+                                                            "hooks": [],
+                                                            "validations": [],
+                                                            "actions": []
+                                                        }
+                                                    ]
+                                                },
+                                                "eventSource": "click",
+                                                "responseDependents": {
+                                                    "onSuccess": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "microservice",
+                                                                "config": {
+                                                                    "microserviceId": "moveinventory",
+                                                                    "requestMethod": "post",
+                                                                    "body": {
+                                                                        "apiUsageClientName": "#UnitInfo.CLIENTNAME",
+                                                                        "apiUsageLocationName": "#UnitInfo.GEONAME",
+                                                                        "callSource": "FrontEnd",
+                                                                        "ip": "::1",
+                                                                        "items": {
+                                                                            "addtionalDetails": {
+                                                                                "comments": "#holdDialogData.dellReworkHoldAddNote",
+                                                                                "storageHoldCode": "#getHoldReleaseDetailService.storateHoldCode"
+                                                                            },
+                                                                            "destinationLocation": {
+                                                                                "bin": "#dellKDCurrentBin",
+                                                                                "geography": "#UnitInfo.GEONAME",
+                                                                                "stockingLocation": "#getDellKDHoldReleaseDetails.destStkLocationName",
+                                                                                "warehouse": "#UnitInfo.WAREHOUSE_NAME"
+                                                                            },
+                                                                            "item": [
+                                                                                {
+                                                                                    "bcn": "#UnitInfo.ITEM_BCN",
+                                                                                    "owner": "#UnitInfo.CLIENTNAME",
+                                                                                    "partNo": "#UnitInfo.PART_NO",
+                                                                                    "quantity": "1",
+                                                                                    "serialNo": "#UnitInfo.SERIAL_NO",
+                                                                                    "condition": "Defective"
+                                                                                }
+                                                                            ],
+                                                                            "notes": "#holdDialogData.dellReworkHoldAddNote",
+                                                                            "sourceLocation": {
+                                                                                "bin": "#dellKDCurrentBinName",
+                                                                                "geography": "#UnitInfo.GEONAME",
+                                                                                "stockingLocation": "#getDellKDHoldReleaseDetails.srcStkLocationName",
+                                                                                "warehouse": "#UnitInfo.WAREHOUSE_NAME"
+                                                                            }
+                                                                        },
+                                                                        "usrPwd": {
+                                                                            "userName": "#loginUUID.username",
+                                                                            "password": "#loginUUID.password"
+                                                                        }
+                                                                    },
+                                                                    "toBeStringified": true
+                                                                },
+                                                                "responseDependents": {
+                                                                    "onSuccess": {
+                                                                        "actions": [
+                                                                            {
+                                                                                "type": "microservice",
+                                                                                "config": {
+                                                                                    "microserviceId": "releaseFromHold",
+                                                                                    "requestMethod": "post",
+                                                                                    "isLocal": false,
+                                                                                    "LocalService": "assets/Responses/repairMockAlertResponse.json",
+                                                                                    "body": {
+                                                                                        "unitBCN": "#UnitInfo.ITEM_BCN",
+                                                                                        "releaseNotes": "RELEASE",
+                                                                                        "userPwd": {
+                                                                                            "userName": "#loginUUID.username",
+                                                                                            "password": "#loginUUID.password"
+                                                                                        }
+                                                                                    },
+                                                                                    "isFromKardex": true
+                                                                                },
+                                                                                "responseDependents": {
+                                                                                    "onSuccess": {
+                                                                                        "actions": [
+                                                                                            {
+                                                                                                "type": "pauseScreenData"
+                                                                                            },
+                                                                                            {
+                                                                                                "type": "renderTemplate",
+                                                                                                "config": {
+                                                                                                    "mode": "remote",
+                                                                                                    "targetId": "mainPageContentBody",
+                                                                                                    "templateId": "kardexProcessJson"
+                                                                                                }
+                                                                                            }
+                                                                                        ]
+                                                                                    },
+                                                                                    "onFailure": {
+                                                                                        "actions": [
+                                                                                            {
+                                                                                                "type": "handleCommonServices",
+                                                                                                "config": {
+                                                                                                    "type": "errorRenderTemplate",
+                                                                                                    "contextKey": "errorMsg",
+                                                                                                    "updateKey": "errorTitleUUID"
+                                                                                                }
+                                                                                            }
+                                                                                        ]
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "onFailure": {
+                                                                        "actions": [
+                                                                            {
+                                                                                "type": "handleCommonServices",
+                                                                                "config": {
+                                                                                    "type": "errorRenderTemplate",
+                                                                                    "contextKey": "errorMsg",
+                                                                                    "updateKey": "errorTitleUUID"
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    }
+                                                                },
+                                                                "eventSource": "click"
+                                                            }
+                                                        ]
+                                                    },
+                                                    "onFailure": {
+                                                        "actions": []
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "onFailure": {
+                                        "actions": [
+                                            {
+                                                "type": "microservice",
+                                                "config": {
+                                                    "microserviceId": "setKardexBin",
+                                                    "requestMethod": "get",
+                                                    "params": {
+                                                        "locationId": "#UnitInfo.LOCATION_ID",
+                                                        "binName": "#dellKDCurrentBinName"
+                                                    },
+                                                    "toBeStringified": true
+                                                },
+                                                "responseDependents": {
+                                                    "onSuccess": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "context",
+                                                                "config": {
+                                                                    "requestMethod": "add",
+                                                                    "key": "setKardeBinRes",
+                                                                    "data": "responseData"
+                                                                },
+                                                                "eventSource": "click"
+                                                            },
+                                                            {
+                                                                "type": "microservice",
+                                                                "config": {
+                                                                    "microserviceId": "getGLBDellKardexDetails",
+                                                                    "requestMethod": "post",
+                                                                    "body": {
+                                                                        "bcnNumber": "#UnitInfo.ITEM_BCN",
+                                                                        "userName": "#loginUUID.username",
+                                                                        "optCode": "#UnitInfo.ROUTE",
+                                                                        "partNumber": "#UnitInfo.PART_NO",
+                                                                        "workCenterId": "#UnitInfo.WORKCENTER_ID",
+                                                                        "clientId": "#UnitInfo.CLIENT_ID",
+                                                                        "contractId": "#UnitInfo.CONTRACT_ID",
+                                                                        "locationId": "#UnitInfo.LOCATION_ID",
+                                                                        "workCenterName": "#UnitInfo.WORKCENTER",
+                                                                        "serialNumber": "#UnitInfo.SERIAL_NO",
+                                                                        "destinationBin": "#dellKDCurrentBinName"
+                                                                    },
+                                                                    "toBeStringified": true
+                                                                },
+                                                                "responseDependents": {
+                                                                    "onSuccess": {
+                                                                        "actions": [
+                                                                            {
+                                                                                "type": "dialog",
+                                                                                "uuid": "confirmUnloadUUID",
+                                                                                "config": {
+                                                                                    "title": "Confirm Unload",
+                                                                                    "height": "231px",
+                                                                                    "width": "547px",
+                                                                                    "minimumWidth": false,
+                                                                                    "disableClose": false,
+                                                                                    "items": [
+                                                                                        {
+                                                                                            "ctype": "title",
+                                                                                            "uuid": "overflowShelfTextUUID",
+                                                                                            "titleClass": "flex-container flex-container-half-width",
+                                                                                            "title": "Confirm that the unit has been unloaded",
+                                                                                            "titleValue": ""
+                                                                                        }
+                                                                                    ],
+                                                                                    "footer": [
+                                                                                        {
+                                                                                            "ctype": "button",
+                                                                                            "color": "primary",
+                                                                                            "text": "Cancel",
+                                                                                            "uuid": "CancelUnloadPopupUUID",
+                                                                                            "closeType": "close",
+                                                                                            "buttonClass": "overflowshelfcancel",
+                                                                                            "disableClose": true,
+                                                                                            "visibility": true,
+                                                                                            "dialogButton": true,
+                                                                                            "type": "",
+                                                                                            "hooks": [],
+                                                                                            "validations": [],
+                                                                                            "actions": []
+                                                                                        },
+                                                                                        {
+                                                                                            "ctype": "button",
+                                                                                            "color": "primary",
+                                                                                            "text": "Confirm",
+                                                                                            "uuid": "ConfirmUnloadPopupUUID",
+                                                                                            "dialogButton": true,
+                                                                                            "visibility": true,
+                                                                                            "disabled": false,
+                                                                                            "type": "submit",
+                                                                                            "closeType": "success",
+                                                                                            "hooks": [],
+                                                                                            "validations": [],
+                                                                                            "actions": []
+                                                                                        }
+                                                                                    ]
+                                                                                },
+                                                                                "eventSource": "click",
+                                                                                "responseDependents": {
+                                                                                    "onSuccess": {
+                                                                                        "actions": [
+                                                                                            {
+                                                                                                "type": "microservice",
+                                                                                                "config": {
+                                                                                                    "microserviceId": "moveinventory",
+                                                                                                    "requestMethod": "post",
+                                                                                                    "body": {
+                                                                                                        "apiUsageClientName": "#UnitInfo.CLIENTNAME",
+                                                                                                        "apiUsageLocationName": "#UnitInfo.GEONAME",
+                                                                                                        "callSource": "FrontEnd",
+                                                                                                        "ip": "::1",
+                                                                                                        "items": {
+                                                                                                            "addtionalDetails": {
+                                                                                                                "comments": "#holdDialogData.dellReworkHoldAddNote",
+                                                                                                                "storageHoldCode": "#getHoldReleaseDetailService.storateHoldCode"
+                                                                                                            },
+                                                                                                            "destinationLocation": {
+                                                                                                                "bin": "#dellKDCurrentBin",
+                                                                                                                "geography": "#UnitInfo.GEONAME",
+                                                                                                                "stockingLocation": "#getDellKDHoldReleaseDetails.destStkLocationName",
+                                                                                                                "warehouse": "#UnitInfo.WAREHOUSE_NAME"
+                                                                                                            },
+                                                                                                            "item": [
+                                                                                                                {
+                                                                                                                    "bcn": "#UnitInfo.ITEM_BCN",
+                                                                                                                    "owner": "#UnitInfo.CLIENTNAME",
+                                                                                                                    "partNo": "#UnitInfo.PART_NO",
+                                                                                                                    "quantity": "1",
+                                                                                                                    "serialNo": "#UnitInfo.SERIAL_NO",
+                                                                                                                    "condition": "Defective"
+                                                                                                                }
+                                                                                                            ],
+                                                                                                            "notes": "#holdDialogData.dellReworkHoldAddNote",
+                                                                                                            "sourceLocation": {
+                                                                                                                "bin": "#dellKDCurrentBinName",
+                                                                                                                "geography": "#UnitInfo.GEONAME",
+                                                                                                                "stockingLocation": "#getDellKDHoldReleaseDetails.srcStkLocationName",
+                                                                                                                "warehouse": "#UnitInfo.WAREHOUSE_NAME"
+                                                                                                            }
+                                                                                                        },
+                                                                                                        "usrPwd": {
+                                                                                                            "userName": "#loginUUID.username",
+                                                                                                            "password": "#loginUUID.password"
+                                                                                                        }
+                                                                                                    },
+                                                                                                    "toBeStringified": true
+                                                                                                },
+                                                                                                "responseDependents": {
+                                                                                                    "onSuccess": {
+                                                                                                        "actions": [
+                                                                                                            {
+                                                                                                                "type": "microservice",
+                                                                                                                "config": {
+                                                                                                                    "microserviceId": "releaseFromHold",
+                                                                                                                    "requestMethod": "post",
+                                                                                                                    "isLocal": false,
+                                                                                                                    "LocalService": "assets/Responses/repairMockAlertResponse.json",
+                                                                                                                    "body": {
+                                                                                                                        "unitBCN": "#UnitInfo.ITEM_BCN",
+                                                                                                                        "releaseNotes": "RELEASE",
+                                                                                                                        "userPwd": {
+                                                                                                                            "userName": "#loginUUID.username",
+                                                                                                                            "password": "#loginUUID.password"
+                                                                                                                        }
+                                                                                                                    },
+                                                                                                                    "isFromKardex": true
+                                                                                                                },
+                                                                                                                "eventSource": "enter",
+                                                                                                                "responseDependents": {
+                                                                                                                    "onSuccess": {
+                                                                                                                        "actions": [
+                                                                                                                            {
+                                                                                                                                "type": "pauseScreenData"
+                                                                                                                            },
+                                                                                                                            {
+                                                                                                                                "type": "renderTemplate",
+                                                                                                                                "config": {
+                                                                                                                                    "mode": "remote",
+                                                                                                                                    "targetId": "mainPageContentBody",
+                                                                                                                                    "templateId": "kardexProcessJson"
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                        ]
+                                                                                                                    },
+                                                                                                                    "onFailure": {
+                                                                                                                        "actions": [
+                                                                                                                            {
+                                                                                                                                "type": "handleCommonServices",
+                                                                                                                                "config": {
+                                                                                                                                    "type": "errorRenderTemplate",
+                                                                                                                                    "contextKey": "errorMsg",
+                                                                                                                                    "updateKey": "errorTitleUUID"
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                        ]
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            }
+                                                                                                        ]
+                                                                                                    },
+                                                                                                    "onFailure": {
+                                                                                                        "actions": [
+                                                                                                            {
+                                                                                                                "type": "handleCommonServices",
+                                                                                                                "config": {
+                                                                                                                    "type": "errorRenderTemplate",
+                                                                                                                    "contextKey": "errorMsg",
+                                                                                                                    "updateKey": "errorTitleUUID"
+                                                                                                                }
+                                                                                                            }
+                                                                                                        ]
+                                                                                                    }
+                                                                                                },
+                                                                                                "eventSource": "click"
+                                                                                            }
+                                                                                        ]
+                                                                                    },
+                                                                                    "onFailure": {
+                                                                                        "actions": []
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "onFailure": {
+                                                                        "actions": [
+                                                                            {
+                                                                                "type": "handleCommonServices",
+                                                                                "config": {
+                                                                                    "type": "errorRenderTemplate",
+                                                                                    "contextKey": "errorMsg",
+                                                                                    "updateKey": "errorTitleUUID"
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    }
+                                                                },
+                                                                "eventSource": "click"
+                                                            }
+                                                        ]
+                                                    },
+                                                    "onFailure": {
+                                                        "actions": [
+                                                            {
+                                                                "type": "handleCommonServices",
+                                                                "config": {
+                                                                    "type": "errorRenderTemplate",
+                                                                    "contextKey": "errorMsg",
+                                                                    "updateKey": "errorTitleUUID"
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                },
+                                                "eventSource": "click"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "footer": [
+            {
+                "ctype": "toolbar",
+                "toolbarClass": "pagecontent-footer",
+                "items": [
+                    {
+                        "ctype": "iconbutton",
+                        "iconButtonClass": "footer-save body",
+                        "text": "Exit",
+                        "uuid": "UnloadSaveUUID",
+                        "visibility": true,
+                        "disabled": false,
+                        "type": "submit",
+                        "hooks": [],
+                        "validations": [],
+                        "icon": "close",
+                        "actions": [
+                            {
+                                "type": "renderTemplate",
+                                "config": {
+                                    "templateId": "dashboard.json",
+                                    "mode": "local"
+                                },
+                                "eventSource": "click"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+},
+  "Result": "SUCCESS"
+}

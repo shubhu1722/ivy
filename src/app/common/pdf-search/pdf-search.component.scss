@@ -1,0 +1,53 @@
+::ng-deep .pdfViewer .page{
+    right: 12%;
+} 
+pdf-viewer {
+  height: 100%;
+  display: block;
+}
+::ng-deep .ng2-pdf-viewer-container {
+    overflow-x: hidden;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+::ng-deep .WIPdfstyle .ng2-pdf-viewer-container {
+    padding-left: 61px;
+}
+.textClass{
+  display: flex;  
+  align-items: center;
+  white-space: nowrap;
+  justify-content: space-between;
+  padding: 5px 0px 5px 16px;
+}
+.boxStyle{
+  position: relative;
+  left: 10px;
+  width: 35%;
+}
+.iconStyle{
+  color: black;
+  font-size: 20px;
+}
+.searchContainer{
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.pdfContainer{
+  flex: 1;
+  position: relative;
+}
+.custButStyle {
+  padding: 8px;
+  border:  1px solid rgba(255, 206, 75, 0.2980392156862745);
+  background: rgba(255, 206, 75, 0.2980392157);
+  color: #0180E5;
+  margin: 20px 10px 20px;
+}
+.custButStyle:hover {
+  background: transparent;
+  border: 1px solid #0180E5;
+}

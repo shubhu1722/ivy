@@ -1,0 +1,61 @@
+// .flex_container.stack_vertical {
+//   -webkit-flex-direction: column;
+//   flex-direction: column;
+//   height: 100%;
+//   width: auto;
+// }
+
+// .sidenav-container {
+//   height: 100%;
+// }
+
+// .sidenav {
+//   width: auto;
+// }
+
+// .flex_container {
+//   display: flex;
+//   justify-content: space-between;
+//   -webkit-flex-direction: row;
+//   flex-direction: row;
+//   -webkit-align-items: flex-start;
+//   align-items: flex-start;
+//   -webkit-flex-wrap: nowrap;
+//   flex-wrap: nowrap;
+//   width: 100%;
+//   min-height: 0;
+//   position: relative;
+//   -webkit-box-sizing: border-box;
+//   -moz-box-sizing: border-box;
+//   box-sizing: border-box;
+// }
+
+// .flex_container>.flex_item {
+//   line-height: 20px;
+//   -webkit-box-sizing: border-box;
+//   -moz-box-sizing: border-box;
+//   box-sizing: border-box;
+//   padding: 10px;
+// }
+// .flex_container.stack_vertical>.flex_item {
+//   width: 100%;
+// }
+
+// .flex_container>.flex_item.scrollable {
+//   overflow: auto;
+// }
+
+// .flex_container.stack_vertical>.flex_item.align_end {
+//   margin-top: auto;
+// }
+
+// .flex_container>.flex_item.divider_top {
+//   border-top: 1px solid rgba(255, 255, 255, 0.1);
+// }
+.sidenav-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}

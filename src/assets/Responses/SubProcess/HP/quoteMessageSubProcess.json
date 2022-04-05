@@ -1,0 +1,1223 @@
+{
+  "ResultData": {
+    "ctype": "page",
+    "uuid": "pageUUID",
+    "contentClass": "",
+    "css": "",
+    "visibility": true,
+    "validations": [],
+    "action": [],
+    "hooks": [
+      {
+        "type": "microservice",
+        "hookType": "afterInit",
+        "config": {
+          "microserviceId": "quoteMessageFormat",
+          "requestMethod": "post",
+          "toBeStringified": true,
+          "LocalService": "assets/Responses/quoteMessageCustomerMessage.json",
+          "isLocal": false,
+          "body": {
+            "locationId": "#repairUnitInfo.LOCATION_ID",
+            "clientId": "#repairUnitInfo.CLIENT_ID",
+            "contractId": "#repairUnitInfo.CONTRACT_ID",
+            "itemId": "#repairUnitInfo.ITEM_ID",
+            "userName": "#userAccountInfo.PersonalDetails.USERID",
+            "averageAmountList": "#averageAmountList"
+          }
+        },
+        "responseDependents": {
+          "onSuccess": {
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "quoteMessageFormatted",
+                  "data": "responseData"
+                }
+              },
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "customerFormattedMsg",
+                  "data": "#quoteMessageFormatted"
+                }
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "formattedMsgUUID",
+                  "properties": {
+                    "value": "#customerFormattedMsg"
+                  }
+                }
+              },
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "finalCustomerMsg",
+                  "data": "#customerFormattedMsg"
+                }
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "holdNoteUUID",
+                  "properties": {
+                    "value": "#finalCustomerMsg"
+                  }
+                }
+              }
+            ]
+          },
+          "onFailure": {
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "customerFormattedMsg",
+                  "data": ""
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "type": "context",
+        "hookType": "afterInit",
+        "config": {
+          "requestMethod": "add",
+          "key": "userSelectedAdditionalMessage",
+          "data": "SELECT"
+        }
+      },
+      {
+        "type": "setDefaultValue",
+        "hookType": "afterInit",
+        "config": {
+          "key": "addititonalMsgDropdownUUID",
+          "defaultValue": "#userSelectedAdditionalMessage"
+        }
+      }
+    ],
+    "header": [
+      {
+        "ctype": "breadcrumb",
+        "breadcrumbs": [
+          {
+            "label": "#userSelectedLocationName"
+          },
+          {
+            "label": "#userSelectedClientName"
+          },
+          {
+            "label": "#userSelectedContractName"
+          }
+        ]
+      },
+      {
+        "ctype": "toolbar",
+        "toolbarClass": "pagecontent-header",
+        "items": [
+          {
+            "ctype": "title",
+            "uuid": "subProcessTitleUUID",
+            "titleValue": "Quote Message",
+            "titleClass": "section-title"
+          },
+          {
+            "ctype": "iconbutton",
+            "iconButtonClass": "headeropen-button",
+            "text": "",
+            "uuid": "pageopenUUID",
+            "visibility": true,
+            "disabled": false,
+            "hidden": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "icon": "menu_open",
+            "disableRipple": true,
+            "iconClass": "header-icon",
+            "actions": [
+              {
+                "type": "toggle",
+                "eventSource": "click",
+                "name": "subProcessRightNavref"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "openUUID",
+                  "properties": {
+                    "hidden": false
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "pageopenUUID",
+                  "properties": {
+                    "hidden": true
+                  }
+                },
+                "eventSource": "click"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "items": [
+      {
+        "ctype": "title",
+        "uuid": "successTitleUUID",
+        "titleClass": "success-title",
+        "isShown": false
+      },
+      {
+        "ctype": "title",
+        "uuid": "errorTitleUUID",
+        "containerId": "prebodysectionone",
+        "titleClass": "error-title",
+        "isShown": false
+      },
+      {
+        "ctype": "taskPanel",
+        "title": "",
+        "panelClass": "margin-top-10",
+        "header": {
+          "title": "Message to Customer",
+          "icon": "description",
+          "iconClass": "active-header",
+          "class": "bold-font"
+        },
+        "expanded": true,
+        "hideToggle": true,
+        "isblueBorder": true,
+        "hidden": false,
+        "uuid": "msgToCustomerTaskPanelUUID",
+        "visibility": true,
+        "disabled": false,
+        "hooks": [],
+        "validations": [],
+        "actions": [],
+        "items": [
+          {
+            "ctype": "nativeDropdown",
+            "containerId": "expansionPanelContentFirstHalf",
+            "uuid": "addititonalMsgDropdownUUID",
+            "hooks": [],
+            "submitable": true,
+            "visibility": true,
+            "label": "Additional Message",
+            "labelPosition": "left",
+            "disabled": false,
+            "hideDisabledSelect": true,
+            "name": "additionalMessage",
+            "formGroupClass": "form-group-margin",
+            "dropdownClass": "dropdown-container textfield-container-50",
+            "labelClass": "subtitle1 greyish-black",
+            "inputStyles": "margin-left:40px;",
+            "defaultValue": "#userSelectedAdditionalMessage",
+            "options": [
+              {
+                "displayValue": "SELECT",
+                "code": "SELECT"
+              },
+              {
+                "displayValue": "PLEASE PROVIDE BIOS PASSWORD",
+                "code": "PLEASE PROVIDE BIOS PASSWORD"
+              },
+              {
+                "displayValue": "REPAIR WITHOUT CAB IMPOSSIBLE",
+                "code": "REPAIR WITHOUT CAB IMPOSSIBLE"
+              },
+              {
+                "displayValue": "REPAIR WITHOUT CAB IS POSSIBLE",
+                "code": "REPAIR WITHOUT CAB IS POSSIBLE"
+              }
+            ],
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "userSelectedAdditionalMessage",
+                  "data": "elementControlValue"
+                },
+                "eventSource": "change"
+              },
+              {
+                "type": "condition",
+                "config": {
+                  "operation": "isEqualTo",
+                  "lhs": "#userSelectedAdditionalMessage",
+                  "rhs": "SELECT"
+                },
+                "eventSource": "change",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "customerFormattedMsg",
+                          "data": "#quoteMessageFormatted"
+                        },
+                        "eventSource": "change"
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "stringOperation",
+                        "config": {
+                          "key": "additionalFormattedMsg",
+                          "lstr": "#userSelectedAdditionalMessage",
+                          "rstr": "#quoteMessageFormatted",
+                          "operation": "concat",
+                          "concatSymbol": " "
+                        },
+                        "eventSource": "change"
+                      },
+                      {
+                        "type": "context",
+                        "config": {
+                          "requestMethod": "add",
+                          "key": "customerFormattedMsg",
+                          "data": "#additionalFormattedMsg"
+                        },
+                        "eventSource": "change"
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "finalCustomerMsg",
+                  "data": "#customerFormattedMsg"
+                },
+                "eventSource": "change"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "formattedMsgUUID",
+                  "properties": {
+                    "value": "#customerFormattedMsg"
+                  }
+                },
+                "eventSource": "change"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "holdNoteUUID",
+                  "properties": {
+                    "value": "#finalCustomerMsg"
+                  }
+                },
+                "eventSource": "change"
+              },
+              {
+                "type": "condition",
+                "config": {
+                  "operation": "notEmpty",
+                  "lhs": "#customerFormattedMsg"
+                },
+                "eventSource": "change",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "msgToCustomerCompleteUUID",
+                          "properties": {
+                            "disabled": false
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "msgToCustomerCompleteUUID",
+                          "properties": {
+                            "disabled": true
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "ctype": "textarea",
+            "name": "formattedMsg",
+            "textareaClass": "note-class",
+            "uuid": "formattedMsgUUID",
+            "value": "#customerFormattedMsg",
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "formattedMessage",
+                  "data": "formData"
+                },
+                "eventSource": "keyup"
+              },
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "customerFormattedMsg",
+                  "data": "#formattedMessage.formattedMsg"
+                },
+                "eventSource": "keyup"
+              },
+              {
+                "type": "condition",
+                "config": {
+                  "operation": "notEmpty",
+                  "lhs": "#customerFormattedMsg"
+                },
+                "eventSource": "keyup",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "msgToCustomerCompleteUUID",
+                          "properties": {
+                            "disabled": false
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": [
+                      {
+                        "type": "updateComponent",
+                        "config": {
+                          "key": "msgToCustomerCompleteUUID",
+                          "properties": {
+                            "disabled": true
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "footer": [
+          {
+            "ctype": "button",
+            "color": "primary",
+            "text": "Done",
+            "uuid": "msgToCustomerCompleteUUID",
+            "class": "primary-btn",
+            "visibility": true,
+            "name":"msgToCustomerCompleteName",
+            "disabled": false,
+            "checkGroupValidity": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "actions": [
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "quoteMsgToCustomerFormData",
+                  "data": "formData"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "add",
+                  "key": "finalCustomerMsg",
+                  "data": "#customerFormattedMsg"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "holdNoteUUID",
+                  "properties": {
+                    "value": "#finalCustomerMsg"
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "disableComponent",
+                "config": {
+                  "key": "formattedMsgUUID",
+                  "property": "formattedMsg",
+                  "isNotReset": true
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "disableComponent",
+                "config": {
+                  "key": "addititonalMsgDropdownUUID",
+                  "property": "additionalMessage",
+                  "isNotReset": true
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "addititonalMsgDropdownUUID",
+                  "properties": {
+                    "disabled": true
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "msgToCustomerTaskPanelUUID",
+                  "properties": {
+                    "expanded": false,
+                    "header": {
+                      "title": "Message to Customer",
+                      "icon": "description",
+                      "statusIcon": "check_circle",
+                      "statusClass": "complete-status",
+                      "class": "complete-task",
+                      "iconClass": "complete-task"
+                    }
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "msgToCustomerCompleteUUID",
+                  "properties": {
+                    "disabled": true
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "photoTaskPanelUUID",
+                  "properties": {
+                    "expanded": true,
+                    "disabled": false,
+                    "header": {
+                      "title": "Photo",
+                      "icon": "description",
+                      "iconClass": "active-header",
+                      "class": "bold-font"
+                    }
+                  }
+                },
+                "eventSource": "click"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "ctype": "taskPanel",
+        "title": "",
+        "panelClass": "margin-top-10",
+        "header": {
+          "title": "Photo",
+          "icon": "description",
+          "iconClass": "complete-task",
+          "class": "bold-font",
+          "statusIcon": "hourglass_empty",
+          "statusClass": "incomplete-status"
+        },
+        "expanded": false,
+        "hideToggle": true,
+        "isblueBorder": true,
+        "hidden": false,
+        "uuid": "photoTaskPanelUUID",
+        "visibility": true,
+        "disabled": true,
+        "hooks": [],
+        "validations": [],
+        "actions": [],
+        "items": [
+          {
+            "ctype": "title",
+            "titleValue": "Take photos of Customer Induced Damage and log to correct Unit"
+          }
+        ],
+        "footer": [
+          {
+            "ctype": "button",
+            "color": "primary",
+            "text": "Done",
+            "uuid": "photoDoneUUID",
+            "class": "primary-btn",
+            "visibility": true,
+            "disabled": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "actions": [
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "photoTaskPanelUUID",
+                  "properties": {
+                    "expanded": false,
+                    "disabled": false,
+                    "header": {
+                      "title": "Photo",
+                      "icon": "description",
+                      "statusIcon": "check_circle",
+                      "statusClass": "complete-status",
+                      "class": "complete-task",
+                      "iconClass": "complete-task"
+                    }
+                  }
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "updateComponent",
+                "config": {
+                  "key": "photoDoneUUID",
+                  "properties": {
+                    "disabled": true
+                  }
+                },
+                "eventSource": "click"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "footer": [
+      {
+        "ctype": "toolbar",
+        "toolbarClass": "pagecontent-footer",
+        "items": [
+          {
+            "ctype": "iconbutton",
+            "iconButtonClass": "footer-save body",
+            "text": "Exit",
+            "uuid": "quoteMessageSaveUUID",
+            "visibility": true,
+            "disabled": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "icon": "save",
+            "actions": [
+              {
+                "type": "renderTemplate",
+                "config": {
+                  "templateId": "dashboard.json",
+                  "mode": "local"
+                },
+                "eventSource": "click"
+              }
+            ]
+          },
+          {
+            "ctype": "iconbutton",
+            "iconButtonClass": "footer-save ml-1 body",
+            "text": " Exit",
+            "uuid": "exitUUID",
+            "visibility": true,
+            "disabled": false,
+            "type": "submit",
+            "icon": "close",
+            "actions": [
+              {
+                "type": "clearScreenData",
+                "eventSource": "click"
+              },
+              {
+                "type": "context",
+                "config": {
+                  "requestMethod": "delete",
+                  "key": "currentWC"
+                },
+                "eventSource": "click"
+              },
+              {
+                "type": "renderTemplate",
+                "config": {
+                  "templateId": "dashboard.json",
+                  "mode": "local"
+                },
+                "eventSource": "click"
+              }
+            ]
+          },
+          {
+            "ctype": "iconText",
+            "uuid": "addNoteLabelUUID",
+            "icon": "add_comment",
+            "text": "Add Note",
+            "disabled": false,
+            "textCss": "",
+            "iconPosition": "Before",
+            "iconTextClass": "footer-addNote body",
+            "actions": [
+              {
+                "type": "dialog",
+                "uuid": "addNoteDialogUUID",
+                "config": {
+                  "title": "Add Note",
+                  "items": [
+                    {
+                      "ctype": "textarea",
+                      "name": "addNote",
+                      "textareaClass": "note-class",
+                      "uuid": "addNoteUUID",
+                      "required": true,
+                      "value": "#timeoutNotes.addNote",
+                      "actions": [
+                        {
+                          "type": "updateComponent",
+                          "config": {
+                            "key": "doneaddnoteUUID",
+                            "properties": {
+                              "disabled": false
+                            }
+                          },
+                          "eventSource": "onLoad"
+                        }
+                      ]
+                    }
+                  ],
+                  "footer": [
+                    {
+                      "ctype": "button",
+                      "color": "primary",
+                      "text": "Cancel",
+                      "uuid": "cancelHoldUUID",
+                      "closeType": "close",
+                      "disableClose": true,
+                      "visibility": true,
+                      "dialogButton": true,
+                      "type": "",
+                      "hooks": [],
+                      "validations": [],
+                      "actions": []
+                    },
+                    {
+                      "ctype": "button",
+                      "color": "primary",
+                      "text": "Done",
+                      "uuid": "doneaddnoteUUID",
+                      "dialogButton": true,
+                      "visibility": true,
+                      "disabled": true,
+                      "type": "submit",
+                      "closeType": "success",
+                      "hooks": [],
+                      "validations": [],
+                      "actions": []
+                    }
+                  ]
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "key": "timeoutNotes",
+                          "data": "formData",
+                          "requestMethod": "add",
+                          "value": "addNote"
+                        },
+                        "eventSource": "click"
+                      }
+                    ]
+                  },
+                  "onFailure": {
+                    "actions": []
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "ctype": "iconbutton",
+            "uuid": "holdResumeUUID",
+            "visibility": true,
+            "disabled": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "icon": "play_arrow",
+            "iconClass": "",
+            "hidden": true,
+            "disableRipple": true
+          },
+          {
+            "ctype": "spacer",
+            "uuid": "emptySpaceUUID",
+            "class": "empty-space"
+          },
+          {
+            "ctype": "iconbutton",
+            "uuid": "holdPauseUUID",
+            "visibility": true,
+            "disabled": false,
+            "type": "submit",
+            "hooks": [],
+            "validations": [],
+            "icon": "pause",
+            "iconClass": "",
+            "disableRipple": true,
+            "actions": [
+              {
+                "type": "dialog",
+                "uuid": "pauseDialogUUID",
+                "config": {
+                  "title": "Hold",
+                  "items": [
+                    {
+                      "ctype": "nativeDropdown",
+                      "formGroupClass": "discrepancy-holddrpdwn",
+                      "uuid": "holdTypeUUID",
+                      "label": "Hold Type",
+                      "name": "holdType",
+                      "required": true,
+                      "dataSource": "#holdCodesForDiscrepancy",
+                      "code": "storageHoldSubCode",
+                      "displayValue": "storageHoldSubCode",
+                      "defaultValue": "#storageHoldSubCode",
+                      "actions": [
+                        {
+                          "type": "context",
+                          "config": {
+                            "requestMethod": "add",
+                            "key": "storageHoldSubCode",
+                            "data": "elementControlValue"
+                          },
+                          "eventSource": "change"
+                        },
+                        {
+                          "type": "GetValueFromArray",
+                          "config": {
+                            "arrayData": "#holdCodesForDiscrepancy",
+                            "PullValue": "storageHoldCode"
+                          },
+                          "eventSource": "change"
+                        }
+                      ]
+                    },
+                    {
+                      "ctype": "textarea",
+                      "label": "Add note",
+                      "name": "holdAddNote",
+                      "textareaContainer": "timeout-class required-note",
+                      "uuid": "holdNoteUUID",
+                      "required": true,
+                      "value": "#finalCustomerMsg",
+                      "submitable": true,
+                      "actions": []
+                    }
+                  ],
+                  "footer": [
+                    {
+                      "ctype": "button",
+                      "color": "primary",
+                      "text": "Cancel",
+                      "uuid": "qmCancelHoldUUID",
+                      "closeType": "close",
+                      "disableClose": true,
+                      "visibility": true,
+                      "dialogButton": true,
+                      "type": "",
+                      "hooks": [],
+                      "validations": [],
+                      "actions": []
+                    },
+                    {
+                      "ctype": "button",
+                      "color": "primary",
+                      "text": "Done",
+                      "uuid": "qmDoneHoldUUID",
+                      "dialogButton": true,
+                      "visibility": true,
+                      "disabled": true,
+                      "type": "submit",
+                      "closeType": "success",
+                      "hooks": [],
+                      "validations": [],
+                      "actions": [
+                        {
+                          "type": "context",
+                          "config": {
+                            "key": "timeoutNotes",
+                            "data": "formData",
+                            "requestMethod": "add",
+                            "value": "holdAddNote"
+                          },
+                          "eventSource": "click"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "eventSource": "click",
+                "responseDependents": {
+                  "onSuccess": {
+                    "actions": [
+                      {
+                        "type": "context",
+                        "config": {
+                          "key": "holdDialogData",
+                          "data": "formData",
+                          "requestMethod": "add"
+                        },
+                        "eventSource": "click"
+                      },
+                      {
+                        "type": "microservice",
+                        "config": {
+                          "microserviceId": "addInfoCodes",
+                          "isLocal": false,
+                          "LocalService": "assets/Responses/performFA.json",
+                          "requestMethod": "post",
+                          "body": {
+                            "bcn": "#discrepancyUnitInfo.ITEM_BCN",
+                            "notes": "#holdDialogData.holdAddNote",
+                            "workCenter": "#discrepancyUnitInfo.WORKCENTER",
+                            "geography": "#discrepancyUnitInfo.GEONAME",
+                            "part": "#discrepancyUnitInfo.PART_NO",
+                            "woTimeLoggedInHours": "1",
+                            "userName": "#userAccountInfo.PersonalDetails.USERID",
+                            "password": "#loginUUID.password",
+                            "flexFields": [
+                              {
+                                "name": "PREMIUM DONE",
+                                "value": "#freeCIDRadioSelectedValue"
+                              },
+                              {
+                                "name": "RAM",
+                                "value": "#RamSerialValue"
+                              },
+                              {
+                                "name": "Customer Failure",
+                                "value": "#faultStatusSerial"
+                              },
+                              {
+                                "name": "CT_DEB",
+                                "value": "#ctDebSerial"
+                              },
+                              {
+                                "name": "BSOD",
+                                "value": "#displayDataBsod"
+                              },
+                              {
+                                "name": "HDD SERIAL",
+                                "value": "#HddSerialOne"
+                              },
+                              {
+                                "name": "HDD SERIAL 2",
+                                "value": "#HddSerialTwo"
+                              },
+                              {
+                                "name": "HDD SERIAL 3",
+                                "value": "#HddSerialThree"
+                              },
+                              {
+                                "name": "HDD SERIAL 4",
+                                "value": "#HddSerialFour"
+                              }
+                            ]
+                          },
+                          "toBeStringified": true,
+                          "spliceIfEmptyValueObject": [
+                            {
+                              "identifier": "flexFields",
+                              "valueField": "value",
+                              "keyToBeRemoved": "flexFields"
+                            }
+                          ]
+                        },
+                        "responseDependents": {
+                          "onSuccess": {
+                            "actions": [
+                              {
+                                "type": "context",
+                                "config": {
+                                  "requestMethod": "add",
+                                  "key": "addInfoRespData",
+                                  "data": "responseData"
+                                }
+                              },
+                              {
+                                "type": "microservice",
+                                "config": {
+                                  "microserviceId": "getHPTMOCOMMDebug",
+                                  "isLocal": false,
+                                  "LocalService": "assets/Responses/performFA.json",
+                                  "toBeStringified": true,
+                                  "requestMethod": "post",
+                                  "body": {
+                                    "itemId": "#repairUnitInfo.ITEM_ID",
+                                    "workOrderId": "#repairUnitInfo.WORKORDER_ID",
+                                    "userName": "#userAccountInfo.PersonalDetails.USERID",
+                                    "flexFields": {
+                                      "flexFieldsList": [
+                                        {
+                                          "name": "Description Quality",
+                                          "value": "Correct"
+                                        },
+                                        {
+                                          "name": "NTF information useful",
+                                          "value": "abf"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "eventSource": "click"
+                                },
+                                "responseDependents": {
+                                  "onSuccess": {
+                                    "actions": [
+                                      {
+                                        "type": "microservice",
+                                        "config": {
+                                          "microserviceId": "getHPRLSCommonDebugTrigger",
+                                          "isLocal": false,
+                                          "LocalService": "assets/Responses/performFA.json",
+                                          "requestMethod": "get",
+                                          "params": {
+                                            "userName": "#userAccountInfo.PersonalDetails.USERID",
+                                            "triggerSubType": "RELEASE",
+                                            "storageHoldCode": "#storageHoldCode",
+                                            "notes": "#holdDialogData.holdAddNote"
+                                          }
+                                        },
+                                        "responseDependents": {
+                                          "onSuccess": {
+                                            "actions": [
+                                              {
+                                                "type": "microservice",
+                                                "config": {
+                                                  "microserviceId": "moveinventory",
+                                                  "isLocal": false,
+                                                  "LocalService": "assets/Responses/performFA.json",
+                                                  "requestMethod": "post",
+                                                  "body": {
+                                                    "apiUsageClientName": "#discrepancyUnitInfo.CLIENTNAME",
+                                                    "apiUsageLocationName": "#discrepancyUnitInfo.GEONAME",
+                                                    "callSource": "FrontEnd",
+                                                    "ip": "::1",
+                                                    "items": {
+                                                      "addtionalDetails": {
+                                                        "comments": "#holdDialogData.holdAddNote",
+                                                        "fixedAssetTag": "#discrepancyUnitInfo.FAT",
+                                                        "storageHoldCode": "#storageHoldCode",
+                                                        "storageHoldSubCode": "#storageHoldSubCode"
+                                                      },
+                                                      "destinationLocation": {
+                                                        "bin": "Default",
+                                                        "geography": "#discrepancyUnitInfo.GEONAME",
+                                                        "stockingLocation": "WUR DGI",
+                                                        "warehouse": "HP LAPTOP WUR"
+                                                      },
+                                                      "item": [
+                                                        {
+                                                          "bcn": "#discrepancyUnitInfo.ITEM_BCN",
+                                                          "owner": "#discrepancyUnitInfo.CLIENTNAME",
+                                                          "partNo": "#discrepancyUnitInfo.PART_NO",
+                                                          "quantity": "1",
+                                                          "serialNo": "#discrepancyUnitInfo.SERIAL_NO",
+                                                          "condition": "Defective"
+                                                        }
+                                                      ],
+                                                      "notes": "#holdDialogData.holdAddNote",
+                                                      "sourceLocation": {
+                                                        "bin": "Default",
+                                                        "geography": "#discrepancyUnitInfo.GEONAME",
+                                                        "stockingLocation": "WIP",
+                                                        "warehouse": "HP LAPTOP WUR"
+                                                      }
+                                                    },
+                                                    "usrPwd": {
+                                                      "userName": "#loginUUID.username",
+                                                      "password": "#loginUUID.password"
+                                                    }
+                                                  },
+                                                  "toBeStringified": true
+                                                },
+                                                "responseDependents": {
+                                                  "onSuccess": {
+                                                    "actions": [
+                                                      {
+                                                        "type": "clearScreenData"
+                                                    },
+                                                      {
+                                                        "type": "renderTemplate",
+                                                        "config": {
+                                                          "templateId": "dashboard.json",
+                                                          "mode": "local"
+                                                        }
+                                                      }
+                                                    ]
+                                                  },
+                                                  "onFailure": {
+                                                    "actions": [
+                                                      {
+                                                        "type": "context",
+                                                        "config": {
+                                                          "requestMethod": "add",
+                                                          "key": "moveinventoryForDiscrepancy",
+                                                          "data": "responseData"
+                                                        }
+                                                      },
+                                                      {
+                                                        "type": "updateComponent",
+                                                        "config": {
+                                                          "key": "discrepancyErrorTitleUUID",
+                                                          "properties": {
+                                                            "titleValue": "#moveinventoryForDiscrepancy",
+                                                            "isShown": true
+                                                          }
+                                                        }
+                                                      }
+                                                    ]
+                                                  }
+                                                },
+                                                "eventSource": "click"
+                                              }
+                                            ]
+                                          },
+                                          "onFailure": {
+                                            "actions": [
+                                              [
+                                                {
+                                                  "type": "context",
+                                                  "config": {
+                                                    "requestMethod": "add",
+                                                    "key": "errorResp",
+                                                    "data": "responseData"
+                                                  }
+                                                },
+                                                {
+                                                  "type": "updateComponent",
+                                                  "config": {
+                                                    "key": "errorTitleUUID",
+                                                    "properties": {
+                                                      "titleValue": "#errorResp",
+                                                      "isShown": true
+                                                    }
+                                                  }
+                                                }
+                                              ]
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "onFailure": {
+                                    "actions": [
+                                      [
+                                        {
+                                          "type": "context",
+                                          "config": {
+                                            "requestMethod": "add",
+                                            "key": "errorResp",
+                                            "data": "responseData"
+                                          }
+                                        },
+                                        {
+                                          "type": "updateComponent",
+                                          "config": {
+                                            "key": "errorTitleUUID",
+                                            "properties": {
+                                              "titleValue": "#errorResp",
+                                              "isShown": true
+                                            }
+                                          }
+                                        }
+                                      ]
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          "onFailure": {
+                            "actions": [
+                              {
+                                "type": "context",
+                                "config": {
+                                  "requestMethod": "add",
+                                  "key": "addInfoError",
+                                  "data": "responseData"
+                                }
+                              },
+                              {
+                                "type": "updateComponent",
+                                "config": {
+                                  "key": "errorTitleUUID",
+                                  "properties": {
+                                    "titleValue": "#addInfoError",
+                                    "isShown": true
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        "eventSource": "click"
+                      }
+                    ]
+                  },
+                  "onFailure": {}
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "Result": "SUCCESS"
+}
